@@ -1,0 +1,7 @@
+[wrap-git]
+directory = trilo-utest-c
+url = https://github.com/trilobite-stdlib/trilo-utest-c.git
+revision = main
+
+[provide]
+trilo-utest-c = trilo_utest_dep

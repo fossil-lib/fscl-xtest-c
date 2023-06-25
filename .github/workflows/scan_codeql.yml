@@ -1,0 +1,71 @@
+#
+# under: trilobite devpos:
+# author: Michael Gene Ridge Brockus
+# gmail: <michaelbrockus@gmail.com>
+#
+name: Analysis CodeQL
+
+#
+# We have is configured so that analysis_codeql only runs
+# when source files, build scripts and this CI files is
+# changed, we should not just run CI for all changes.
+#
+on:
+  push:
+    paths:
+      - ".github/workflows/analysis_codeql.yml"
+      - "**.c"     # C source files
+      - "**.h"     # C header files
+  pull_request:
+    branches:
+      - "main"
+      - "next"
+    paths:
+      - ".github/workflows/analysis_codeql.yml"
+      - "**.c"     # C source files
+      - "**.h"     # C header files
+  schedule:
+    - cron: '0 1 * * 2'
+
+
+#
+# Here we analyze the project using CodeQL
+# 
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['cpp']
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+
+    - run: git checkout HEAD^2
+      if: ${{ github.event_name == 'pull_request' }}
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Meson build steps 
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    - run: sudo apt-get install -y ccache gcc-10
+    - run: pip install meson ninja scan-build
+    - run: scan-build meson setup builddir -Dwith_tests=enabled
+      env:
+         CC: ccache gcc-10
+    - run: scan-build meson compile -C builddir
+    - run: scan-build meson test -C builddir -v
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
