@@ -1,11 +1,11 @@
 /*
    under:   trilobite stdlib
-   author:  Michael Gene Ridge Brockus
+   author:  Michael Gene Brockus (Dreamer)
    gmail:   <michaelbrockus@gmail.com>
    website: <https://trilobite.code.blog>
 */
 #include "trilobite/package.h"
-#include <trilobite/utest.h>
+#include <trilobite/xtest.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
