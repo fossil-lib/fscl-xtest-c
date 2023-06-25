@@ -1,9 +1,8 @@
 if get_option('with_tests').enabled()
-    trilo_utest_dep = dependency('trilo-utest-c')
 
-    test_exe = executable('dummy',
+    test_01_exe = executable('dummy-01',
         'test_cases.c',
-        dependencies : [trilo_utest_dep, trilo_dep])
+        dependencies : [trilo_xtest_c_dep])
 
-    test('Execute project tests', test_exe)
+    test('Execute project tests', test_01_exe)
 endif
