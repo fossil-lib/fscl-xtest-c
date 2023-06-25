@@ -1,11 +1,11 @@
 /*
    under:   trilobite stdlib
-   author:  Michael Gene Ridge Brockus
+   author:  Michael Gene Brockus (Dreamer)
    gmail:   <michaelbrockus@gmail.com>
    website: <https://trilobite.code.blog>
 */
-#ifndef TRILOBITE_MOD_H
-#define TRILOBITE_MOD_H
+#ifndef TRILOBITE_XTEST_H
+#define TRILOBITE_XTEST_H
 
 #ifdef __cplusplus
 extern "C"
