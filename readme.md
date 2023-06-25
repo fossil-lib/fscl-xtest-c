@@ -4,7 +4,8 @@
 
 * * *
 
-Please add relevant information about your package.
+Trilobite STDLib (Trilobite X-Unit test framework, built with lots of cool features
+while also being easy to use in any project test in an application or package)
 
 ## tooling
 
