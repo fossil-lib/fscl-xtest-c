@@ -1,4 +1,4 @@
-# C Library
+# Trilobite XUnit test framework
 
 ## overview
 
@@ -12,9 +12,9 @@ Please add relevant information about your package.
 
 The targeted audience we are building for is *Windows 10*, *MacOSX*, *ChromeOS*
 and *Linux* users. This project uses [Meson](https://mesonbuild.com/) `1.0.0`
-and newer, uses `c2x` standards for initial implementation of the package. The
+and newer, uses `c2x` standards for the initial implementation of the package. The
 objective by far is usability, security, transparency, and lightweight, packages
-for any if not most of your application development needs.
+for all your application development needs.
 
 ## Setup, Compile and Install
 
@@ -25,26 +25,26 @@ in your subprojects directory and include the dependency in your project.
 
 ```console
 [wrap-git]
-directory = trilo-name-cpp
-url = https://github.com/trilobite-stdlib/trilo-name-c.git
+directory = trilo-xtest-c
+url = https://github.com/trilobite-stdlib/trilo-xtest-c.git
 revision = main
 
 [provide]
-trilo-name-c = trilo_dep
+trilo-xtest-c = trilo_xtest_c_dep
 ```
 
 
 The next step should be to add the package to your Meson project:
 
 ```meson
-trilo_dep = dependency('trilo-name-c')
+trilo_dep = dependency('trilo-xtest-c')
 
 executable('prog', 'main.c',
     dependencies : [trilo_dep])
 
 ```
 
-And finally we setup, and compile the project just like normal.
+And finally, we set up, and compile the project just like normal.
 
 ## usage
 
@@ -64,7 +64,7 @@ more please view the API documentation thanks.
    website: <https://trilobite.code.blog>
 */
 #include <stdio.h>
-#include <trilobite/package.h>
+#include <trilobite/xtest.h>
 
 
 //
