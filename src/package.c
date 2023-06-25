@@ -1,6 +1,6 @@
 /*
    under:   trilobite stdlib
-   author:  Michael Gene Ridge Brockus
+   author:  Michael Gene Brockus (Dreamer)
    gmail:   <michaelbrockus@gmail.com>
    website: <https://trilobite.code.blog>
 */
