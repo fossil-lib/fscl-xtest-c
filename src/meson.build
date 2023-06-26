@@ -1,5 +1,8 @@
 trilo_src = files(
-    'package.c')
+    'xtest.c',
+    'xmock.c',
+    'xbench.c',
+    'xassert.c')
 
 trilo_lib = static_library('trilo_xtest_lib-c',
     trilo_src,
