@@ -9,6 +9,25 @@
 #include <string.h>
 #include <math.h>
 
+// put here for the benchmark test
+//
+// Should add the values from the vector to
+// the summary and return the value of sum.
+//
+// arg-list:
+//  -> ar: the array being passed in
+//  -> ar_count: length of the array
+//
+long aVeryBigSum(int count, long* ar)
+{
+    long sum = 0L;
+    for (int iter = 0; iter < count; iter++)
+    {
+        sum += *(ar + iter);
+    } // end if
+    return sum;
+} // end of func
+
 
 /*
  >
@@ -137,23 +156,23 @@ static void test_08_expectPointer()
 } // end of test case
 
 
-//
-// function added for benchmark test
-//
-int simpleArraySum(int count, int* ar)
-{
-    int sum = 0;
-    for (int iter = 0; iter < count; iter++)
-    {
-        sum += ar[iter];
-    } // end for
-    return sum;
-} // end of func
-
 static void test_09_runAssert()
 {
     //
     // here we run the asserts
+    tril_xtest_assert(xmock_true == 0, "this simple assert should run");
+} // end of test case
+
+
+static void test_10_benchmark()
+{
+    long array[5] = {1000000001, 1000000002, 1000000003, 1000000004, 1000000005};
+    //
+    // here we run the asserts
+    tril_xbench_start();
+    aVeryBigSum(5, array);
+    tril_xbench_end();
+
     tril_xtest_assert(xmock_true == 0, "this simple assert should run");
 } // end of test case
 
@@ -184,6 +203,7 @@ int main(void)
     tril_xtest_run(runner, test_07_expectStrings);
     tril_xtest_run(runner, test_08_expectPointer);
     tril_xtest_run(runner, test_09_runAssert);
+    tril_xtest_run(runner, test_10_benchmark);
 
     return tril_xtest_end_runner(runner);
 } // end of function main
