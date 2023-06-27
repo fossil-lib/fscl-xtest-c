@@ -19,7 +19,8 @@ extern "C"
 // Published library with provided public application interface for
 // use in the users application. Please note that we are internationally
 // targeting both c11 and c23 standards.
-//   
+//
+
 void tril_xbench_start(void);
 void tril_xbench_end(void);
 
