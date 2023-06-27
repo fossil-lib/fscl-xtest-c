@@ -31,7 +31,7 @@ extern int TRIL_XTEST_FLAG_ERROR;
   -> expresson: The expresson being asserted for a test case
   -> message: The message that will act as a note for the assert
 */
-void tri_xtest_assert(int expresson, const char *message)
+void tril_xtest_assert(int expresson, const char * message)
 {
     // skips the output for asserts in a project
     if (TRIL_XTEST_FLAG_RESULT == 1)
@@ -41,13 +41,13 @@ void tri_xtest_assert(int expresson, const char *message)
 
     if (!expresson)
     {
-        puts("\t-> general assert failed given expresson:");
-        printf("\t-> '%s'\n", message);
+        puts("\t->\n\t-> general assert failed given expresson:");
+        printf("\t-> '%s'\n\t->\n", message);
         TRIL_XTEST_FLAG_RESULT = 1;
     } // end if
     else
     {
-        puts("\t-> general assert passed given expresson:");
+        //puts("\t-> general assert passed given expresson:");
     } // end else
 
 } // end of func
@@ -73,17 +73,17 @@ void tri_xtest_assert(int expresson, const char *message)
   -> expresson: The expresson being expected for a test case
   -> message: The message that will act as a note for the assert
 */
-void tri_xtest_expect(int expresson, const char *message)
+void tril_xtest_expect(int expresson, const char *message)
 {
     if (!expresson)
     {
-        puts("\t-> expected assert failed given expresson:");
-        printf("\t-> '%s'\n", message);
+        puts("\t->\n\t-> expected assert failed given expresson:");
+        printf("\t-> '%s'\n\t->\n", message);
         TRIL_XTEST_FLAG_RESULT = 1;
     } // end if
     else
     {
-        puts("\t-> expected assert passed given expresson:");
+        //puts("\t-> expected assert passed given expresson:");
     } // end else
 
 } // end of func
