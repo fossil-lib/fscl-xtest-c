@@ -81,7 +81,7 @@ typedef enum xmock_boolean
 //
 
 int tril_xmock_stub_integer(int value);
-const char *tril_xmock_stub_string(const char value);
+const char *tril_xmock_stub_string(const char *value);
 void tril_xmock_stub_loop(int iter);
 void *tril_xmock_stub_nullptr(void);
 
