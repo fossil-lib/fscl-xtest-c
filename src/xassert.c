@@ -45,10 +45,6 @@ void tril_xtest_assert(int expresson, const char * message)
         printf("\t-> '%s'\n\t->\n", message);
         TRIL_XTEST_FLAG_RESULT = 1;
     } // end if
-    else
-    {
-        //puts("\t-> general assert passed given expresson:");
-    } // end else
 
 } // end of func
 
@@ -81,9 +77,5 @@ void tril_xtest_expect(int expresson, const char *message)
         printf("\t-> '%s'\n\t->\n", message);
         TRIL_XTEST_FLAG_RESULT = 1;
     } // end if
-    else
-    {
-        //puts("\t-> expected assert passed given expresson:");
-    } // end else
 
 } // end of func
