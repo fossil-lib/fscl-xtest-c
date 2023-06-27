@@ -10,6 +10,8 @@
 
 int TRIL_XTEST_FLAG_RESULT = 0;
 int TRIL_XTEST_FLAG_ERROR = 0;
+int TRIL_XTEST_FLAG_SKIP = 0;
+int TRIL_XTEST_FLAG_OUTPUT = 0;
 
 /*
   overview:
@@ -34,6 +36,7 @@ struct UTestRunner
     // pass/fail counters
     int _pass;
     int _fail;
+    int _skip;
     int _total;
 
     // setup/teardown functions
@@ -69,6 +72,7 @@ UTestRunner *tril_xtest_create_runner(void)
     runner->_total = 0;
     runner->_pass = 0;
     runner->_fail = 0;
+    runner->_skip = 0;
 
     runner->_setup = NULL;
     runner->_teardown = NULL;
@@ -112,6 +116,7 @@ int tril_xtest_end_runner(UTestRunner *runner)
     puts("--- --- --- --- --- --- --- --- --- --- --- :");
     printf(" --> Pass : (%.2d)\n", runner->_pass);
     printf(" --> Fail : (%.2d)\n", runner->_fail);
+    printf(" --> Skip : (%.2d)\n", runner->_skip);
     puts("--- --- --- --- --- --- --- --- --- --- --- :");
     puts("--- --- --- --- --- --- --- --- --- --- --- :");
 
@@ -122,6 +127,66 @@ int tril_xtest_end_runner(UTestRunner *runner)
     } // end if
 
     return result;
+} // end of func
+
+/*
+  overview:
+  >
+  > Basic flag control function that will allow the
+  > tester to skip test cases. If the value is not
+  > a known value then we defualt to zero.
+  >
+
+  usage:
+  >
+  > tril_xtest_flag_skip(1); // were skipping
+  > tril_xtest_flag_skip(0); // were not skipping
+  > tril_xtest_flag_skip(42); // we get zero anyway
+  >
+  args:
+  -> runner: The runner for the test cases
+*/
+void tril_xtest_flag_skip(int flag)
+{
+    if (flag == 1)
+    {
+        TRIL_XTEST_FLAG_SKIP = flag;
+    } // end if
+    else
+    {
+        TRIL_XTEST_FLAG_SKIP = 0;
+    } // end else
+
+} // end of func
+
+/*
+  overview:
+  >
+  > Basic flag control function that will allow the
+  > tester to turn of the output. If the value is not
+  > a known value then we defualt to zero.
+  >
+
+  usage:
+  >
+  > tril_xtest_flag_output(1); // were skipping
+  > tril_xtest_flag_output(0); // were not skipping
+  > tril_xtest_flag_output(42); // we get zero anyway
+  >
+  args:
+  -> runner: The runner for the test cases
+*/
+void tril_xtest_flag_output(int flag)
+{
+    if (flag == 1)
+    {
+        TRIL_XTEST_FLAG_OUTPUT = flag;
+    } // end if
+    else
+    {
+        TRIL_XTEST_FLAG_OUTPUT = 0;
+    } // end else
+
 } // end of func
 
 /*
@@ -211,13 +276,17 @@ void tril_xtest_run(UTestRunner *runner, void (*test)())
     {
         return;
     } // end if
-    printf("Begin test case: %.2i\n", runner->_total + 1);
+
+    if (TRIL_XTEST_FLAG_OUTPUT != 1)
+    {
+        printf("Begin test case: %.2i\n", runner->_total + 1);
+    } // end if
 
     //
     // setup some extra stuff before test, we then
     // run the current case in question and when
     // were done we teardown the extra stuff.
-    if (runner)
+    if (runner || TRIL_XTEST_FLAG_SKIP != 1)
     {
         if (runner->_setup != NULL)
         {
@@ -236,7 +305,11 @@ void tril_xtest_run(UTestRunner *runner, void (*test)())
     //
     // keep a score of test results add a pass if we
     // passed the logic test else we add a fail.
-    if (TRIL_XTEST_FLAG_RESULT == 1)
+    if (TRIL_XTEST_FLAG_SKIP == 1)
+    {
+        runner->_skip++;
+    }
+    else if (TRIL_XTEST_FLAG_RESULT == 1)
     {
         runner->_fail++;
     }
@@ -245,7 +318,13 @@ void tril_xtest_run(UTestRunner *runner, void (*test)())
         runner->_pass++;
         TRIL_XTEST_FLAG_RESULT = 0;
     } // end switch
-    puts("done...\n");
+
+    //
+    // end of test output control
+    if (TRIL_XTEST_FLAG_OUTPUT != 1)
+    {
+        puts("done...\n");
+    } // end if
 
     runner->_total++;
 } // end of func
