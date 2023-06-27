@@ -193,11 +193,7 @@ int main(void)
 {
     //
     // setup and teardown can be set to nullptr.
-    UTestRunner *runner = tril_xtest_create_runner();
-
-    tril_xtest_flag_output(1);
-    tril_xtest_setup(runner, setup);
-    tril_xtest_teardown(runner, teardown);
+    UTestRunner *runner = tril_xtest_create_runner(setup, teardown);
 
     //
     // list of test cases being ran in this
