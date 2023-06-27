@@ -13,6 +13,38 @@ int TRIL_XTEST_FLAG_ERROR = 0;
 
 /*
   overview:
+  > As the name suggests, UTestRunner is a tool
+  > that is used to run or execute tests and track
+  > results. The runner has a setup and teardown
+  > function built-in and are set to nullptr by
+  > default, the structure also has a range of
+  > score values for pass/fail and more.
+  >
+  args:
+  -> _pass: pass test score value
+  -> _fail: fail test score value
+  -> _skip: skip test score value
+  -> _error: error test score value
+  -> _total: total test score run
+  -> _setup: Test case setup function
+  -> _teardown: Test case teardown function
+*/
+struct UTestRunner
+{
+    // pass/fail counters
+    int _pass;
+    int _fail;
+    int _total;
+
+    // setup/teardown functions
+    void (*_setup)();
+    void (*_teardown)();
+
+}; // end struct
+
+
+/*
+  overview:
   > Should output the a greeting message
   > to the user.
   >
@@ -30,8 +62,6 @@ UTestRunner *tril_xtest_create_runner(void)
     //
     // score values
     runner->_total = 0;
-    runner->_error = 0;
-    runner->_skip = 0;
     runner->_pass = 0;
     runner->_fail = 0;
 
@@ -44,12 +74,15 @@ UTestRunner *tril_xtest_create_runner(void)
 
 int tril_xtest_end_runner(UTestRunner *runner)
 {
-    puts("XTest results:");
-    printf("Total: %.2i\n", runner->_total);
-    printf("Pass: %.2i\n", runner->_pass);
-    printf("Fail: %.2i\n", runner->_fail);
-    printf("Error: %.2i\n", runner->_error);
-    printf("Skip: %.2i\n", runner->_skip);
+    puts("--- --- --- --- --- --- --- --- --- --- --- :");
+    puts(": ---  :[Trilobite XTest - Dashboard]:  --- :");
+    puts("--- --- --- --- --- --- --- --- --- --- --- :");
+    printf(" -> Total : (%.2d)\n", runner->_total);
+    puts("--- --- --- --- --- --- --- --- --- --- --- :");
+    printf(" --> Pass : (%.2d)\n", runner->_pass);
+    printf(" --> Fail : (%.2d)\n", runner->_fail);
+    puts("--- --- --- --- --- --- --- --- --- --- --- :");
+    puts("--- --- --- --- --- --- --- --- --- --- --- :");
 
     int result = runner->_fail;
     if (runner)
@@ -96,6 +129,7 @@ void tril_xtest_run(UTestRunner *runner, void (*test)())
     {
         return;
     } // end if
+    printf("Begin test case: %.2i\n", runner->_total + 1);
 
     //
     // setup some extra stuff before test, we then
@@ -120,22 +154,16 @@ void tril_xtest_run(UTestRunner *runner, void (*test)())
     //
     // keep a score of test results add a pass if we
     // passed the logic test else we add a fail.
-    switch (TRIL_XTEST_FLAG_RESULT)
+    if (TRIL_XTEST_FLAG_RESULT == 1)
     {
-    case 3:
-        runner->_skip++;
-        break;
-    case 2:
-        runner->_error++;
-        break;
-    case 1:
         runner->_fail++;
-        break;    
-    default:
+    }
+    else
+    {
         runner->_pass++;
         TRIL_XTEST_FLAG_RESULT = 0;
-        break;
     } // end switch
+    puts("done...\n");
 
     runner->_total++;
 } // end of func
