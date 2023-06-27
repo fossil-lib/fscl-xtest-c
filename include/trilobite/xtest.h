@@ -29,6 +29,8 @@ typedef struct UTestRunner UTestRunner; // end struct
 
 UTestRunner *tril_xtest_create_runner(void);
 int tril_xtest_end_runner(UTestRunner *runner);
+void tril_xtest_flag_skip(int flag);
+void tril_xtest_flag_output(int flag);
 void tril_xtest_setup(UTestRunner *runner, void (*func)());
 void tril_xtest_teardown(UTestRunner *runner, void (*func)());
 void tril_xtest_run(UTestRunner *runner, void (*test)());
