@@ -24,7 +24,7 @@
 */
 int tril_xmock_stub_integer(int value)
 {
-    if (value == NULL)
+    if (!value)
     {
         return 0;
     } // end if
@@ -47,9 +47,9 @@ int tril_xmock_stub_integer(int value)
   args:
   -> value: The value being passed by the stub
 */
-const char *tril_xmock_stub_string(const char value)
+const char *tril_xmock_stub_string(const char *value)
 {
-    if (value == NULL)
+    if (!value)
     {
         return "";
     } // end if
@@ -61,7 +61,8 @@ const char *tril_xmock_stub_string(const char value)
   overview:
   >
   > This stub returns nothing, its for simulating an
-  > algorithem which can be handy for benchmarking
+  > algorithem which can be handy for benchmarking.
+  > If we get a zero we just return out of the function.
   >
 
   usage:
@@ -73,7 +74,7 @@ const char *tril_xmock_stub_string(const char value)
 */
 void tril_xmock_stub_loop(int iter)
 {
-    if (iter == NULL)
+    if (iter == 0)
     {
         return;
     } // end if
