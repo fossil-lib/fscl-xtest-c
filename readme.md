@@ -4,7 +4,8 @@
 
 * * *
 
-Please add relevant information about your package.
+Trilobite STDLib (Trilobite X-Unit test framework, built with lots of cool features
+while also being easy to use in any project test in an application or package)
 
 ## tooling
 
@@ -59,21 +60,47 @@ more please view the API documentation thanks.
 ```c
 /*
    under:   trilobite stdlib
-   author:  Michael Gene Ridge Brockus
+   author:  Michael Gene Brockus (Dreamer)
    gmail:   <michaelbrockus@gmail.com>
    website: <https://trilobite.code.blog>
 */
 #include <stdio.h>
 #include <trilobite/xtest.h>
 
+/*
+  ... test cases can be seen in the test file ...
+*/
 
 //
 // main is where all good examples start
 //
 int main(void)
 {
-    printf("%s\n", greet());
-    return 0;
+    //
+    // setup and teardown can be set to nullptr.
+    UTestRunner *runner = tril_xtest_create_runner(NULL, NULL);
+
+    //
+    // list of test cases being ran in this
+    // project.
+    tril_xtest_run(runner, test_01_assertBools);
+    tril_xtest_run(runner, test_02_assertInts);
+    tril_xtest_run(runner, test_03_assertStrings);
+    tril_xtest_run(runner, test_04_assertPointer);
+    tril_xtest_run(runner, test_05_expectBools);
+    tril_xtest_run(runner, test_06_expectInts);
+    tril_xtest_run(runner, test_07_expectStrings);
+    tril_xtest_run(runner, test_08_expectPointer);
+    tril_xtest_run(runner, test_09_runAssert);
+    tril_xtest_run(runner, test_10_benchmark);
+
+    //
+    // we can skip a test case if we want
+    tril_xtest_flag_skip(1);
+    tril_xtest_run(runner, test_11_skipTest);
+    tril_xtest_flag_skip(0);
+
+    return tril_xtest_end_runner(runner);
 } // end of func
 
 ```

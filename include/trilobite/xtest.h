@@ -12,6 +12,10 @@ extern "C"
 {
 #endif
 
+#include "xbench.h"
+#include "xmock.h"
+#include "xassert.h"
+
 //
 //   PUBLIC APPLICATION INTERFACE
 // --------------------------------
@@ -19,8 +23,17 @@ extern "C"
 // Published library with provided public application interface for
 // use in the users application. Please note that we are internationally
 // targeting both c11 and c23 standards.
-//   
-const char *salutations(void);
+//
+
+typedef struct UTestRunner UTestRunner; // end struct
+
+UTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)());
+int tril_xtest_end_runner(UTestRunner *runner);
+void tril_xtest_flag_skip(int flag);
+void tril_xtest_flag_output(int flag);
+void tril_xtest_setup(UTestRunner *runner, void (*func)());
+void tril_xtest_teardown(UTestRunner *runner, void (*func)());
+void tril_xtest_run(UTestRunner *runner, void (*test)());
 
 #ifdef __cplusplus
 }
