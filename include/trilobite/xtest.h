@@ -27,7 +27,7 @@ extern "C"
 
 typedef struct UTestRunner UTestRunner; // end struct
 
-UTestRunner *tril_xtest_create_runner(void);
+UTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)());
 int tril_xtest_end_runner(UTestRunner *runner);
 void tril_xtest_flag_skip(int flag);
 void tril_xtest_flag_output(int flag);
