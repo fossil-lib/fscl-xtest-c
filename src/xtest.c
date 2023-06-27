@@ -48,18 +48,22 @@ struct UTestRunner
 /*
   overview:
   >
-  > This stub returns nothing, its for simulating an
-  > algorithem which can be handy for benchmarking
+  > This will create a test runner when the tester is
+  > ready to begin a set of test cases. Test
   >
 
   usage:
   >
-  > tril_xmock_stub_loop(7); // loops 7 times
+  > tril_xtest_create_runner(NULL, NULL);
+  > tril_xtest_create_runner(setup, taerdown); // or set them later
+  >
+  > ... before tril_xtest_end_runner() ...
   >
   args:
-  -> iter: The times to iter in the loop
+  -> setup: The setup function being set
+  -> teardown: The teardown function being set
 */
-UTestRunner *tril_xtest_create_runner(void)
+UTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)())
 {
     UTestRunner *runner = malloc(sizeof(UTestRunner));
     if (!runner)
@@ -74,8 +78,8 @@ UTestRunner *tril_xtest_create_runner(void)
     runner->_fail = 0;
     runner->_skip = 0;
 
-    runner->_setup = NULL;
-    runner->_teardown = NULL;
+    runner->_setup = setup;
+    runner->_teardown = teardown;
 
     return runner;
 } // end of func
