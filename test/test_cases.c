@@ -72,7 +72,7 @@ static void test_02_assertInts()
     //
     // here we run the asserts
     tril_xtest_assert(first != second, "first and second should assert not equal");
-    tril_xtest_assert(first == tril_xmock_stub_medium_int(), "first is 50 should assert equal");
+    tril_xtest_assert(first == tril_xmock_stub_integer(50), "first is 50 should assert equal");
 } // end of test case
 
 static void test_03_assertStrings()
@@ -124,7 +124,7 @@ static void test_06_expectInts()
     //
     // here we run the asserts
     tril_xtest_expect(first != second, "first and second should assert not equal");
-    tril_xtest_expect(first == tril_xmock_stub_medium_int(), "first is 50 should assert equal");
+    tril_xtest_expect(first == tril_xmock_stub_integer(50), "first is 50 should assert equal");
 } // end of test case
 
 static void test_07_expectStrings()
