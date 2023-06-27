@@ -9,6 +9,8 @@
 
 extern int TRIL_XTEST_FLAG_RESULT;
 extern int TRIL_XTEST_FLAG_ERROR;
+extern int TRIL_XTEST_FLAG_SKIP;
+extern int TRIL_XTEST_FLAG_OUTPUT;
 
 /*
   overview:
@@ -33,19 +35,24 @@ extern int TRIL_XTEST_FLAG_ERROR;
 */
 void tril_xtest_assert(int expresson, const char * message)
 {
-    // skips the output for asserts in a project
-    if (TRIL_XTEST_FLAG_RESULT == 1)
+    // skips if we say skip or returns if it fails
+    if (TRIL_XTEST_FLAG_RESULT == 1 || TRIL_XTEST_FLAG_SKIP == 1)
     {
         return;
     } // end if
 
     if (!expresson)
     {
-        puts(" ->\n -> general assert failed given expresson:");
-        printf(" -> '%s'\n ->\n", message);
+        if (TRIL_XTEST_FLAG_OUTPUT != 1)
+        {
+            puts(" ->\n -> general assert failed given expresson:");
+            printf(" -> '%s'\n ->\n", message);
+        } // end if
+
         TRIL_XTEST_FLAG_RESULT = 1;
     } // end if
-    else
+    
+    if (TRIL_XTEST_FLAG_OUTPUT != 1)
     {
         puts(" ->\n -> general assert passed:\n ->");
     } // end else
@@ -75,13 +82,24 @@ void tril_xtest_assert(int expresson, const char * message)
 */
 void tril_xtest_expect(int expresson, const char *message)
 {
+    // skips the output for asserts in a project
+    if (TRIL_XTEST_FLAG_SKIP == 1)
+    {
+        return;
+    } // end if
+
     if (!expresson)
     {
-        puts(" ->\n -> expected assert failed given expresson:");
-        printf(" -> '%s'\n ->\n", message);
+        if (TRIL_XTEST_FLAG_OUTPUT != 1)
+        {
+            puts(" ->\n -> expected assert failed given expresson:");
+            printf(" -> '%s'\n ->\n", message);
+        } // end if
+
         TRIL_XTEST_FLAG_RESULT = 1;
     } // end if
-    else
+    
+    if (TRIL_XTEST_FLAG_OUTPUT != 1)
     {
         puts(" ->\n -> expected assert passed:\n ->");
     } // end else
