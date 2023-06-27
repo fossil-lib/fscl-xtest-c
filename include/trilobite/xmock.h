@@ -79,17 +79,12 @@ typedef enum xmock_boolean
 //
 // STUBS and FAKES
 //
-int tril_xmock_stub_large_int(void);
-int tril_xmock_stub_medium_int(void);
-int tril_xmock_stub_small_int(void);
-int tril_xmock_stub_zero_int(void);
 
-char *tril_xmock_stub_long_str(void);
-char *tril_xmock_stub_medium_str(void);
-char *tril_xmock_stub_short_str(void);
-char *tril_xmock_stub_empty_str(void);
-
+int tril_xmock_stub_integer(int value);
+const char *tril_xmock_stub_string(const char value);
+void tril_xmock_stub_loop(int iter);
 void *tril_xmock_stub_nullptr(void);
+
 
 #ifdef __cplusplus
 }

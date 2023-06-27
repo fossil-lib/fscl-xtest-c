@@ -7,118 +7,94 @@
 #include "trilobite/xmock.h"
 #include <stdlib.h>
 
-
 /*
   overview:
-  > Should return a large integer value, the value
-  > of 100
+  >
+  > This stub returns a given value from the tester as
+  > the value, if the value is nullptr it will just return
+  > 0 as its default value.
+  >
+
+  usage:
+  >
+  > tril_xmock_stub_integer(42);
   >
   args:
-  -> ...: N/A
+  -> value: The value being passed by the stub
 */
-int tril_xmock_stub_large_int(void)
+int tril_xmock_stub_integer(int value)
 {
-    return 100;
-} // end of func
+    if (value == NULL)
+    {
+        return 0;
+    } // end if
 
+    return value;
+} // end of func
 
 /*
   overview:
-  > Should return a medium integer value, the value
-  > of 50
+  >
+  > This stub returns a given value from the tester as
+  > the value, if the value is nullptr it will just return
+  > an empty string like so -> "" as its default value.
+  >
+
+  usage:
+  >
+  > tril_xmock_stub_string("Coco beans");
   >
   args:
-  -> ...: N/A
+  -> value: The value being passed by the stub
 */
-int tril_xmock_stub_medium_int(void)
+const char *tril_xmock_stub_string(const char value)
 {
-    return 50;
-} // end of func
+    if (value == NULL)
+    {
+        return "";
+    } // end if
 
+    return value;
+} // end of func
 
 /*
   overview:
-  > Should return a small integer value, the value
-  > of 5
+  >
+  > This stub returns nothing, its for simulating an
+  > algorithem which can be handy for benchmarking
+  >
+
+  usage:
+  >
+  > tril_xmock_stub_loop(7); // loops 7 times
   >
   args:
-  -> ...: N/A
+  -> iter: The times to iter in the loop
 */
-int tril_xmock_stub_small_int(void)
+void tril_xmock_stub_loop(int iter)
 {
-    return 5;
-} // end of func
+    if (iter == NULL)
+    {
+        return;
+    } // end if
 
+    for (size_t it = 0; it < iter; it++)
+    {
+        /* mock algorithm code */
+    } // end for
+
+} // end of func
 
 /*
   overview:
-  > Should return a zero integer value
   >
-  args:
-  -> ...: N/A
-*/
-int tril_xmock_stub_zero_int(void)
-{
-    return 0;
-} // end of func
-
-
-/*
-  overview:
-  > Should return a long string value
+  > This stub returns a fixed value of null as the main
+  > value.
   >
-  args:
-  -> ...: N/A
-*/
-char *tril_xmock_stub_long_str(void)
-{
-    return "Some kind of long message for testing";
-} // end of func
 
-
-/*
-  overview:
-  > Should return a medium string value
+  usage:
   >
-  args:
-  -> ...: N/A
-*/
-char *tril_xmock_stub_medium_str(void)
-{
-    return "Some cool message to test";
-} // end of func
-
-
-/*
-  overview:
-  > Should return a short string value
-  >
-  args:
-  -> ...: N/A
-*/
-char *tril_xmock_stub_short_str(void)
-{
-    return "Just a message";
-} // end of func
-
-
-/*
-  overview:
-  > Should return a empty string value
-  >
-  args:
-  -> ...: N/A
-*/
-char *tril_xmock_stub_empty_str(void)
-{
-    return "";
-} // end of func
-
-
-/*
-  overview:
-  > Should return a null value or use where
-  > null value is used
+  > tril_xmock_stub_nullptr();
   >
   args:
   -> ...: N/A
