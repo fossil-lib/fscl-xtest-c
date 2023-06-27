@@ -42,14 +42,19 @@ struct UTestRunner
 
 }; // end struct
 
-
 /*
   overview:
-  > Should output the a greeting message
-  > to the user.
+  >
+  > This stub returns nothing, its for simulating an
+  > algorithem which can be handy for benchmarking
+  >
+
+  usage:
+  >
+  > tril_xmock_stub_loop(7); // loops 7 times
   >
   args:
-  -> ...: N/A
+  -> iter: The times to iter in the loop
 */
 UTestRunner *tril_xtest_create_runner(void)
 {
@@ -71,9 +76,35 @@ UTestRunner *tril_xtest_create_runner(void)
     return runner;
 } // end of func
 
+/*
+  overview:
+  >
+  > This will erase a test runner when the tester is
+  > ready to clear the object out of memeory. Test
+  > results are output to the console after we ensure
+  > the tester can get a summery of all the test.
+  >
+  > If the runner is null then we return zero assuming
+  > its a dry run or you forgot to allocate a test runner
+  > with the 'tril_xtest_create_runner()'.
+  >
 
+  usage:
+  >
+  > ... after tril_xtest_create_runner() ...
+  >
+  > tril_xtest_end_runner(runner); // loops 7 times
+  >
+  args:
+  -> runner: The runner for the test cases
+*/
 int tril_xtest_end_runner(UTestRunner *runner)
 {
+    if (runner == NULL)
+    {
+        return 0;
+    } // end if
+
     puts("--- --- --- --- --- --- --- --- --- --- --- :");
     puts(": ---  :[Trilobite XTest - Dashboard]:  --- :");
     puts("--- --- --- --- --- --- --- --- --- --- --- :");
@@ -93,6 +124,24 @@ int tril_xtest_end_runner(UTestRunner *runner)
     return result;
 } // end of func
 
+/*
+  overview:
+  >
+  > This will set a setup function for a set of cases until
+  > a new setup function is used or stopped with the null
+  > value.
+  >
+
+  usage:
+  >
+  > ... some function named setup ...
+  >
+  > tril_xtest_setup(runner, setup);
+  >
+  args:
+  -> runner: The runner for the test cases
+  -> func: The setup function being set
+*/
 void tril_xtest_setup(UTestRunner *runner, void (*func)())
 {
     if (!func)
@@ -107,7 +156,24 @@ void tril_xtest_setup(UTestRunner *runner, void (*func)())
 
 } // end of func
 
+/*
+  overview:
+  >
+  > This will set a teardown function for a set of cases until
+  > a new teardown function is used or stopped with the null
+  > value.
+  >
 
+  usage:
+  >
+  > ... some function named teardown ...
+  >
+  > tril_xtest_teardown(runner, teardown);
+  >
+  args:
+  -> runner: The runner for the test cases
+  -> func: The teardown function being set
+*/
 void tril_xtest_teardown(UTestRunner *runner, void (*func)())
 {
     if (!func)
@@ -122,7 +188,23 @@ void tril_xtest_teardown(UTestRunner *runner, void (*func)())
 
 } // end of func
 
+/*
+  overview:
+  >
+  > Adds test cases into a test runner. If the test
+  > is null then we will ignore and return out of the
+  > function else resume with the process of testing
+  > the current test case.
+  >
 
+  usage:
+  >
+  > tril_xtest_run(runner, test_myCoffeeCup);
+  >
+  args:
+  -> runner: The runner for the test cases
+  -> test: The current unit case that is yet to be tested
+*/
 void tril_xtest_run(UTestRunner *runner, void (*test)())
 {
     if (!test)
@@ -167,4 +249,3 @@ void tril_xtest_run(UTestRunner *runner, void (*test)())
 
     runner->_total++;
 } // end of func
-
