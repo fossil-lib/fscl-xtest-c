@@ -177,6 +177,13 @@ static void test_10_benchmark()
 } // end of test case
 
 
+static void test_11_skipTest()
+{
+    //
+    // here we run the asserts
+    tril_xtest_assert(xmock_true == 0, "this simple assert should run");
+} // end of test case
+
 /*
  >
  > here main is used as the test runner
@@ -188,6 +195,7 @@ int main(void)
     // setup and teardown can be set to nullptr.
     UTestRunner *runner = tril_xtest_create_runner();
 
+    tril_xtest_flag_output(1);
     tril_xtest_setup(runner, setup);
     tril_xtest_teardown(runner, teardown);
 
@@ -204,6 +212,9 @@ int main(void)
     tril_xtest_run(runner, test_08_expectPointer);
     tril_xtest_run(runner, test_09_runAssert);
     tril_xtest_run(runner, test_10_benchmark);
+    tril_xtest_flag_skip(1);
+    tril_xtest_run(runner, test_11_skipTest);
+    tril_xtest_flag_skip(0);
 
     return tril_xtest_end_runner(runner);
 } // end of function main
