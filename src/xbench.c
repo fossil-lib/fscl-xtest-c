@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <time.h>
 
+extern int TRIL_XTEST_FLAG_OUTPUT;
+
 clock_t timer;
 
 /*
@@ -52,5 +54,9 @@ void tril_xbench_start(void)
 void tril_xbench_end(void)
 {
     double elapsed = (double)(clock() - timer) / CLOCKS_PER_SEC;
-    printf(" ->\n -> Done in %f seconds\n ->\n", elapsed);
+    if (TRIL_XTEST_FLAG_OUTPUT != 1)
+    {
+        printf(" ->\n -> Done in %f seconds\n ->\n", elapsed);
+    } // end if
+
 } // end of func
