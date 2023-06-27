@@ -30,7 +30,6 @@ clock_t timer;
 void tril_xbench_start(void)
 {
     timer = clock();
-    puts("Begin a benchmark for logic elapsed time:");
 } // end of func
 
 /*
@@ -53,5 +52,5 @@ void tril_xbench_start(void)
 void tril_xbench_end(void)
 {
     double elapsed = (double)(clock() - timer) / CLOCKS_PER_SEC;
-    printf("\t->\n\t-> Done in %f seconds\n\t->\n", elapsed);
+    printf(" ->\n -> Done in %f seconds\n ->\n", elapsed);
 } // end of func
