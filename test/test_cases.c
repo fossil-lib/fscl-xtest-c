@@ -5,9 +5,9 @@
    website: <https://trilobite.code.blog>
 */
 #include "trilobite/xtest.h"
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 // put here for the benchmark test
 //
@@ -55,19 +55,19 @@ static void test_01_assertBools()
 {
     //
     // we setup are test data here.
-    const xmock_blooean trueValue = xmock_true, falseValue = xmock_false;
+    const bool trueValue = true, falseValue = false;
 
     //
     // here we run the asserts
-    tril_xtest_assert(trueValue == xmock_true, "should assert to true");
-    tril_xtest_assert(falseValue == xmock_false, "should assert to false");
+    tril_xtest_assert(trueValue == true, "should assert to true");
+    tril_xtest_assert(falseValue == false, "should assert to false");
 } // end of test case
 
 static void test_02_assertInts()
 {
     //
     // we setup are test data here.
-    const xmock_int16 first = 50, second = 20;
+    const int first = 50, second = 20;
 
     //
     // here we run the asserts
@@ -79,7 +79,7 @@ static void test_03_assertStrings()
 {
     //
     // we setup are test data here.
-    const xmock_string first = "Something", second = "Something else";
+    const char *first = "Something", *second = "Something else";
 
     //
     // here we run the asserts
@@ -95,7 +95,7 @@ static void test_04_assertPointer()
 {
     //
     // we setup are test data here.
-    const xmock_ptr something = "40", other = NULL;
+    const void *something = "40", *other = NULL;
 
     //
     // here we run the asserts
@@ -107,19 +107,19 @@ static void test_05_expectBools()
 {
     //
     // we setup are test data here.
-    const xmock_blooean trueValue = xmock_true, falseValue = xmock_false;
+    const bool trueValue = true, falseValue = false;
 
     //
     // here we run the asserts
-    tril_xtest_expect(trueValue == xmock_true, "should assert to true");
-    tril_xtest_expect(falseValue == xmock_false, "should assert to false");
+    tril_xtest_expect(trueValue == true, "should assert to true");
+    tril_xtest_expect(falseValue == false, "should assert to false");
 } // end of test case
 
 static void test_06_expectInts()
 {
     //
     // we setup are test data here.
-    const xmock_int16 first = 50, second = 20;
+    const int first = 50, second = 20;
 
     //
     // here we run the asserts
@@ -131,7 +131,7 @@ static void test_07_expectStrings()
 {
     //
     // we setup are test data here.
-    const xmock_string first = "Something", second = "Something else";
+    const char *first = "Something", *second = "Something else";
 
     //
     // here we run the asserts
@@ -147,7 +147,7 @@ static void test_08_expectPointer()
 {
     //
     // we setup are test data here.
-    const xmock_ptr something = "40", other = NULL;
+    const void *something = "40", *other = NULL;
 
     //
     // here we run the asserts
@@ -160,7 +160,7 @@ static void test_09_runAssert()
 {
     //
     // here we run the asserts
-    tril_xtest_assert(xmock_true == 0, "this simple assert should run");
+    tril_xtest_assert(true, "this simple assert should run");
 } // end of test case
 
 
@@ -172,8 +172,6 @@ static void test_10_benchmark()
     tril_xbench_start();
     aVeryBigSum(5, array);
     tril_xbench_end();
-
-    tril_xtest_assert(xmock_true == 0, "this simple assert should run");
 } // end of test case
 
 
@@ -181,7 +179,7 @@ static void test_11_skipTest()
 {
     //
     // here we run the asserts
-    tril_xtest_assert(xmock_true == 0, "this simple assert should run");
+    tril_xtest_assert(true, "this simple assert should run");
 } // end of test case
 
 /*
