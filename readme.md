@@ -4,8 +4,11 @@
 
 * * *
 
-Trilobite STDLib (Trilobite X-Unit test framework, built with lots of cool features
-while also being easy to use in any project test in an application or package)
+Trilobite Xtest - A Lightweight Unit Testing Framework with Mocking and Benchmarking for C
+
+Trilobite Xtest is a compact yet feature-rich unit testing framework specially crafted for C programming. Built with simplicity and efficiency in mind, Trilobite Xtest empowers developers to write and execute unit tests effortlessly, ensuring the accuracy and reliability of their C codebase. This versatile framework goes beyond traditional unit testing by incorporating advanced capabilities for mocking and benchmarking, making it an indispensable tool for comprehensive testing and performance analysis.
+
+Trilobite Xtest is a valuable companion for C developers seeking a streamlined and powerful unit testing framework. With its support for mocking and benchmarking, developers can effectively evaluate the correctness, maintainability, and performance of their C codebase, fostering a robust and resilient software development process.
 
 ## tooling
 
