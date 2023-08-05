@@ -35,11 +35,6 @@ extern int TRIL_XTEST_FLAG_SKIP;
 */
 void _tril_xassert(int expresson, const char *file, int line, const char * func)
 {
-    if (TRIL_XTEST_FLAG_SKIP == 1)
-    {
-        return;
-    } // end if
-
     if (!expresson)
     {
         TRIL_XTEST_FLAG_RESULT = 1;
