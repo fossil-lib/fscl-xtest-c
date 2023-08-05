@@ -21,8 +21,9 @@ extern "C"
 // targeting both c11 and c23 standards.
 //
 
-void tril_xbench_start(void);
-void tril_xbench_end(void);
+// Function to run a benchmark and calculate execution time
+double tril_xbench_run(void (*func)(void));
+void tril_xbench_out(const char* function_name, double elapsed_time);
 
 #ifdef __cplusplus
 }

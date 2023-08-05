@@ -8,55 +8,46 @@
 #include <stdio.h>
 #include <time.h>
 
-extern int TRIL_XTEST_FLAG_OUTPUT;
-
 clock_t timer;
+
 
 /*
   overview:
   >
-  > This starts the timer for a benchmark which at this point
-  > keeps track of the time value in the "clock()" function until
-  > the "tril_xbench_end()" is called which will end the timer.
-  >
-
-  usage:
-  >
-  > tri_xbench_start(); // sets the timer var to the value in "clock()"
-  >
-  > ... before tri_xbench_end() ...
+  > This function "tril_xbench_run()" takes a void pointer
+  > to a function as an argument and returns the elapsed
+  > time in seconds for that function. It is used to measure
+  > the performance of a function by timing how long it takes
+  > to execute.
   >
   args:
-  -> ...: N/A
+  -> func: the pointer function being benchmarked
 */
-void tril_xbench_start(void)
+double tril_xbench_run(void (*func)(void))
 {
-    timer = clock();
+    clock_t start_time, end_time;
+    double elapsed_time;
+
+    start_time = clock();
+    func();
+    end_time = clock();
+
+    elapsed_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    return elapsed_time;
 } // end of func
 
 /*
   overview:
   >
-  > This ends the timer and computes the elapsed of a running process
-  > then outputs that in standard output as seconds elapsed when the
-  > function was called to perform a task.
-  >
-
-  usage:
-  >
-  > ... after tri_xbench_start() ...
-  >
-  > tri_xbench_end(); // process time elapsed into seconds
+  > This function prints the execution time for a given function 
+  > function_name to the console. The execution time is passed in
+  > as elapsed_time.
   >
   args:
-  -> ...: N/A
+  -> function_name: function name tag
+  -> elapsed_time: the elapsed time
 */
-void tril_xbench_end(void)
+void tril_xbench_out(const char* function_name, double elapsed_time)
 {
-    double elapsed = (double)(clock() - timer) / CLOCKS_PER_SEC;
-    if (TRIL_XTEST_FLAG_OUTPUT != 1)
-    {
-        printf(" ->\n -> Done in %f seconds\n ->\n", elapsed);
-    } // end if
-
+    printf("Execution time for %s: %f seconds\n", function_name, elapsed_time);
 } // end of func
