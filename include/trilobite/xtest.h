@@ -25,15 +25,14 @@ extern "C"
 // targeting both c11 and c23 standards.
 //
 
-typedef struct UTestRunner UTestRunner; // end struct
+typedef struct XTestRunner XTestRunner; // end struct
 
-UTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)());
-int tril_xtest_end_runner(UTestRunner *runner);
+XTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)());
+int tril_xtest_end_runner(XTestRunner *runner);
 void tril_xtest_flag_skip(int flag);
-void tril_xtest_flag_output(int flag);
-void tril_xtest_setup(UTestRunner *runner, void (*func)());
-void tril_xtest_teardown(UTestRunner *runner, void (*func)());
-void tril_xtest_run(UTestRunner *runner, void (*test)());
+void tril_xtest_setup(XTestRunner *runner, void (*func)());
+void tril_xtest_teardown(XTestRunner *runner, void (*func)());
+void tril_xtest_run(XTestRunner *runner, void (*test)());
 
 #ifdef __cplusplus
 }
