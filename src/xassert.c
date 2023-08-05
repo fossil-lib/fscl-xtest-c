@@ -9,7 +9,6 @@
 #include <stdlib.h>
 
 extern int TRIL_XTEST_FLAG_RESULT;
-extern int TRIL_XTEST_FLAG_SKIP;
 
 /*
   overview:
