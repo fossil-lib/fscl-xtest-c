@@ -29,7 +29,7 @@ int TRIL_XTEST_FLAG_SKIP = 0;
   -> _setup: Test case setup function
   -> _teardown: Test case teardown function
 */
-struct UTestRunner
+struct XTestRunner
 {
     // pass/fail counters
     int _pass;
@@ -62,9 +62,9 @@ struct UTestRunner
   -> setup: The setup function being set
   -> teardown: The teardown function being set
 */
-UTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)())
+XTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)())
 {
-    UTestRunner *runner = malloc(sizeof(UTestRunner));
+    XTestRunner *runner = malloc(sizeof(XTestRunner));
     if (!runner)
     {
         return NULL;
@@ -105,7 +105,7 @@ UTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)())
   args:
   -> runner: The runner for the test cases
 */
-int tril_xtest_end_runner(UTestRunner *runner)
+int tril_xtest_end_runner(XTestRunner *runner)
 {
     if (runner == NULL)
     {
@@ -183,7 +183,7 @@ void tril_xtest_flag_skip(int flag)
   -> runner: The runner for the test cases
   -> func: The setup function being set
 */
-void tril_xtest_setup(UTestRunner *runner, void (*func)())
+void tril_xtest_setup(XTestRunner *runner, void (*func)())
 {
     if (!func)
     {
@@ -216,7 +216,7 @@ void tril_xtest_setup(UTestRunner *runner, void (*func)())
   -> runner: The runner for the test cases
   -> func: The teardown function being set
 */
-void tril_xtest_teardown(UTestRunner *runner, void (*func)())
+void tril_xtest_teardown(XTestRunner *runner, void (*func)())
 {
     if (!func)
     {
@@ -248,7 +248,7 @@ void tril_xtest_teardown(UTestRunner *runner, void (*func)())
   -> runner: The runner for the test cases
   -> test: The current unit case that is yet to be tested
 */
-void tril_xtest_run(UTestRunner *runner, void (*test)())
+void tril_xtest_run(XTestRunner *runner, void (*test)())
 {
     if (!test)
     {
