@@ -6,83 +6,35 @@
 */
 #include "trilobite/xassert.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 extern int TRIL_XTEST_FLAG_RESULT;
-extern int TRIL_XTEST_FLAG_ERROR;
 extern int TRIL_XTEST_FLAG_SKIP;
-extern int TRIL_XTEST_FLAG_OUTPUT;
 
 /*
   overview:
   >
-  > Should let you assert a general expresson for a test case
-  > that test the functionality of a feature in a project.
+  > This function is used to check if an expression is true,
+  > and if not, it will call the "tril_xassert()" function
+  > with the expression, filename, line number and function
+  > name as parameters.
   >
-  > If an assert fails the rest of the assertions will skip
-  > output else if nothing is output at all then everything
-  > in a given test case has passed.
+  > It also sets a flag that can be used to skip the assertion.
   >
-
   usage:
   >
   > int val = 5;
   >
-  > tri_xtest_assert(val == 5, "Is val equal to magic number 5");
+  > tril_xassert(val == 5);
   >
   args:
   -> expresson: The expresson being asserted for a test case
-  -> message: The message that will act as a note for the assert
+  -> file: path value to the file
+  -> line: line number the assert was ran on
+  -> func: the function name
 */
-void tril_xtest_assert(int expresson, const char * message)
+void _tril_xassert(int expresson, const char *file, int line, const char * func)
 {
-    // skips if we say skip or returns if it fails
-    if (TRIL_XTEST_FLAG_RESULT == 1 || TRIL_XTEST_FLAG_SKIP == 1)
-    {
-        return;
-    } // end if
-
-    if (!expresson)
-    {
-        if (TRIL_XTEST_FLAG_OUTPUT != 1)
-        {
-            puts(" ->\n -> general assert failed given expresson:");
-            printf(" -> '%s'\n ->\n", message);
-        } // end if
-
-        TRIL_XTEST_FLAG_RESULT = 1;
-    } // end if
-    
-    if (TRIL_XTEST_FLAG_OUTPUT != 1)
-    {
-        puts(" ->\n -> general assert passed:\n ->");
-    } // end else
-
-} // end of func
-
-/*
-  overview:
-  >
-  > Should let you assert an expected expresson for a test case
-  > that test the functionality of a feature in a project.
-  >
-  > If an expected assert fails the rest of the expections will
-  > resume like nothing happened but just like assert it will add
-  > to the fail count
-  >
-
-  usage:
-  >
-  > int val = 40;
-  >
-  > tri_xtest_expect(val == 40, "Is val equal to 40");
-  >
-  args:
-  -> expresson: The expresson being expected for a test case
-  -> message: The message that will act as a note for the assert
-*/
-void tril_xtest_expect(int expresson, const char *message)
-{
-    // skips the output for asserts in a project
     if (TRIL_XTEST_FLAG_SKIP == 1)
     {
         return;
@@ -90,18 +42,9 @@ void tril_xtest_expect(int expresson, const char *message)
 
     if (!expresson)
     {
-        if (TRIL_XTEST_FLAG_OUTPUT != 1)
-        {
-            puts(" ->\n -> expected assert failed given expresson:");
-            printf(" -> '%s'\n ->\n", message);
-        } // end if
-
         TRIL_XTEST_FLAG_RESULT = 1;
+        fprintf(stderr, "Assert failed at %s:%d in function %s(...)", file, line, func);
+        exit(EXIT_FAILURE);
     } // end if
     
-    if (TRIL_XTEST_FLAG_OUTPUT != 1)
-    {
-        puts(" ->\n -> expected assert passed:\n ->");
-    } // end else
-
 } // end of func
