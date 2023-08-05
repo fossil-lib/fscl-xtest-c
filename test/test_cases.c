@@ -59,8 +59,8 @@ static void test_01_assertBools()
 
     //
     // here we run the asserts
-    TRIL_XASSERT(trueValue == true);
-    TRIL_XASSERT(falseValue == false);
+    TRIL_XASSERT_ITS_TRUE(trueValue);
+    TRIL_XASSERT_ITS_FALSE(falseValue);
 } // end of test case
 
 static void test_02_assertInts()
@@ -71,8 +71,8 @@ static void test_02_assertInts()
 
     //
     // here we run the asserts
-    TRIL_XASSERT(first != second);
-    TRIL_XASSERT(first == tril_xmock_stub_integer(50));
+    TRIL_XASSERT_INT_NOT_EQUAL(first, second);
+    TRIL_XASSERT_INT_ITS_EQUAL(first, tril_xmock_stub_integer(50));
 } // end of test case
 
 static void test_03_assertStrings()
@@ -83,12 +83,10 @@ static void test_03_assertStrings()
 
     //
     // here we run the asserts
-    TRIL_XASSERT(strcmp(first, "Something") == 0);
-    TRIL_XASSERT(!(strcmp(first, second) == 0));
-    TRIL_XASSERT(strlen(first) == 9);
-    TRIL_XASSERT(strlen(second) != 9);
-    TRIL_XASSERT(strcmp(first, second) < 0);
-    TRIL_XASSERT(strcmp(second, first) > 0);
+    TRIL_XASSERT_STR_ITS_EQUAL(first, "Something");
+    TRIL_XASSERT_STR_NOT_EQUAL(first, second);
+    TRIL_XASSERT_STR_ITS_EQUAL_LEN(first, 9);
+    TRIL_XASSERT_STR_NOT_EQUAL_LEN(second, 9);
 } // end of test case
 
 static void test_04_assertPointer()
@@ -99,8 +97,8 @@ static void test_04_assertPointer()
 
     //
     // here we run the asserts
-    TRIL_XASSERT(something != tril_xmock_stub_nullptr());
-    TRIL_XASSERT(other == tril_xmock_stub_nullptr());
+    TRIL_XASSERT_NOT_NULL(something);
+    TRIL_XASSERT_ITS_NULL(other);
 } // end of test case
 
 
@@ -113,7 +111,7 @@ int main(void)
 {
     //
     // setup and teardown can be set to nullptr.
-    UTestRunner *runner = tril_xtest_create_runner(setup, teardown);
+    XTestRunner *runner = tril_xtest_create_runner(setup, teardown);
 
     //
     // list of test cases being ran in this
