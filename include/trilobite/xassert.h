@@ -140,7 +140,7 @@ void _tril_xassert(int expresson, const char *file, int line, const char *func);
                   __FILE__, __LINE__, __func__)
 
 #define TRIL_XASSERT_STR_GREATER_THAN(str, value)                 \
-    _tril_xassert(strcmp((const char *)str, (uint64_t)value) > 0, \
+    _tril_xassert(strcmp((const char *)str, (const char *)value) > 0, \
                   __FILE__, __LINE__, __func__)
 
 #define TRIL_XASSERT_FLOAT_GREATER_THAN(num, value) \
@@ -206,7 +206,7 @@ void _tril_xassert(int expresson, const char *file, int line, const char *func);
                   __FILE__, __LINE__, __func__)
 
 #define TRIL_XASSERT_STR_LESSER_THAN(num, value)                  \
-    _tril_xassert(strcmp((const char *)str, (uint64_t)value) < 0, \
+    _tril_xassert(strcmp((const char *)str, (const char *)value) < 0, \
                   __FILE__, __LINE__, __func__)
 
 #define TRIL_XASSERT_FLOAT_LESSER_THAN(num, value) \
