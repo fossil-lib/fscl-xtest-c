@@ -16,23 +16,41 @@ extern "C"
 #include "xmock.h"
 #include "xassert.h"
 
-//
-//   PUBLIC APPLICATION INTERFACE
-// --------------------------------
-//
-// Published library with provided public application interface for
-// use in the users application. Please note that we are internationally
-// targeting both c11 and c23 standards.
-//
+#include <stdio.h>
 
-typedef struct XTestRunner XTestRunner; // end struct
+   //
+   //   PUBLIC APPLICATION INTERFACE
+   // --------------------------------
+   //
+   // Published library with provided public application interface for
+   // use in the users application. Please note that we are internationally
+   // targeting both c11 and c23 standards.
+   //
 
-XTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)());
-int tril_xtest_end_runner(XTestRunner *runner);
-void tril_xtest_flag_skip(int flag);
-void tril_xtest_setup(XTestRunner *runner, void (*func)());
-void tril_xtest_teardown(XTestRunner *runner, void (*func)());
-void tril_xtest_run(XTestRunner *runner, void (*test)());
+   typedef struct XTestRunner XTestRunner; // end struct
+
+#define XTEST(name)                           \
+   void xtest_##name();                       \
+   void run_##name()                          \
+   {                                          \
+      printf("Running test: %s\n", __func__); \
+   }                                          \
+   void xtest_##name()
+
+#define XBENCH(name)                           \
+   void xbench_##name();                       \
+   void run_##name()                          \
+   {                                          \
+      printf("Running bench: %s\n", __func__); \
+   }                                          \
+   void xbench_##name()
+
+   XTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)());
+   int tril_xtest_end_runner(XTestRunner *runner);
+   void tril_xtest_flag_skip(int flag);
+   void tril_xtest_setup(XTestRunner *runner, void (*func)());
+   void tril_xtest_teardown(XTestRunner *runner, void (*func)());
+   void tril_xtest_run(XTestRunner *runner, void (*test)());
 
 #ifdef __cplusplus
 }
