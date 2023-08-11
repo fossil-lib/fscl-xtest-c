@@ -15,6 +15,8 @@ extern "C"
 #include "trilobite/xtest.h"
 
 void xtest_fixture_basic_cases(XTestRunner *runner);
+void xtest_fixture_mocking_cases(XTestRunner *runner);
+void xtest_fixture_benchmark_cases(XTestRunner *runner);
 
 #ifdef __cplusplus
 }

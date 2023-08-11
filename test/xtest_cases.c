@@ -248,15 +248,15 @@ XTEST(assert_check_str)
     TRIL_XASSERT_STR_ITS_EQUAL(one, three);
     TRIL_XASSERT_STR_NOT_EQUAL(one, two);
 
-    TRIL_XASSERT_STR_GREATER_THAN(one, two);
-    TRIL_XASSERT_STR_LESSER_THAN(two, three);
+    TRIL_XASSERT_STR_GREATER_THAN(two, one);
+    TRIL_XASSERT_STR_LESSER_THAN(three, two);
 } // end of case
 
 XTEST(assert_check_str_len)
 {
     char *word = "Coffee Ice Cream";
 
-    TRIL_XASSERT_STR_ITS_EQUAL_LEN(word, 18);
+    TRIL_XASSERT_STR_ITS_EQUAL_LEN(word, 16);
     TRIL_XASSERT_STR_NOT_EQUAL_LEN(word, 42);
 } // end of case
 
