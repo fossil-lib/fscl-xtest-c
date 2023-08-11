@@ -58,7 +58,58 @@ Here is a simple sample application that should get you up and
 running with using this library as soon as possible but to learn
 more please view the API documentation thanks.
 
-**Usage in C**:
+### Usage in C
+
+**source file:**:
+
+```c
+XTEST(custom_assert_check)
+{
+    TRIL_XASSERT(true);
+} // end of case
+
+//
+// XTEST FIXTURE
+//
+void xtest_fixture_basic_cases(XTestRunner *runner)
+{
+    //
+    // setup and teardown methods get set here
+    // before any of the listed test cases are
+    // run.
+    tril_xtest_setup(runner, setup);
+    tril_xtest_teardown(runner, teardown);
+
+    //
+    // list of test cases for the current test fixture
+    //
+    tril_xtest_run(runner, xtest_custom_assert_check);
+} // end of fixture
+```
+
+**header file:**
+
+```c
+#ifndef TRILOBITE_XTEST_FIXTURE_H
+#define TRILOBITE_XTEST_FIXTURE_H
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+#include "trilobite/xtest.h"
+
+void xtest_fixture_basic_cases(XTestRunner *runner);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+```
+
+**main file:**
 
 ```c
 /*
@@ -67,12 +118,8 @@ more please view the API documentation thanks.
    gmail:   <michaelbrockus@gmail.com>
    website: <https://trilobite.code.blog>
 */
-#include <stdio.h>
-#include <trilobite/xtest.h>
-
-/*
-  ... test cases can be seen in the test file ...
-*/
+#include <stdlib.h>
+#include "my_fixtures.h"
 
 //
 // main is where all good examples start
@@ -81,30 +128,12 @@ int main(void)
 {
     //
     // setup and teardown can be set to nullptr.
-    UTestRunner *runner = tril_xtest_create_runner(NULL, NULL);
+    XTestRunner *runner = tril_xtest_create_runner(NULL, NULL);
 
-    //
-    // list of test cases being ran in this
-    // project.
-    tril_xtest_run(runner, test_01_assertBools);
-    tril_xtest_run(runner, test_02_assertInts);
-    tril_xtest_run(runner, test_03_assertStrings);
-    tril_xtest_run(runner, test_04_assertPointer);
-    tril_xtest_run(runner, test_05_expectBools);
-    tril_xtest_run(runner, test_06_expectInts);
-    tril_xtest_run(runner, test_07_expectStrings);
-    tril_xtest_run(runner, test_08_expectPointer);
-    tril_xtest_run(runner, test_09_runAssert);
-    tril_xtest_run(runner, test_10_benchmark);
-
-    //
-    // we can skip a test case if we want
-    tril_xtest_flag_skip(1);
-    tril_xtest_run(runner, test_11_skipTest);
-    tril_xtest_flag_skip(0);
+    xtest_fixture_basic_cases(runner);
 
     return tril_xtest_end_runner(runner);
-} // end of func
+} // end of function main
 
 ```
 
