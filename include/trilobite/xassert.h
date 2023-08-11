@@ -15,22 +15,25 @@ extern "C"
 #include <stdint.h>
 #include <math.h>
 
-/*
-    overview:
-    >
-    > This function is the main implementation of the assert functions.
-    > It takes in four arguments:
-    >
-    > If the expression evaluates to false, then an error message
-    > is printed.
-    >
-    args:
-    -> expression: the expression to be evaluated
-    -> file: the name of the file where the assertion occurred
-    -> line: the line number where the assertion occurred
-    -> func: the name of the function where the assertion occurred
-*/
-void _tril_xassert(int expresson, const char *file, int line, const char *func);
+#define DOUBLE_TOLERANCE 0.00000001 // for the double version
+#define FLOAT_TOLERANCE 0.000       // for the float asserts
+
+    /*
+        overview:
+        >
+        > This function is the main implementation of the assert functions.
+        > It takes in four arguments:
+        >
+        > If the expression evaluates to false, then an error message
+        > is printed.
+        >
+        args:
+        -> expression: the expression to be evaluated
+        -> file: the name of the file where the assertion occurred
+        -> line: the line number where the assertion occurred
+        -> func: the name of the function where the assertion occurred
+    */
+    void _tril_xassert(int expresson, const char *file, int line, const char *func);
 
 /*
   overview:
@@ -139,7 +142,7 @@ void _tril_xassert(int expresson, const char *file, int line, const char *func);
     _tril_xassert((uint64_t)num > (uint64_t)value,   \
                   __FILE__, __LINE__, __func__)
 
-#define TRIL_XASSERT_STR_GREATER_THAN(str, value)                 \
+#define TRIL_XASSERT_STR_GREATER_THAN(str, value)                     \
     _tril_xassert(strcmp((const char *)str, (const char *)value) > 0, \
                   __FILE__, __LINE__, __func__)
 
@@ -205,7 +208,7 @@ void _tril_xassert(int expresson, const char *file, int line, const char *func);
     _tril_xassert((uint64_t)num < (uint64_t)value,  \
                   __FILE__, __LINE__, __func__)
 
-#define TRIL_XASSERT_STR_LESSER_THAN(num, value)                  \
+#define TRIL_XASSERT_STR_LESSER_THAN(str, value)                      \
     _tril_xassert(strcmp((const char *)str, (const char *)value) < 0, \
                   __FILE__, __LINE__, __func__)
 
@@ -409,7 +412,7 @@ void _tril_xassert(int expresson, const char *file, int line, const char *func);
                   __FILE__, __LINE__, __func__)
 
 #define TRIL_XASSERT_STR_ITS_EQUAL(str, value)                       \
-    _tril_xassert(!(strcmp((const char *)str, (const char *)value)), \
+    _tril_xassert(!(strcmp(str, value)), \
                   __FILE__, __LINE__, __func__)
 
 #define TRIL_XASSERT_STR_ITS_EQUAL_LEN(str, value) \
@@ -420,12 +423,12 @@ void _tril_xassert(int expresson, const char *file, int line, const char *func);
     _tril_xassert((const char)str == (const char)value, \
                   __FILE__, __LINE__, __func__)
 
-#define TRIL_XASSERT_FLOAT_ITS_EQUAL(num, value, epsilon)           \
-    _tril_xassert(fabs((float)num - (float)value) > (float)epsilon, \
+#define TRIL_XASSERT_FLOAT_ITS_EQUAL(num, value)                     \
+    _tril_xassert(fabs((float)num - (float)value) > FLOAT_TOLERANCE, \
                   __FILE__, __LINE__, __func__)
 
-#define TRIL_XASSERT_DOUBLE_ITS_EQUAL(num, value, epsilon)     \
-    _tril_xassert(labs((double)num - (double)value) > epsilon, \
+#define TRIL_XASSERT_DOUBLE_ITS_EQUAL(num, value)                       \
+    _tril_xassert(labs((double)num - (double)value) > DOUBLE_TOLERANCE, \
                   __FILE__, __LINE__, __func__)
 
 /*
@@ -497,7 +500,7 @@ void _tril_xassert(int expresson, const char *file, int line, const char *func);
                   __FILE__, __LINE__, __func__)
 
 #define TRIL_XASSERT_STR_NOT_EQUAL(str, value)                      \
-    _tril_xassert((strcmp((const char *)str, (const char *)value)), \
+    _tril_xassert((strcmp(str, value)), \
                   __FILE__, __LINE__, __func__)
 
 #define TRIL_XASSERT_CHAR_NOT_EQUAL(str, value)         \
@@ -508,12 +511,12 @@ void _tril_xassert(int expresson, const char *file, int line, const char *func);
     _tril_xassert(strlen(str) != value,            \
                   __FILE__, __LINE__, __func__)
 
-#define TRIL_XASSERT_FLOAT_NOT_EQUAL(num, value, epsilon)            \
-    _tril_xassert(fabs((float)num - (float)value) <= (float)epsilon, \
+#define TRIL_XASSERT_FLOAT_NOT_EQUAL(num, value)                      \
+    _tril_xassert(fabs((float)num - (float)value) <= FLOAT_TOLERANCE, \
                   __FILE__, __LINE__, __func__)
 
-#define TRIL_XASSERT_DOUBLE_NOT_EQUAL(num, value, epsilon)      \
-    _tril_xassert(labs((double)num - (double)value) <= epsilon, \
+#define TRIL_XASSERT_DOUBLE_NOT_EQUAL(num, value)                        \
+    _tril_xassert(labs((double)num - (double)value) <= DOUBLE_TOLERANCE, \
                   __FILE__, __LINE__, __func__)
 
 /*
@@ -535,7 +538,7 @@ void _tril_xassert(int expresson, const char *file, int line, const char *func);
     _tril_xassert((float)num >= (float)min_value && (float)num <= (float)max_value, \
                   __FILE__, __LINE__, __func__)
 
-#define TRIL_XASSERT_DOUBLE_WITHIN_RANGE(num, min_value, max_value)                  \
+#define TRIL_XASSERT_DOUBLE_WITHIN_RANGE(num, min_value, max_value)                     \
     _tril_xassert((double)num >= (double)min_value && (double)num <= (double)max_value, \
                   __FILE__, __LINE__, __func__)
 

@@ -34,11 +34,15 @@ extern int TRIL_XTEST_FLAG_RESULT;
 */
 void _tril_xassert(int expresson, const char *file, int line, const char * func)
 {
+    if (TRIL_XTEST_FLAG_RESULT == 1)
+    {
+        return;
+    } // end if
+
     if (!expresson)
     {
         TRIL_XTEST_FLAG_RESULT = 1;
-        fprintf(stderr, "Assert failed at %s:%d in function %s(...)", file, line, func);
-        exit(EXIT_FAILURE);
+        fprintf(stderr, "Assert failed at %s:%d in function %s(...)\n", file, line, func);
     } // end if
     
 } // end of func
