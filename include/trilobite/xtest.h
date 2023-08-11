@@ -37,14 +37,6 @@ typedef struct XTestRunner XTestRunner; // end struct
    }                                          \
    void xtest_##name()
 
-#define XBENCH(name)                           \
-   void xbench_##name();                       \
-   void run_##name()                          \
-   {                                          \
-      printf("Running bench: %s\n", __func__); \
-   }                                          \
-   void xbench_##name()
-
 XTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)());
 int tril_xtest_end_runner(XTestRunner *runner);
 void tril_xtest_flag_skip(int flag);
