@@ -127,7 +127,7 @@ int main(void)
 {
     //
     // setup and teardown can be set to nullptr.
-    XTestRunner *runner = tril_xtest_create_runner(NULL, NULL);
+    XTestRunner *runner = tril_xtest_create_runner();
 
     xtest_fixture_basic_cases(runner);
 
