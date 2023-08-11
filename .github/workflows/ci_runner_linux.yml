@@ -136,24 +136,3 @@ jobs:
       with:
         name: Ubuntu_Meson_Testlog
         path: builddir/meson-logs/testlog.txt
-
-
-  #
-  # ChromeOS latest host system target
-  #
-  host_chromeos:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: nanasess/setup-chromedriver@v2.0.0
-    - run: chromedriver --url-base=/wd/hub &
-    - name: Install Meson build
-      run: |
-        sudo apt-get install --fix-missing python3 python3-pip gcc cppcheck -y &&
-        python3 -m pip install meson==1.0.0 ninja==1.11.1 scan-build
-    - name: Setup, Compile, Scan, Tests
-      run: |
-        scan-build meson setup builddir -Dwith_tests=enabled &&
-        scan-build meson compile -C builddir -v &&
-        cppcheck --project=builddir/compile_commands.json &&
-        scan-build meson test -C builddir -v

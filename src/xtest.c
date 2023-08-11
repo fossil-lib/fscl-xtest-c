@@ -8,10 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 int TRIL_XTEST_FLAG_RESULT = 0;
-int TRIL_XTEST_FLAG_ERROR = 0;
 int TRIL_XTEST_FLAG_SKIP = 0;
-int TRIL_XTEST_FLAG_OUTPUT = 0;
 
 /*
   overview:
@@ -31,7 +30,7 @@ int TRIL_XTEST_FLAG_OUTPUT = 0;
   -> _setup: Test case setup function
   -> _teardown: Test case teardown function
 */
-struct UTestRunner
+struct XTestRunner
 {
     // pass/fail counters
     int _pass;
@@ -48,10 +47,11 @@ struct UTestRunner
 /*
   overview:
   >
-  > This will create a test runner when the tester is
-  > ready to begin a set of test cases. Test
+  > This function creates a UTestRunner object and initializes
+  > it with the given setup and teardown functions. It also
+  > initializes the score values to 0. The returned UTestRunner
+  > object is ready to be used for running unit tests.
   >
-
   usage:
   >
   > tril_xtest_create_runner(NULL, NULL);
@@ -63,9 +63,9 @@ struct UTestRunner
   -> setup: The setup function being set
   -> teardown: The teardown function being set
 */
-UTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)())
+XTestRunner *tril_xtest_create_runner(void)
 {
-    UTestRunner *runner = malloc(sizeof(UTestRunner));
+    XTestRunner *runner = (XTestRunner *)malloc(sizeof(XTestRunner));
     if (!runner)
     {
         return NULL;
@@ -78,8 +78,8 @@ UTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)())
     runner->_fail = 0;
     runner->_skip = 0;
 
-    runner->_setup = setup;
-    runner->_teardown = teardown;
+    runner->_setup = NULL;
+    runner->_teardown = NULL;
 
     return runner;
 } // end of func
@@ -106,7 +106,7 @@ UTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)())
   args:
   -> runner: The runner for the test cases
 */
-int tril_xtest_end_runner(UTestRunner *runner)
+int tril_xtest_end_runner(XTestRunner *runner)
 {
     if (runner == NULL)
     {
@@ -163,42 +163,15 @@ void tril_xtest_flag_skip(int flag)
 
 } // end of func
 
-/*
-  overview:
-  >
-  > Basic flag control function that will allow the
-  > tester to turn of the output. If the value is not
-  > a known value then we defualt to zero.
-  >
-
-  usage:
-  >
-  > tril_xtest_flag_output(1); // were skipping
-  > tril_xtest_flag_output(0); // were not skipping
-  > tril_xtest_flag_output(42); // we get zero anyway
-  >
-  args:
-  -> runner: The runner for the test cases
-*/
-void tril_xtest_flag_output(int flag)
-{
-    if (flag == 1)
-    {
-        TRIL_XTEST_FLAG_OUTPUT = flag;
-    } // end if
-    else
-    {
-        TRIL_XTEST_FLAG_OUTPUT = 0;
-    } // end else
-
-} // end of func
 
 /*
   overview:
   >
-  > This will set a setup function for a set of cases until
-  > a new setup function is used or stopped with the null
-  > value.
+  > This function sets the setup function for the UTestRunner
+  > struct. It takes in a pointer to the UTestRunner struct and
+  > a pointer to the setup function. It will check if the setup
+  > function is valid, and if so, set it as the setup function for
+  > the UTestRunner struct.
   >
 
   usage:
@@ -211,7 +184,7 @@ void tril_xtest_flag_output(int flag)
   -> runner: The runner for the test cases
   -> func: The setup function being set
 */
-void tril_xtest_setup(UTestRunner *runner, void (*func)())
+void tril_xtest_setup(XTestRunner *runner, void (*func)())
 {
     if (!func)
     {
@@ -228,11 +201,12 @@ void tril_xtest_setup(UTestRunner *runner, void (*func)())
 /*
   overview:
   >
-  > This will set a teardown function for a set of cases until
-  > a new teardown function is used or stopped with the null
-  > value.
+  > This function sets the teardown function for the UTestRunner
+  > struct. It takes in a pointer to the UTestRunner struct and
+  > a pointer to the teardown function. It will check if the teardown
+  > function is valid, and if so, set it as the teardown function for
+  > the UTestRunner struct.
   >
-
   usage:
   >
   > ... some function named teardown ...
@@ -243,7 +217,7 @@ void tril_xtest_setup(UTestRunner *runner, void (*func)())
   -> runner: The runner for the test cases
   -> func: The teardown function being set
 */
-void tril_xtest_teardown(UTestRunner *runner, void (*func)())
+void tril_xtest_teardown(XTestRunner *runner, void (*func)())
 {
     if (!func)
     {
@@ -260,12 +234,13 @@ void tril_xtest_teardown(UTestRunner *runner, void (*func)())
 /*
   overview:
   >
-  > Adds test cases into a test runner. If the test
-  > is null then we will ignore and return out of the
-  > function else resume with the process of testing
-  > the current test case.
+  > This function is used to run a test and keep a score of
+  > the test results. It sets up extra stuff before the test,
+  > runs the current case in question and when done, it tears
+  > down the extra stuff. It also keeps track of the test
+  > results by adding a pass if the logic test passed, a fail
+  > if it failed, and a skip if the test was skipped.
   >
-
   usage:
   >
   > tril_xtest_run(runner, test_myCoffeeCup);
@@ -274,16 +249,11 @@ void tril_xtest_teardown(UTestRunner *runner, void (*func)())
   -> runner: The runner for the test cases
   -> test: The current unit case that is yet to be tested
 */
-void tril_xtest_run(UTestRunner *runner, void (*test)())
+void tril_xtest_run(XTestRunner *runner, void (*test)())
 {
     if (!test)
     {
         return;
-    } // end if
-
-    if (TRIL_XTEST_FLAG_OUTPUT != 1)
-    {
-        printf("Begin test case: %.2i\n", runner->_total + 1);
     } // end if
 
     //
@@ -322,13 +292,6 @@ void tril_xtest_run(UTestRunner *runner, void (*test)())
         runner->_pass++;
         TRIL_XTEST_FLAG_RESULT = 0;
     } // end switch
-
-    //
-    // end of test output control
-    if (TRIL_XTEST_FLAG_OUTPUT != 1)
-    {
-        puts("done...\n");
-    } // end if
 
     runner->_total++;
 } // end of func
