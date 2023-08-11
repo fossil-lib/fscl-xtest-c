@@ -428,7 +428,7 @@ extern "C"
                   __FILE__, __LINE__, __func__)
 
 #define TRIL_XASSERT_DOUBLE_ITS_EQUAL(num, value)                       \
-    _tril_xassert(labs((double)num - (double)value) > DOUBLE_TOLERANCE, \
+    _tril_xassert(fabs((double)num - (double)value) > DOUBLE_TOLERANCE, \
                   __FILE__, __LINE__, __func__)
 
 /*
@@ -516,7 +516,7 @@ extern "C"
                   __FILE__, __LINE__, __func__)
 
 #define TRIL_XASSERT_DOUBLE_NOT_EQUAL(num, value)                        \
-    _tril_xassert(labs((double)num - (double)value) <= DOUBLE_TOLERANCE, \
+    _tril_xassert(fabs((double)num - (double)value) <= DOUBLE_TOLERANCE, \
                   __FILE__, __LINE__, __func__)
 
 /*
