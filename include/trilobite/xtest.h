@@ -18,16 +18,16 @@ extern "C"
 
 #include <stdio.h>
 
-   //
-   //   PUBLIC APPLICATION INTERFACE
-   // --------------------------------
-   //
-   // Published library with provided public application interface for
-   // use in the users application. Please note that we are internationally
-   // targeting both c11 and c23 standards.
-   //
+//
+//   PUBLIC APPLICATION INTERFACE
+// --------------------------------
+//
+// Published library with provided public application interface for
+// use in the users application. Please note that we are internationally
+// targeting both c11 and c23 standards.
+//
 
-   typedef struct XTestRunner XTestRunner; // end struct
+typedef struct XTestRunner XTestRunner; // end struct
 
 #define XTEST(name)                           \
    void xtest_##name();                       \
@@ -45,12 +45,12 @@ extern "C"
    }                                          \
    void xbench_##name()
 
-   XTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)());
-   int tril_xtest_end_runner(XTestRunner *runner);
-   void tril_xtest_flag_skip(int flag);
-   void tril_xtest_setup(XTestRunner *runner, void (*func)());
-   void tril_xtest_teardown(XTestRunner *runner, void (*func)());
-   void tril_xtest_run(XTestRunner *runner, void (*test)());
+XTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)());
+int tril_xtest_end_runner(XTestRunner *runner);
+void tril_xtest_flag_skip(int flag);
+void tril_xtest_setup(XTestRunner *runner, void (*func)());
+void tril_xtest_teardown(XTestRunner *runner, void (*func)());
+void tril_xtest_run(XTestRunner *runner, void (*test)());
 
 #ifdef __cplusplus
 }
