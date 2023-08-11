@@ -37,7 +37,7 @@ typedef struct XTestRunner XTestRunner; // end struct
    }                                          \
    void xtest_##name()
 
-XTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)());
+XTestRunner *tril_xtest_create_runner(void);
 int tril_xtest_end_runner(XTestRunner *runner);
 void tril_xtest_flag_skip(int flag);
 void tril_xtest_setup(XTestRunner *runner, void (*func)());

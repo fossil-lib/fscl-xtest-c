@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 int TRIL_XTEST_FLAG_RESULT = 0;
 int TRIL_XTEST_FLAG_SKIP = 0;
 
@@ -62,9 +63,9 @@ struct XTestRunner
   -> setup: The setup function being set
   -> teardown: The teardown function being set
 */
-XTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)())
+XTestRunner *tril_xtest_create_runner(void)
 {
-    XTestRunner *runner = malloc(sizeof(XTestRunner));
+    XTestRunner *runner = (XTestRunner *)malloc(sizeof(XTestRunner));
     if (!runner)
     {
         return NULL;
@@ -77,8 +78,8 @@ XTestRunner *tril_xtest_create_runner(void (*setup)(), void (*teardown)())
     runner->_fail = 0;
     runner->_skip = 0;
 
-    runner->_setup = setup;
-    runner->_teardown = teardown;
+    runner->_setup = NULL;
+    runner->_teardown = NULL;
 
     return runner;
 } // end of func
