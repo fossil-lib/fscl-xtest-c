@@ -37,7 +37,6 @@ revision = main
 trilo-xtest-c = trilo_xtest_c_dep
 ```
 
-
 The next step should be to add the package to your Meson project:
 
 ```meson
