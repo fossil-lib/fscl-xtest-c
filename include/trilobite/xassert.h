@@ -13,6 +13,7 @@ extern "C"
 #endif
 
 #include <stdint.h>
+#include <string.h>
 #include <math.h>
 
 #define DOUBLE_TOLERANCE 0.00000001 // for the double version
