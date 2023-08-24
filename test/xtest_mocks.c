@@ -9,7 +9,7 @@
 //
 // XTEST FIXTURE
 //
-void xtest_fixture_mocking_cases(XTestRunner *runner)
+void xtest_fixture_mocking_cases(XUnitRunner *runner)
 {
 
     // list test here

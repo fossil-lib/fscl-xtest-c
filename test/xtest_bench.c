@@ -9,7 +9,7 @@
 //
 // XTEST FIXTURE
 //
-void xtest_fixture_benchmark_cases(XTestRunner *runner)
+void xfixture_bench_cases(XUnitRunner *runner)
 {
 
     // list test here
