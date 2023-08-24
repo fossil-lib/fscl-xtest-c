@@ -7,6 +7,11 @@
 #include "trilobite/xtest.h"
 #include "trilobite/xassert.h"
 
+enum {MAX_TEST_CASES = 100}; // Maximum number of test cases
+
+// Static array to hold test cases
+static XTestCase test_case[MAX_TEST_CASES];
+
 // ANSI escape code macros for text color
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -26,12 +31,19 @@
 */
 XUnitRunner xtest_start(int argc, char **argv)
 {
-    XUnitRunner runner = {0, 0, "both"};
+    XUnitRunner runner = {
+        .passed_count = 0,
+        .failed_count = 0,
+        .run_tag = "both"};
+
+    if (argc == 1) {
+        return runner;
+    } // end if
 
     const char *command = argv[1];
     if (!strcmp(command, "--only-test")) {
         puts("Only running Xtest cases");
-        runner.run_tag = "tests";
+        runner.run_tag = "test";
         return runner;
     }
     else if (!strcmp(command, "--only-bench")) {
@@ -50,7 +62,6 @@ XUnitRunner xtest_start(int argc, char **argv)
         puts(ANSI_COLOR_WHITE ": --run-both   : Run both test cases and benchmarks -> (default)" ANSI_COLOR_RESET);
         exit(EXIT_SUCCESS);
     } // end if, else if, else
-    runner.run_tag = "both";
     return runner;
 } // end of func
 
@@ -86,7 +97,8 @@ int xtest_end(XUnitRunner *runner)
     @returns void: No value is returned.
 */
 void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
-    if (strcmp(runner->run_tag, "tests") != 0 || strcmp(runner->run_tag, "both") != 0) {
+    printf("%s\n\n", runner->run_tag);
+    if (strcmp(runner->run_tag, "test") != 0 || strcmp(runner->run_tag, "both") != 0) {
         return;
     } // end if
 
@@ -166,4 +178,10 @@ void xbench_run(XBench *benchmark, XUnitRunner *runner) {
 void xtest_set_setup_teardown(XTestCase *test_case, void (*setup_func)(void), void (*teardown_func)(void)) {
     test_case->setup_function = setup_func;
     test_case->teardown_function = teardown_func;
+} // end of func
+
+
+void xassert(bool expression, const char *message) {
+    XAssert new_assertion = { message, expression };
+    test_case->assertions[test_case->num_assertions++] = new_assertion;
 } // end of func

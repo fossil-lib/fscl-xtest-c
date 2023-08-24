@@ -75,11 +75,6 @@ typedef struct {
     size_t num_assertions;
 } XTestCase;
 
-enum {MAX_TEST_CASES = 100}; // Maximum number of test cases
-
-// Static array to hold test cases
-static XTestCase test_case[MAX_TEST_CASES];
-
 /**
     This code defines a test case for the framework with the given name.
 
@@ -104,6 +99,17 @@ static XTestCase test_case[MAX_TEST_CASES];
     XBench name = { #name, name##_xbench, NULL, NULL, 0 }; \
     void name##_xbench(void)
 
+//
+// Helper function to run a test case
+//
+
+XUnitRunner xtest_start(int argc, char **argv);
+int xtest_end(XUnitRunner *runner);
+void xtest_run(XTestCase *test_case, XUnitRunner *runner);
+void xbench_run(XBench *benchmark, XUnitRunner *runner);
+void xtest_set_setup_teardown(XTestCase *test_case, void (*setup_func)(void), void (*teardown_func)(void));
+void xassert(bool expression, const char *message);
+
 /**
     This macro adds an assertion to the current test case.
 
@@ -114,22 +120,7 @@ static XTestCase test_case[MAX_TEST_CASES];
               the message is displayed. Otherwise, the assertion passes and
               nothing happens.
 */
-
-#define XASSERT(expression, message) do { \
-    XAssert new_assertion = { message, (expression) }; \
-    test_case.assertions[test_case.num_assertions++] = new_assertion; \
-} while (0)
-
-
-//
-// Helper function to run a test case
-//
-
-XUnitRunner xtest_start(int argc, char **argv);
-int xtest_end(XUnitRunner *runner);
-void xtest_run(XTestCase *test_case, XUnitRunner *runner);
-void xbench_run(XBench *benchmark, XUnitRunner *runner);
-void xtest_set_setup_teardown(XTestCase *test_case, void (*setup_func)(void), void (*teardown_func)(void));
+#define XASSERT(expression, message) xassert(expression, message)
 
 #ifdef __cplusplus
 }
