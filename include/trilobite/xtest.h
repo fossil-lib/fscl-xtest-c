@@ -92,6 +92,7 @@ XUnitRunner xtest_start(int argc, char **argv);
 int xtest_end(XUnitRunner *runner);
 void xtest_run(XTestCase *test_case, XUnitRunner *runner);
 void xbench_run(XBench *benchmark, XUnitRunner *runner);
+void xtest_set_setup_teardown(XTestCase *test_case, void (*setup_func)(void), void (*teardown_func)(void));
 
 #ifdef __cplusplus
 }

@@ -152,3 +152,17 @@ void xbench_run(XBench *benchmark, XUnitRunner *runner) {
 
     runner->passed_count++;
 } // end of func
+
+/**
+    Sets the setup and teardown functions for the given test case.
+
+    @param test_case The test case to set the setup and teardown functions for.
+    @param setup_func The function to be called before the test is run.
+    @param teardown_func The function to be called after the test is complete.
+
+    @returns Nothing.
+*/
+void xtest_set_setup_teardown(XTestCase *test_case, void (*setup_func)(void), void (*teardown_func)(void)) {
+    test_case->setup_function = setup_func;
+    test_case->teardown_function = teardown_func;
+} // end of func
