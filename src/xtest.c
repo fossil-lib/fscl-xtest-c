@@ -86,7 +86,7 @@ int xtest_end(XUnitRunner *runner)
 */
 void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
     if (strcmp(runner->run_tag, "tests") != 0 || strcmp(runner->run_tag, "both") != 0) {
-        return
+        return;
     } // end if
 
     printf(ANSI_COLOR_BLUE "Running test: %s\n" ANSI_COLOR_RESET, test_case->name);
@@ -129,7 +129,7 @@ void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
 void xbench_run(XBench *benchmark, XUnitRunner *runner) {
     if (strcmp(runner->run_tag, "bench") != 0 || strcmp(runner->run_tag, "both") != 0)
     {
-        return
+        return;
     } // end if
 
     printf(ANSI_COLOR_BLUE "Running benchmark: %s\n" ANSI_COLOR_RESET, benchmark->name);
