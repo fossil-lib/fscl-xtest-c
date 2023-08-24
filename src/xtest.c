@@ -5,293 +5,150 @@
    website: <https://trilobite.code.blog>
 */
 #include "trilobite/xtest.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "trilobite/xassert.h"
 
+// ANSI escape code macros for text color
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_WHITE   "\x1b[37m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
 
-int TRIL_XTEST_FLAG_RESULT = 0;
-int TRIL_XTEST_FLAG_SKIP = 0;
+/**
+    Starter for the Xunit test runner which will process commands
+    and any other setup steps before starting.
 
-/*
-  overview:
-  > As the name suggests, UTestRunner is a tool
-  > that is used to run or execute tests and track
-  > results. The runner has a setup and teardown
-  > function built-in and are set to nullptr by
-  > default, the structure also has a range of
-  > score values for pass/fail and more.
-  >
-  args:
-  -> _pass: pass test score value
-  -> _fail: fail test score value
-  -> _skip: skip test score value
-  -> _error: error test score value
-  -> _total: total test score run
-  -> _setup: Test case setup function
-  -> _teardown: Test case teardown function
+    @param argc The number of command line arguments
+    @param argv The array of command line arguments
+    @returns An instance of the XUnitRunner struct containing the tag
+             to run and the number of tests passed and failed
 */
-struct XTestRunner
+XUnitRunner xtest_start(int argc, char **argv)
 {
-    // pass/fail counters
-    int _pass;
-    int _fail;
-    int _skip;
-    int _total;
+    XUnitRunner runner = {0, 0, 'both'};
 
-    // setup/teardown functions
-    void (*_setup)();
-    void (*_teardown)();
+    const char *command = argv[1];
+    if (!strcmp(command, "--only-test")) {
+        puts("Only running Xtest cases");
+        runner.run_tag = "tests";
+    }
+    else if (!strcmp(command, "--only-bench")) {
+        puts("Only running Xbench cases");
+        runner.run_tag = "bench";
+    }
+    else if (!strcmp(command, "--run-both")) {
+        puts("Running all written cases");
+        runner.run_tag = "both";
+    }
+    else {
+        printf(ANSI_COLOR_BLUE "Usage: runner command-line flags, runs both by default\n\n" ANSI_COLOR_RESET);
+        puts(ANSI_COLOR_WHITE ": --help       : Prints this helpful message to the console     " ANSI_COLOR_RESET);
+        puts(ANSI_COLOR_WHITE ": --only-tests : Skip benchmarks and only run test cases        " ANSI_COLOR_RESET);
+        puts(ANSI_COLOR_WHITE ": --only-bench : Skip test cases and only run benchmarks        " ANSI_COLOR_RESET);
+        puts(ANSI_COLOR_WHITE ": --run-both   : Run both test cases and benchmarks -> (default)" ANSI_COLOR_RESET);
+    } // end if, else if, else
 
-}; // end struct
-
-/*
-  overview:
-  >
-  > This function creates a UTestRunner object and initializes
-  > it with the given setup and teardown functions. It also
-  > initializes the score values to 0. The returned UTestRunner
-  > object is ready to be used for running unit tests.
-  >
-  usage:
-  >
-  > tril_xtest_create_runner(NULL, NULL);
-  > tril_xtest_create_runner(setup, taerdown); // or set them later
-  >
-  > ... before tril_xtest_end_runner() ...
-  >
-  args:
-  -> setup: The setup function being set
-  -> teardown: The teardown function being set
-*/
-XTestRunner *tril_xtest_create_runner(void)
-{
-    XTestRunner *runner = (XTestRunner *)malloc(sizeof(XTestRunner));
-    if (!runner)
-    {
-        return NULL;
-    } // end if
-
-    //
-    // score values
-    runner->_total = 0;
-    runner->_pass = 0;
-    runner->_fail = 0;
-    runner->_skip = 0;
-
-    runner->_setup = NULL;
-    runner->_teardown = NULL;
+    runner.passed_count = runner.failed_count = 0;
 
     return runner;
 } // end of func
 
-/*
-  overview:
-  >
-  > This will erase a test runner when the tester is
-  > ready to clear the object out of memeory. Test
-  > results are output to the console after we ensure
-  > the tester can get a summery of all the test.
-  >
-  > If the runner is null then we return zero assuming
-  > its a dry run or you forgot to allocate a test runner
-  > with the 'tril_xtest_create_runner()'.
-  >
+/**
+    This function checks the result of the XUnitRunner and displays a
+    message based on the result.
 
-  usage:
-  >
-  > ... after tril_xtest_create_runner() ...
-  >
-  > tril_xtest_end_runner(runner); // loops 7 times
-  >
-  args:
-  -> runner: The runner for the test cases
+    @param runner The XUnitRunner object that is being checked
+    @returns The number of failed tests that were run
 */
-int tril_xtest_end_runner(XTestRunner *runner)
+int xtest_end(XUnitRunner *runner)
 {
-    if (runner == NULL)
-    {
-        return 0;
-    } // end if
-
-    puts("--- --- --- --- --- --- --- --- --- --- --- :");
-    puts(": ---  :[Trilobite XTest - Dashboard]:  --- :");
-    puts("--- --- --- --- --- --- --- --- --- --- --- :");
-    printf(" -> Total : (%.2d)\n", runner->_total);
-    puts("--- --- --- --- --- --- --- --- --- --- --- :");
-    printf(" --> Pass : (%.2d)\n", runner->_pass);
-    printf(" --> Fail : (%.2d)\n", runner->_fail);
-    printf(" --> Skip : (%.2d)\n", runner->_skip);
-    puts("--- --- --- --- --- --- --- --- --- --- --- :");
-    puts("--- --- --- --- --- --- --- --- --- --- --- :");
-
-    int result = runner->_fail;
-    if (runner)
-    {
-        free(runner);
-    } // end if
-
-    return result;
-} // end of func
-
-/*
-  overview:
-  >
-  > Basic flag control function that will allow the
-  > tester to skip test cases. If the value is not
-  > a known value then we defualt to zero.
-  >
-
-  usage:
-  >
-  > tril_xtest_flag_skip(1); // were skipping
-  > tril_xtest_flag_skip(0); // were not skipping
-  > tril_xtest_flag_skip(42); // we get zero anyway
-  >
-  args:
-  -> runner: The runner for the test cases
-*/
-void tril_xtest_flag_skip(int flag)
-{
-    if (flag == 1)
-    {
-        TRIL_XTEST_FLAG_SKIP = flag;
-    } // end if
-    else
-    {
-        TRIL_XTEST_FLAG_SKIP = 0;
-    } // end else
-
-} // end of func
-
-
-/*
-  overview:
-  >
-  > This function sets the setup function for the UTestRunner
-  > struct. It takes in a pointer to the UTestRunner struct and
-  > a pointer to the setup function. It will check if the setup
-  > function is valid, and if so, set it as the setup function for
-  > the UTestRunner struct.
-  >
-
-  usage:
-  >
-  > ... some function named setup ...
-  >
-  > tril_xtest_setup(runner, setup);
-  >
-  args:
-  -> runner: The runner for the test cases
-  -> func: The setup function being set
-*/
-void tril_xtest_setup(XTestRunner *runner, void (*func)())
-{
-    if (!func)
-    {
-        return;
-    } // end if
-
-    if (runner)
-    {
-        runner->_setup = func;
-    } // end if
-
-} // end of func
-
-/*
-  overview:
-  >
-  > This function sets the teardown function for the UTestRunner
-  > struct. It takes in a pointer to the UTestRunner struct and
-  > a pointer to the teardown function. It will check if the teardown
-  > function is valid, and if so, set it as the teardown function for
-  > the UTestRunner struct.
-  >
-  usage:
-  >
-  > ... some function named teardown ...
-  >
-  > tril_xtest_teardown(runner, teardown);
-  >
-  args:
-  -> runner: The runner for the test cases
-  -> func: The teardown function being set
-*/
-void tril_xtest_teardown(XTestRunner *runner, void (*func)())
-{
-    if (!func)
-    {
-        return;
-    } // end if
-
-    if (runner)
-    {
-        runner->_teardown = func;
-    } // end if
-
-} // end of func
-
-/*
-  overview:
-  >
-  > This function is used to run a test and keep a score of
-  > the test results. It sets up extra stuff before the test,
-  > runs the current case in question and when done, it tears
-  > down the extra stuff. It also keeps track of the test
-  > results by adding a pass if the logic test passed, a fail
-  > if it failed, and a skip if the test was skipped.
-  >
-  usage:
-  >
-  > tril_xtest_run(runner, test_myCoffeeCup);
-  >
-  args:
-  -> runner: The runner for the test cases
-  -> test: The current unit case that is yet to be tested
-*/
-void tril_xtest_run(XTestRunner *runner, void (*test)())
-{
-    if (!test)
-    {
-        return;
-    } // end if
-
-    //
-    // setup some extra stuff before test, we then
-    // run the current case in question and when
-    // were done we teardown the extra stuff.
-    if (runner || TRIL_XTEST_FLAG_SKIP != 1)
-    {
-        if (runner->_setup != NULL)
-        {
-            runner->_setup();
-        } // end if
-
-        test();
-
-        if (runner->_teardown != NULL)
-        {
-            runner->_teardown();
-        } // end if
-
-    } // end if
-
-    //
-    // keep a score of test results add a pass if we
-    // passed the logic test else we add a fail.
-    if (TRIL_XTEST_FLAG_SKIP == 1)
-    {
-        runner->_skip++;
+    if (runner->failed_count > 0) {
+        puts(ANSI_COLOR_RED "RUNNER: Failed" ANSI_COLOR_RESET);
+    } else if (runner->passed_count > 0 || runner->failed_count == 0) {
+        puts(ANSI_COLOR_GREEN "RUNNER: Passed" ANSI_COLOR_RESET);
     }
-    else if (TRIL_XTEST_FLAG_RESULT == 1)
-    {
-        runner->_fail++;
-    }
-    else
-    {
-        runner->_pass++;
-        TRIL_XTEST_FLAG_RESULT = 0;
-    } // end switch
+    else if (runner->passed_count == 0 && runner->failed_count == 0) {
+        puts(ANSI_COLOR_YELLOW "RUNNER: Not sure what to do" ANSI_COLOR_RESET);
+    } // end if else if
+    printf(ANSI_COLOR_BLUE "SCORE: PASS [%2d] FAIL [%2d]\n\n" ANSI_COLOR_RESET, runner->passed_count, runner->failed_count);
+    return runner->failed_count;
+} // end of func
 
-    runner->_total++;
+/**
+    This function runs a test case and prints the results.
+
+    @param test_case: A pointer to a XTestCase object containing
+                      the test case to be run.
+    @param runner: A pointer to a XUnitRunner object containing
+                   the runner configuration.
+    @returns void: No value is returned.
+*/
+void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
+    if (strcmp(runner->run_tag, "tests") != 0 || strcmp(runner->run_tag, "both") != 0) {
+        return
+    } // end if
+
+    printf(ANSI_COLOR_BLUE "Running test: %s\n" ANSI_COLOR_RESET, test_case->name);
+
+    if (test_case->setup_function) {
+        test_case->setup_function();
+    } // end if
+
+    test_case->test_function();
+
+    if (test_case->teardown_function) {
+        test_case->teardown_function();
+    } // end if
+
+    puts("Assertions:");
+    for (size_t i = 0; i < test_case->num_assertions; i++) {
+        XAssert assertion = test_case->assertions[i];
+        printf("%s: %s\n", assertion.passed ?
+            ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET :
+            ANSI_COLOR_RED   "Failed" ANSI_COLOR_RESET, assertion.message);
+        if (assertion.passed) {
+            runner->passed_count++;
+        } else {
+            runner->failed_count++;
+        } // end if else
+    } // end for
+    puts("\n");
+} // end of func
+
+
+
+/**
+  This function xbench_run runs a benchmark and measures its elapsed time.
+
+  @param XBench *benchmark: a pointer to the benchmark to be run
+  @param XUnitRunner *runner: a pointer to the unit test runner
+
+  @returns: void - the elapsed time of the benchmark is stored in benchmark->elapsed_time
+*/
+void xbench_run(XBench *benchmark, XUnitRunner *runner) {
+    if (strcmp(runner->run_tag, "bench") != 0 || strcmp(runner->run_tag, "both") != 0)
+    {
+        return
+    } // end if
+
+    printf(ANSI_COLOR_BLUE "Running benchmark: %s\n" ANSI_COLOR_RESET, benchmark->name);
+
+    if (benchmark->setup_function) {
+        benchmark->setup_function();
+    } // end if
+
+    clock_t start_time = clock();
+    benchmark->benchmark_function();
+    clock_t end_time = clock();
+
+    if (benchmark->teardown_function) {
+        benchmark->teardown_function();
+    } // end if
+
+    benchmark->elapsed_time = end_time - start_time;
+
+    printf("Elapsed time: %f seconds\n\n", (double)benchmark->elapsed_time / CLOCKS_PER_SEC);
+
+    runner->passed_count++;
 } // end of func

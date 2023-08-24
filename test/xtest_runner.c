@@ -12,13 +12,18 @@
  > here main is used as the test runner
  >
 */
-int main(void)
+int main(int argc, char **argv)
 {
     //
-    // setup and teardown can be set to nullptr.
-    XTestRunner *runner = tril_xtest_create_runner();
+    // The command-line refreance for the Xtest runner
+    //
+    // --help,-h    : Output a handy usage message
+    // --only-tests : Only run unit test cases
+    // --only-bench : Only run benchmark tests
+    //
+    XUnitRunner runner = xtest_start(argc, argv);
 
-    xtest_fixture_basic_cases(runner);
+    xfixture_basic_cases(runner);
 
-    return tril_xtest_end_runner(runner);
+    return xtest_end(runner);
 } // end of function main

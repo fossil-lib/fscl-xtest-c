@@ -64,7 +64,7 @@ more please view the API documentation thanks.
 ```c
 XTEST(custom_assert_check)
 {
-    TRIL_XASSERT(true);
+    TRILXASSERT(true);
 } // end of case
 
 //
