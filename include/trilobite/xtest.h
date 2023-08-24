@@ -12,7 +12,23 @@ extern "C"
 {
 #endif
 
-#include "xassert.h"
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+
+/**
+    @param XAssert A struct containing a message and a boolean
+    @returns If the boolean is true, the code will reach the
+             return statement. Otherwise, it will not.
+*/
+typedef struct {
+    const char *message;
+    bool passed;
+} XAssert;
+
 
 /**
     @param passed_count: the number of tests that have passed
@@ -38,7 +54,6 @@ typedef struct {
     clock_t elapsed_time;
 } XBench;
 
-
 /**
     This is the definition of an XTestCase structure.
 
@@ -60,6 +75,11 @@ typedef struct {
     size_t num_assertions;
 } XTestCase;
 
+enum {MAX_TEST_CASES = 100}; // Maximum number of test cases
+
+// Static array to hold test cases
+static XTestCase test_case[MAX_TEST_CASES];
+
 /**
     This code defines a test case for the framework with the given name.
 
@@ -68,9 +88,9 @@ typedef struct {
               set to the function with the same name as the given name.
 */
 #define XTEST_CASE(name) \
-    void name##_test_func(void); \
-    XTestCase name = { #name, name##_test_func, NULL, NULL, NULL, 0 }; \
-    void name##_test_func(void)
+    void name##_xtest(void); \
+    XTestCase name = { #name, name##_xtest, NULL, NULL, NULL, 0 }; \
+    void name##_xtest(void)
 
 /**
     This code defines a XBench structure which can be used to benchmark functions.
@@ -80,9 +100,26 @@ typedef struct {
               other necessary details for the benchmarking process.
 */
 #define XBENCH(name) \
-    void name##_benchmark_function(void); \
-    XBench name = { #name, name##_benchmark_function, NULL, NULL, 0 }; \
-    void name##_benchmark_function(void)
+    void name##_xbench(void); \
+    XBench name = { #name, name##_xbench, NULL, NULL, 0 }; \
+    void name##_xbench(void)
+
+/**
+    This macro adds an assertion to the current test case.
+
+    @param expression: The expression to evaluate.
+    @param message: The message to display if the assertion fails.
+
+    @returns: If the expression evaluates to false, the assertion fails and
+              the message is displayed. Otherwise, the assertion passes and
+              nothing happens.
+*/
+
+#define XASSERT(expression, message) do { \
+    XAssert new_assertion = { message, (expression) }; \
+    test_case.assertions[test_case.num_assertions++] = new_assertion; \
+} while (0)
+
 
 //
 // Helper function to run a test case

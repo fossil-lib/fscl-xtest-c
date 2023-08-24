@@ -12,39 +12,7 @@ extern "C"
 {
 #endif
 
-#include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-#include <time.h>
-
-/**
-    @param XAssert A struct containing a message and a boolean
-    @returns If the boolean is true, the code will reach the
-             return statement. Otherwise, it will not.
-*/
-typedef struct {
-    const char *message;
-    bool passed;
-} XAssert;
-
-
-/**
-    This macro adds an assertion to the current test case.
-
-    @param expression: The expression to evaluate.
-    @param message: The message to display if the assertion fails.
-
-    @returns: If the expression evaluates to false, the assertion fails and
-              the message is displayed. Otherwise, the assertion passes and
-              nothing happens.
-*/
-
-#define XASSERT(expression, message) do { \
-    XAssert new_assertion = { message, (expression) }; \
-    test_case.assertions[test_case.num_assertions++] = new_assertion; \
-} while (0)
+#include "xtest.h"
 
 /**
    This code defines a set of macros used for asserting the equality,

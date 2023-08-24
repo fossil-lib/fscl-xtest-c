@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     //
     XUnitRunner runner = xtest_start(argc, argv);
 
-    xfixture_basic_cases(runner);
+    xfixture_basic_cases(&runner);
 
-    return xtest_end(runner);
+    return xtest_end(&runner);
 } // end of function main

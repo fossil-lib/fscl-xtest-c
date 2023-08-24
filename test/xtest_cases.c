@@ -90,14 +90,14 @@ XTEST_CASE(basic_run_of_boolean) {
 //
 void xfixture_basic_cases(XUnitRunner *runner)
 {
-    xtest_run(basic_run_of_int, runner);
-    xtest_run(basic_run_of_uint, runner);
-    xtest_run(basic_run_of_hex, runner);
-    xtest_run(basic_run_of_oct, runner);
-    xtest_run(basic_run_of_bit, runner);
-    xtest_run(basic_run_of_float, runner);
-    xtest_run(basic_run_of_double, runner);
-    xtest_run(basic_run_of_string, runner);
-    xtest_run(basic_run_of_pointer, runner);
-    xtest_run(basic_run_of_boolean, runner);
+    xtest_run(&basic_run_of_int, runner);
+    xtest_run(&basic_run_of_uint, runner);
+    xtest_run(&basic_run_of_hex, runner);
+    xtest_run(&basic_run_of_oct, runner);
+    xtest_run(&basic_run_of_bit, runner);
+    xtest_run(&basic_run_of_float, runner);
+    xtest_run(&basic_run_of_double, runner);
+    xtest_run(&basic_run_of_string, runner);
+    xtest_run(&basic_run_of_pointer, runner);
+    xtest_run(&basic_run_of_boolean, runner);
 } // end of fixture

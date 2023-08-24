@@ -26,20 +26,21 @@
 */
 XUnitRunner xtest_start(int argc, char **argv)
 {
-    XUnitRunner runner = {0, 0, 'both'};
+    XUnitRunner runner = {0, 0, "both"};
 
     const char *command = argv[1];
     if (!strcmp(command, "--only-test")) {
         puts("Only running Xtest cases");
         runner.run_tag = "tests";
+        return runner;
     }
     else if (!strcmp(command, "--only-bench")) {
         puts("Only running Xbench cases");
         runner.run_tag = "bench";
+        return runner;
     }
     else if (!strcmp(command, "--run-both")) {
         puts("Running all written cases");
-        runner.run_tag = "both";
     }
     else {
         printf(ANSI_COLOR_BLUE "Usage: runner command-line flags, runs both by default\n\n" ANSI_COLOR_RESET);
@@ -47,10 +48,9 @@ XUnitRunner xtest_start(int argc, char **argv)
         puts(ANSI_COLOR_WHITE ": --only-tests : Skip benchmarks and only run test cases        " ANSI_COLOR_RESET);
         puts(ANSI_COLOR_WHITE ": --only-bench : Skip test cases and only run benchmarks        " ANSI_COLOR_RESET);
         puts(ANSI_COLOR_WHITE ": --run-both   : Run both test cases and benchmarks -> (default)" ANSI_COLOR_RESET);
+        exit(EXIT_SUCCESS);
     } // end if, else if, else
-
-    runner.passed_count = runner.failed_count = 0;
-
+    runner.run_tag = "both";
     return runner;
 } // end of func
 
@@ -65,12 +65,13 @@ int xtest_end(XUnitRunner *runner)
 {
     if (runner->failed_count > 0) {
         puts(ANSI_COLOR_RED "RUNNER: Failed" ANSI_COLOR_RESET);
-    } else if (runner->passed_count > 0 || runner->failed_count == 0) {
-        puts(ANSI_COLOR_GREEN "RUNNER: Passed" ANSI_COLOR_RESET);
-    }
-    else if (runner->passed_count == 0 && runner->failed_count == 0) {
+    } else if (runner->passed_count == 0 && runner->failed_count == 0) {
         puts(ANSI_COLOR_YELLOW "RUNNER: Not sure what to do" ANSI_COLOR_RESET);
     } // end if else if
+    else if (runner->passed_count > 0 || runner->failed_count == 0) {
+        puts(ANSI_COLOR_GREEN "RUNNER: Passed" ANSI_COLOR_RESET);
+    }
+    
     printf(ANSI_COLOR_BLUE "SCORE: PASS [%2d] FAIL [%2d]\n\n" ANSI_COLOR_RESET, runner->passed_count, runner->failed_count);
     return runner->failed_count;
 } // end of func
