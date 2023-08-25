@@ -152,7 +152,7 @@ void xbench_run(XBench *benchmark, XUnitRunner *runner) {
 
     benchmark->elapsed_time = end_time - start_time;
 
-    printf(ANSI_COLOR_GREEN "Elapsed time:" ANSI_COLOR_RESET " %f seconds\n", (double)benchmark->elapsed_time / CLOCKS_PER_SEC);
+    printf(ANSI_COLOR_GREEN "Elapsed time:" ANSI_COLOR_RESET " %.6f seconds\n", (double)benchmark->elapsed_time / CLOCKS_PER_SEC);
     puts("Benchmark: DONE\n");
 
 
