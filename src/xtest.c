@@ -97,7 +97,7 @@ int xtest_end(XUnitRunner *runner)
     @returns void: No value is returned.
 */
 void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
-    if (strcmp(runner->run_tag, "test") != 0 || strcmp(runner->run_tag, "both") != 0) {
+    if (strcmp(runner->run_tag, "bench") == 0) {
         return;
     } // end if
 
@@ -140,8 +140,7 @@ void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
   @returns: void - the elapsed time of the benchmark is stored in benchmark->elapsed_time
 */
 void xbench_run(XBench *benchmark, XUnitRunner *runner) {
-    if (strcmp(runner->run_tag, "bench") != 0 || strcmp(runner->run_tag, "both") != 0)
-    {
+    if (strcmp(runner->run_tag, "test") == 0) {
         return;
     } // end if
 
