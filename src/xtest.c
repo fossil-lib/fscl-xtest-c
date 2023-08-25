@@ -7,8 +7,6 @@
 #include "trilobite/xtest.h"
 #include "trilobite/xassert.h"
 
-enum {MAX_TEST_CASES = 100}; // Maximum number of test cases
-
 // Static array to hold test cases
 static bool XTEST_PASS_SCAN = true;
 
@@ -103,29 +101,26 @@ void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
        return;
    } // end if
 
-    printf(ANSI_COLOR_BLUE "Running test: %s\n" ANSI_COLOR_RESET, test_case->name);
+    printf(ANSI_COLOR_BLUE "Running test: " ANSI_COLOR_YELLOW " %s\n" ANSI_COLOR_RESET, test_case->name);
 
     if (runner->setup_function) {
         runner->setup_function();
     } // end if
 
-    test_case->test_function(); // Need to make this work
+    test_case->test_function();
 
     if (runner->teardown_function) {
         runner->teardown_function();
     } // end if
 
 
-    puts("Assertions:");
-    printf("%s: %s\n", XTEST_PASS_SCAN ?
-        ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET :
-        ANSI_COLOR_RED   "Failed" ANSI_COLOR_RESET, test_case->name);
+    puts("Assertions: DONE");
     if (XTEST_PASS_SCAN == true) {
         runner->passed_count++;
     } else {
         runner->failed_count++;
     } // end if else
-    puts("\n");
+    putchar('\n');
 } // end of func
 
 /**
@@ -180,8 +175,9 @@ void xtest_set_setup_teardown(XUnitRunner *runner, void (*setup_func)(void), voi
 void xassert(bool expression, const char *message) {
 
     XTEST_PASS_SCAN = true;
-
     if (!expression) {
+        printf(" --> %s: %s\n", ANSI_COLOR_RED "Failed" ANSI_COLOR_RESET, message);
         XTEST_PASS_SCAN = false;
-    }
+    } // end if
+    printf(" --> %s:\n", ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET);
 } // end of func
