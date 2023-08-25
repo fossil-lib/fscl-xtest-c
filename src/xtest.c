@@ -97,9 +97,9 @@ int xtest_end(XUnitRunner *runner)
     @returns void: No value is returned.
 */
 void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
-    if (strcmp(runner->run_tag, "bench") == 0) {
-        return;
-    } // end if
+//    if (strcmp(runner->run_tag, "bench") == 0) {
+//        return;
+//    } // end if
 
     printf(ANSI_COLOR_BLUE "Running test: %s\n" ANSI_COLOR_RESET, test_case->name);
 
