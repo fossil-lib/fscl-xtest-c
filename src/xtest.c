@@ -10,7 +10,7 @@
 enum {MAX_TEST_CASES = 100}; // Maximum number of test cases
 
 // Static array to hold test cases
-XTestCase test_case[MAX_TEST_CASES];
+static bool XTEST_PASS_SCAN = true;
 
 // ANSI escape code macros for text color
 #define ANSI_COLOR_RED     "\x1b[31m"
@@ -34,14 +34,16 @@ XUnitRunner xtest_start(int argc, char **argv)
     XUnitRunner runner = {
         .passed_count = 0,
         .failed_count = 0,
-        .run_tag = "both"};
+        .run_tag = "both",
+        .setup_function = NULL,
+        .teardown_function = NULL};
 
     if (argc == 1) {
         return runner;
     } // end if
 
     const char *command = argv[1];
-    if (!strcmp(command, "--only-test")) {
+    if (!strcmp(command, "--only-tests")) {
         puts("Only running Xtest cases");
         runner.run_tag = "test";
         return runner;
@@ -97,39 +99,34 @@ int xtest_end(XUnitRunner *runner)
     @returns void: No value is returned.
 */
 void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
-//    if (strcmp(runner->run_tag, "bench") == 0) {
-//        return;
-//    } // end if
+   if (strcmp(runner->run_tag, "bench") == 0) {
+       return;
+   } // end if
 
     printf(ANSI_COLOR_BLUE "Running test: %s\n" ANSI_COLOR_RESET, test_case->name);
 
-    if (test_case->setup_function) {
-        test_case->setup_function();
+    if (runner->setup_function) {
+        runner->setup_function();
     } // end if
 
-    test_case->test_function();
-    printf("%s\n\n", runner->run_tag);
+    test_case->test_function(); // Need to make this work
 
-    if (test_case->teardown_function) {
-        test_case->teardown_function();
+    if (runner->teardown_function) {
+        runner->teardown_function();
     } // end if
+
 
     puts("Assertions:");
-    for (size_t i = 0; i < test_case->num_assertions; i++) {
-        XAssert assertion = test_case->assertions[i];
-        printf("%s: %s\n", assertion.passed ?
-            ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET :
-            ANSI_COLOR_RED   "Failed" ANSI_COLOR_RESET, assertion.message);
-        if (assertion.passed) {
-            runner->passed_count++;
-        } else {
-            runner->failed_count++;
-        } // end if else
-    } // end for
+    printf("%s: %s\n", XTEST_PASS_SCAN ?
+        ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET :
+        ANSI_COLOR_RED   "Failed" ANSI_COLOR_RESET, test_case->name);
+    if (XTEST_PASS_SCAN == true) {
+        runner->passed_count++;
+    } else {
+        runner->failed_count++;
+    } // end if else
     puts("\n");
 } // end of func
-
-
 
 /**
   This function xbench_run runs a benchmark and measures its elapsed time.
@@ -146,16 +143,16 @@ void xbench_run(XBench *benchmark, XUnitRunner *runner) {
 
     printf(ANSI_COLOR_BLUE "Running benchmark: %s\n" ANSI_COLOR_RESET, benchmark->name);
 
-    if (benchmark->setup_function) {
-        benchmark->setup_function();
+    if (runner->setup_function) {
+        runner->setup_function();
     } // end if
 
     clock_t start_time = clock();
     benchmark->benchmark_function();
     clock_t end_time = clock();
 
-    if (benchmark->teardown_function) {
-        benchmark->teardown_function();
+    if (runner->teardown_function) {
+        runner->teardown_function();
     } // end if
 
     benchmark->elapsed_time = end_time - start_time;
@@ -174,13 +171,17 @@ void xbench_run(XBench *benchmark, XUnitRunner *runner) {
 
     @returns Nothing.
 */
-void xtest_set_setup_teardown(XTestCase *test_case, void (*setup_func)(void), void (*teardown_func)(void)) {
-    test_case->setup_function = setup_func;
-    test_case->teardown_function = teardown_func;
+void xtest_set_setup_teardown(XUnitRunner *runner, void (*setup_func)(void), void (*teardown_func)(void)) {
+    runner->setup_function = setup_func;
+    runner->teardown_function = teardown_func;
 } // end of func
 
 
 void xassert(bool expression, const char *message) {
-    XAssert new_assertion = { message, expression };
-    test_case->assertions[test_case->num_assertions++] = new_assertion;
+
+    XTEST_PASS_SCAN = true;
+
+    if (!expression) {
+        XTEST_PASS_SCAN = false;
+    }
 } // end of func

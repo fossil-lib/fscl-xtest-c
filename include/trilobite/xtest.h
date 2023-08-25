@@ -40,6 +40,8 @@ typedef struct {
     int passed_count;
     int failed_count;
     char *run_tag;
+    void (*setup_function)(void);
+    void (*teardown_function)(void);
 } XUnitRunner;
 
 /**
@@ -49,8 +51,6 @@ typedef struct {
 typedef struct {
     const char *name;
     void (*benchmark_function)(void);
-    void (*setup_function)(void);
-    void (*teardown_function)(void);
     clock_t elapsed_time;
 } XBench;
 
@@ -69,8 +69,6 @@ typedef struct {
 typedef struct {
     const char *name;
     void (*test_function)(void);
-    void (*setup_function)(void);
-    void (*teardown_function)(void);
     XAssert *assertions;
     size_t num_assertions;
 } XTestCase;
@@ -84,7 +82,7 @@ typedef struct {
 */
 #define XTEST_CASE(name) \
     void name##_xtest(void); \
-    XTestCase name = { #name, name##_xtest, NULL, NULL, NULL, 0 }; \
+    XTestCase name = { #name, name##_xtest, NULL, 0 }; \
     void name##_xtest(void)
 
 /**
@@ -96,7 +94,7 @@ typedef struct {
 */
 #define XBENCH(name) \
     void name##_xbench(void); \
-    XBench name = { #name, name##_xbench, NULL, NULL, 0 }; \
+    XBench name = { #name, name##_xbench, 0 }; \
     void name##_xbench(void)
 
 //
@@ -107,7 +105,7 @@ XUnitRunner xtest_start(int argc, char **argv);
 int xtest_end(XUnitRunner *runner);
 void xtest_run(XTestCase *test_case, XUnitRunner *runner);
 void xbench_run(XBench *benchmark, XUnitRunner *runner);
-void xtest_set_setup_teardown(XTestCase *test_case, void (*setup_func)(void), void (*teardown_func)(void));
+void xtest_set_setup_teardown(XUnitRunner *runner, void (*setup_func)(void), void (*teardown_func)(void));
 void xassert(bool expression, const char *message);
 
 /**
