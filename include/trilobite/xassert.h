@@ -95,14 +95,14 @@ extern "C"
 */
 
 #define XASSERT_FLOAT_EQUAL(actual, expected, epsilon, message)     XASSERT(fabs((actual) - (expected)) <= (epsilon), message)
-#define XASSERT_FLOAT_NOT_EQUAL(actual, expected, epsilon, message) XASSERT(fabs((actual) - (expected)) > (epsilon), message)
+#define XASSERT_FLOAT_NOT_EQUAL(actual, expected, epsilon, message) XASSERT(fabs((actual) - (expected)) < (epsilon), message)
 #define XASSERT_FLOAT_LESS(actual, expected, message)               XASSERT((actual) < (expected), message)
 #define XASSERT_FLOAT_GREATER(actual, expected, message)            XASSERT((actual) > (expected), message)
 #define XASSERT_FLOAT_GREATER_EQUAL(actual, expected, message)      XASSERT((actual) >= (expected), message)
 #define XASSERT_FLOAT_LESS_EQUAL(actual, expected, message)         XASSERT((actual) <= (expected), message)
 
 #define XASSERT_DOUBLE_EQUAL(actual, expected, epsilon, message)     XASSERT(fabs((actual) - (expected)) <= (epsilon), message)
-#define XASSERT_DOUBLE_NOT_EQUAL(actual, expected, epsilon, message) XASSERT(fabs((actual) - (expected)) > (epsilon), message)
+#define XASSERT_DOUBLE_NOT_EQUAL(actual, expected, epsilon, message) XASSERT(fabs((actual) - (expected)) < (epsilon), message)
 #define XASSERT_DOUBLE_LESS(actual, expected, message)               XASSERT((actual) < (expected), message)
 #define XASSERT_DOUBLE_GREATER(actual, expected, message)            XASSERT((actual) > (expected), message)
 #define XASSERT_DOUBLE_GREATER_EQUAL(actual, expected, message)      XASSERT((actual) >= (expected), message)
