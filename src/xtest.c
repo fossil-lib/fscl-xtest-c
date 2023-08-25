@@ -136,7 +136,7 @@ void xbench_run(XBench *benchmark, XUnitRunner *runner) {
         return;
     } // end if
 
-    printf(ANSI_COLOR_BLUE "Running benchmark: %s\n" ANSI_COLOR_RESET, benchmark->name);
+    printf(ANSI_COLOR_BLUE "Running benchmark: " ANSI_COLOR_YELLOW " %s\n" ANSI_COLOR_RESET, benchmark->name);
 
     if (runner->setup_function) {
         runner->setup_function();
@@ -152,7 +152,9 @@ void xbench_run(XBench *benchmark, XUnitRunner *runner) {
 
     benchmark->elapsed_time = end_time - start_time;
 
-    printf("Elapsed time: %f seconds\n\n", (double)benchmark->elapsed_time / CLOCKS_PER_SEC);
+    printf(ANSI_COLOR_GREEN "Elapsed time:" ANSI_COLOR_RESET " %f seconds\n", (double)benchmark->elapsed_time / CLOCKS_PER_SEC);
+    puts("Benchmark: DONE\n");
+
 
     runner->passed_count++;
 } // end of func
