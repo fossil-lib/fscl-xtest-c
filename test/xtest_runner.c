@@ -14,16 +14,10 @@
 */
 int main(int argc, char **argv)
 {
-    //
-    // The command-line refreance for the Xtest runner
-    //
-    // --help,-h    : Output a handy usage message
-    // --only-tests : Only run unit test cases
-    // --only-bench : Only run benchmark tests
-    //
     XUnitRunner runner = xtest_start(argc, argv);
 
     xfixture_basic_cases(&runner);
+    xfixture_bench_cases(&runner);
 
     return xtest_end(&runner);
 } // end of function main
