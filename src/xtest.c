@@ -10,7 +10,7 @@
 enum {MAX_TEST_CASES = 100}; // Maximum number of test cases
 
 // Static array to hold test cases
-static XTestCase test_case[MAX_TEST_CASES];
+XTestCase test_case[MAX_TEST_CASES];
 
 // ANSI escape code macros for text color
 #define ANSI_COLOR_RED     "\x1b[31m"
