@@ -19,7 +19,7 @@ static bool XTEST_PASS_SCAN = true;
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 /**
-    Starter for the Xunit test runner which will process commands
+    @brief Starter for the Xunit test runner which will process commands
     and any other setup steps before starting.
 
     @param argc The number of command line arguments
@@ -66,7 +66,7 @@ XUnitRunner xtest_start(int argc, char **argv)
 } // end of func
 
 /**
-    This function checks the result of the XUnitRunner and displays a
+    @brief This function checks the result of the XUnitRunner and displays a
     message based on the result.
 
     @param runner The XUnitRunner object that is being checked
@@ -88,7 +88,7 @@ int xtest_end(XUnitRunner *runner)
 } // end of func
 
 /**
-    This function runs a test case and prints the results.
+    @brief This function runs a test case and prints the results.
 
     @param test_case: A pointer to a XTestCase object containing
                       the test case to be run.
@@ -124,7 +124,7 @@ void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
 } // end of func
 
 /**
-  This function xbench_run runs a benchmark and measures its elapsed time.
+  @brief This function xbench_run runs a benchmark and measures its elapsed time.
 
   @param XBench *benchmark: a pointer to the benchmark to be run
   @param XUnitRunner *runner: a pointer to the unit test runner
@@ -158,7 +158,7 @@ void xbench_run(XBench *benchmark, XUnitRunner *runner) {
 } // end of func
 
 /**
-    Sets the setup and teardown functions for the given test case.
+    @brief Sets the setup and teardown functions for the given test case.
 
     @param test_case The test case to set the setup and teardown functions for.
     @param setup_func The function to be called before the test is run.
@@ -171,7 +171,14 @@ void xtest_set_setup_teardown(XUnitRunner *runner, void (*setup_func)(void), voi
     runner->teardown_function = teardown_func;
 } // end of func
 
+/**
+    @brief Asserts that the expression is true, and prints a message if it is not.
 
+    @param expression The expression to check.
+    @param message The message to print if the expression is false.
+
+    @return void
+*/
 void xassert(bool expression, const char *message) {
 
     XTEST_PASS_SCAN = true;

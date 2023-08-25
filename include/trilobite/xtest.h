@@ -55,7 +55,7 @@ typedef struct {
 } XBench;
 
 /**
-    This is the definition of an XTestCase structure.
+    @brief This is the definition of an XTestCase structure.
 
     @param name: A pointer to a constant character string that holds the name of the test case.
     @param test_function: A pointer to a function that holds the actual test code.
@@ -86,7 +86,7 @@ typedef struct {
     void name##_xtest(void)
 
 /**
-    This code defines a XBench structure which can be used to benchmark functions.
+    @brief This code defines a XBench structure which can be used to benchmark functions.
 
     @param name: The name of the function to be benchmarked
     @returns: The XBench structure with the function name, the benchmark function, and
@@ -109,7 +109,7 @@ void xtest_set_setup_teardown(XUnitRunner *runner, void (*setup_func)(void), voi
 void xassert(bool expression, const char *message);
 
 /**
-    This macro adds an assertion to the current test case.
+    @brief This macro adds an assertion to the current test case.
 
     @param expression: The expression to evaluate.
     @param message: The message to display if the assertion fails.
