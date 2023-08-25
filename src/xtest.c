@@ -97,7 +97,6 @@ int xtest_end(XUnitRunner *runner)
     @returns void: No value is returned.
 */
 void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
-    printf("%s\n\n", runner->run_tag);
     if (strcmp(runner->run_tag, "test") != 0 || strcmp(runner->run_tag, "both") != 0) {
         return;
     } // end if
@@ -109,6 +108,7 @@ void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
     } // end if
 
     test_case->test_function();
+    printf("%s\n\n", runner->run_tag);
 
     if (test_case->teardown_function) {
         test_case->teardown_function();
