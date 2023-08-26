@@ -102,7 +102,6 @@ XTEST_CASE(basic_run_of_boolean) {
     XASSERT_FALSE(false, "should have returned false from a false value");
 } // end case
 
-
 //
 // XTEST FIXTURE
 //
