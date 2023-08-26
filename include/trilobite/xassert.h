@@ -153,6 +153,7 @@ extern "C"
 #define XASSERT_STRING_NOT_EQUAL(actual, expected, message) XASSERT(strcmp((actual), (expected)) != 0, message)
 #endif
 
+
 #ifdef __cplusplus
 }
 #endif
