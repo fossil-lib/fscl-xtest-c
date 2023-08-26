@@ -24,6 +24,7 @@ extern "C"
 #include <cstring>
 #include <cstdlib>
 #include <cstddef>
+#include <string>
 #include <cstdio>
 #include <cmath>
 #include <ctime>
