@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 } // end of function main
 ```
 
-Example of the usage in C
+Example of the usage in C++
 
 ```cpp
 #include "trilobite/xtest.h" // basic test tools
