@@ -119,8 +119,13 @@ extern "C"
     @returns If the assertion fails, the program will terminate with an error message.
 */
 
+#define#ifdef __cplusplus
+#define XASSERT_NULL(pointer, message)     XASSERT((pointer) == nullptr, message)
+#define XASSERT_NOT_NULL(pointer, message) XASSERT((pointer) != nullptr, message)
+#else
 #define XASSERT_NULL(pointer, message)     XASSERT((pointer) == NULL, message)
 #define XASSERT_NOT_NULL(pointer, message) XASSERT((pointer) != NULL, message)
+#endif
 #define XASSERT_TRUE(expression, message)  XASSERT((expression), message)
 #define XASSERT_FALSE(expression, message) XASSERT(!(expression), message)
 
