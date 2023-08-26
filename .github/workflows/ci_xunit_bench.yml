@@ -137,7 +137,7 @@ jobs:
             meson compile -C builddir
     - name: Test Project Code
       run: |
-            meson test -C builddir -v --test-args=--only-tests
+            meson test -C builddir -v --test-args=--only-bench
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
