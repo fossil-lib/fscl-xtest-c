@@ -12,12 +12,22 @@ extern "C"
 {
 #endif
 
-#include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stddef.h>
+#include <stdio.h>
 #include <math.h>
 #include <time.h>
+
+#ifdef __cplusplus
+#include <cstring>
+#include <cstdlib>
+#include <cstddef>
+#include <cstdio>
+#include <cmath>
+#include <ctime>
+#endif
 
 /**
     @param XAssert A struct containing a message and a boolean
@@ -66,12 +76,25 @@ typedef struct {
 
     @returns: The XTestCase structure that holds the information about the test case.
 */
+#ifdef __cplusplus
+class XTestCase {
+public:
+    XTestCase(const char *name, void (*test_function)(void))
+        : name(name), test_function(test_function), assertions(nullptr), num_assertions(0) {}
+    const char *name;
+    void (*test_function)(void);
+    XAssert *assertions;
+    size_t num_assertions;
+}; // end class
+
+#else
 typedef struct {
     const char *name;
     void (*test_function)(void);
     XAssert *assertions;
     size_t num_assertions;
-} XTestCase;
+} XTestCase; // end struct
+#endif
 
 /**
     This code defines a test case for the framework with the given name.
