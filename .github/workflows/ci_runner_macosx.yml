@@ -1,20 +1,18 @@
 #
-# under: trilobite devops:
-# author: Michael Gene Ridge Brockus
+# under: devops:
+# author: Michael Gene Brockus (Dreamer)
 # gmail: <michaelbrockus@gmail.com>
 #
-name: Host MacOSX CI
+name: Meson Build Run CI
 
 #
-# We have is configured so that ci_runner_macosx only runs
+# We have is configured so that ci_runner_linux only runs
 # when source files, build scripts and this CI files is
 # changed, we should not just run CI for all changes.
 #
 on:
   push:
     paths:
-      - "**.c"
-      - "**.h"
       - "**.txt"
       - "**.build"
   pull_request:
@@ -22,8 +20,6 @@ on:
       - "main"
       - "next"
     paths:
-      - "**.c"
-      - "**.h"
       - "**.txt"
       - "**.build"
 
@@ -31,15 +27,12 @@ permissions:
   contents: read
 
 #
-# We list all the Mac OSX systems in a nice list so the
-# DevOps team can manage them.
+# Testing minimum and beta builds of Meson build
 # 
 jobs:
-  #
-  # Mac OSX latest host system target
-  #
-  host_macosx_latest:
-    runs-on: macos-latest
+
+  meson_latest:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Setup Python
@@ -47,33 +40,27 @@ jobs:
       with:
         python-version: '3.10'
         architecture: x64
-    - name: Install Meson Build
+    - name: Install Meson Build System
       run: |
-          pip install meson==1.0.0 ninja==1.11.1 scan-build
-          brew install cppcheck
-    - name: Setup Trilo Project
+          pip install meson ninja
+          sudo apt-get install -y gcc
+    - name: Setup Build Directory
       run: |
-           scan-build meson setup builddir -Dwith_tests=enabled
-    - name: Scan Trilo Project
+            meson setup builddir -Dwith_tests=enabled
+    - name: Compile Source Code
       run: |
-           cppcheck --project=builddir/compile_commands.json
-    - name: Compile Trilo Project
+            meson compile -C builddir
+    - name: Test Project Code
       run: |
-           scan-build meson compile -C builddir -v
-    - name: Test Trilo Project
-      run: |
-           scan-build meson test -C builddir -v
+            meson test -C builddir -v
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
-        name: MacOSX_Meson_Testlog
+        name: Latest_Meson_Testlog
         path: builddir/meson-logs/testlog.txt
 
-  #
-  # Mac OSX 11 host system target
-  #
-  host_macosx_11:
-    runs-on: macos-11
+  meson_minimum:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Setup Python
@@ -81,58 +68,21 @@ jobs:
       with:
         python-version: '3.10'
         architecture: x64
-    - name: Install Meson Build
+    - name: Install Meson Build System
       run: |
-          pip install meson==1.0.0 ninja==1.11.1 scan-build
-          brew install cppcheck
-    - name: Setup Trilo Project
+          pip install meson==1.0.0 ninja==1.11.1
+          sudo apt-get install -y gcc
+    - name: Setup Build Directory
       run: |
-           scan-build meson setup builddir -Dwith_tests=enabled
-    - name: Scan Trilo Project
+            meson setup builddir -Dwith_tests=enabled
+    - name: Compile Source Code
       run: |
-           cppcheck --project=builddir/compile_commands.json
-    - name: Compile Trilo Project
+            meson compile -C builddir
+    - name: Test Project Code
       run: |
-           scan-build meson compile -C builddir -v
-    - name: Test Trilo Project
-      run: |
-           scan-build meson test -C builddir -v
+            meson test -C builddir -v
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
-        name: MacOSX_11_Meson_Testlog
-        path: builddir/meson-logs/testlog.txt
-
-  #
-  # Mac OSX 12 host system target
-  #
-  host_macosx_12:
-    runs-on: macos-12
-    steps:
-    - uses: actions/checkout@v3
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-        architecture: x64
-    - name: Install Meson Build
-      run: |
-          pip install meson==1.0.0 ninja==1.11.1 scan-build
-          brew install cppcheck
-    - name: Setup Trilo Project
-      run: |
-           scan-build meson setup builddir -Dwith_tests=enabled
-    - name: Scan Trilo Project
-      run: |
-           cppcheck --project=builddir/compile_commands.json
-    - name: Compile Trilo Project
-      run: |
-           scan-build meson compile -C builddir -v
-    - name: Test Trilo Project
-      run: |
-           scan-build meson test -C builddir -v
-    - uses: actions/upload-artifact@v3
-      if: failure()
-      with:
-        name: MacOSX_12_Meson_Testlog
+        name: Latest_Meson_Testlog
         path: builddir/meson-logs/testlog.txt
