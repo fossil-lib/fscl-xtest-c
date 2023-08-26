@@ -136,8 +136,17 @@ extern "C"
              will be displayed.
 */
 
+#ifdef __cplusplus
+#define XASSERT_STRING_EQUAL(actual, expected, message) XASSERT((actual) == (expected), message)
+#else
 #define XASSERT_STRING_EQUAL(actual, expected, message) XASSERT(strcmp((actual), (expected)) == 0, message)
+#endif
+
+#ifdef __cplusplus
+#define XASSERT_STRING_NOT_EQUAL(actual, expected, message) XASSERT((actual) != (expected), message)
+#else
 #define XASSERT_STRING_NOT_EQUAL(actual, expected, message) XASSERT(strcmp((actual), (expected)) != 0, message)
+#endif
 
 #ifdef __cplusplus
 }
