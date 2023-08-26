@@ -121,6 +121,48 @@ typedef struct {
     XBench name = { #name, name##_xbench, 0 }; \
     void name##_xbench(void)
 
+// Macros to represent Given, When, and Then blocks
+#define GIVEN(context) \
+    do { \
+        context; \
+    } while (false)
+
+#define WHEN(action) \
+    do { \
+        action; \
+    } while (false)
+
+#define THEN(description) \
+    do { \
+        XASSERT_TRUE(true, description); \
+    } while (false)
+
+//
+#define XTEST_FAIL(message) \
+    do { \
+        XASSERT_FALSE(true, message); \
+    } while (false)
+
+#define XTEST_PASS() \
+    do { \
+        XASSERT_TRUE(true, "Test passed"); \
+    } while (false)
+
+// Macro to skip a test case
+
+#define XTEST_SKIP(message) \
+    do { \
+        fprintf(stderr, "Test skipped: %s\n", message); \
+        return; \
+    } while (false)
+
+// Macro to mark a test as not implemented
+
+#define XTEST_NOT_IMPLEMENTED() \
+    do { \
+        fprintf(stderr, "Test not implemented yet\n"); \
+    } while (false)
+
 //
 // Helper function to run a test case
 //
