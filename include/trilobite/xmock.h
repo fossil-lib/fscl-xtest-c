@@ -12,15 +12,7 @@ extern "C"
 {
 #endif
 
-#include <stddef.h>
-
-//
-//   PUBLIC APPLICATION INTERFACE
-// --------------------------------
-//
-// Published library with provided public application interface for
-// use in the users application. Please note that we are internationally
-// targeting both c11 and c23 standards.
+#include "xtest.h"
 
 //
 // STUB
@@ -32,9 +24,9 @@ typedef struct XMockStub
    size_t _size;
 } XMockStub;
 
-XMockStub *tril_xmock_stub_create(void *(*func_ptr)(void *), void *result, size_t size);
-void tril_xmock_stub_erase(XMockStub *stub);
-void *tril_xmock_stub_call(XMockStub *stub, void *arg);
+XMockStub *xmock_stub_create(void *(*func_ptr)(void *), void *result, size_t size);
+void xmock_stub_erase(XMockStub *stub);
+void *xmock_stub_call(XMockStub *stub, void *arg);
 
 
 

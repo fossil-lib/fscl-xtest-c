@@ -1,142 +1,177 @@
-# Trilobite XUnit test framework
+# Xunit test framework
 
-## overview
+Introducing the Trilobite Xunit Test: a robust and versatile unit testing framework designed to elevate your software development process. Crafted with meticulous attention to detail, this lightweight testing solution, coded in C11 and newer standards, empowers developers with an arsenal of cutting-edge features.
 
-* * *
+The Trilobite Xunit Test stands out with its comprehensive approach, offering a wide array of testing types to ensure your software's quality and reliability. From AI testing that harnesses the power of artificial intelligence to UI and UX testing to enhance user experience, the framework covers it all. Its IO testing capabilities guarantee seamless data interaction.
 
-Trilobite Xtest - A Lightweight Unit Testing Framework with Mocking and Benchmarking for C
+One of the framework's standout features is its extensive collection of assertions, providing you with an abundance of options to validate your code's correctness. To facilitate isolation and control, Trilobite also incorporates a robust mocking system, allowing you to create controlled environments for testing intricate scenarios.
 
-Trilobite Xtest is a compact yet feature-rich unit testing framework specially crafted for C programming. Built with simplicity and efficiency in mind, Trilobite Xtest empowers developers to write and execute unit tests effortlessly, ensuring the accuracy and reliability of their C codebase. This versatile framework goes beyond traditional unit testing by incorporating advanced capabilities for mocking and benchmarking, making it an indispensable tool for comprehensive testing and performance analysis.
+Benchmark testing becomes a breeze with the Trilobite Xunit Test, allowing you to measure performance with precision. The integration of a CLI interface ensures user-friendly execution of tests, and the colored text output provides clarity in result interpretation.
 
-Trilobite Xtest is a valuable companion for C developers seeking a streamlined and powerful unit testing framework. With its support for mocking and benchmarking, developers can effectively evaluate the correctness, maintainability, and performance of their C codebase, fostering a robust and resilient software development process.
+The Trilobite Xunit Test seamlessly integrates into your development process by leveraging the Meson build system. Its compatibility with the Meson WrapDB tool simplifies installation and keeps dependencies in check, enabling a seamless setup experience.
 
-## tooling
+In essence, the Trilobite Xunit Test redefines unit testing for C developers, offering a comprehensive, lightweight, and adaptable framework that propels your software projects toward excellence.
 
-* * *
+## Intended Audience
 
-The targeted audience we are building for is *Windows 10*, *MacOSX*, *ChromeOS*
-and *Linux* users. This project uses [Meson](https://mesonbuild.com/) `1.0.0`
-and newer, uses `c11` standards for the initial implementation of the package. The
-objective by far is usability, security, transparency, and lightweight, packages
-for all your application development needs.
+This guide is aimed at developers of all levels who wish to utilize the Meson build system for their projects. It assumes a basic familiarity with command-line interfaces and project organization.
 
-## Setup, Compile and Install
+## Prerequisites
 
-* * *
+Before you proceed, ensure you have the following prerequisites installed:
 
-Using this package should be fairly simple just add the git wrap file
-in your subprojects directory and include the dependency in your project.
+- **Meson Build System**: The project relies on the Meson build system. If you do not have Meson installed, please visit the official [Meson website](https://mesonbuild.com/Getting-meson.html) for instructions on how to install it.
 
-```console
-[wrap-git]
-directory = trilo-xtest-c
-url = https://github.com/trilobite-stdlib/trilo-xtest-c.git
-revision = main
+## Setting up Meson Build
 
-[provide]
-trilo-xtest-c = trilo_xtest_c_dep
-```
+1. **Install Meson**:
+   - Follow the installation instructions provided on the [Meson website](https://mesonbuild.com/Getting-meson.html) based on your operating system.
 
-The next step should be to add the package to your Meson project:
+## Setup, Compile, Install, and Run the Project
 
-```meson
-trilo_dep = dependency('trilo-xtest-c')
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/trilobite-stdlib/trio-xtest-c
+   cd trilobite-stdlib/trio-xtest-c
+   ```
 
-executable('prog', 'main.c',
-    dependencies : [trilo_dep])
+2. **Configure the Build**:
+   ```bash
+   meson setup builddir
+   ```
 
-```
+3. **Compile the Project**:
+   ```bash
+   meson compile -C builddir
+   ```
 
-And finally, we set up, and compile the project just like normal.
+4. **Test the Project**:
+   ```bash
+   meson test -C builddir -v
+   ```
 
-## usage
+5. **Install the Project**:
+   ```bash
+   meson install -C builddir
+   ```
 
-* * *
+## Example
 
-Here is a simple sample application that should get you up and
-running with using this library as soon as possible but to learn
-more please view the API documentation thanks.
-
-### Usage in C
-
-**source file:**:
+Example of the usage in C
 
 ```c
-XTEST(custom_assert_check)
-{
-    TRIL_XASSERT(true);
-} // end of case
+#include "trilobite/xtest.h" // basic test tools
+#include "trilobite/xassert.h" // extra asserts
+
+//
+// XUNIT TEST CASES
+//
+XTEST_CASE(basic_run_of_string) {
+    char *one = "Something", *two = "Whatever", *three = "Something";
+    XASSERT_STRING_EQUAL(one, three, "one and three should have benn equal");
+    XASSERT_STRING_NOT_EQUAL(one, two, "one and two should not be equal");
+} // end case
+
+XTEST_CASE(basic_run_of_pointer) {
+    XASSERT_NOT_NULL("Coffee Cup", "as a coffee cup should have been a non null value");
+    XASSERT_NULL(NULL, "Why didn't this cup of tea return as null?");
+} // end case
+
+XTEST_CASE(basic_run_of_boolean) {
+    XASSERT_TRUE(true, "should have returned true from a true value");
+    XASSERT_FALSE(false, "should have returned false from a false value");
+} // end case
 
 //
 // XTEST FIXTURE
 //
-void xtest_fixture_basic_cases(XTestRunner *runner)
+void xfixture_basic_cases(XUnitRunner *runner)
 {
-    //
-    // setup and teardown methods get set here
-    // before any of the listed test cases are
-    // run.
-    tril_xtest_setup(runner, setup);
-    tril_xtest_teardown(runner, teardown);
-
-    //
-    // list of test cases for the current test fixture
-    //
-    tril_xtest_run(runner, xtest_custom_assert_check);
+    xtest_run(&basic_run_of_string, runner);
+    xtest_run(&basic_run_of_pointer, runner);
+    xtest_run(&basic_run_of_boolean, runner);
 } // end of fixture
-```
-
-**header file:**
-
-```c
-#ifndef TRILOBITE_XTEST_FIXTURE_H
-#define TRILOBITE_XTEST_FIXTURE_H
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-#include "trilobite/xtest.h"
-
-void xtest_fixture_basic_cases(XTestRunner *runner);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
-```
-
-**main file:**
-
-```c
-/*
-   under:   trilobite stdlib
-   author:  Michael Gene Brockus (Dreamer)
-   gmail:   <michaelbrockus@gmail.com>
-   website: <https://trilobite.code.blog>
-*/
-#include <stdlib.h>
-#include "my_fixtures.h"
 
 //
-// main is where all good examples start
+// XTEST RUNNER
 //
-int main(void)
+int main(int argc, char **argv)
 {
-    //
-    // setup and teardown can be set to nullptr.
-    XTestRunner *runner = tril_xtest_create_runner();
+    XUnitRunner runner = xtest_start(argc, argv);
 
-    xtest_fixture_basic_cases(runner);
+    xfixture_basic_cases(&runner);
 
-    return tril_xtest_end_runner(runner);
+    return xtest_end(&runner);
 } // end of function main
-
 ```
+
+Example of the usage in C++
+
+```cpp
+#include "trilobite/xtest.h" // basic test tools
+#include "trilobite/xassert.h" // extra asserts
+
+//
+// XUNIT TEST CASES
+//
+XTEST_CASE(basic_run_of_string) {
+    std::string one = "Something", two = "Whatever", three = "Something";
+    XASSERT_STRING_EQUAL(one, three, "one and three should have benn equal");
+    XASSERT_STRING_NOT_EQUAL(one, two, "one and two should not be equal");
+} // end case
+
+XTEST_CASE(basic_run_of_pointer) {
+    XASSERT_NOT_NULL("Coffee Cup", "as a coffee cup should have been a non null value");
+    XASSERT_NULL(nullptr, "Why didn't this cup of tea return as null?");
+} // end case
+
+XTEST_CASE(basic_run_of_boolean) {
+    XASSERT_TRUE(true, "should have returned true from a true value");
+    XASSERT_FALSE(false, "should have returned false from a false value");
+} // end case
+
+//
+// XTEST FIXTURE
+//
+void xfixture_basic_cases(XUnitRunner *runner)
+{
+    xtest_run(&basic_run_of_string, runner);
+    xtest_run(&basic_run_of_pointer, runner);
+    xtest_run(&basic_run_of_boolean, runner);
+} // end of fixture
+
+//
+// XTEST RUNNER
+//
+int main(int argc, char **argv)
+{
+    XUnitRunner runner = xtest_start(argc, argv);
+
+    xfixture_basic_cases(&runner);
+
+    return xtest_end(&runner);
+} // end of function main
+```
+
+## Contributing
+
+If you're interested in contributing to this project, please consider opening pull requests or raising issues on the [GitHub repository](https://github.com/trilobite-stdlib/trio-xtest-c) and be sure to read the docs on the owners' [website](https://trilobite.code.blog).
+
+## Feedback and Support
+
+If you come across any issues, have questions, or would like to provide feedback, feel free to open an issue on the [GitHub repository](https://github.com/trilobite-stdlib/trio-xtest-c/issues).
+
+## License
+
+This project is licensed under the [Apache License 2.0](LICENSE).
+
+---
+
+Thank you for choosing this project with the Meson build system. Enjoy coding and building great projects!
 
 ## contact
+
+* * *
 
 If you want to contact me and have a few questions
 regarding the solutions in the programming you can

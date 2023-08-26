@@ -13,10 +13,11 @@ extern "C"
 #endif
 
 #include "trilobite/xtest.h"
+#include "trilobite/xassert.h"
 
-void xtest_fixture_basic_cases(XTestRunner *runner);
-void xtest_fixture_mocking_cases(XTestRunner *runner);
-void xtest_fixture_benchmark_cases(XTestRunner *runner);
+void xfixture_basic_cases(XUnitRunner *runner);
+void xfixture_mocking_cases(XUnitRunner *runner);
+void xfixture_bench_cases(XUnitRunner *runner);
 
 #ifdef __cplusplus
 }

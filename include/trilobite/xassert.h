@@ -12,536 +12,147 @@ extern "C"
 {
 #endif
 
-#include <stdint.h>
-#include <string.h>
-#include <math.h>
+#include "xtest.h"
 
-#define DOUBLE_TOLERANCE 0.00000001 // for the double version
-#define FLOAT_TOLERANCE 0.000       // for the float asserts
+/**
+   This code defines a set of macros used for asserting the equality,
+   inequality, and other relational operators between two values.
 
-    /*
-        overview:
-        >
-        > This function is the main implementation of the assert functions.
-        > It takes in four arguments:
-        >
-        > If the expression evaluates to false, then an error message
-        > is printed.
-        >
-        args:
-        -> expression: the expression to be evaluated
-        -> file: the name of the file where the assertion occurred
-        -> line: the line number where the assertion occurred
-        -> func: the name of the function where the assertion occurred
-    */
-    void _tril_xassert(int expresson, const char *file, int line, const char *func);
+    @param actual - The actual value to be tested
+    @param expected - The expected value to be tested against
+    @param message - The message to be displayed if the assertion fails
 
-/*
-  overview:
-  >
-  > This function checks if an expression is true. If it is false,
-  > it prints an error message and exits the program.
-  >
-  > It also sets a flag that can be used to skip the assertion.
-  >
-
-  usage:
-  >
-  > int val = 5;
-  >
-  > TRIL_XASSERT(val == 5);
-  >
-  args:
-  -> expresson: The expresson being asserted for a test case
+    @returns If the assertion fails, the code will return an error message with
+             the given message.
 */
-#define TRIL_XASSERT(expresson) \
-    _tril_xassert(expresson, __FILE__, __LINE__, __func__);
 
-#define TRIL_XASSERT_ITS_FALSE(expresson) \
-    _tril_xassert(!expresson, __FILE__, __LINE__, __func__);
+#define XASSERT_INT_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_INT_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_INT_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_INT_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_INT_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_INT_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
 
-#define TRIL_XASSERT_ITS_TRUE(expresson) \
-    _tril_xassert(expresson, __FILE__, __LINE__, __func__);
+#define XASSERT_UINT_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_UINT_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_UINT_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_UINT_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_UINT_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_UINT_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
 
-/*
-  overview:
-  >
-  > This function is used to check if the given pointer it is NULL. If
-  > the pointer is not NULL, then an assertion error is thrown.
-  >
-  args:
-  -> ptr: the pointer value being tested
+#define XASSERT_HEX_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_HEX_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_HEX_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_HEX_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_HEX_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_HEX_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+#define XASSERT_OCT_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_OCT_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_OCT_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_OCT_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_OCT_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_OCT_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+#define XASSERT_BIT_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_BIT_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_BIT_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_BIT_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_BIT_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_BIT_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+/**
+    This macro is used to check if a given value is within a certain
+    tolerance of the expected value.
+
+    @param actual: The actual value to be compared
+    @param expected: The value to compare against
+    @param tolerance: The allowed difference between the actual and expected values
+    @param message: The message to be displayed if the comparison fails
+
+    @returns true if the actual is within the tolerance of the expected value, false otherwise.
 */
-#define TRIL_XASSERT_ITS_NULL(ptr)     \
-    _tril_xassert((void *)ptr == NULL, \
-                  __FILE__, __LINE__, __func__)
 
-/*
-  overview:
-  >
-  > This function is used to check if the given pointer is not NULL. If
-  > the pointer is NULL, then an assertion error is thrown.
-  >
-  args:
-  -> ptr: the pointer value being tested
+#define XASSERT_INT_WITHIN(actual, expected, tolerance, message) XASSERT(fabs((actual) - (expected)) <= (tolerance), message)
+#define XASSERT_FLOAT_WITHIN(actual, expected, epsilon, message) XASSERT(fabs((actual) - (expected)) <= (epsilon), message)
+#define XASSERT_DOUBLE_WITHIN(actual, expected, epsilon, message) XASSERT(fabs((actual) - (expected)) <= (epsilon), message)
+
+/**
+    This macro framework provides an easy way to assert the equality,
+    inequality, greater than, less than, greater than or equal to, and
+    less than or equal to of floats and doubles.
+
+    For example, to assert that a float is equal to a certain value within
+    an epsilon, use the macro XASSERT_FLOAT_EQUAL(actual, expected, epsilon, message).
+
+    @param actual: The actual value to be tested
+    @param expected: The expected value to be tested against
+    @param epsilon: The allowed difference between the actual and expected values
+    @param message: The message to be printed if the assertion fails
+
+    @returns: If the assertion passes, the code will continue to execute. If the assertion fails,
+              the code will terminate and the message will be printed.
 */
-#define TRIL_XASSERT_NOT_NULL(ptr)     \
-    _tril_xassert((void *)ptr != NULL, \
-                  __FILE__, __LINE__, __func__)
 
-/*
-  overview:
-  >
-  > This macro will check if a given num is greater than value. If not,
-  > an assertion error is raised.
-  >
-  args:
-  -> num: the main value being tested
-  -> value: the value we are testing with
+#define XASSERT_FLOAT_EQUAL(actual, expected, epsilon, message)     XASSERT(fabs((actual) - (expected)) <= (epsilon), message)
+#define XASSERT_FLOAT_NOT_EQUAL(actual, expected, epsilon, message) XASSERT(fabs((actual) - (expected)) < (epsilon), message)
+#define XASSERT_FLOAT_LESS(actual, expected, message)               XASSERT((actual) < (expected), message)
+#define XASSERT_FLOAT_GREATER(actual, expected, message)            XASSERT((actual) > (expected), message)
+#define XASSERT_FLOAT_GREATER_EQUAL(actual, expected, message)      XASSERT((actual) >= (expected), message)
+#define XASSERT_FLOAT_LESS_EQUAL(actual, expected, message)         XASSERT((actual) <= (expected), message)
+
+#define XASSERT_DOUBLE_EQUAL(actual, expected, epsilon, message)     XASSERT(fabs((actual) - (expected)) <= (epsilon), message)
+#define XASSERT_DOUBLE_NOT_EQUAL(actual, expected, epsilon, message) XASSERT(fabs((actual) - (expected)) < (epsilon), message)
+#define XASSERT_DOUBLE_LESS(actual, expected, message)               XASSERT((actual) < (expected), message)
+#define XASSERT_DOUBLE_GREATER(actual, expected, message)            XASSERT((actual) > (expected), message)
+#define XASSERT_DOUBLE_GREATER_EQUAL(actual, expected, message)      XASSERT((actual) >= (expected), message)
+#define XASSERT_DOUBLE_LESS_EQUAL(actual, expected, message)         XASSERT((actual) <= (expected), message)
+
+/**
+    This framework contains four assert macros to check for null,
+    not null, true and false values.
+
+    @param pointer A pointer to the value to be checked
+    @param expression An expression to be evaluated to check for true or false
+    @param message A message to be printed if the assertion fails
+
+    @returns If the assertion fails, the program will terminate with an error message.
 */
-#define TRIL_XASSERT_GREATER_THAN(num, value) \
-    _tril_xassert(num > value,                \
-                  __FILE__, __LINE__, __func__)
 
-#define TRIL_XASSERT_INT_GREATER_THAN(num, value) \
-    _tril_xassert((int)num > (int)value,          \
-                  __FILE__, __LINE__, __func__)
+#ifdef __cplusplus
+#define XASSERT_NULL(pointer, message)     XASSERT((pointer) == nullptr, message)
+#define XASSERT_NOT_NULL(pointer, message) XASSERT((pointer) != nullptr, message)
+#else
+#define XASSERT_NULL(pointer, message)     XASSERT((pointer) == NULL, message)
+#define XASSERT_NOT_NULL(pointer, message) XASSERT((pointer) != NULL, message)
+#endif
+#define XASSERT_TRUE(expression, message)  XASSERT((expression), message)
+#define XASSERT_FALSE(expression, message) XASSERT(!(expression), message)
 
-#define TRIL_XASSERT_INT8_GREATER_THAN(num, value) \
-    _tril_xassert((int8_t)num > (int8_t)value,     \
-                  __FILE__, __LINE__, __func__)
+/**
+    This macro can be used to compare two strings.
 
-#define TRIL_XASSERT_INT16_GREATER_THAN(num, value) \
-    _tril_xassert((int16_t)num > (int16_t)value,    \
-                  __FILE__, __LINE__, __func__)
+    @param actual: The actual string to be compared
+    @param expected: The expected string to be compared
+    @param message: The message to be displayed when the assertion fails
 
-#define TRIL_XASSERT_INT32_GREATER_THAN(num, value) \
-    _tril_xassert((int32_t)num > (int32_t)value,    \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT64_GREATER_THAN(num, value) \
-    _tril_xassert((int64_t)num > (int64_t)value,    \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT_GREATER_THAN(num, value)         \
-    _tril_xassert((unsigned int)num > (unsigned int)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT8_GREATER_THAN(num, value) \
-    _tril_xassert((uint8_t)num > (uint8_t)value,    \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT16_GREATER_THAN(num, value) \
-    _tril_xassert((uint16_t)num > (uint16_t)value,   \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT32_GREATER_THAN(num, value) \
-    _tril_xassert((uint32_t)num > (uint32_t)value,   \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT64_GREATER_THAN(num, value) \
-    _tril_xassert((uint64_t)num > (uint64_t)value,   \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_STR_GREATER_THAN(str, value)                     \
-    _tril_xassert(strcmp((const char *)str, (const char *)value) > 0, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_FLOAT_GREATER_THAN(num, value) \
-    _tril_xassert((float)num > (float)value,        \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_DOUBLE_GREATER_THAN(num, value) \
-    _tril_xassert((double)num > (double)value,       \
-                  __FILE__, __LINE__, __func__)
-
-/*
-  overview:
-  >
-  > This macro will check if a given num is lesser than value. If not,
-  > an assertion error is raised.
-  >
-  args:
-  -> num: the main value being tested
-  -> value: the value we are testing with
+    @returns If actualis equal to expected, the code will continue. If actual
+             is not equal to expected, the code will be terminated and the message
+             will be displayed.
 */
-#define TRIL_XASSERT_LESSER_THAN(num, value) \
-    _tril_xassert(num < value,               \
-                  __FILE__, __LINE__, __func__)
 
-#define TRIL_XASSERT_INT_LESSER_THAN(num, value) \
-    _tril_xassert((int)num < (int)value,         \
-                  __FILE__, __LINE__, __func__)
+#ifdef __cplusplus
+#define XASSERT_STRING_EQUAL(actual, expected, message) XASSERT((actual) == (expected), message)
+#else
+#define XASSERT_STRING_EQUAL(actual, expected, message) XASSERT(strcmp((actual), (expected)) == 0, message)
+#endif
+
+#ifdef __cplusplus
+#define XASSERT_STRING_NOT_EQUAL(actual, expected, message) XASSERT((actual) != (expected), message)
+#else
+#define XASSERT_STRING_NOT_EQUAL(actual, expected, message) XASSERT(strcmp((actual), (expected)) != 0, message)
+#endif
 
-#define TRIL_XASSERT_INT8_LESSER_THAN(num, value) \
-    _tril_xassert((int8_t)num < (int8_t)value,    \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT16_LESSER_THAN(num, value) \
-    _tril_xassert((int16_t)num < (int16_t)value,   \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT32_LESSER_THAN(num, value) \
-    _tril_xassert((int32_t)num < (int32_t)value,   \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT64_LESSER_THAN(num, value) \
-    _tril_xassert((int64_t)num < (int64_t)value,   \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT_LESSER_THAN(num, value)          \
-    _tril_xassert((unsigned int)num < (unsigned int)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT8_LESSER_THAN(num, value) \
-    _tril_xassert((uint8_t)num < (uint8_t)value,   \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT16_LESSER_THAN(num, value) \
-    _tril_xassert((uint16_t)num < (uint16_t)value,  \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT32_LESSER_THAN(num, value) \
-    _tril_xassert((uint32_t)num < (uint32_t)value,  \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT64_LESSER_THAN(num, value) \
-    _tril_xassert((uint64_t)num < (uint64_t)value,  \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_STR_LESSER_THAN(str, value)                      \
-    _tril_xassert(strcmp((const char *)str, (const char *)value) < 0, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_FLOAT_LESSER_THAN(num, value) \
-    _tril_xassert((float)num < (float)value,       \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_DOUBLE_LESSER_THAN(num, value) \
-    _tril_xassert((double)num < (double)value,      \
-                  __FILE__, __LINE__, __func__)
-
-/*
-  overview:
-  >
-  > This function is used to check whether a given number is greater
-  > than or equal to a given value. If the condition is not met, an
-  > assertion is triggered.
-  >
-  args:
-  -> num: the main value being tested
-  -> value: the value we are testing with
-*/
-#define TRIL_XASSERT_GREATER_OR_EQUAL(num, value) \
-    _tril_xassert(num >= value, __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT_GREATER_OR_EQUAL(num, value) \
-    _tril_xassert((int)num >= (int)value,             \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT8_GREATER_OR_EQUAL(num, value) \
-    _tril_xassert((int8_t)num >= (int8_t)value,        \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT16_GREATER_OR_EQUAL(num, value) \
-    _tril_xassert((int16_t)num >= (int16_t)value,       \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT32_GREATER_OR_EQUAL(num, value) \
-    _tril_xassert((int32_t)num >= (int32_t)value,       \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT64_GREATER_OR_EQUAL(num, value) \
-    _tril_xassert((int64_t)num >= (int64_t)value,       \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT_GREATER_OR_EQUAL(num, value)      \
-    _tril_xassert((unsigned int)num >= (unsigned int)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT8_GREATER_OR_EQUAL(num, value) \
-    _tril_xassert((uint8_t)num >= (uint8_t)value,       \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT16_GREATER_OR_EQUAL(num, value) \
-    _tril_xassert((uint16_t)num >= (uint16_t)value,      \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT32_GREATER_OR_EQUAL(num, value) \
-    _tril_xassert((uint32_t)num >= (uint32_t)value,      \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT64_GREATER_OR_EQUAL(num, value) \
-    _tril_xassert((uint64_t)num >= (uint64_t)value,      \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_FLOAT_GREATER_OR_EQUAL(num, value) \
-    _tril_xassert((float)num >= (float)value,           \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_DOUBLE_GREATER_OR_EQUAL(num, value) \
-    _tril_xassert((double)num >= (double)value,          \
-                  __FILE__, __LINE__, __func__)
-
-/*
-  overview:
-  >
-  > This function is used to check whether a given number is lesser
-  > than or equal to a given value. If the condition is not met, an
-  > assertion is triggered.
-  >
-  args:
-  -> num: the main value being tested
-  -> value: the value we are testing with
-*/
-#define TRIL_XASSERT_LESSER_OR_EQUAL(num, value) \
-    _tril_xassert(num <= value, __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT_LESSER_OR_EQUAL(num, value) \
-    _tril_xassert((int)num <= (int)value,            \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT8_LESSER_OR_EQUAL(num, value) \
-    _tril_xassert((int8_t)num <= (int8_t)value,       \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT16_LESSER_OR_EQUAL(num, value) \
-    _tril_xassert((int16_t)num <= (int16_t)value,      \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT32_LESSER_OR_EQUAL(num, value) \
-    _tril_xassert((int32_t)num <= (int32_t)value,      \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT64_LESSER_OR_EQUAL(num, value) \
-    _tril_xassert((int64_t)num <= (int64_t)value,      \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT_LESSER_OR_EQUAL(num, value)       \
-    _tril_xassert((unsigned int)num <= (unsigned int)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT8_LESSER_OR_EQUAL(num, value) \
-    _tril_xassert((uint8_t)num <= (uint8_t)value,      \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT16_LESSER_OR_EQUAL(num, value) \
-    _tril_xassert((uint16_t)num <= (uint16_t)value,     \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT32_LESSER_OR_EQUAL(num, value) \
-    _tril_xassert((uint32_t)num <= (uint32_t)value,     \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT64_LESSER_OR_EQUAL(num, value) \
-    _tril_xassert((uint64_t)num <= (uint64_t)value,     \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_FLOAT_LESSER_OR_EQUAL(num, value) \
-    _tril_xassert((float)num <= (float)value,          \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_DOUBLE_LESSER_OR_EQUAL(num, value) \
-    _tril_xassert((double)num <= (double)value,         \
-                  __FILE__, __LINE__, __func__)
-
-/*
-  overview:
-  >
-  > This macro is used to assert that a given number is equal to a
-  > given value. It takes two arguments - num and value - and
-  > compares them to see if they are equal. If not, it will throw
-  > an error with the file, line, and function name.
-  >
-  args:
-  -> num: the main value being tested
-  -> value: the value we are testing with
-*/
-#define TRIL_XASSERT_ITS_EQUAL(num, value) \
-    _tril_xassert(num == value, __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT_ITS_EQUAL(num, value) \
-    _tril_xassert((int)num == (int)value,      \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT8_ITS_EQUAL(num, value) \
-    _tril_xassert((int8_t)num == (int8_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT16_ITS_EQUAL(num, value)  \
-    _tril_xassert((int16_t)num == (int16_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT32_ITS_EQUAL(num, value)  \
-    _tril_xassert((int32_t)num == (int32_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT64_ITS_EQUAL(num, value)  \
-    _tril_xassert((int64_t)num == (int64_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT_ITS_EQUAL(num, value)             \
-    _tril_xassert((unsigned int)num == (unsigned int)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT8_ITS_EQUAL(num, value)  \
-    _tril_xassert((uint8_t)num == (uint8_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT16_ITS_EQUAL(num, value)   \
-    _tril_xassert((uint16_t)num == (uint16_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT32_ITS_EQUAL(num, value)   \
-    _tril_xassert((uint32_t)num == (uint32_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT64_ITS_EQUAL(num, value)   \
-    _tril_xassert((uint64_t)num == (uint64_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_BIT_ITS_EQUAL(num, value)              \
-    _tril_xassert((unsigned int)num == (unsigned int)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_HEX_ITS_EQUAL(num, value)              \
-    _tril_xassert((unsigned int)num == (unsigned int)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_OCT_ITS_EQUAL(num, value)              \
-    _tril_xassert((unsigned int)num == (unsigned int)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_STR_ITS_EQUAL(str, value)                       \
-    _tril_xassert(!(strcmp(str, value)), \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_STR_ITS_EQUAL_LEN(str, value) \
-    _tril_xassert(strlen(str) == value,            \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_CHAR_ITS_EQUAL(str, value)         \
-    _tril_xassert((const char)str == (const char)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_FLOAT_ITS_EQUAL(num, value)                     \
-    _tril_xassert(fabs((float)num - (float)value) > FLOAT_TOLERANCE, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_DOUBLE_ITS_EQUAL(num, value)                       \
-    _tril_xassert(fabs((double)num - (double)value) > DOUBLE_TOLERANCE, \
-                  __FILE__, __LINE__, __func__)
-
-/*
-  overview:
-  >
-  > This function is used to assert that a given num is not equal
-  > to a given value. It is used to ensure that the code is running
-  > as expected. "_tril_xassert()" is a helper function that is
-  > used to handle the actual assertion. It takes in the comparison
-  > result, the file name, line number, and function name as parameters.
-  >
-  args:
-  -> num: the main value being tested
-  -> value: the value we are testing with
-*/
-#define TRIL_XASSERT_NOT_EQUAL(num, value) \
-    _tril_xassert(num != value, __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT_NOT_EQUAL(num, value) \
-    _tril_xassert((int)num != (int)value,      \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT8_NOT_EQUAL(num, value) \
-    _tril_xassert((int8_t)num != (int8_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT16_NOT_EQUAL(num, value)  \
-    _tril_xassert((int16_t)num != (int16_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT32_NOT_EQUAL(num, value)  \
-    _tril_xassert((int32_t)num != (int32_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_INT64_NOT_EQUAL(num, value)  \
-    _tril_xassert((int64_t)num != (int64_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT_NOT_EQUAL(num, value)             \
-    _tril_xassert((unsigned int)num != (unsigned int)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT8_NOT_EQUAL(num, value)  \
-    _tril_xassert((uint8_t)num != (uint8_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT16_NOT_EQUAL(num, value)   \
-    _tril_xassert((uint16_t)num != (uint16_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT32_NOT_EQUAL(num, value)   \
-    _tril_xassert((uint32_t)num != (uint32_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_UINT64_NOT_EQUAL(num, value)   \
-    _tril_xassert((uint64_t)num != (uint64_t)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_BIT_NOT_EQUAL(num, value)              \
-    _tril_xassert((unsigned int)num != (unsigned int)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_HEX_NOT_EQUAL(num, value)              \
-    _tril_xassert((unsigned int)num != (unsigned int)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_OCT_NOT_EQUAL(num, value)              \
-    _tril_xassert((unsigned int)num != (unsigned int)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_STR_NOT_EQUAL(str, value)                      \
-    _tril_xassert((strcmp(str, value)), \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_CHAR_NOT_EQUAL(str, value)         \
-    _tril_xassert((const char)str != (const char)value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_STR_NOT_EQUAL_LEN(str, value) \
-    _tril_xassert(strlen(str) != value,            \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_FLOAT_NOT_EQUAL(num, value)                      \
-    _tril_xassert(fabs((float)num - (float)value) <= FLOAT_TOLERANCE, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_DOUBLE_NOT_EQUAL(num, value)                        \
-    _tril_xassert(fabs((double)num - (double)value) <= DOUBLE_TOLERANCE, \
-                  __FILE__, __LINE__, __func__)
-
-/*
-  overview:
-  >
-  > This function checks if a given number is within a given range
-  > (min_value and max_value). If it is not, an assertion is triggered.
-  >
-  args:
-  -> num: the main value being tested
-  -> min_value: the minimum value in a range to search
-  -> max_value: the maximum value in a range to search
-*/
-#define TRIL_XASSERT_INT_WITHIN_RANGE(num, min_value, max_value)            \
-    _tril_xassert((int)num >= (int)min_value && (int)num <= (int)max_value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_FLOAT_WITHIN_RANGE(num, min_value, max_value)                  \
-    _tril_xassert((float)num >= (float)min_value && (float)num <= (float)max_value, \
-                  __FILE__, __LINE__, __func__)
-
-#define TRIL_XASSERT_DOUBLE_WITHIN_RANGE(num, min_value, max_value)                     \
-    _tril_xassert((double)num >= (double)min_value && (double)num <= (double)max_value, \
-                  __FILE__, __LINE__, __func__)
 
 #ifdef __cplusplus
 }

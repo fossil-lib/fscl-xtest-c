@@ -5,13 +5,12 @@
    website: <https://trilobite.code.blog>
 */
 #include "xtest_fixtures.h"
+#include "trilobite/xmock.h"
 
 //
 // XTEST FIXTURE
 //
-void xtest_fixture_mocking_cases(XTestRunner *runner)
+void xtest_fixture_mocking_cases(XUnitRunner *runner)
 {
-
-    // list test here
-
+    // TODO rewrite mocks for 3.0
 } // end of fixture
