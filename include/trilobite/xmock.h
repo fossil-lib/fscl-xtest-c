@@ -12,7 +12,7 @@ extern "C"
 {
 #endif
 
-#include <stddef.h>
+#include "xtest.h"
 
 //
 // STUB
