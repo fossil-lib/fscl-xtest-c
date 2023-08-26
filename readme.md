@@ -55,6 +55,104 @@ Before you proceed, ensure you have the following prerequisites installed:
    meson install -C builddir
    ```
 
+## Example
+
+Example of the usage in C
+
+```c
+#include "trilobite/xtest.h" // basic test tools
+#include "trilobite/xassert.h" // extra asserts
+
+//
+// XUNIT TEST CASES
+//
+XTEST_CASE(basic_run_of_string) {
+    char *one = "Something", *two = "Whatever", *three = "Something";
+    XASSERT_STRING_EQUAL(one, three, "one and three should have benn equal");
+    XASSERT_STRING_NOT_EQUAL(one, two, "one and two should not be equal");
+} // end case
+
+XTEST_CASE(basic_run_of_pointer) {
+    XASSERT_NOT_NULL("Coffee Cup", "as a coffee cup should have been a non null value");
+    XASSERT_NULL(NULL, "Why didn't this cup of tea return as null?");
+} // end case
+
+XTEST_CASE(basic_run_of_boolean) {
+    XASSERT_TRUE(true, "should have returned true from a true value");
+    XASSERT_FALSE(false, "should have returned false from a false value");
+} // end case
+
+//
+// XTEST FIXTURE
+//
+void xfixture_basic_cases(XUnitRunner *runner)
+{
+    xtest_run(&basic_run_of_string, runner);
+    xtest_run(&basic_run_of_pointer, runner);
+    xtest_run(&basic_run_of_boolean, runner);
+} // end of fixture
+
+//
+// XTEST RUNNER
+//
+int main(int argc, char **argv)
+{
+    XUnitRunner runner = xtest_start(argc, argv);
+
+    xfixture_basic_cases(&runner);
+
+    return xtest_end(&runner);
+} // end of function main
+```
+
+Example of the usage in C
+
+```cpp
+#include "trilobite/xtest.h" // basic test tools
+#include "trilobite/xassert.h" // extra asserts
+
+//
+// XUNIT TEST CASES
+//
+XTEST_CASE(basic_run_of_string) {
+    std::string one = "Something", two = "Whatever", three = "Something";
+    XASSERT_STRING_EQUAL(one, three, "one and three should have benn equal");
+    XASSERT_STRING_NOT_EQUAL(one, two, "one and two should not be equal");
+} // end case
+
+XTEST_CASE(basic_run_of_pointer) {
+    XASSERT_NOT_NULL("Coffee Cup", "as a coffee cup should have been a non null value");
+    XASSERT_NULL(nullptr, "Why didn't this cup of tea return as null?");
+} // end case
+
+XTEST_CASE(basic_run_of_boolean) {
+    XASSERT_TRUE(true, "should have returned true from a true value");
+    XASSERT_FALSE(false, "should have returned false from a false value");
+} // end case
+
+//
+// XTEST FIXTURE
+//
+void xfixture_basic_cases(XUnitRunner *runner)
+{
+    xtest_run(&basic_run_of_string, runner);
+    xtest_run(&basic_run_of_pointer, runner);
+    xtest_run(&basic_run_of_boolean, runner);
+} // end of fixture
+
+//
+// XTEST RUNNER
+//
+int main(int argc, char **argv)
+{
+    XUnitRunner runner = xtest_start(argc, argv);
+
+    xfixture_basic_cases(&runner);
+
+    return xtest_end(&runner);
+} // end of function main
+```
+
 ## Contributing
 
 If you're interested in contributing to this project, please consider opening pull requests or raising issues on the [GitHub repository](https://github.com/trilobite-stdlib/trio-xtest-c) and be sure to read the docs on the owners' [website](https://trilobite.code.blog).
