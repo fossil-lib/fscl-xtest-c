@@ -33,6 +33,34 @@ extern "C"
 #define XASSERT_INT_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
 #define XASSERT_INT_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
 
+#define XASSERT_INT8_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_INT8_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_INT8_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_INT8_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_INT8_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_INT8_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+#define XASSERT_INT16_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_INT16_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_INT16_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_INT16_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_INT16_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_INT16_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+#define XASSERT_INT32_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_INT32_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_INT32_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_INT32_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_INT32_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_INT32_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+#define XASSERT_INT64_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_INT64_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_INT64_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_INT64_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_INT64_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_INT64_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
 #define XASSERT_UINT_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
 #define XASSERT_UINT_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
 #define XASSERT_UINT_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
@@ -40,12 +68,68 @@ extern "C"
 #define XASSERT_UINT_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
 #define XASSERT_UINT_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
 
+#define XASSERT_UINT8_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_UINT8_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_UINT8_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_UINT8_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_UINT8_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_UINT8_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+#define XASSERT_UINT16_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_UINT16_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_UINT16_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_UINT16_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_UINT16_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_UINT16_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+#define XASSERT_UINT32_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_UINT32_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_UINT32_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_UINT32_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_UINT32_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_UINT32_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+#define XASSERT_UINT64_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_UINT64_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_UINT64_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_UINT64_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_UINT64_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_UINT64_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
 #define XASSERT_HEX_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
 #define XASSERT_HEX_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
 #define XASSERT_HEX_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
 #define XASSERT_HEX_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
 #define XASSERT_HEX_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
 #define XASSERT_HEX_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+#define XASSERT_HEX8_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_HEX8_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_HEX8_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_HEX8_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_HEX8_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_HEX8_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+#define XASSERT_HEX16_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_HEX16_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_HEX16_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_HEX16_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_HEX16_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_HEX16_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+#define XASSERT_HEX32_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_HEX32_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_HEX32_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_HEX32_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_HEX32_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_HEX32_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+#define XASSERT_HEX64_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_HEX64_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_HEX64_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_HEX64_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_HEX64_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_HEX64_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
 
 #define XASSERT_OCT_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
 #define XASSERT_OCT_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
@@ -80,7 +164,7 @@ extern "C"
 #define XASSERT_OCT_WITHIN(actual, expected, tolerance, message) XASSERT(fabs((actual) - (expected)) <= (tolerance), message)
 #define XASSERT_FLOAT_WITHIN(actual, expected, epsilon, message) XASSERT(fabs((actual) - (expected)) <= (epsilon), message)
 #define XASSERT_DOUBLE_WITHIN(actual, expected, epsilon, message) XASSERT(fabs((actual) - (expected)) <= (epsilon), message)
-#define XASSERT_CHAR_WITHIN_RANGE(actual, min, max, message) XASSERT((value) > (min) || (value) < (max), message)
+#define XASSERT_CHAR_WITHIN(actual, min, max, message) XASSERT((value) > (min) || (value) < (max), message)
 
 /**
     This macro framework provides an easy way to assert the equality,
@@ -127,10 +211,15 @@ extern "C"
 #ifdef __cplusplus
 #define XASSERT_NULL(pointer, message)     XASSERT((pointer) == nullptr, message)
 #define XASSERT_NOT_NULL(pointer, message) XASSERT((pointer) != nullptr, message)
+#define XASSERT_EMPTY(pointer, message)     XASSERT((pointer) == nullptr, message)
+#define XASSERT_NOT_EMPTY(pointer, message) XASSERT((pointer) != nullptr, message)
 #else
 #define XASSERT_NULL(pointer, message)     XASSERT((pointer) == NULL, message)
 #define XASSERT_NOT_NULL(pointer, message) XASSERT((pointer) != NULL, message)
+#define XASSERT_EMPTY(pointer, message)     XASSERT((pointer) == NULL, message)
+#define XASSERT_NOT_EMPTY(pointer, message) XASSERT((pointer) != NULL, message)
 #endif
+#define XASSERT_UNLESS(expression, message)  XASSERT((expression), message)
 #define XASSERT_TRUE(expression, message)  XASSERT((expression), message)
 #define XASSERT_FALSE(expression, message) XASSERT(!(expression), message)
 
