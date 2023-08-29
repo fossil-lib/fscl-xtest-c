@@ -74,8 +74,13 @@ extern "C"
 */
 
 #define XASSERT_INT_WITHIN(actual, expected, tolerance, message) XASSERT(fabs((actual) - (expected)) <= (tolerance), message)
+#define XASSERT_UINT_WITHIN(actual, expected, tolerance, message) XASSERT(fabs((actual) - (expected)) <= (tolerance), message)
+#define XASSERT_HEX_WITHIN(actual, expected, tolerance, message) XASSERT(fabs((actual) - (expected)) <= (tolerance), message)
+#define XASSERT_BIN_WITHIN(actual, expected, tolerance, message) XASSERT(fabs((actual) - (expected)) <= (tolerance), message)
+#define XASSERT_OCT_WITHIN(actual, expected, tolerance, message) XASSERT(fabs((actual) - (expected)) <= (tolerance), message)
 #define XASSERT_FLOAT_WITHIN(actual, expected, epsilon, message) XASSERT(fabs((actual) - (expected)) <= (epsilon), message)
 #define XASSERT_DOUBLE_WITHIN(actual, expected, epsilon, message) XASSERT(fabs((actual) - (expected)) <= (epsilon), message)
+#define XASSERT_CHAR_WITHIN_RANGE(actual, min, max, message) XASSERT((value) > (min) || (value) < (max), message)
 
 /**
     This macro framework provides an easy way to assert the equality,
@@ -153,6 +158,22 @@ extern "C"
 #define XASSERT_STRING_NOT_EQUAL(actual, expected, message) XASSERT(strcmp((actual), (expected)) != 0, message)
 #endif
 
+#define XASSERT_STRING_LENGTH(actual, expected, message) XASSERT(strlen((actual)) == (expected), message)
+
+// char and wchar types
+#define XASSERT_CHAR_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_CHAR_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_CHAR_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_CHAR_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_CHAR_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_CHAR_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+
+#define XASSERT_WCHAR_EQUAL(actual, expected, message)         XASSERT((actual) == (expected), message)
+#define XASSERT_WCHAR_NOT_EQUAL(actual, expected, message)     XASSERT((actual) != (expected), message)
+#define XASSERT_WCHAR_LESS(actual, expected, message)          XASSERT((actual) < (expected), message)
+#define XASSERT_WCHAR_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
+#define XASSERT_WCHAR_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
+#define XASSERT_WCHAR_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
 
 #ifdef __cplusplus
 }
