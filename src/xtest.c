@@ -190,3 +190,21 @@ void xassert(bool expression, const char *message) {
     } // end if
     printf(" --> %s:\n", ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET);
 } // end of func
+
+/**
+    @brief Expected that the expression is true, and prints a message if it is not.
+
+    @param expression The expression to check.
+    @param message The message to print if the expression is false.
+
+    @return void
+*/
+void xexpect(bool expression, const char *message) {
+
+    XTEST_PASS_SCAN = true;
+    if (!expression) {
+        printf(" --> %s: %s\n", ANSI_COLOR_RED "Failed" ANSI_COLOR_RESET, message);
+        XTEST_PASS_SCAN = false;
+    } // end if
+    printf(" --> %s:\n", ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET);
+} // end of func
