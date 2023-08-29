@@ -131,6 +131,7 @@ void xtest_run(XTestCase *test_case, XUnitRunner *runner);
 void xbench_run(XBench *benchmark, XUnitRunner *runner);
 void xtest_set_setup_teardown(XUnitRunner *runner, void (*setup_func)(void), void (*teardown_func)(void));
 void xassert(bool expression, const char *message);
+void xexpect(bool expression, const char *message);
 
 /**
     @brief This macro adds an assertion to the current test case.
@@ -143,6 +144,18 @@ void xassert(bool expression, const char *message);
               nothing happens.
 */
 #define XASSERT(expression, message) xassert(expression, message)
+
+/**
+    @brief This macro adds an expectation to the current test case.
+
+    @param expression: The expression to evaluate.
+    @param message: The message to display if the assertion fails.
+
+    @returns: If the expression evaluates to false, the assertion fails and
+              the message is displayed. Otherwise, the assertion passes and
+              nothing happens.
+*/
+#define XEXPECT(expression, message) xexcept(expression, message)
 
 /**
     @brief Asserts whether a test passes or fails
