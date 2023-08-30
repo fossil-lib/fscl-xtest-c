@@ -15,6 +15,7 @@ extern "C"
 #include "trilobite/xtest.h"
 #include "trilobite/xassert.h"
 #include "trilobite/xexpect.h"
+#include "trilobite/xbdd.h"
 
 #include <stdint.h>
 
