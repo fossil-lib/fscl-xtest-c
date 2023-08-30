@@ -40,7 +40,7 @@ extern "C"
             fprintf(stderr, "Error: Invalid use of THEN\n"); \
         } else { \
             printf("Then %s\n", description); \
-            (void)thenExecuted;
+            (void)thenExecuted; \
         } \
     } else
 
