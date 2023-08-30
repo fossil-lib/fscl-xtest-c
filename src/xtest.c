@@ -117,7 +117,7 @@ void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
 
 
     puts("Assertions: DONE");
-    if (XTEST_PASS_SCAN == true) {
+    if (XASSERT_PASS_SCAN == true || XEXPECT_PASS_SCAN == true) {
         runner->passed_count++;
     } else {
         runner->failed_count++;
