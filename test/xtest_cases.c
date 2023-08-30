@@ -538,7 +538,8 @@ XTEST_CASE(xbdd_valid_login) {
             THEN("the login should be successful") {
                 // Check the expected outcome
                 // Simulate login validation
-                XEXPECT_STRING_EQUAL(inputPassword, validPassword, "Invalid username or password");
+                XEXPECT_STRING_EQUAL(inputUsername, validUsername, "Invalid username");
+                XEXPECT_STRING_EQUAL(inputPassword, validPassword, "Invalid password");
             }
         }
 
@@ -550,7 +551,8 @@ XTEST_CASE(xbdd_valid_login) {
             THEN("the login should fail with an error message") {
                 // Check the expected outcome
                 // Simulate login validation
-                XEXPECT_STRING_NOT_EQUAL(inputPassword, validPassword, "Invalid username or password");
+                XEXPECT_STRING_NOT_EQUAL(inputUsername, validUsername, "Valid username but password should fail");
+                XEXPECT_STRING_NOT_EQUAL(inputPassword, validPassword, "Invalid password but didn't block");
             }
         }
     }
