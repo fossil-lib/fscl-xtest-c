@@ -464,9 +464,9 @@ XTEST_CASE(xexpect_run_of_boolean) {
 
 
 XTEST_CASE(xbdd_user_account) {
-        GIVEN("a user's account with sufficient balance") {
-        // Set up the context
-        bool givenExecuted = true;
+    GIVEN("a user's account with sufficient balance") {
+    // Set up the context
+    bool givenExecuted = true;
 
         WHEN("the user requests a withdrawal of $200") {
             // Perform the withdrawal action
