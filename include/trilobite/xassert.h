@@ -144,6 +144,24 @@ extern "C"
 #define XASSERT_BIT_GREATER(actual, expected, message)       XASSERT((actual) > (expected), message)
 #define XASSERT_BIT_LESS_EQUAL(actual, expected, message)    XASSERT((actual) <= (expected), message)
 #define XASSERT_BIT_GREATER_EQUAL(actual, expected, message) XASSERT((actual) >= (expected), message)
+#define XASSERT_BIT_NOT_HIGH(value, bitIndex, message) XASSERT(!((value) & (1 << (bitIndex))), message)
+#define XASSERT_BIT_HIGH(value, bitIndex, message) XASSERT((value) & (1 << (bitIndex)), message)
+#define XASSERT_BIT_NOT_LOW(value, bitIndex, message) XASSERT((value) & (1 << (bitIndex)), message)
+#define XASSERT_BIT_LOW(value, bitIndex, message) XASSERT(!((value) & (1 << (bitIndex))), message)
+#define XASSERT_BITS_NOT_HIGH(value, mask, message) XASSERT(((value) & (mask)) != (mask), message)
+#define XASSERT_BITS_HIGH(value, mask, message) XASSERT(((value) & (mask)) == (mask), message)
+#define XASSERT_BITS_NOT_LOW(value, mask, message) XASSERT(((value) & (mask)) != 0, message)
+#define XASSERT_BITS_LOW(value, mask, message) XASSERT(((value) & (mask)) == 0, message)
+#define XASSERT_BITS_NOT_EQUAL(actual, expected, mask, message) XASSERT(((actual) & (mask)) != ((expected) & (mask)), message)
+#define XASSERT_BITS_EQUAL(actual, expected, mask, message) XASSERT(((actual) & (mask)) == ((expected) & (mask)), message)
+#define XASSERT_BITS_NOT_LESS(actual, expected, mask, message) XASSERT(((actual) & (mask)) >= ((expected) & (mask)), message)
+#define XASSERT_BITS_LESS(actual, expected, mask, message) XASSERT(((actual) & (mask)) < ((expected) & (mask)), message)
+#define XASSERT_BITS_NOT_GREATER(actual, expected, mask, message) XASSERT(((actual) & (mask)) <= ((expected) & (mask)), message)
+#define XASSERT_BITS_GREATER(actual, expected, mask, message) XASSERT(((actual) & (mask)) > ((expected) & (mask)), message)
+#define XASSERT_BITS_NOT_LESS_EQUAL(actual, expected, mask, message) XASSERT(((actual) & (mask)) > ((expected) & (mask)), message)
+#define XASSERT_BITS_LESS_EQUAL(actual, expected, mask, message) XASSERT(((actual) & (mask)) <= ((expected) & (mask)), message)
+#define XASSERT_BITS_NOT_GREATER_EQUAL(actual, expected, mask, message) XASSERT(((actual) & (mask)) < ((expected) & (mask)), message)
+#define XASSERT_BITS_GREATER_EQUAL(actual, expected, mask, message) XASSERT(((actual) & (mask)) >= ((expected) & (mask)), message)
 
 /**
     This macro is used to check if a given value is within a certain
@@ -189,6 +207,15 @@ extern "C"
 #define XASSERT_FLOAT_GREATER(actual, expected, message)            XASSERT((actual) > (expected), message)
 #define XASSERT_FLOAT_GREATER_EQUAL(actual, expected, message)      XASSERT((actual) >= (expected), message)
 #define XASSERT_FLOAT_LESS_EQUAL(actual, expected, message)         XASSERT((actual) <= (expected), message)
+#define XASSERT_FLOAT_IS_NOT_INF(value, message) XASSERT(!isinf(value) || (value) <= 0, message)
+#define XASSERT_FLOAT_IS_INF(value, message) XASSERT(isinf(value) && (value) > 0, message)
+#define XASSERT_FLOAT_IS_NOT_NEG_INF(value, message) XASSERT(!isinf(value) || (value) >= 0, message)
+#define XASSERT_FLOAT_IS_NEG_INF(value, message) XASSERT(isinf(value) && (value) < 0, message)
+#define XASSERT_FLOAT_IS_NOT_FINITE(value, message) XASSERT(!isfinite(value), message)
+#define XASSERT_FLOAT_IS_FINITE(value, message) XASSERT(isfinite(value), message)
+#define XASSERT_FLOAT_IS_NOT_NAN(value, message) XASSERT(!isnan(value), message)
+#define XASSERT_FLOAT_IS_NAN(value, message) XASSERT(isnan(value), message)
+
 
 #define XASSERT_DOUBLE_EQUAL(actual, expected, epsilon, message)     XASSERT(fabs((actual) - (expected)) <= (epsilon), message)
 #define XASSERT_DOUBLE_NOT_EQUAL(actual, expected, epsilon, message) XASSERT(fabs((actual) - (expected)) < (epsilon), message)
@@ -196,6 +223,14 @@ extern "C"
 #define XASSERT_DOUBLE_GREATER(actual, expected, message)            XASSERT((actual) > (expected), message)
 #define XASSERT_DOUBLE_GREATER_EQUAL(actual, expected, message)      XASSERT((actual) >= (expected), message)
 #define XASSERT_DOUBLE_LESS_EQUAL(actual, expected, message)         XASSERT((actual) <= (expected), message)
+#define XASSERT_DOUBLE_IS_NOT_INF(value, message) XASSERT(!isinf(value) || (value) <= 0, message)
+#define XASSERT_DOUBLE_IS_INF(value, message) XASSERT(isinf(value) && (value) > 0, message)
+#define XASSERT_DOUBLE_IS_NOT_NEG_INF(value, message) XASSERT(!isinf(value) || (value) >= 0, message)
+#define XASSERT_DOUBLE_IS_NEG_INF(value, message) XASSERT(isinf(value) && (value) < 0, message)
+#define XASSERT_DOUBLE_IS_NOT_FINITE(value, message) XASSERT(!isfinite(value), message)
+#define XASSERT_DOUBLE_IS_FINITE(value, message) XASSERT(isfinite(value), message)
+#define XASSERT_DOUBLE_IS_NOT_NAN(value, message) XASSERT(!isnan(value), message)
+#define XASSERT_DOUBLE_IS_NAN(value, message) XASSERT(isnan(value), message)
 
 /**
     This framework contains four assert macros to check for null,
