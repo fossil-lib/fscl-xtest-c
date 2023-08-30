@@ -182,13 +182,14 @@ void xtest_set_setup_teardown(XUnitRunner *runner, void (*setup_func)(void), voi
     @return void
 */
 void xassert(bool expression, const char *message) {
-    if (!expression) {
+    if (XASSERT_PASS_SCAN == false) {
+        return;
+    } else if (!expression) {
         printf(" --> %s: %s\n", ANSI_COLOR_RED "Failed" ANSI_COLOR_RESET, message);
         XASSERT_PASS_SCAN = false;
-    } else if (XASSERT_PASS_SCAN == false) {
-        XASSERT_PASS_SCAN = false;
-    }
-    printf(" --> %s:\n", ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET);
+    } else {
+        printf(" --> %s:\n", ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET);
+    } // end if, else if, else
 } // end of func
 
 /**
