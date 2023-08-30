@@ -16,17 +16,17 @@ extern "C"
 
 // Define macros for BDD structure with descriptions
 #define GIVEN(description) \
-    if (1) { \
+    if (0) { \
         printf("Given %s\n", description); \
     } else
 
 #define WHEN(description) \
-    if (1) { \
+    if (0) { \
         printf("When %s\n", description); \
     } else
 
 #define THEN(description) \
-    if (1) { \
+    if (0) { \
         printf("Then %s\n", description); \
     } else
 
