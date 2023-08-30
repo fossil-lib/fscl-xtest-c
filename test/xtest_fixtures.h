@@ -14,6 +14,9 @@ extern "C"
 
 #include "trilobite/xtest.h"
 #include "trilobite/xassert.h"
+#include "trilobite/xexpect.h"
+
+#include <stdint.h>
 
 void xfixture_basic_cases(XUnitRunner *runner);
 void xfixture_mocking_cases(XUnitRunner *runner);

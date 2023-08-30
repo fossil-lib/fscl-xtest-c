@@ -5,10 +5,10 @@
    website: <https://trilobite.code.blog>
 */
 #include "trilobite/xtest.h"
-#include "trilobite/xassert.h"
 
 // Static array to hold test cases
-static bool XTEST_PASS_SCAN = true;
+static bool XEXPECT_PASS_SCAN = true;
+static bool XASSERT_PASS_SCAN = true;
 
 // ANSI escape code macros for text color
 #define ANSI_COLOR_RED     "\x1b[31m"
@@ -115,7 +115,7 @@ void xtest_run(XTestCase *test_case, XUnitRunner *runner) {
 
 
     puts("Assertions: DONE");
-    if (XTEST_PASS_SCAN == true) {
+    if (XASSERT_PASS_SCAN == true || XEXPECT_PASS_SCAN == true) {
         runner->passed_count++;
     } else {
         runner->failed_count++;
@@ -182,11 +182,30 @@ void xtest_set_setup_teardown(XUnitRunner *runner, void (*setup_func)(void), voi
     @return void
 */
 void xassert(bool expression, const char *message) {
+    if (XASSERT_PASS_SCAN == false) {
+        return;
+    } else if (!expression) {
+        printf(" --> %s: %s\n", ANSI_COLOR_RED "Failed" ANSI_COLOR_RESET, message);
+        XASSERT_PASS_SCAN = false;
+    } else {
+        printf(" --> %s:\n", ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET);
+    } // end if, else if, else
+} // end of func
 
-    XTEST_PASS_SCAN = true;
+/**
+    @brief Expected that the expression is true, and prints a message if it is not.
+
+    @param expression The expression to check.
+    @param message The message to print if the expression is false.
+
+    @return void
+*/
+void xexpect(bool expression, const char *message) {
+    XEXPECT_PASS_SCAN = true;
+
     if (!expression) {
         printf(" --> %s: %s\n", ANSI_COLOR_RED "Failed" ANSI_COLOR_RESET, message);
-        XTEST_PASS_SCAN = false;
+        XEXPECT_PASS_SCAN = false;
     } // end if
     printf(" --> %s:\n", ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET);
 } // end of func
