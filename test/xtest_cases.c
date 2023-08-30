@@ -462,6 +462,30 @@ XTEST_CASE(xexpect_run_of_boolean) {
     XEXPECT_FALSE(false, "should have returned false from a false value");
 } // end case
 
+
+XTEST_CASE(xbdd_test_case) {
+    GIVEN("a user's account with sufficient balance") {
+        // Set up the account with a balance of $1000
+        double accountBalance = 1000.0;
+        bool givenExecuted = true;
+
+        WHEN("the user requests a withdrawal of $200") {
+            // Perform the withdrawal action
+            double withdrawalAmount = 200.0;
+            bool whenExecuted = true;
+            
+            THEN("the withdrawal amount should be deducted from the account balance") {
+                // Check if the account balance is as expected after withdrawal
+                accountBalance -= withdrawalAmount;
+                bool thenExecuted = true;
+
+                // Assertion
+                XEXPECT_DOUBLE_EQUAL(accountBalance, 800.0, 0.01, "Account balance is incorrect after withdrawal");
+            }
+        }
+    }
+} // end of case
+
 //
 // XTEST FIXTURE
 //
@@ -512,4 +536,6 @@ void xfixture_basic_cases(XUnitRunner *runner)
     xtest_run(&xexpect_run_of_string, runner);
     xtest_run(&xexpect_run_of_pointer, runner);
     xtest_run(&xexpect_run_of_boolean, runner);
+    
+    xtest_run(&xbdd_test_case, runner);
 } // end of fixture
