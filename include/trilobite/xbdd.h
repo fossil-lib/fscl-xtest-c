@@ -27,6 +27,7 @@ extern "C"
         static bool whenExecuted = true; \
         if (!givenExecuted || whenExecuted) { \
             fprintf(stderr, "Error: Invalid use of WHEN\n"); \
+            whenExecuted = false; \
         } else { \
             printf("When %s\n", description); \
             whenExecuted = true; \
@@ -38,6 +39,7 @@ extern "C"
         static bool thenExecuted = true; \
         if (!givenExecuted || !whenExecuted || thenExecuted) { \
             fprintf(stderr, "Error: Invalid use of THEN\n"); \
+            thenExecuted = false; \
         } else { \
             printf("Then %s\n", description); \
             thenExecuted = true; \
