@@ -14,34 +14,20 @@ extern "C"
 
 #include "xtest.h"
 
-// Define macros for BDD structure
+// Define macros for BDD structure with descriptions
 #define GIVEN(description) \
-    if (true) { \
+    if (1) { \
         printf("Given %s\n", description); \
-        static bool givenExecuted = true; \
-        (void)givenExecuted; \
     } else
 
 #define WHEN(description) \
-    if (true) { \
-        static bool whenExecuted = true; \
-        if (!givenExecuted || whenExecuted) { \
-            fprintf(stderr, "Error: Invalid use of WHEN\n"); \
-        } else { \
-            printf("When %s\n", description); \
-            (void)whenExecuted; \
-        } \
+    if (1) { \
+        printf("When %s\n", description); \
     } else
 
 #define THEN(description) \
-    if (true) { \
-        static bool thenExecuted = true; \
-        if (!givenExecuted || !whenExecuted || thenExecuted) { \
-            fprintf(stderr, "Error: Invalid use of THEN\n"); \
-        } else { \
-            printf("Then %s\n", description); \
-            (void)thenExecuted; \
-        } \
+    if (1) { \
+        printf("Then %s\n", description); \
     } else
 
 #ifdef __cplusplus
