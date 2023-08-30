@@ -138,12 +138,30 @@ extern "C"
 #define XEXPECT_OCT_LESS_EQUAL(actual, expected, message)    XEXPECT((actual) <= (expected), message)
 #define XEXPECT_OCT_GREATER_EQUAL(actual, expected, message) XEXPECT((actual) >= (expected), message)
 
-#define XEXPECT_BIT_EQUAL(actual, expected, message)         XEXPECT((actual) == (expected), message)
-#define XEXPECT_BIT_NOT_EQUAL(actual, expected, message)     XEXPECT((actual) != (expected), message)
-#define XEXPECT_BIT_LESS(actual, expected, message)          XEXPECT((actual) < (expected), message)
-#define XEXPECT_BIT_GREATER(actual, expected, message)       XEXPECT((actual) > (expected), message)
-#define XEXPECT_BIT_LESS_EQUAL(actual, expected, message)    XEXPECT((actual) <= (expected), message)
-#define XEXPECT_BIT_GREATER_EQUAL(actual, expected, message) XEXPECT((actual) >= (expected), message)
+#define XEXPECT_BIT_EQUAL(actual, expected, message)            XEXPECT((actual) == (expected), message)
+#define XEXPECT_BIT_NOT_EQUAL(actual, expected, message)        XEXPECT((actual) != (expected), message)
+#define XEXPECT_BIT_LESS(actual, expected, message)             XEXPECT((actual) < (expected), message)
+#define XEXPECT_BIT_GREATER(actual, expected, message)          XEXPECT((actual) > (expected), message)
+#define XEXPECT_BIT_LESS_EQUAL(actual, expected, message)       XEXPECT((actual) <= (expected), message)
+#define XEXPECT_BIT_GREATER_EQUAL(actual, expected, message)    XEXPECT((actual) >= (expected), message)
+#define XEXPECT_BIT_NOT_HIGH(value, bitIndex, message)          XEXPECT(!((value) & (1 << (bitIndex))), message)
+#define XEXPECT_BIT_HIGH(value, bitIndex, message)              XEXPECT((value) & (1 << (bitIndex)), message)
+#define XEXPECT_BIT_NOT_LOW(value, bitIndex, message)           XEXPECT((value) & (1 << (bitIndex)), message)
+#define XEXPECT_BIT_LOW(value, bitIndex, message)               XEXPECT(!((value) & (1 << (bitIndex))), message)
+#define XEXPECT_BITS_NOT_HIGH(value, mask, message)             XEXPECT(((value) & (mask)) != (mask), message)
+#define XEXPECT_BITS_HIGH(value, mask, message)                 XEXPECT(((value) & (mask)) == (mask), message)
+#define XEXPECT_BITS_NOT_LOW(value, mask, message)              XEXPECT(((value) & (mask)) != 0, message)
+#define XEXPECT_BITS_LOW(value, mask, message)                  XEXPECT(((value) & (mask)) == 0, message)
+#define XEXPECT_BITS_NOT_EQUAL(actual, expected, mask, message) XEXPECT(((actual) & (mask)) != ((expected) & (mask)), message)
+#define XEXPECT_BITS_EQUAL(actual, expected, mask, message)     XEXPECT(((actual) & (mask)) == ((expected) & (mask)), message)
+#define XEXPECT_BITS_NOT_LESS(actual, expected, mask, message)  XEXPECT(((actual) & (mask)) >= ((expected) & (mask)), message)
+#define XEXPECT_BITS_LESS(actual, expected, mask, message)      XEXPECT(((actual) & (mask)) < ((expected) & (mask)), message)
+#define XEXPECT_BITS_NOT_GREATER(actual, expected, mask, message) XEXPECT(((actual) & (mask)) <= ((expected) & (mask)), message)
+#define XEXPECT_BITS_GREATER(actual, expected, mask, message)   XEXPECT(((actual) & (mask)) > ((expected) & (mask)), message)
+#define XEXPECT_BITS_NOT_LESS_EQUAL(actual, expected, mask, message) XEXPECT(((actual) & (mask)) > ((expected) & (mask)), message)
+#define XEXPECT_BITS_LESS_EQUAL(actual, expected, mask, message) XEXPECT(((actual) & (mask)) <= ((expected) & (mask)), message)
+#define XEXPECT_BITS_NOT_GREATER_EQUAL(actual, expected, mask, message) XEXPECT(((actual) & (mask)) < ((expected) & (mask)), message)
+#define XEXPECT_BITS_GREATER_EQUAL(actual, expected, mask, message) XEXPECT(((actual) & (mask)) >= ((expected) & (mask)), message)
 
 /**
     This macro is used to check if a given value is within a certain
@@ -189,6 +207,15 @@ extern "C"
 #define XEXPECT_FLOAT_GREATER(actual, expected, message)            XEXPECT((actual) > (expected), message)
 #define XEXPECT_FLOAT_GREATER_EQUAL(actual, expected, message)      XEXPECT((actual) >= (expected), message)
 #define XEXPECT_FLOAT_LESS_EQUAL(actual, expected, message)         XEXPECT((actual) <= (expected), message)
+#define XEXPECT_FLOAT_IS_NOT_INF(value, message) XEXPECT(!isinf(value) || (value) <= 0, message)
+#define XEXPECT_FLOAT_IS_INF(value, message) XEXPECT(isinf(value) && (value) > 0, message)
+#define XEXPECT_FLOAT_IS_NOT_NEG_INF(value, message) XEXPECT(!isinf(value) || (value) >= 0, message)
+#define XEXPECT_FLOAT_IS_NEG_INF(value, message) XEXPECT(isinf(value) && (value) < 0, message)
+#define XEXPECT_FLOAT_IS_NOT_FINITE(value, message) XEXPECT(!isfinite(value), message)
+#define XEXPECT_FLOAT_IS_FINITE(value, message) XEXPECT(isfinite(value), message)
+#define XEXPECT_FLOAT_IS_NOT_NAN(value, message) XEXPECT(!isnan(value), message)
+#define XEXPECT_FLOAT_IS_NAN(value, message) XEXPECT(isnan(value), message)
+
 
 #define XEXPECT_DOUBLE_EQUAL(actual, expected, epsilon, message)     XEXPECT(fabs((actual) - (expected)) <= (epsilon), message)
 #define XEXPECT_DOUBLE_NOT_EQUAL(actual, expected, epsilon, message) XEXPECT(fabs((actual) - (expected)) < (epsilon), message)
@@ -196,6 +223,14 @@ extern "C"
 #define XEXPECT_DOUBLE_GREATER(actual, expected, message)            XEXPECT((actual) > (expected), message)
 #define XEXPECT_DOUBLE_GREATER_EQUAL(actual, expected, message)      XEXPECT((actual) >= (expected), message)
 #define XEXPECT_DOUBLE_LESS_EQUAL(actual, expected, message)         XEXPECT((actual) <= (expected), message)
+#define XEXPECT_DOUBLE_IS_NOT_INF(value, message) XEXPECT(!isinf(value) || (value) <= 0, message)
+#define XEXPECT_DOUBLE_IS_INF(value, message) XEXPECT(isinf(value) && (value) > 0, message)
+#define XEXPECT_DOUBLE_IS_NOT_NEG_INF(value, message) XEXPECT(!isinf(value) || (value) >= 0, message)
+#define XEXPECT_DOUBLE_IS_NEG_INF(value, message) XEXPECT(isinf(value) && (value) < 0, message)
+#define XEXPECT_DOUBLE_IS_NOT_FINITE(value, message) XEXPECT(!isfinite(value), message)
+#define XEXPECT_DOUBLE_IS_FINITE(value, message) XEXPECT(isfinite(value), message)
+#define XEXPECT_DOUBLE_IS_NOT_NAN(value, message) XEXPECT(!isnan(value), message)
+#define XEXPECT_DOUBLE_IS_NAN(value, message) XEXPECT(isnan(value), message)
 
 /**
     This framework contains four assert macros to check for null,
@@ -209,19 +244,27 @@ extern "C"
 */
 
 #ifdef __cplusplus
-#define XEXPECT_NULL(pointer, message)     XEXPECT((pointer) == nullptr, message)
-#define XEXPECT_NOT_NULL(pointer, message) XEXPECT((pointer) != nullptr, message)
+#define XEXPECT_NULL(pointer, message)      XEXPECT((pointer) == nullptr, message)
+#define XEXPECT_NOT_NULL(pointer, message)  XEXPECT((pointer) != nullptr, message)
 #define XEXPECT_EMPTY(pointer, message)     XEXPECT((pointer) == nullptr, message)
 #define XEXPECT_NOT_EMPTY(pointer, message) XEXPECT((pointer) != nullptr, message)
 #else
-#define XEXPECT_NULL(pointer, message)     XEXPECT((pointer) == NULL, message)
-#define XEXPECT_NOT_NULL(pointer, message) XEXPECT((pointer) != NULL, message)
+#define XEXPECT_NULL(pointer, message)      XEXPECT((pointer) == NULL, message)
+#define XEXPECT_NOT_NULL(pointer, message)  XEXPECT((pointer) != NULL, message)
 #define XEXPECT_EMPTY(pointer, message)     XEXPECT((pointer) == NULL, message)
 #define XEXPECT_NOT_EMPTY(pointer, message) XEXPECT((pointer) != NULL, message)
 #endif
+
+#define XEXPECT_PTR_EQUAL(actual, expected, message)         XEXPECT((actual) == (expected), message)
+#define XEXPECT_PTR_NOT_EQUAL(actual, expected, message)     XEXPECT((actual) != (expected), message)
+#define XEXPECT_PTR_LESS(actual, expected, message)          XEXPECT((actual) < (expected), message)
+#define XEXPECT_PTR_GREATER(actual, expected, message)       XEXPECT((actual) > (expected), message)
+#define XEXPECT_PTR_LESS_EQUAL(actual, expected, message)    XEXPECT((actual) <= (expected), message)
+#define XEXPECT_PTR_GREATER_EQUAL(actual, expected, message) XEXPECT((actual) >= (expected), message)
+
 #define XEXPECT_UNLESS(expression, message)  XEXPECT((expression), message)
-#define XEXPECT_TRUE(expression, message)  XEXPECT((expression), message)
-#define XEXPECT_FALSE(expression, message) XEXPECT(!(expression), message)
+#define XEXPECT_TRUE(expression, message)    XEXPECT((expression), message)
+#define XEXPECT_FALSE(expression, message)   XEXPECT(!(expression), message)
 
 /**
     This macro can be used to compare two strings.
