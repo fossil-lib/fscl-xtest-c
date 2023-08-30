@@ -462,6 +462,26 @@ XTEST_CASE(xexpect_run_of_boolean) {
     XEXPECT_FALSE(false, "should have returned false from a false value");
 } // end case
 
+XTEST_CASE(xbdd_logic_test) {
+    GIVEN("a valid statement is passed") {
+        // Set up the context
+        bool givenExecuted = true;
+
+        WHEN("a statement is true") {
+            // Perform the login action
+            bool whenExecuted = true;
+            
+            THEN("we validate everything was worked") {
+                // Check the expected outcome
+                bool thenExecuted = true;
+
+                XEXPECT_TRUE(givenExecuted, "should have returned true from a true given");
+                XEXPECT_TRUE(whenExecuted, "should have returned true from a true when");
+                XEXPECT_TRUE(thenExecuted, "should have returned true from a true then");
+            }
+        }
+    }
+} // end of case
 
 XTEST_CASE(xbdd_user_account) {
     GIVEN("a user's account with sufficient balance") {
@@ -487,38 +507,50 @@ XTEST_CASE(xbdd_user_account) {
 } // end of case
 
 XTEST_CASE(xbdd_empty_cart) {
-    GIVEN("an empty shopping cart") {
+    GIVEN("a user with an empty shopping cart") {
         // Set up the context
-        bool givenExecuted = true;
+        int cartItemCount = 0;
 
-        WHEN("an item is added to the cart") {
-            // Perform the action
-            bool whenExecuted = true;
-            
-            THEN("the cart should not be empty") {
+        WHEN("the user adds a product to the cart") {
+            // Perform the action of adding a product
+
+            THEN("the cart item count should increase by 1") {
                 // Check the expected outcome
-                bool thenExecuted = true;
+                cartItemCount++;
 
-                printf("Test case 2 executed successfully!\n");
+                XEXPECT_INT_EQUAL(cartItemCount, 1,"Darn it we forgot to add eggs in the cart");
             }
         }
     }
 } // end of case
 
 XTEST_CASE(xbdd_valid_login) {
-    GIVEN("a valid username and password") {
+    GIVEN("a registered user with valid credentials") {
         // Set up the context
-        bool givenExecuted = true;
+        const char* validUsername = "user123";
+        const char* validPassword = "pass456";
 
-        WHEN("the user attempts to log in") {
-            // Perform the login action
-            bool whenExecuted = true;
-            
-            THEN("the user should be granted access") {
+        WHEN("the user provides correct username and password") {
+            // Perform the action of user login
+            const char* inputUsername = "user123";
+            const char* inputPassword = "pass456";
+
+            THEN("the login should be successful") {
                 // Check the expected outcome
-                bool thenExecuted = true;
+                // Simulate login validation
+                XEXPECT_STRING_EQUAL(inputPassword, validPassword, "Invalid username or password");
+            }
+        }
 
-                printf("Test case 3 executed successfully!\n");
+        WHEN("the user provides incorrect password") {
+            // Perform the action of user login
+            const char* inputUsername = "user123";
+            const char* inputPassword = "wrongpass";
+
+            THEN("the login should fail with an error message") {
+                // Check the expected outcome
+                // Simulate login validation
+                XEXPECT_STRING_NOT_EQUAL(inputPassword, validPassword, "Invalid username or password");
             }
         }
     }
@@ -575,6 +607,7 @@ void xfixture_basic_cases(XUnitRunner *runner)
     xtest_run(&xexpect_run_of_pointer, runner);
     xtest_run(&xexpect_run_of_boolean, runner);
     
+    xtest_run(&xbdd_logic_test, runner);
     xtest_run(&xbdd_user_account, runner);
     xtest_run(&xbdd_empty_cart, runner);
     xtest_run(&xbdd_valid_login, runner);
