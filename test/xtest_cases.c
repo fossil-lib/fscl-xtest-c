@@ -493,8 +493,7 @@ XTEST_CASE(xbdd_user_account) {
             // Perform the withdrawal action
             if (accountBalance >= withdrawalAmount) {
                 accountBalance -= withdrawalAmount;
-                printf("Withdrawal successful! New balance: $%.2f\n", accountBalance);
-            }
+            } // end if
             THEN("the withdrawal amount should be deducted from the account balance") {
                 // Check the expected outcome
 
@@ -551,7 +550,7 @@ XTEST_CASE(xbdd_valid_login) {
             THEN("the login should fail with an error message") {
                 // Check the expected outcome
                 // Simulate login validation
-                XEXPECT_STRING_NOT_EQUAL(inputUsername, validUsername, "Valid username but password should fail");
+                XEXPECT_STRING_EQUAL(inputUsername, validUsername, "Valid username but password should fail");
                 XEXPECT_STRING_NOT_EQUAL(inputPassword, validPassword, "Invalid password but didn't block");
             }
         }
