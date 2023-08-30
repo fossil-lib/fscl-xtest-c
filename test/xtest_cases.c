@@ -131,6 +131,50 @@ XTEST_CASE(basic_run_of_hex) {
     XASSERT_HEX_NOT_EQUAL(this, that,"'x' should not be equal to 'y'");
 } // end case
 
+XTEST_CASE(basic_run_of_hex8) {
+    unsigned char this = 32, that = 22, other = 32;
+
+    XASSERT_HEX8_EQUAL(this, other,"'x' should be equal to 'y'");
+    XASSERT_HEX8_GREATER(this, that,"'x' should be greater than 'y'");
+    XASSERT_HEX8_GREATER_EQUAL(this, that,"'x' should be greater or equal to 'y'");
+    XASSERT_HEX8_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_HEX8_LESS_EQUAL(that, this,"'x' should be lesser or equal to 'y'");
+    XASSERT_HEX8_NOT_EQUAL(this, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE(basic_run_of_hex16) {
+    unsigned short this = 32, that = 22, other = 32;
+
+    XASSERT_HEX16_EQUAL(this, other,"'x' should be equal to 'y'");
+    XASSERT_HEX16_GREATER(this, that,"'x' should be greater than 'y'");
+    XASSERT_HEX16_GREATER_EQUAL(this, that,"'x' should be greater or equal to 'y'");
+    XASSERT_HEX16_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_HEX16_LESS_EQUAL(that, this,"'x' should be lesser or equal to 'y'");
+    XASSERT_HEX16_NOT_EQUAL(this, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE(basic_run_of_hex32) {
+    unsigned int this = 32, that = 22, other = 32;
+
+    XASSERT_HEX32_EQUAL(this, other,"'x' should be equal to 'y'");
+    XASSERT_HEX32_GREATER(this, that,"'x' should be greater than 'y'");
+    XASSERT_HEX32_GREATER_EQUAL(this, that,"'x' should be greater or equal to 'y'");
+    XASSERT_HEX32_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_HEX32_LESS_EQUAL(that, this,"'x' should be lesser or equal to 'y'");
+    XASSERT_HEX32_NOT_EQUAL(this, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE(basic_run_of_hex64) {
+    unsigned long long this = 32, that = 22, other = 32;
+
+    XASSERT_HEX64_EQUAL(this, other,"'x' should be equal to 'y'");
+    XASSERT_HEX64_GREATER(this, that,"'x' should be greater than 'y'");
+    XASSERT_HEX64_GREATER_EQUAL(this, that,"'x' should be greater or equal to 'y'");
+    XASSERT_HEX64_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_HEX64_LESS_EQUAL(that, this,"'x' should be lesser or equal to 'y'");
+    XASSERT_HEX64_NOT_EQUAL(this, that,"'x' should not be equal to 'y'");
+} // end case
+
 XTEST_CASE(basic_run_of_bit) {
     unsigned int this = 100000, that = 10110, other = 100000;
 
@@ -207,6 +251,10 @@ void xfixture_basic_cases(XUnitRunner *runner)
     xtest_run(&basic_run_of_uint32, runner);
     xtest_run(&basic_run_of_uint64, runner);
     xtest_run(&basic_run_of_hex, runner);
+    xtest_run(&basic_run_of_hex8, runner);
+    xtest_run(&basic_run_of_hex16, runner);
+    xtest_run(&basic_run_of_hex32, runner);
+    xtest_run(&basic_run_of_hex64, runner);
     xtest_run(&basic_run_of_oct, runner);
     xtest_run(&basic_run_of_bit, runner);
     xtest_run(&basic_run_of_float, runner);
