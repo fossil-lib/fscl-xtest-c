@@ -16,31 +16,31 @@ extern "C"
 
 // Define macros for BDD structure
 #define GIVEN(description) \
-    if (1) { \
+    if (true) { \
         printf("Given %s\n", description); \
         static bool givenExecuted = true; \
         (void)givenExecuted; \
     } else
 
 #define WHEN(description) \
-    if (1) { \
+    if (true) { \
         static bool whenExecuted = true; \
         if (!givenExecuted || whenExecuted) { \
             fprintf(stderr, "Error: Invalid use of WHEN\n"); \
             whenExecuted = false; \
-        } else { \
+        } else if (whenExecuted == true) { \
             printf("When %s\n", description); \
             whenExecuted = true; \
         } \
     } else
 
 #define THEN(description) \
-    if (1) { \
+    if (true) { \
         static bool thenExecuted = true; \
         if (!givenExecuted || !whenExecuted || thenExecuted) { \
             fprintf(stderr, "Error: Invalid use of THEN\n"); \
             thenExecuted = false; \
-        } else { \
+        } else if (thenExecuted == true) { \
             printf("Then %s\n", description); \
             thenExecuted = true; \
         } \
