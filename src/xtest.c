@@ -5,10 +5,8 @@
    website: <https://trilobite.code.blog>
 */
 #include "trilobite/xtest.h"
-#include "trilobite/xassert.h"
 
 // Static array to hold test cases
-static bool XTEST_PASS_SCAN = true;
 static bool XEXPECT_PASS_SCAN = true;
 static bool XASSERT_PASS_SCAN = true;
 
