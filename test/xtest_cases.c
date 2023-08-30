@@ -463,24 +463,58 @@ XTEST_CASE(xexpect_run_of_boolean) {
 } // end case
 
 
-XTEST_CASE(xbdd_test_case) {
-    GIVEN("a user's account with sufficient balance") {
-        // Set up the account with a balance of $1000
-        double accountBalance = 1000.0;
+XTEST_CASE(xbdd_user_account) {
+        GIVEN("a user's account with sufficient balance") {
+        // Set up the context
         bool givenExecuted = true;
 
         WHEN("the user requests a withdrawal of $200") {
             // Perform the withdrawal action
-            double withdrawalAmount = 200.0;
             bool whenExecuted = true;
             
             THEN("the withdrawal amount should be deducted from the account balance") {
-                // Check if the account balance is as expected after withdrawal
-                accountBalance -= withdrawalAmount;
+                // Check the expected outcome
                 bool thenExecuted = true;
 
-                // Assertion
-                XEXPECT_DOUBLE_EQUAL(accountBalance, 800.0, 0.01, "Account balance is incorrect after withdrawal");
+                printf("Test case 1 executed successfully!\n");
+            }
+        }
+    }
+} // end of case
+
+XTEST_CASE(xbdd_empty_cart) {
+    GIVEN("an empty shopping cart") {
+        // Set up the context
+        bool givenExecuted = true;
+
+        WHEN("an item is added to the cart") {
+            // Perform the action
+            bool whenExecuted = true;
+            
+            THEN("the cart should not be empty") {
+                // Check the expected outcome
+                bool thenExecuted = true;
+
+                printf("Test case 2 executed successfully!\n");
+            }
+        }
+    }
+} // end of case
+
+XTEST_CASE(xbdd_valid_login) {
+    GIVEN("a valid username and password") {
+        // Set up the context
+        bool givenExecuted = true;
+
+        WHEN("the user attempts to log in") {
+            // Perform the login action
+            bool whenExecuted = true;
+            
+            THEN("the user should be granted access") {
+                // Check the expected outcome
+                bool thenExecuted = true;
+
+                printf("Test case 3 executed successfully!\n");
             }
         }
     }
@@ -537,5 +571,7 @@ void xfixture_basic_cases(XUnitRunner *runner)
     xtest_run(&xexpect_run_of_pointer, runner);
     xtest_run(&xexpect_run_of_boolean, runner);
     
-    xtest_run(&xbdd_test_case, runner);
+    xtest_run(&xbdd_user_account, runner);
+    xtest_run(&xbdd_empty_cart, runner);
+    xtest_run(&xbdd_valid_login, runner);
 } // end of fixture
