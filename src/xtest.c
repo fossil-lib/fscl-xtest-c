@@ -9,6 +9,8 @@
 
 // Static array to hold test cases
 static bool XTEST_PASS_SCAN = true;
+static bool XEXPECT_PASS_SCAN = true;
+static bool XASSERT_PASS_SCAN = true;
 
 // ANSI escape code macros for text color
 #define ANSI_COLOR_RED     "\x1b[31m"
@@ -182,12 +184,12 @@ void xtest_set_setup_teardown(XUnitRunner *runner, void (*setup_func)(void), voi
     @return void
 */
 void xassert(bool expression, const char *message) {
-
-    XTEST_PASS_SCAN = true;
     if (!expression) {
         printf(" --> %s: %s\n", ANSI_COLOR_RED "Failed" ANSI_COLOR_RESET, message);
-        XTEST_PASS_SCAN = false;
-    } // end if
+        XASSERT_PASS_SCAN = false;
+    } else if (XASSERT_PASS_SCAN == false) {
+        XASSERT_PASS_SCAN = false;
+    }
     printf(" --> %s:\n", ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET);
 } // end of func
 
@@ -200,11 +202,11 @@ void xassert(bool expression, const char *message) {
     @return void
 */
 void xexpect(bool expression, const char *message) {
+    XEXPECT_PASS_SCAN = true;
 
-    XTEST_PASS_SCAN = true;
     if (!expression) {
         printf(" --> %s: %s\n", ANSI_COLOR_RED "Failed" ANSI_COLOR_RESET, message);
-        XTEST_PASS_SCAN = false;
+        XEXPECT_PASS_SCAN = false;
     } // end if
     printf(" --> %s:\n", ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET);
 } // end of func
