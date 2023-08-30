@@ -465,18 +465,22 @@ XTEST_CASE(xexpect_run_of_boolean) {
 
 XTEST_CASE(xbdd_user_account) {
     GIVEN("a user's account with sufficient balance") {
-    // Set up the context
-    bool givenExecuted = true;
+        // Set up the context
+        float accountBalance = 500.0;
+        float withdrawalAmount = 200.0;
 
         WHEN("the user requests a withdrawal of $200") {
             // Perform the withdrawal action
-            bool whenExecuted = true;
-            
+            if (accountBalance >= withdrawalAmount) {
+                accountBalance -= withdrawalAmount;
+                printf("Withdrawal successful! New balance: $%.2f\n", accountBalance);
+            }
             THEN("the withdrawal amount should be deducted from the account balance") {
                 // Check the expected outcome
-                bool thenExecuted = true;
 
-                printf("Test case 1 executed successfully!\n");
+                // Simulate the scenario
+                float compareBalance = 500.0;
+                XEXPECT_FLOAT_LESS(accountBalance, compareBalance,"Insufficient funds for withdrawal");
             }
         }
     }
