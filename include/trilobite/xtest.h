@@ -155,7 +155,7 @@ void xexpect(bool expression, const char *message);
               the message is displayed. Otherwise, the assertion passes and
               nothing happens.
 */
-#define XEXPECT(expression, message) xexcept(expression, message)
+#define XEXPECT(expression, message) xexpect(expression, message)
 
 /**
     @brief Asserts whether a test passes or fails
