@@ -1,4 +1,4 @@
-trilo_src = files('xtest.c', 'xmock.c')
+trilo_src = files('xtest.c')
 
 trilo_lib = static_library('trilo_xtest_lib-c',
     trilo_src,
