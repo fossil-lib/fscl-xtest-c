@@ -41,7 +41,7 @@ XTEST_CASE(xmock_stub_foo) {
 //
 // XTEST FIXTURE
 //
-void xtest_fixture_mocking_cases(XUnitRunner *runner)
+void xfixture_mocking_cases(XUnitRunner *runner)
 {
     xtest_run(&xmock_stub_foo, runner);
     xtest_run(&xmock_stub_bar, runner);
