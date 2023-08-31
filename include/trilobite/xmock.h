@@ -20,11 +20,15 @@ typedef int8_t xmock_int8_t;
 typedef int16_t xmock_int16_t;
 typedef int32_t xmock_int32_t;
 typedef int64_t xmock_int64_t;
-typedef unsigned int xmock_unsignedint;
+typedef unsigned int xmock_uint;
 typedef uint8_t xmock_uint8_t;
 typedef uint16_t xmock_uint16_t;
 typedef uint32_t xmock_uint32_t;
 typedef uint64_t xmock_uint64_t;
+typedef uint8_t xmock_hex8_t;
+typedef uint16_t xmock_hex16_t;
+typedef uint32_t xmock_hex32_t;
+typedef uint64_t xmock_hex64_t;
 typedef float xmock_float;
 typedef double xmock_double;
 
@@ -38,7 +42,7 @@ typedef void *xmock_default;
 
 // Define a mocked function using macro concatenation.
 // This macro provides a way to define mocked functions with specified return types and arguments.
-#define XMOCK_FUNC(type, name) type xmock_##name(XMOCK_##type arg)
+#define XMOCK_FUNC(type, name) type xmock_##name(type arg)
 
 #ifdef __cplusplus
 }
