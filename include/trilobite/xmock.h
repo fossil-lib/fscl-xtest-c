@@ -14,21 +14,35 @@ extern "C"
 
 #include "xtest.h"
 
-//
-// STUB
-//
-typedef struct XMockStub
-{
-   void *(*func_ptr)(void *);
-   void *_result;
-   size_t _size;
-} XMockStub;
+// Define mock function return types based on types.
+typedef int xmock_int;
+typedef int8_t xmock_int8_t;
+typedef int16_t xmock_int16_t;
+typedef int32_t xmock_int32_t;
+typedef int64_t xmock_int64_t;
+typedef unsigned int xmock_uint;
+typedef uint8_t xmock_uint8_t;
+typedef uint16_t xmock_uint16_t;
+typedef uint32_t xmock_uint32_t;
+typedef uint64_t xmock_uint64_t;
+typedef uint8_t xmock_hex8_t;
+typedef uint16_t xmock_hex16_t;
+typedef uint32_t xmock_hex32_t;
+typedef uint64_t xmock_hex64_t;
+typedef float xmock_float;
+typedef double xmock_double;
 
-XMockStub *xmock_stub_create(void *(*func_ptr)(void *), void *result, size_t size);
-void xmock_stub_erase(XMockStub *stub);
-void *xmock_stub_call(XMockStub *stub, void *arg);
+// Define a macro for char type.
+typedef char xmock_char;
 
+// Define a macro for char * type.
+typedef char *xmock_string;
 
+typedef void *xmock_default;
+
+// Define a mocked function using macro concatenation.
+// This macro provides a way to define mocked functions with specified return types and arguments.
+#define XMOCK_FUNC(type, name) type xmock_##name(type arg)
 
 #ifdef __cplusplus
 }
