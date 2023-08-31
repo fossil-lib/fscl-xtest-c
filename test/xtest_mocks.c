@@ -34,7 +34,7 @@ XMOCK_FUNC(int, foo) {
 XTEST_CASE(xmock_stub_foo) {
     int result = xmock_foo(10);
     printf("Result: %d\n", result);
-    XASSERT_INT_EQUAL(result, "Hello, world!", "'x' should be equal to 'y'");
+    XASSERT_INT_EQUAL(result, 20, "'x' should be equal to 'y'");
 } // end of case
 
 XMOCK_FUNC(int, sum_array) {
