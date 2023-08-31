@@ -19,7 +19,7 @@ extern "C"
 // @param type: The type of the value being returned by the mock function.
 // @return: The appropriate type for the return value based on the input type.
 //
-#define XMOCK_FUNC_RETURN_TYPE(type) _Generic((type), \
+#define XMOCK_FUNC_RETURN_TYPE(type) (_Generic((type), \
     int: int, \
     int8_t: int8_t, \
     int16_t: int16_t, \
@@ -34,7 +34,7 @@ extern "C"
     double: double, \
     char *: char *, \
     default: void * \
-)
+))
 
 //
 // Define the macro to convert a value to the mocked function return type
