@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 
     xfixture_basic_cases(&runner);
     xfixture_bench_cases(&runner);
-    // xfixture_mocking_cases(&runner);
+    xfixture_mocking_cases(&runner);
 
     return xtest_end(&runner);
 } // end of function main
