@@ -12,6 +12,26 @@ extern "C"
 {
 #endif
 
+// Define platform-specific macros
+#ifdef _WIN32
+    #define TRILOBITE_XTEST_EXPORT __declspec(dllexport)
+    #define TRILOBITE_XTEST_IMPORT __declspec(dllimport)
+#else
+    #define TRILOBITE_XTEST_EXPORT __attribute__((visibility("default")))
+    #define TRILOBITE_XTEST_IMPORT
+#endif
+
+// Define the MY_TEST_FRAMEWORK_API macro
+#ifdef TRILOBITE_XTEST_SHARED
+    #ifdef TRILOBITE_XTEST_BUILD
+        #define TRILOBITE_XTEST_API TRILOBITE_XTEST_EXPORT
+    #else
+        #define TRILOBITE_XTEST_API TRILOBITE_XTEST_IMPORT
+    #endif
+#else
+    #define TRILOBITE_XTEST_API
+#endif
+
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
@@ -125,13 +145,13 @@ typedef struct {
 // Helper function to run a test case
 //
 
-XUnitRunner xtest_start(int argc, char **argv);
-int xtest_end(XUnitRunner *runner);
-void xtest_run(XTestCase *test_case, XUnitRunner *runner);
-void xbench_run(XBench *benchmark, XUnitRunner *runner);
-void xtest_set_setup_teardown(XUnitRunner *runner, void (*setup_func)(void), void (*teardown_func)(void));
-void xassert(bool expression, const char *message);
-void xexpect(bool expression, const char *message);
+TRILOBITE_XTEST_API XUnitRunner xtest_start(int argc, char **argv);
+TRILOBITE_XTEST_API int xtest_end(XUnitRunner *runner);
+TRILOBITE_XTEST_API void xtest_run(XTestCase *test_case, XUnitRunner *runner);
+TRILOBITE_XTEST_API void xbench_run(XBench *benchmark, XUnitRunner *runner);
+TRILOBITE_XTEST_API void xtest_set_setup_teardown(XUnitRunner *runner, void (*setup_func)(void), void (*teardown_func)(void));
+TRILOBITE_XTEST_API void xassert(bool expression, const char *message);
+TRILOBITE_XTEST_API void xexpect(bool expression, const char *message);
 
 /**
     @brief This macro adds an assertion to the current test case.
