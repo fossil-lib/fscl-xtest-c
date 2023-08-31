@@ -14,41 +14,29 @@ extern "C"
 
 #include "xtest.h"
 
-//
-// Define the mock function return type using _Generic
-// @param type: The type of the value being returned by the mock function.
-// @return: The appropriate type for the return value based on the input type.
-//
-#define XMOCK_FUNC_RETURN_TYPE(type) _Generic((type), \
-    int: int, \
-    int8_t: int8_t, \
-    int16_t: int16_t, \
-    int32_t: int32_t, \
-    int64_t: int64_t, \
-    unsigned int: unsigned int, \
-    uint8_t: uint8_t, \
-    uint16_t: uint16_t, \
-    uint32_t: uint32_t, \
-    uint64_t: uint64_t, \
-    float: float, \
-    double: double, \
-    char *: char *, \
-    default: void * \
-)
+// Define the mock function return type using macro selection
+#define XMOCK_FUNC_RETURN_TYPE(type) XMOCK_##type
 
-//
 // Define the macro to convert a value to the mocked function return type
-// @param type: The type of the value being converted.
-// @param value: The value to be converted to the return type.
-// @return: The value is converted to the appropriate return type.
-//
 #define XMOCK_FUNC_RETVAL(type, value) (XMOCK_FUNC_RETURN_TYPE(type))(value)
 
-//
-// Define a mocked function using _Generic
-// @param type: The return type of the mocked function.
-// @param name: The name of the mocked function.
-//
+// Define mock function return types based on types
+#define XMOCK_int int
+#define XMOCK_int8_t int8_t
+#define XMOCK_int16_t int16_t
+#define XMOCK_int32_t int32_t
+#define XMOCK_int64_t int64_t
+#define XMOCK_unsignedint unsigned int
+#define XMOCK_uint8_t uint8_t
+#define XMOCK_uint16_t uint16_t
+#define XMOCK_uint32_t uint32_t
+#define XMOCK_uint64_t uint64_t
+#define XMOCK_float float
+#define XMOCK_double double
+#define XMOCK_charp char *
+#define XMOCK_default void *
+
+// Define a mocked function using macro concatenation
 #define XMOCK_FUNC(type, name) XMOCK_FUNC_RETURN_TYPE(type) xmock_##name(type arg)
 
 #ifdef __cplusplus
