@@ -13,7 +13,7 @@ XMOCK_FUNC(xmock_float, bar) {
 
 XTEST_CASE(xmock_stub_bar) {
     xmock_float result = xmock_bar(3.0f);
-    printf("Result: %f\n", result);
+    // Result: 4.500000
     XASSERT_FLOAT_EQUAL(result, 4.6f, 4.3, "'x' should be equal to 'y'");
 } // end of case
 
