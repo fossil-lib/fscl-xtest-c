@@ -37,10 +37,6 @@ XTEST_CASE(xmock_stub_foo) {
     XASSERT_INT_EQUAL(result, 20, "'x' should be equal to 'y'");
 } // end of case
 
-XMOCK_FUNC(xmock_int, sum_args) {
-    xmock_int args[] = {4, 1, 2, 3, 4}; // First element is the count
-    return xmock_sum(arg, args);
-}
 
 //
 // XTEST FIXTURE
