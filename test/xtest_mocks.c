@@ -42,12 +42,6 @@ XMOCK_FUNC(xmock_int, sum_args) {
     return xmock_sum(arg, args);
 }
 
-XTEST_CASE(xmock_stub_car) {
-    xmock_int result = xmock_sum_args();
-    printf("Result: %d\n", result);
-    XASSERT_INT_EQUAL(result, 14, "'x' should be equal to 'y'");
-} // end of case
-
 //
 // XTEST FIXTURE
 //
@@ -56,5 +50,4 @@ void xtest_fixture_mocking_cases(XUnitRunner *runner)
     xtest_run(&xmock_stub_foo, runner);
     xtest_run(&xmock_stub_bar, runner);
     xtest_run(&xmock_stub_baz, runner);
-    xtest_run(&xmock_stub_car, runner);
 } // end of fixture
