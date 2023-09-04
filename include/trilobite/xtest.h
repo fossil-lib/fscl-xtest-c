@@ -12,7 +12,7 @@ extern "C"
 {
 #endif
 
-// Define platform-specific macros
+ // Define platform-specific macros
 #ifdef _WIN32
     #define TRILOBITE_XTEST_EXPORT __declspec(dllexport)
     #define TRILOBITE_XTEST_IMPORT __declspec(dllimport)
@@ -31,7 +31,16 @@ extern "C"
 #else
     #define TRILOBITE_XTEST_API
 #endif
+  
+#ifdef __cplusplus
+#include <cstring>
+#include <cstdlib>
+#include <cstddef>
+#include <cstdio>
+#include <cmath>
+#include <ctime>
 
+#else
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
@@ -40,14 +49,6 @@ extern "C"
 #include <math.h>
 #include <time.h>
 
-#ifdef __cplusplus
-#include <cstring>
-#include <cstdlib>
-#include <cstddef>
-#include <string>
-#include <cstdio>
-#include <cmath>
-#include <ctime>
 #endif
 
 /**
@@ -100,8 +101,8 @@ typedef struct {
 #ifdef __cplusplus
 class XTestCase {
 public:
-    XTestCase(const char *name, void (*test_function)(void))
-        : name(name), test_function(test_function), assertions(nullptr), num_assertions(0) {}
+    XTestCase(const char *name, void (*test_function)(void) = nullptr, XAssert *assertions = nullptr, size_t num_assertions = 0)
+        : name(name), test_function(test_function), assertions(assertions), num_assertions(num_assertions) {}
     const char *name;
     void (*test_function)(void);
     XAssert *assertions;
@@ -124,10 +125,17 @@ typedef struct {
     @returns: A XTestCase structure with the given name and the test function pointer
               set to the function with the same name as the given name.
 */
+#ifdef __cplusplus
+#define XTEST_CASE(name) \
+    void name##_xtest(void); \
+    XTestCase name(#name, name##_xtest); \
+    void name##_xtest(void)
+#else
 #define XTEST_CASE(name) \
     void name##_xtest(void); \
     XTestCase name = { #name, name##_xtest, NULL, 0 }; \
     void name##_xtest(void)
+#endif
 
 /**
     @brief This code defines a XBench structure which can be used to benchmark functions.
