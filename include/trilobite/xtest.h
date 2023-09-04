@@ -12,6 +12,15 @@ extern "C"
 {
 #endif
 
+#ifdef __cplusplus
+#include <cstring>
+#include <cstdlib>
+#include <cstddef>
+#include <cstdio>
+#include <cmath>
+#include <ctime>
+
+#else
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
@@ -20,13 +29,6 @@ extern "C"
 #include <math.h>
 #include <time.h>
 
-#ifdef __cplusplus
-#include <cstring>
-#include <cstdlib>
-#include <cstddef>
-#include <cstdio>
-#include <cmath>
-#include <ctime>
 #endif
 
 /**
