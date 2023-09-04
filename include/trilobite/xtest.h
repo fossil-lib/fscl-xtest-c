@@ -106,7 +106,7 @@ typedef struct {
 #ifdef __cplusplus
 #define XTEST_CASE(name) \
     void name##_xtest(void); \
-    XTestCase name(#name, name##_xtest);
+    XTestCase name(#name, name##_xtest); \
     void name##_xtest(void)
 #else
 #define XTEST_CASE(name) \
@@ -122,14 +122,10 @@ typedef struct {
     @returns: The XBench structure with the function name, the benchmark function, and
               other necessary details for the benchmarking process.
 */
-#ifdef __cplusplus
 #define XBENCH(name) \
     void name##_xbench(void); \
     XBench name = { #name, name##_xbench, 0 }; \
     void name##_xbench(void)
-#else
-
-#endif
 
 //
 // Helper function to run a test case
