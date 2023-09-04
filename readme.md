@@ -2,7 +2,7 @@
 
 Introducing the Trilobite Xunit Test: a robust and versatile unit testing framework designed to elevate your software development process. Crafted with meticulous attention to detail, this lightweight testing solution, coded in C11 and newer standards, empowers developers with an arsenal of cutting-edge features.
 
-The Trilobite Xunit Test stands out with its comprehensive approach, offering a wide array of testing types to ensure your software's quality and reliability. From AI testing that harnesses the power of artificial intelligence to UI and UX testing to enhance user experience, the framework covers it all. Its IO testing capabilities guarantee seamless data interaction.
+The Trilobite Xunit Test stands out with its comprehensive approach, offering a wide array of testing types to ensure your software's quality and reliability. From UI and UX testing to enhance user experience, the framework covers it all. Its IO testing capabilities guarantee seamless data interaction.
 
 One of the framework's standout features is its extensive collection of assertions, providing you with an abundance of options to validate your code's correctness. To facilitate isolation and control, Trilobite also incorporates a robust mocking system, allowing you to create controlled environments for testing intricate scenarios.
 
