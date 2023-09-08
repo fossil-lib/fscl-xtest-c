@@ -5,6 +5,7 @@
    website: <https://trilobite.code.blog>
 */
 #include "trilobite/xauto.h"
+#include <math.h>
 
 //
 // EXTRA MATH FUNCTIONS
