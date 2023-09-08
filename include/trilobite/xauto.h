@@ -32,9 +32,22 @@ typedef struct {
     double intercept;
 } LinearRegressionModel;
 
+// Define your Gaussian Naive Bayes model
+typedef struct {
+    double class_probabilities[2]; // Assuming binary classification
+    double mean[2];               // Mean for each class
+    double variance[2];           // Variance for each class
+} GaussianNaiveBayesModel;
+
 // Training function for Logistic Regression
 TRILOBITE_XTEST_API void xauto_train_logistic_regression(LogisticRegressionModel* model, const double* input, const int* labels, int num_samples, double learning_rate, int num_epochs);
 TRILOBITE_XTEST_API void xauto_train_linear_regression(LinearRegressionModel* model, const double* x, const double* y, int num_samples);
+
+// Training function for Gaussian Naive Bayes
+TRILOBITE_XTEST_API void train_gaussian_naive_bayes(GaussianNaiveBayesModel* model, const double* features, const int* labels, int num_samples, int num_features);
+
+// Prediction function for Gaussian Naive Bayes
+TRILOBITE_XTEST_API int predict_gaussian_naive_bayes(const GaussianNaiveBayesModel* model, double feature);
 
 #ifdef __cplusplus
 }
