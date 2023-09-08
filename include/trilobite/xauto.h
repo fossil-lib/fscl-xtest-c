@@ -44,10 +44,10 @@ TRILOBITE_XTEST_API void xauto_train_logistic_regression(LogisticRegressionModel
 TRILOBITE_XTEST_API void xauto_train_linear_regression(LinearRegressionModel* model, const double* x, const double* y, int num_samples);
 
 // Training function for Gaussian Naive Bayes
-TRILOBITE_XTEST_API void train_gaussian_naive_bayes(GaussianNaiveBayesModel* model, const double* features, const int* labels, int num_samples, int num_features);
+TRILOBITE_XTEST_API void xauto_train_gaussian_naive_bayes(GaussianNaiveBayesModel* model, const double* features, const int* labels, int num_samples, int num_features);
 
 // Prediction function for Gaussian Naive Bayes
-TRILOBITE_XTEST_API int predict_gaussian_naive_bayes(const GaussianNaiveBayesModel* model, double feature);
+TRILOBITE_XTEST_API int xauto_predict_gaussian_naive_bayes(const GaussianNaiveBayesModel* model, double feature)
 
 #ifdef __cplusplus
 }
