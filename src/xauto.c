@@ -28,6 +28,27 @@ double xauto_sigmoid(double x) {
     return 1.0 / (1.0 + xauto_exp_with_squaring(-x, 10));
 } // end of func
 
+// Taylor series expansion for the exponential term
+double taylor_exp(double x, int num_terms) {
+    double result = 1.0;
+    double term = 1.0;
+
+    for (int i = 1; i < num_terms; ++i) {
+        term *= x / i;
+        result += term;
+    } // end for
+
+    return result;
+} // end of func
+
+// Approximated Gaussian probability density function without exp
+double approximate_gaussian_pdf(double x, double mean, double variance) {
+    double pi = 3.14159265358979323846;
+    double exponent = -((x - mean) * (x - mean)) / (2 * variance);
+    double exponential_term = taylor_exp(exponent, 10); // Adjust the number of terms as needed
+    return (1.0 / (sqrt(2 * pi * variance))) * exponential_term;
+} // end of func
+
 //
 // AI TRAINING
 //
@@ -132,16 +153,10 @@ void xauto_train_gaussian_naive_bayes(GaussianNaiveBayesModel* model, const doub
     } // end if
 } // end of func
 
-// Gaussian probability density function
-double gaussian_pdf(double x, double mean, double variance) {
-    double exponent = -(x - mean) * (x - mean) / (2 * variance);
-    return (1 / sqrt(2 * M_PI * variance)) * exp(exponent);
-} // end of func
-
-// Prediction function for Gaussian Naive Bayes
+// Prediction function for Gaussian Naive Bayes using the approximate Gaussian PDF
 int xauto_predict_gaussian_naive_bayes(const GaussianNaiveBayesModel* model, double feature) {
-    double likelihood_class_0 = gaussian_pdf(feature, model->mean[0], model->variance[0]);
-    double likelihood_class_1 = gaussian_pdf(feature, model->mean[1], model->variance[1]);
+    double likelihood_class_0 = approximate_gaussian_pdf(feature, model->mean[0], model->variance[0]);
+    double likelihood_class_1 = approximate_gaussian_pdf(feature, model->mean[1], model->variance[1]);
 
     double posterior_class_0 = model->class_probabilities[0] * likelihood_class_0;
     double posterior_class_1 = model->class_probabilities[1] * likelihood_class_1;
