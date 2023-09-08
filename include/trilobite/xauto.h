@@ -16,13 +16,14 @@ extern "C"
 
 // Define the maximum number of features your code can handle
 enum {
-    MAX_FEATURES = 100
+    XAUTO_MAX_FEATURES = 100
 }; // end enum
 
 // Define your Logistic Regression model
 typedef struct {
-    double coefficients[MAX_FEATURES];  // Replace FEATURES with the number of features
+    double coefficients[XAUTO_MAX_FEATURES];
     double intercept;
+    int num_features;
 } LogisticRegressionModel;
 
 // Training function for Logistic Regression
