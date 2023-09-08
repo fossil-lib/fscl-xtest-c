@@ -22,7 +22,7 @@ double xauto_exp_with_squaring(double x, int n) {
 
 // Sigmoid function
 double xauto_sigmoid(double x) {
-    return 1.0 / (1.0 + exp_with_squaring(-x, 10))
+    return 1.0 / (1.0 + exp_with_squaring(-x, 10));
 } // end of func
 
 // Training function for Logistic Regression
