@@ -604,11 +604,35 @@ XTEST_CASE(xauto_linear_regression_training) {
     XASSERT(fabs(model.intercept - 0.9) < 0.01, "Intercept is not as expected");
 } // end of case
 
+XTEST_CASE(xauto_gaussian_naive_bayes) {
+    int num_samples = 10;
+    int num_features = 1; // Assuming a single feature for simplicity
+    double features[] = {1.1, 1.3, 1.5, 1.8, 2.0, 2.5, 2.9, 3.0, 3.2, 3.6};
+    int labels[] = {0, 0, 0, 0, 0, 1, 1, 1, 1, 1};
+
+    // Initialize the Gaussian Naive Bayes model
+    GaussianNaiveBayesModel model;
+
+    // Train the model
+    xauto_train_gaussian_naive_bayes(&model, features, labels, num_samples, num_features);
+
+    // Make predictions
+    int predictions[10];
+    for (int i = 0; i < num_samples; ++i) {
+        predictions[i] = xauto_predict_gaussian_naive_bayes(&model, features[i]);
+    } // end for
+
+    // Define assertions based on expected predictions
+    int expected_predictions[] = {0, 0, 0, 0, 0, 1, 1, 1, 1, 1};
+    for (int i = 0; i < num_samples; ++i) {
+        XASSERT(predictions[i] == expected_predictions[i], "Prediction is incorrect");
+    } // end for
+} // end of case
+
 //
 // XTEST FIXTURE
 //
-void xfixture_basic_cases(XUnitRunner *runner)
-{
+void xfixture_basic_cases(XUnitRunner *runner) {
     xtest_run(&basic_run_of_int, runner);
     xtest_run(&basic_run_of_int8, runner);
     xtest_run(&basic_run_of_int16, runner);
@@ -662,4 +686,5 @@ void xfixture_basic_cases(XUnitRunner *runner)
 
     xtest_run(&xauto_logistic_regression_training, runner);
     xtest_run(&xauto_linear_regression_training, runner);
+    xtest_run(&xauto_gaussian_naive_bayes, runner);
 } // end of fixture
