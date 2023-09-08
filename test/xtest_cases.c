@@ -577,7 +577,7 @@ XTEST_CASE(xauto_logistic_regression_training) {
     model.num_features = num_features;
 
     // Train the model
-    train_logistic_regression(&model, input, labels, num_samples, 0.01, 1000);
+    xauto_train_logistic_regression(&model, input, labels, num_samples, 0.01, 1000);
 
     // Define assertions specific to Logistic Regression training
     // In this example, you can check if the model's coefficients and intercept match expected values.
