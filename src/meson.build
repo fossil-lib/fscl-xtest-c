@@ -1,4 +1,4 @@
-trilo_src = files('xtest.c')
+trilo_src = files('xtest.c', 'xauto.c')
 
 trilo_lib = library('trilo_xtest_lib-c',
     trilo_src,
