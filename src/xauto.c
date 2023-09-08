@@ -42,12 +42,30 @@ double taylor_exp(double x, int num_terms) {
     return result;
 } // end of func
 
+// Approximation of square root using the Newton-Raphson method
+double approximate_sqrt(double x) {
+    if (x == 0.0) {
+        return 0.0;
+    } // end if
+
+    double guess = x; // Initial guess
+    double epsilon = 1e-6; // Tolerance for convergence
+
+    while (1) {
+        double new_guess = 0.5 * (guess + x / guess);
+        if (fabs(new_guess - guess) < epsilon) {
+            return new_guess;
+        } // end if
+        guess = new_guess;
+    } // end while
+} // end of func
+
 // Approximated Gaussian probability density function without exp
 double approximate_gaussian_pdf(double x, double mean, double variance) {
     double pi = 3.14159265358979323846;
     double exponent = -((x - mean) * (x - mean)) / (2 * variance);
     double exponential_term = taylor_exp(exponent, 10); // Adjust the number of terms as needed
-    return (1.0 / (sqrt(2 * pi * variance))) * exponential_term;
+    return (1.0 / (approximate_sqrt(2 * pi * variance))) * exponential_term;
 } // end of func
 
 //
