@@ -26,8 +26,15 @@ typedef struct {
     int num_features;
 } LogisticRegressionModel;
 
+// Define your Linear Regression model
+typedef struct {
+    double slope;
+    double intercept;
+} LinearRegressionModel;
+
 // Training function for Logistic Regression
 TRILOBITE_XTEST_API void xauto_train_logistic_regression(LogisticRegressionModel* model, const double* input, const int* labels, int num_samples, double learning_rate, int num_epochs);
+TRILOBITE_XTEST_API void xauto_train_linear_regression(LinearRegressionModel* model, const double* x, const double* y, int num_samples);
 
 #ifdef __cplusplus
 }
