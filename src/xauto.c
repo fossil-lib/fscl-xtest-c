@@ -82,3 +82,69 @@ void xauto_train_linear_regression(LinearRegressionModel* model, const double* x
     model->slope = slope;
     model->intercept = intercept;
 } // end of func
+
+// Training function for Gaussian Naive Bayes
+void xauto_train_gaussian_naive_bayes(GaussianNaiveBayesModel* model, const double* features, const int* labels, int num_samples, int num_features) {
+    // Initialize class probabilities, means, and variances
+    model->class_probabilities[0] = 0.0;
+    model->class_probabilities[1] = 0.0;
+    model->mean[0] = 0.0;
+    model->mean[1] = 0.0;
+    model->variance[0] = 0.0;
+    model->variance[1] = 0.0;
+
+    int count_class_0 = 0;
+    int count_class_1 = 0;
+
+    // Calculate class probabilities, means, and variances
+    for (int i = 0; i < num_samples; ++i) {
+        if (labels[i] == 0) {
+            count_class_0++;
+            model->mean[0] += features[i];
+        } else {
+            count_class_1++;
+            model->mean[1] += features[i];
+        } // end if esle
+    } // end for
+
+    if (count_class_0 > 0) {
+        model->class_probabilities[0] = (double)count_class_0 / num_samples;
+        model->mean[0] /= count_class_0;
+    } // end if
+
+    if (count_class_1 > 0) {
+        model->class_probabilities[1] = (double)count_class_1 / num_samples;
+        model->mean[1] /= count_class_1;
+    } // end if
+
+    for (int i = 0; i < num_samples; ++i) {
+        int class_label = labels[i];
+        double diff = features[i] - model->mean[class_label];
+        model->variance[class_label] += diff * diff;
+    } // end for
+
+    if (count_class_0 > 0) {
+        model->variance[0] /= count_class_0;
+    } // end if
+
+    if (count_class_1 > 0) {
+        model->variance[1] /= count_class_1;
+    } // end if
+} // end of func
+
+// Gaussian probability density function
+double gaussian_pdf(double x, double mean, double variance) {
+    double exponent = -(x - mean) * (x - mean) / (2 * variance);
+    return (1 / sqrt(2 * M_PI * variance)) * exp(exponent);
+} // end of func
+
+// Prediction function for Gaussian Naive Bayes
+int xauto_predict_gaussian_naive_bayes(const GaussianNaiveBayesModel* model, double feature) {
+    double likelihood_class_0 = gaussian_pdf(feature, model->mean[0], model->variance[0]);
+    double likelihood_class_1 = gaussian_pdf(feature, model->mean[1], model->variance[1]);
+
+    double posterior_class_0 = model->class_probabilities[0] * likelihood_class_0;
+    double posterior_class_1 = model->class_probabilities[1] * likelihood_class_1;
+
+    return (posterior_class_0 > posterior_class_1) ? 0 : 1;
+} // end of func
