@@ -581,9 +581,9 @@ XTEST_CASE(xauto_logistic_regression_training) {
 
     // Define assertions specific to Logistic Regression training
     // In this example, you can check if the model's coefficients and intercept match expected values.
-    XASSERT(fabs(model.coefficients[0] - 0.61) < 0.01, "Coefficient 1 is not as expected");
-    XASSERT(fabs(model.coefficients[1] - 0.88) < 0.01, "Coefficient 2 is not as expected");
-    XASSERT(fabs(model.intercept + 3.16) < 0.01, "Intercept is not as expected");
+    XEXPECT(fabs(model.coefficients[0] - 0.61) < 0.01, "Coefficient 1 is not as expected");
+    XEXPECT(fabs(model.coefficients[1] - 0.88) < 0.01, "Coefficient 2 is not as expected");
+    XEXPECT(fabs(model.intercept + 3.16) < 0.01, "Intercept is not as expected");
 } // end of case
 
 // Define a test case for Linear Regression training
@@ -600,8 +600,8 @@ XTEST_CASE(xauto_linear_regression_training) {
 
     // Define assertions specific to Linear Regression training
     // In this example, you can check if the model's slope and intercept match expected values.
-    XASSERT(fabs(model.slope - 1.1) < 0.01, "Slope is not as expected");
-    XASSERT(fabs(model.intercept - 0.9) < 0.01, "Intercept is not as expected");
+    XEXPECT(fabs(model.slope - 1.1) < 0.01, "Slope is not as expected");
+    XEXPECT(fabs(model.intercept - 0.9) < 0.01, "Intercept is not as expected");
 } // end of case
 
 XTEST_CASE(xauto_gaussian_naive_bayes) {
@@ -625,7 +625,7 @@ XTEST_CASE(xauto_gaussian_naive_bayes) {
     // Define assertions based on expected predictions
     int expected_predictions[] = {0, 0, 0, 0, 0, 1, 1, 1, 1, 1};
     for (int i = 0; i < num_samples; ++i) {
-        XASSERT(predictions[i] == expected_predictions[i], "Prediction is incorrect");
+        XEXPECT(predictions[i] == expected_predictions[i], "Prediction is incorrect");
     } // end for
 } // end of case
 
