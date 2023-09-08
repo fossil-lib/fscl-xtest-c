@@ -586,6 +586,24 @@ XTEST_CASE(xauto_logistic_regression_training) {
     XASSERT(fabs(model.intercept + 3.16) < 0.01, "Intercept is not as expected");
 } // end of case
 
+// Define a test case for Linear Regression training
+XTEST_CASE(xauto_linear_regression_training) {
+    int num_samples = 5;
+    double x[] = {1.0, 2.0, 3.0, 4.0, 5.0}; // Input feature
+    double y[] = {2.0, 3.0, 3.5, 4.8, 6.0}; // Target variable
+
+    // Initialize the Linear Regression model
+    LinearRegressionModel model;
+
+    // Train the model
+    xauto_train_linear_regression(&model, x, y, num_samples);
+
+    // Define assertions specific to Linear Regression training
+    // In this example, you can check if the model's slope and intercept match expected values.
+    XASSERT(fabs(model.slope - 1.1) < 0.01, "Slope is not as expected");
+    XASSERT(fabs(model.intercept - 0.9) < 0.01, "Intercept is not as expected");
+} // end of case
+
 //
 // XTEST FIXTURE
 //
@@ -643,4 +661,5 @@ void xfixture_basic_cases(XUnitRunner *runner)
     xtest_run(&xbdd_valid_login, runner);
 
     xtest_run(&xauto_logistic_regression_training, runner);
+    xtest_run(&xauto_linear_regression_training, runner);
 } // end of fixture
