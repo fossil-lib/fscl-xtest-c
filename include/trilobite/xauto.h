@@ -21,7 +21,7 @@ typedef struct {
 } LogisticRegressionModel;
 
 // Training function for Logistic Regression
-void xauto_train_logistic_regression(LogisticRegressionModel* model, const double* input, const int* labels, int num_samples, double learning_rate, int num_epochs);
+TRILOBITE_XTEST_API void xauto_train_logistic_regression(LogisticRegressionModel* model, const double* input, const int* labels, int num_samples, double learning_rate, int num_epochs);
 
 #ifdef __cplusplus
 }
