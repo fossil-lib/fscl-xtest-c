@@ -562,16 +562,25 @@ XTEST_CASE(xauto_logistic_regression_training) {
     // Mock training data
     int num_samples = 5;
     int labels[] = {0, 0, 1, 1, 1};
-    double input[] = {1.0, 2.0, 3.0, 4.0, 5.0, 1.0, 1.5, 2.0, 2.5, 3.0}; // 2 features
+    int num_features = 2; // Set the number of features
+
+    double input[] = {
+        1.0, 2.0,
+        3.0, 4.0,
+        5.0, 1.0,
+        1.5, 2.0,
+        2.5, 3.0
+    };
 
     // Initialize the Logistic Regression model
     LogisticRegressionModel model;
+    model.num_features = num_features;
 
     // Train the model
-    xauto_train_logistic_regression(&model, input, labels, num_samples, 0.01, 1000);
+    train_logistic_regression(&model, input, labels, num_samples, 0.01, 1000);
 
     // Define assertions specific to Logistic Regression training
-    // In this example, you can check if the model's coefficients are approximately [0.61, 0.88] and intercept is approximately -3.16
+    // In this example, you can check if the model's coefficients and intercept match expected values.
     XASSERT(fabs(model.coefficients[0] - 0.61) < 0.01, "Coefficient 1 is not as expected");
     XASSERT(fabs(model.coefficients[1] - 0.88) < 0.01, "Coefficient 2 is not as expected");
     XASSERT(fabs(model.intercept + 3.16) < 0.01, "Intercept is not as expected");
