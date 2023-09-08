@@ -14,9 +14,14 @@ extern "C"
 
 #include "xtest.h"
 
+// Define the maximum number of features your code can handle
+enum {
+    MAX_FEATURES = 100
+}; // end enum
+
 // Define your Logistic Regression model
 typedef struct {
-    double coefficients[FEATURES];  // Replace FEATURES with the number of features
+    double coefficients[MAX_FEATURES];  // Replace FEATURES with the number of features
     double intercept;
 } LogisticRegressionModel;
 
