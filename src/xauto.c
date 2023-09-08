@@ -6,9 +6,23 @@
 */
 #include "trilobite/xauto.h"
 
+double xauto_exp_with_squaring(double x, int n) {
+    if (n == 0) {
+        return 1.0;
+    } // end if
+
+    if (n % 2 == 0) {
+        double half = xauto_exp_with_squaring(x, n / 2);
+        return half * half;
+    } else {
+        double half = xauto_exp_with_squaring(x, (n - 1) / 2);
+        return half * half * x;
+    } // end if else
+} // end of func
+
 // Sigmoid function
 double xauto_sigmoid(double x) {
-    return 1.0 / (1.0 + exp(-x));
+    return 1.0 / (1.0 + exp_with_squaring(-x, 10))
 } // end of func
 
 // Training function for Logistic Regression
