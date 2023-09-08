@@ -557,6 +557,26 @@ XTEST_CASE(xbdd_valid_login) {
     }
 } // end of case
 
+// Define a test case for Logistic Regression training
+XTEST_CASE(xauto_logistic_regression_training) {
+    // Mock training data
+    int num_samples = 5;
+    int labels[] = {0, 0, 1, 1, 1};
+    double input[] = {1.0, 2.0, 3.0, 4.0, 5.0, 1.0, 1.5, 2.0, 2.5, 3.0}; // 2 features
+
+    // Initialize the Logistic Regression model
+    LogisticRegressionModel model;
+
+    // Train the model
+    xauto_train_logistic_regression(&model, input, labels, num_samples, 0.01, 1000);
+
+    // Define assertions specific to Logistic Regression training
+    // In this example, you can check if the model's coefficients are approximately [0.61, 0.88] and intercept is approximately -3.16
+    XASSERT(fabs(model.coefficients[0] - 0.61) < 0.01, "Coefficient 1 is not as expected");
+    XASSERT(fabs(model.coefficients[1] - 0.88) < 0.01, "Coefficient 2 is not as expected");
+    XASSERT(fabs(model.intercept + 3.16) < 0.01, "Intercept is not as expected");
+} // end of case
+
 //
 // XTEST FIXTURE
 //
@@ -612,4 +632,6 @@ void xfixture_basic_cases(XUnitRunner *runner)
     xtest_run(&xbdd_user_account, runner);
     xtest_run(&xbdd_empty_cart, runner);
     xtest_run(&xbdd_valid_login, runner);
+
+    xtest_run(&xauto_logistic_regression_training, runner);
 } // end of fixture
