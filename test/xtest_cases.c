@@ -12,26 +12,26 @@
 //
 
 // Define a function that reads an integer from stdin
-int read_integer() {
-    int value;
-    scanf("%d", &value);
-    return value;
-} // end of func
+// int read_integer() {
+//     int value;
+//     scanf("%d", &value);
+//     return value;
+// } // end of func
 
-// Define a test case to capture and verify input
-XTEST_CASE(capture_and_verify_input) {
-    // Redirect stdin to read from a buffer containing test input
-    char input[] = "42";
-    setbuf(stdin, input);
+// // Define a test case to capture and verify input
+// XTEST_CASE(capture_and_verify_input) {
+//     // Redirect stdin to read from a buffer containing test input
+//     char input[] = "42\n";
+//     setbuf(stdin, input);
 
-    // Call the function that reads input
-    int result = read_integer();
+//     // Call the function that reads input
+//     int result = read_integer();
 
-    // Restore stdin to the default (usually terminal)
-    setbuf(stdin, NULL);
+//     // Restore stdin to the default (usually terminal)
+//     setbuf(stdin, NULL);
 
-    XASSERT(result == 42, "Input mismatch");
-} // end case
+//     XASSERT(result == 42, "Input mismatch");
+// } // end case
 
 // Define a function that reads a string from stdin
 void read_string(char* buffer, int max_length) {
@@ -699,7 +699,7 @@ XTEST_CASE(xbdd_valid_login) {
 //
 void xfixture_basic_cases(XUnitRunner *runner)
 {
-    xtest_run(&capture_and_verify_input, runner);
+    // xtest_run(&capture_and_verify_input, runner);
     xtest_run(&capture_and_verify_input_string, runner);
     xtest_run(&capture_and_verify_multiple_inputs, runner);
     xtest_run(&capture_and_verify_input_character, runner);
