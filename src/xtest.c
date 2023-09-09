@@ -131,9 +131,11 @@ static void xtest_output_xignore(const char* reason) {
 static void xtest_output_xunittest_format(XTestCase* test_case) {
     if (XTEST_FLAG_COLORED) {
         printf("%s[TEST CASE] %s%s\n", ANSI_COLOR_BLUE, test_case->name, ANSI_COLOR_RESET);
+        printf("%s[TYPE] : %s%s\n", ANSI_COLOR_BLUE, test_case->is_benchmark? "Benchmark" : "Unit Test", ANSI_COLOR_RESET);
         printf("%s[TIME] : %lu%s\n", ANSI_COLOR_BLUE, test_case->elapsed_time, ANSI_COLOR_RESET);
     } else {
         printf("[TEST CASE] %s\n", test_case->name);
+        printf("[TYPE] : %s\n", test_case->is_benchmark? "Benchmark" : "Unit Test");
         printf("[TIME] : %lu\n", test_case->elapsed_time);
     } // end if else
     puts("#####################################");
