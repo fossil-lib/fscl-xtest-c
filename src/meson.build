@@ -1,8 +1,8 @@
-trilo_src = files('xtest.c', 'xauto.c')
+source = files('xtest.c', 'xauto.c')
 
-trilo_lib = library('trilo_xtest_lib-c',
-    trilo_src,
-    include_directories: inc_dir)
+lib = library('trilo-xtest-c',
+    source,
+    include_directories: dir)
 
-trilo_xtest_c_dep = declare_dependency(link_with: trilo_lib,
-    include_directories: inc_dir)
+trilo_xtest_c_dep = declare_dependency(link_with: lib,
+    include_directories: dir)
