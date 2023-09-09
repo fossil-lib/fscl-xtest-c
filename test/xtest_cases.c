@@ -21,7 +21,7 @@ int read_integer() {
 // Define a test case to capture and verify input
 XTEST_CASE(capture_and_verify_input) {
     // Redirect stdin to read from a buffer containing test input
-    char input[] = "42\n";
+    char input[] = "42";
     setbuf(stdin, input);
 
     // Call the function that reads input
