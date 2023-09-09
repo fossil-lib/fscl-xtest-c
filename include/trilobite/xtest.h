@@ -151,7 +151,7 @@ typedef struct {
  */
 #define XTEST_CASE(name) \
     void name##_xtest(void); \
-    const XTestCase name = { #name, name##_xtest, false, false, 0 }; \
+    XTestCase name = { #name, name##_xtest, false, false, 0 }; \
     void name##_xtest(void)
 
 /**
@@ -163,7 +163,7 @@ typedef struct {
  */
 #define XTEST_BENCH(name) \
     void name##_xtest(void); \
-    const XTestCase name = { #name, name##_xtest, false, true, 0 }; \
+    XTestCase name = { #name, name##_xtest, false, true, 0 }; \
     void name##_xtest(void)
 
 /**
@@ -176,7 +176,7 @@ typedef struct {
 #define XTEST_FIXTURE(fixture_name) \
     void setup_##fixture_name(void); \
     void teardown_##fixture_name(void); \
-    const XTestFixture fixture_name = { setup_##fixture_name, teardown_##fixture_name }; \
+    XTestFixture fixture_name = { setup_##fixture_name, teardown_##fixture_name }; \
     void setup_##fixture_name(void) \
     void teardown_##fixture_name(void)
 
@@ -191,7 +191,7 @@ typedef struct {
  */
 #define XTEST_CASE_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
-    const XTestCase test_case = { #test_case, test_case##_xtest_##fixture_name, false, false, 0 }; \
+    XTestCase test_case = { #test_case, test_case##_xtest_##fixture_name, false, false, 0 }; \
     void test_case##_xtest_##fixture_name(void)
 
 /**
@@ -205,7 +205,7 @@ typedef struct {
  */
 #define XTEST_BENCH_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
-    const XTestCase test_case = { #test_case, test_case##_xtest_##fixture_name, false, true, 0 }; \
+    XTestCase test_case = { #test_case, test_case##_xtest_##fixture_name, false, true, 0 }; \
     void test_case##_xtest_##fixture_name(void)
 
 //
