@@ -37,6 +37,9 @@ XTestCliOption options[] = {
      { "--help",       "-h", "Print this message you see before you're eyes", &XTEST_FLAG_HELP }
  }; // end of command-line options
 
+// TODO: add —-only-tests, —-only-bench, —-only-ai, —-repeat, —-thread-run
+//       test <test_name> bench <bench_name> fixture <name>
+
 /**
  * @brief Output for XUnit Test Case Assert.
  *
