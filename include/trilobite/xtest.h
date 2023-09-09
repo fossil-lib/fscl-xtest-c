@@ -51,36 +51,67 @@ extern "C"
 
 #endif
 
-// Define a structure to represent a test case
+/**
+ * @brief Structure representing a test case.
+ *
+ * This structure encapsulates information about a test case, including its name, test function,
+ * whether it's ignored, whether it's a benchmark, and the elapsed time (for benchmarks).
+ */
 typedef struct {
-    const char* name;
-    void (*test_function)(void);
-    bool ignored;
-    bool is_benchmark;     // New field for benchmark flag
-    clock_t elapsed_time;  // New field for elapsed time
+    const char* name;         // Name of the test case
+    void (*test_function)(void);  // Function pointer to the test case's implementation
+    bool ignored;             // Indicates if the test case is ignored
+    bool is_benchmark;        // Flag to identify benchmark tests
+    clock_t elapsed_time;     // Elapsed time for benchmark tests
 } XTestCase;
 
-// Define a structure to represent a test fixture
+/**
+ * @brief Structure representing a test fixture.
+ *
+ * This structure defines a test fixture, which includes setup and teardown functions that
+ * can be associated with test cases.
+ */
 typedef struct {
-    void (*setup)(void);
-    void (*teardown)(void);
+    void (*setup)(void);     // Setup function for the fixture
+    void (*teardown)(void);  // Teardown function for the fixture
 } XTestFixture;
 
-// Define a structure to hold test statistics
+/**
+ * @brief Structure to hold test statistics.
+ *
+ * This structure stores various statistics related to test execution, such as the number of
+ * passed, failed, ignored tests, the number of expected outcomes, and the number of assertions.
+ */
 typedef struct {
-    int passed_count;
-    int failed_count;
-    int ignored_count;
-    int expected_count;
-    int asserts_count;
-    int total_count;
+    int passed_count;     // Number of passed tests
+    int failed_count;     // Number of failed tests
+    int ignored_count;    // Number of ignored tests
+    int expected_count;   // Number of expected outcomes
+    int asserts_count;    // Number of assertions made
+    int total_count;      // Total number of tests
 } XTestStats;
 
-// Define an XUnitRunner structure to group test-related data
+/**
+ * @brief Structure to group test-related data.
+ *
+ * This structure is used to group test statistics within an XUnit test runner.
+ */
 typedef struct {
-    XTestStats stats;
+    XTestStats stats;  // Test statistics including passed, failed, and ignored counts
 } XUnitRunner;
 
+/**
+ * @brief Define a data structure for a group of test data.
+ *
+ * This macro is used to define a data structure associated with a specific group or category of test data.
+ * It typically allows you to organize and encapsulate test data relevant to a particular set of test cases
+ * or scenarios.
+ *
+ * @param group_name  The name of the group for which the data structure is defined.
+ * @typedef           Define a typedef for the data structure with the given group name.
+ * @struct            Start defining the data structure.
+ */
+#define XTEST_DATA(group_name) typedef struct group_name##_xdata group_name##_xdata; struct group_name##_xdata
 
 /**
  * @brief Define a simple test case without a fixture.
