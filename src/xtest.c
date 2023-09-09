@@ -36,7 +36,19 @@ CLIOption options[] = {
      { "--only-bench", "-b", "Only run benchmark cases", &XTEST_FLAG_ONLY_BENCH }
  }; // end of command-line options
 
-// Function to print usage instructions, including custom options
+/**
+ * @brief Prints usage instructions, including custom options, for a command-line program.
+ *
+ * This function prints usage instructions for a command-line program, including custom options.
+ * It displays the program name and lists available options along with their short and long names
+ * and descriptions.
+ *
+ * @param program_name  Name of the command-line program.
+ * @param options       Array of XTestCliOption structures representing available options.
+ * @param num_options   Number of elements in the options array.
+ *
+ * @return              None.
+ */
 void xtest_cli_print_usage(const char* program_name, const XTestCliOption* options, size_t num_options) {
     printf("Usage: %s [options]\n", program_name);
     printf("Options:\n");
@@ -47,7 +59,20 @@ void xtest_cli_print_usage(const char* program_name, const XTestCliOption* optio
     puts("########################################");
 } // end of func
 
-// Function to parse command-line arguments and set custom option flags
+/**
+ * @brief Parses command-line arguments and sets flags based on specified options.
+ *
+ * This function parses command-line arguments and sets flags based on the specified options.
+ * It iterates through the command-line arguments and compares them with the short and long
+ * names of the provided options to set corresponding flags.
+ *
+ * @param options       Array of XTestCliOption structures representing available options.
+ * @param num_options   Number of elements in the options array.
+ * @param argc          Number of command-line arguments.
+ * @param argv          Array of command-line argument strings.
+ *
+ * @return              0 if the parsing is successful.
+ */
 int xtest_cli_parse_args(XTestCliOption* options, size_t num_options, int argc, char** argv) {
     for (int i = 1; i < argc; ++i) {
         for (size_t j = 0; j < num_options; ++j) {
@@ -63,22 +88,41 @@ int xtest_cli_parse_args(XTestCliOption* options, size_t num_options, int argc, 
     return 0;
 } // end of func
 
+/**
+ * @brief Initializes an XUnitRunner and processes command-line arguments.
+ *
+ * This function initializes an XUnitRunner, processes command-line arguments to handle custom options,
+ * and displays version information or usage instructions if requested.
+ *
+ * @param argc  Number of command-line arguments.
+ * @param argv  Array of command-line argument strings.
+ *
+ * @return      An initialized XUnitRunner structure.
+ */
 XUnitRunner xtest_start(int argc, char **argv) {
     XUnitRunner runner;
     xtest_cli_parse_args(options, num_options, argc, (char**)argv);
-    runner.verbose = XTEST_FLAG_VERBOSE;       // --verbose, -v : Show more information to standard output
-    runner.version = XTEST_FLAG_VERSION;       // --version     : Get the version of this test framework
-    runner.color = XTEST_FLAG_COLORED;         // --color, -c   : Enable color text output 
-    runner.help = XTEST_FLAG_HELP;             // --help, -h    : Print this message you see before you're eyes
-    runner.only_tests = XTEST_FLAG_ONLY_TESTS; // --only-tests  : Only run unit test cases
-    runner.only_bench = XTEST_FLAG_ONLY_BENCH; // --only-bench  : Only run benchmark cases
 
-    // TODO: process args here
+    if (XTEST_FLAG_VERSION) {
+        puts("0.3.0");
+    } else if (XTEST_FLAG_HELP) {
+        xtest_cli_print_usage("Xrunner", options, 6);
+    } // end if, else if
    
     runner.stats = (XTestStats){0, 0, 0, 0, 0, 0};
     return runner;
 } // end of func
 
+/**
+ * @brief Finalizes the execution of a Trilobite XUnit runner and displays test results.
+ *
+ * This function prints the test results, including the number of tests passed, failed, ignored,
+ * and the total count. It also returns the count of failed tests.
+ *
+ * @param runner    Pointer to the Trilobite XUnit runner containing test statistics.
+ *
+ * @return          The count of failed tests.
+ */
 int xtest_end(XUnitRunner *runner) {
     printf("%s[TRILOBITE XUNIT RUNNER] results of the test%s", ANSI_COLOR_BLUE, ANSI_COLOR_RESET);
     printf("Tests passed: %d\n", runner->stats.passed_count);
@@ -88,6 +132,17 @@ int xtest_end(XUnitRunner *runner) {
     return runner->stats.failed_count;
 } // end of func
 
+/**
+ * @brief Runs a unit test case and updates test statistics.
+ *
+ * This function executes a unit test case, records the execution time, and updates the
+ * test statistics based on the test result.
+ *
+ * @param test_case   Pointer to the unit test case to be executed.
+ * @param stats       Pointer to the structure containing test statistics.
+ *
+ * @return            None.
+ */
 void xtest_run_unit(const XTestCase* test_case, XTestStats* stats)  {
     // Execute the test function
     if (!test_case->ignored) {
@@ -130,6 +185,18 @@ void xtest_run_unit(const XTestCase* test_case, XTestStats* stats)  {
     stats->total_count++;
 } // end of func
 
+/**
+ * @brief Runs a test case within a test fixture and updates test statistics.
+ *
+ * This function executes a test case within a given test fixture, records the execution time,
+ * and updates the test statistics based on the test result.
+ *
+ * @param test_case   Pointer to the test case to be executed.
+ * @param fixture     Pointer to the test fixture containing setup and teardown functions.
+ * @param stats       Pointer to the structure containing test statistics.
+ *
+ * @return            None.
+ */
 void xtest_run_fixture(const XTestCase* test_case, const XTestFixture* fixture, XTestStats* stats)  {
     // Execute the test function within the fixture
     if (!test_case->ignored) {
@@ -181,15 +248,18 @@ void xtest_run_fixture(const XTestCase* test_case, const XTestFixture* fixture, 
 } // end of func
 
 /**
-    @brief Asserts that the expression is true, and prints a message if it is not.
-
-    @param expression The expression to check.
-    @param message The message to print if the expression is false.
-
-    @return void
-*/
+ * @brief Custom assertion function with optional message.
+ *
+ * This function allows custom assertions and displays a message if the assertion fails.
+ * It also provides an option to disable further assertion scanning after the first failure.
+ *
+ * @param expression  The expression to be asserted (should evaluate to true for success).
+ * @param message     An optional message to be displayed when the assertion fails.
+ *
+ * @return            None.
+ */
 void xassert(bool expression, const char *message) {
-    if (XASSERT_PASS_SCAN == false) {
+    if (!XASSERT_PASS_SCAN) {
         return;
     } else if (!expression) {
         printf(" --> %s: %s\n", ANSI_COLOR_RED "Failed" ANSI_COLOR_RESET, message);
@@ -200,13 +270,16 @@ void xassert(bool expression, const char *message) {
 } // end of func
 
 /**
-    @brief Expected that the expression is true, and prints a message if it is not.
-
-    @param expression The expression to check.
-    @param message The message to print if the expression is false.
-
-    @return void
-*/
+ * @brief Custom expectation function with optional message.
+ *
+ * This function allows custom expectations and displays a message if the expectation fails.
+ * It also provides an option to disable further expectation scanning after the first failure.
+ *
+ * @param expression  The expression to be expected (should evaluate to true for success).
+ * @param message     An optional message to be displayed when the expectation fails.
+ *
+ * @return            None.
+ */
 void xexpect(bool expression, const char *message) {
     XEXPECT_PASS_SCAN = true;
 
