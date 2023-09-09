@@ -31,7 +31,22 @@ extern "C"
 #else
     #define XTEST_API
 #endif
-  
+
+// Define the platform-specific macro to ignore the test on Windows
+#ifdef _WIN32
+#define XIGNORE_ON_WINDOWS
+#endif
+
+// Define the platform-specific macro to ignore the test on Linux
+#ifdef __linux__
+#define XIGNORE_ON_LINUX
+#endif
+
+// Define the platform-specific macro to ignore the test on macOS
+#ifdef __APPLE__
+#define XIGNORE_ON_MACOS
+#endif
+
 #ifdef __cplusplus
 #include <cstring>
 #include <cstdlib>
