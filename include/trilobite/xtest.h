@@ -244,11 +244,11 @@ XTEST_API int xtest_end(XUnitRunner *runner);
  * test statistics based on the test result.
  *
  * @param test_case   Pointer to the unit test case to be executed.
- * @param stats       Pointer to the structure containing test statistics.
+ * @param stats       Structure containing test statistics.
  *
  * @return            None.
  */
-XTEST_API void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats);
+XTEST_API void xtest_run_test_unit(XTestCase* test_case, XTestStats stats);
 
 /**
  * @brief Runs a test case within a test fixture and updates test statistics.

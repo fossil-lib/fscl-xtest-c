@@ -274,7 +274,7 @@ int xtest_end(XUnitRunner *runner) {
  *
  * @return            None.
  */
-void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
+void xtest_run_test_unit(XTestCase* test_case, XTestStats stats)  {
     // Check to see if we can skip
     test_case->ignored = XIGNORE_TEST_CASE;
 
@@ -300,13 +300,13 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
 
         // Update the appropriate count based on the test result
         if (test_passed) {
-            stats->passed_count++;
+            stats.passed_count++;
         } else {
-            stats->failed_count++;
+            stats.failed_count++;
         } // end if else
     } else {
         // Update the ignored count
-        stats->ignored_count++;
+        stats.ignored_count++;
     } // end if else
 
     if (XTEST_FLAG_VERBOSE) {
@@ -314,7 +314,7 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
     } // end if
 
     // Update the total count
-    stats->total_count++;
+    stats.total_count++;
     XIGNORE_TEST_CASE = false;
 } // end of func
 
@@ -330,7 +330,7 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
  *
  * @return            None.
  */
-void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats)  {
+void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats stats)  {
     // Check to see if we can skip
     test_case->ignored = XIGNORE_TEST_CASE;
 
@@ -364,13 +364,13 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
 
         // Update the appropriate count based on the test result
         if (test_passed) {
-            stats->passed_count++;
+            stats.passed_count++;
         } else {
-            stats->failed_count++;
+            stats.failed_count++;
         } // end if else
     } else {
         // Update the ignored count
-        stats->ignored_count++;
+        stats.ignored_count++;
     } // end if else
 
     if (XTEST_FLAG_VERBOSE) {
@@ -378,7 +378,7 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
     } // end if
 
     // Update the total count
-    stats->total_count++;
+    stats.total_count++;
     XIGNORE_TEST_CASE = false;
 } // end of func
 
