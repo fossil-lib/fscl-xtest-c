@@ -17,6 +17,7 @@
 // Static control panel for assert/expect and marks
 static bool XEXPECT_PASS_SCAN = true;
 static bool XASSERT_PASS_SCAN = true;
+static bool XIGNORE_TEST_CASE = false;
 
 // Static control panel for command-line arguments
 static bool XTEST_FLAG_VERBOSE    = false;
@@ -258,6 +259,7 @@ void xtest_run_fixture(const XTestCase* test_case, const XTestFixture* fixture, 
  * @param reason  The reason for ignoring the test case.
  */
 void xignore(const char* reason) {
+    XIGNORE_TEST_CASE = true;
     fprintf(stderr, "Test ignored: %s\n", reason);
 } // end of func
 
