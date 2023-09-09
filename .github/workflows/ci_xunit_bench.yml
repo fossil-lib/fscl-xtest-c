@@ -13,14 +13,14 @@ name: XUnit CLI Usage CI
 on:
   push:
     paths:
-      - "**.txt"
+      - "**.c"
       - "**.build"
   pull_request:
     branches:
       - "main"
       - "next"
     paths:
-      - "**.txt"
+      - "**.c"
       - "**.build"
 
 permissions:
@@ -31,7 +31,7 @@ permissions:
 # 
 jobs:
 
-  run_auto:
+  run_help:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -52,14 +52,14 @@ jobs:
             meson compile -C builddir
     - name: Test Project Code
       run: |
-            meson test -C builddir -v
+            meson test -C builddir -v --test-args=--help
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
         name: Latest_Meson_Testlog
         path: builddir/meson-logs/testlog.txt
 
-  run_both_tests:
+  run_version:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -80,7 +80,35 @@ jobs:
             meson compile -C builddir
     - name: Test Project Code
       run: |
-            meson test -C builddir -v --test-args=--run-both
+            meson test -C builddir -v --test-args=--version
+    - uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: Latest_Meson_Testlog
+        path: builddir/meson-logs/testlog.txt
+
+  run_verbose:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        architecture: x64
+    - name: Install Meson Build System
+      run: |
+          pip install meson ninja
+          sudo apt-get install -y gcc
+    - name: Setup Build Directory
+      run: |
+            meson setup builddir -Dwith_tests=enabled
+    - name: Compile Source Code
+      run: |
+            meson compile -C builddir
+    - name: Test Project Code
+      run: |
+            meson test -C builddir -v --test-args=--verbose
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
@@ -88,7 +116,7 @@ jobs:
         path: builddir/meson-logs/testlog.txt
 
 
-  only_run_xunits:
+  run_color:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -109,14 +137,14 @@ jobs:
             meson compile -C builddir
     - name: Test Project Code
       run: |
-            meson test -C builddir -v --test-args=--only-tests
+            meson test -C builddir -v --test-args=--color
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
         name: Latest_Meson_Testlog
         path: builddir/meson-logs/testlog.txt
 
-  only_run_benchs:
+  run_verbose_and_color:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -137,7 +165,7 @@ jobs:
             meson compile -C builddir
     - name: Test Project Code
       run: |
-            meson test -C builddir -v --test-args=--only-bench
+            meson test -C builddir -v --test-args=--verbose —color
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
