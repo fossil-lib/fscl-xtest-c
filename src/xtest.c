@@ -14,7 +14,11 @@
 #define ANSI_COLOR_YELLOW  "\x1b[33m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
+// Extra
+const char *XTEST_VERSION = "0.3.0";
+
 // Static control panel for assert/expect and marks
+static bool XERRORS_PASS_SCAN = true;
 static bool XEXPECT_PASS_SCAN = true;
 static bool XASSERT_PASS_SCAN = true;
 static bool XIGNORE_TEST_CASE = false;
@@ -37,7 +41,131 @@ XTestCliOption options[] = {
      { "--only-bench", "-b", "Only run benchmark cases", &XTEST_FLAG_ONLY_BENCH }
  }; // end of command-line options
 
-// TODO add output functions 
+/**
+ * @brief Output for XUnit Test Case Assert.
+ *
+ * Outputs information related to an assertion in a test case, including the assertion status (PASS/FAIL)
+ * and an optional error message.
+ *
+ * @param expression  The result of the assertion (true for pass, false for fail).
+ * @param message     An optional message associated with the assertion.
+ */
+static void xtest_output_xassert(bool expression, const char *message) {
+    if (XTEST_FLAG_COLORED) {
+        printf("%s[ASSERT] XUnit Test Case Assert%s\n", ANSI_COLOR_BLUE, ANSI_COLOR_RESET);
+        printf("%s[MESSAGE] :%s %s\n", ANSI_COLOR_BLUE, ANSI_COLOR_RESET, message);
+        printf("%s[RESULT]  :%s %s\n", ANSI_COLOR_BLUE, ANSI_COLOR_RESET, expression? "PASS" : "FAIL");
+    } else {
+        printf("[ASSERT] XUnit Test Case Assert\n");
+        printf("[MESSAGE] : %s\n", message);
+        printf("[RESULT]  : %s\n", expression? "PASS" : "FAIL");
+    } // end if else
+    puts("####################################-");
+} // end of func
+
+/**
+ * @brief Output for XUnit Test Case Expect.
+ *
+ * Outputs information related to an expectation in a test case, including the expectation status (PASS/FAIL)
+ * and an optional error message.
+ *
+ * @param expression  The result of the expectation (true for pass, false for fail).
+ * @param message     An optional message associated with the expectation.
+ */
+static void xtest_output_xexpect(bool expression, const char *message) {
+    if (XTEST_FLAG_COLORED) {
+        printf("%s[EXPECT] XUnit Test Case Expect%s\n", ANSI_COLOR_BLUE, ANSI_COLOR_RESET);
+        printf("%s[MESSAGE] :%s %s\n", ANSI_COLOR_BLUE, ANSI_COLOR_RESET, message);
+        printf("%s[RESULT]  :%s %s\n", ANSI_COLOR_BLUE, ANSI_COLOR_RESET, expression? "PASS" : "FAIL");
+    } else {
+        printf("[EXPECT] XUnit Test Case Expect\n");
+        printf("[MESSAGE] : %s\n", message);
+        printf("[RESULT]  : %s\n", expression? "PASS" : "FAIL");
+    } // end if else
+    puts("####################################-");
+} // end of func
+
+/**
+ * @brief Output for XUnit Test Case Error.
+ *
+ * Outputs information related to an error condition in a test case, including the error status (PASS/FAIL)
+ * and an optional error message.
+ *
+ * @param expression  The result of the error condition (true for pass, false for fail).
+ * @param message     An optional message associated with the error.
+ */
+static void xtest_output_xerrors(bool expression, const char *message) {
+    if (XTEST_FLAG_COLORED) {
+        printf("%s[ERROR] XUnit Test Case Error%s\n", ANSI_COLOR_BLUE, ANSI_COLOR_RESET);
+        printf("%s[MESSAGE] :%s %s\n", ANSI_COLOR_BLUE, ANSI_COLOR_RESET, message);
+        printf("%s[RESULT]  :%s %s\n", ANSI_COLOR_BLUE, ANSI_COLOR_RESET, expression? "PASS" : "FAIL");
+    } else {
+        printf("[ERROR] XUnit Test Case Error\n");
+        printf("[MESSAGE] : %s\n", message);
+        printf("[RESULT]  : %s\n", expression? "PASS" : "FAIL");
+    } // end if else
+    puts("####################################-");
+} // end of func
+
+/**
+ * @brief Output for XUnit Test Case Ignored.
+ *
+ * Outputs information indicating that a test case has been ignored along with an optional reason.
+ *
+ * @param reason  The reason for ignoring the test case.
+ */
+static void xtest_output_xignore(const char* reason) {
+    if (XTEST_FLAG_COLORED) {
+        printf("%s[IGNORE] XUnit Test Case Ignored%s\n", ANSI_COLOR_BLUE, ANSI_COLOR_RESET);
+        printf("%s[MESSAGE] :%s %s\n", ANSI_COLOR_BLUE, ANSI_COLOR_RESET, reason);
+    } else {
+        printf("%s[IGNORE] XUnit Test Case Ignored%s\n", ANSI_COLOR_BLUE, ANSI_COLOR_RESET);
+        printf("%s[MESSAGE] :%s %s\n", ANSI_COLOR_BLUE, ANSI_COLOR_RESET, reason);
+    } // end if else
+    puts("####################################-");
+} // end of func
+
+/**
+ * @brief Output for XUnit Test Case Format.
+ *
+ * Outputs the format for a specific test case, including its name and elapsed time (if available).
+ *
+ * @param test_case  Pointer to the test case for which the format is displayed.
+ */
+static void xtest_output_xunittest_format(const XTestCase* test_case) {
+    if (XTEST_FLAG_COLORED) {
+        printf("%s[TEST CASE] %s%s\n", ANSI_COLOR_BLUE, test_case->name, ANSI_COLOR_RESET);
+        printf("%s[TIME] : %s%s\n", ANSI_COLOR_BLUE, test_case->elapsed_time, ANSI_COLOR_RESET);
+    } else {
+        printf("[TEST CASE] %s\n", test_case->name);
+        printf("[TIME] : %s\n", test_case->elapsed_time);
+    } // end if else
+    puts("#####################################");
+} // end of func
+
+/**
+ * @brief Output for XUnit Test Case Report.
+ *
+ * Outputs a summary report of test results, including the number of tests passed, failed, ignored, and the total count.
+ *
+ * @param runner  Pointer to the XUnitRunner structure containing test statistics.
+ */
+static void xtest_output_xunittest_report(XUnitRunner *runner) {
+    if (XTEST_FLAG_COLORED) {
+        printf("%s[TRILOBITE XUNIT RUNNER] results of the test%s", ANSI_COLOR_BLUE, ANSI_COLOR_RESET);
+        printf("Tests passed: %d\n", runner->stats.passed_count);
+        printf("Tests failed: %d\n", runner->stats.failed_count);
+        printf("Tests ignored: %d\n", runner->stats.ignored_count);
+        printf("Total count: %d\n", runner->stats.total_count);
+    } else {
+        puts("[TRILOBITE XUNIT RUNNER] results of the test");
+        printf("Tests passed: %d\n", runner->stats.passed_count);
+        printf("Tests failed: %d\n", runner->stats.failed_count);
+        printf("Tests ignored: %d\n", runner->stats.ignored_count);
+        printf("Total count: %d\n", runner->stats.total_count);
+    } // end if else
+    puts("#####################################");
+} // end of func
 
 /**
  * @brief Prints usage instructions, including custom options, for a command-line program.
@@ -104,12 +232,15 @@ int xtest_cli_parse_args(XTestCliOption* options, size_t num_options, int argc, 
  */
 XUnitRunner xtest_start(int argc, char **argv) {
     XUnitRunner runner;
+    size_t num_options = sizeof(options) / sizeof(options[0]);
     xtest_cli_parse_args(options, num_options, argc, (char**)argv);
 
     if (XTEST_FLAG_VERSION) {
-        puts("0.3.0");
+        puts(XTEST_VERSION);
+        exit(EXIT_SUCCESS);
     } else if (XTEST_FLAG_HELP) {
         xtest_cli_print_usage("Xrunner", options, 6);
+        exit(EXIT_SUCCESS);
     } // end if, else if
    
     runner.stats = (XTestStats){0, 0, 0, 0, 0, 0};
@@ -127,11 +258,12 @@ XUnitRunner xtest_start(int argc, char **argv) {
  * @return          The count of failed tests.
  */
 int xtest_end(XUnitRunner *runner) {
-    printf("%s[TRILOBITE XUNIT RUNNER] results of the test%s", ANSI_COLOR_BLUE, ANSI_COLOR_RESET);
-    printf("Tests passed: %d\n", runner->stats.passed_count);
-    printf("Tests failed: %d\n", runner->stats.failed_count);
-    printf("Tests ignored: %d\n", runner->stats.ignored_count);
-    printf("Total count: %d\n", runner->stats.total_count);
+    if (XTEST_FLAG_VERBOSE) {
+        xtest_output_xunittest_report(runner);
+    } else {
+        printf(" \n");
+    } // end if else
+
     return runner->stats.failed_count;
 } // end of func
 
@@ -146,7 +278,10 @@ int xtest_end(XUnitRunner *runner) {
  *
  * @return            None.
  */
-void xtest_run_unit(const XTestCase* test_case, XTestStats* stats)  {
+void xtest_run_unit_unit(const XTestCase* test_case, XTestStats* stats)  {
+    // Check to see if we can skip
+    test_case->ignored = XIGNORE_TEST_CASE;
+
     // Execute the test function
     if (!test_case->ignored) {
         clock_t start_time = clock(); // Record start time
@@ -162,14 +297,8 @@ void xtest_run_unit(const XTestCase* test_case, XTestStats* stats)  {
         bool test_passed = true; // Assume the test passes by default
 
         // Check whether expectation scanning is enabled
-        if (!XEXPECT_PASS_SCAN) {
+        if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN || !XERRORS_PASS_SCAN) {
             // If any expectations fail, consider the test as failed
-            test_passed = false;
-        } // end if
-
-        // Check whether assertion scanning is enabled
-        if (!XASSERT_PASS_SCAN) {
-            // If any assertions fail, consider the test as failed
             test_passed = false;
         } // end if
 
@@ -184,8 +313,13 @@ void xtest_run_unit(const XTestCase* test_case, XTestStats* stats)  {
         stats->ignored_count++;
     } // end if else
 
+    if (XTEST_FLAG_VERBOSE) {
+        xtest_output_xunittest_format(test_case);
+    } // end if
+
     // Update the total count
     stats->total_count++;
+    XIGNORE_TEST_CASE = false;
 } // end of func
 
 /**
@@ -200,7 +334,10 @@ void xtest_run_unit(const XTestCase* test_case, XTestStats* stats)  {
  *
  * @return            None.
  */
-void xtest_run_fixture(const XTestCase* test_case, const XTestFixture* fixture, XTestStats* stats)  {
+void xtest_run_unit_fixture(const XTestCase* test_case, const XTestFixture* fixture, XTestStats* stats)  {
+    // Check to see if we can skip
+    test_case->ignored = XIGNORE_TEST_CASE;
+
     // Execute the test function within the fixture
     if (!test_case->ignored) {
         clock_t start_time = clock(); // Record start time
@@ -224,14 +361,8 @@ void xtest_run_fixture(const XTestCase* test_case, const XTestFixture* fixture, 
         bool test_passed = true; // Assume the test passes by default
 
         // Check whether expectation scanning is enabled
-        if (!XEXPECT_PASS_SCAN) {
+        if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN || !XERRORS_PASS_SCAN) {
             // If any expectations fail, consider the test as failed
-            test_passed = false;
-        } // end if
-
-        // Check whether assertion scanning is enabled
-        if (!XASSERT_PASS_SCAN) {
-            // If any assertions fail, consider the test as failed
             test_passed = false;
         } // end if
 
@@ -246,8 +377,13 @@ void xtest_run_fixture(const XTestCase* test_case, const XTestFixture* fixture, 
         stats->ignored_count++;
     } // end if else
 
+    if (XTEST_FLAG_VERBOSE) {
+        xtest_output_xunittest_format(test_case);
+    } // end if
+
     // Update the total count
     stats->total_count++;
+    XIGNORE_TEST_CASE = false;
 } // end of func
 
 /**
@@ -260,7 +396,12 @@ void xtest_run_fixture(const XTestCase* test_case, const XTestFixture* fixture, 
  */
 void xignore(const char* reason) {
     XIGNORE_TEST_CASE = true;
-    fprintf(stderr, "Test ignored: %s\n", reason);
+
+    if (XTEST_FLAG_VERBOSE) {
+        xtest_output_xignore(reason);
+    } else {
+        putchar('?');
+    } // end if else
 } // end of func
 
 /**
@@ -276,13 +417,17 @@ void xignore(const char* reason) {
  */
 void xassert(bool expression, const char *message) {
     if (!XASSERT_PASS_SCAN) {
+        putchar('X');
         return;
     } else if (!expression) {
-        printf(" --> %s: %s\n", ANSI_COLOR_RED "Failed" ANSI_COLOR_RESET, message);
         XASSERT_PASS_SCAN = false;
+    } // end if, else if
+
+    if (XTEST_FLAG_VERBOSE) {
+        xtest_output_xassert(expression, message);
     } else {
-        printf(" --> %s:\n", ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET);
-    } // end if, else if, else
+        printf("%s", (XEXPECT_PASS_SCAN)? "O" : "X");
+    } // end if else
 } // end of func
 
 /**
@@ -299,9 +444,38 @@ void xassert(bool expression, const char *message) {
 void xexpect(bool expression, const char *message) {
     XEXPECT_PASS_SCAN = true;
 
-    if (!expression) {
-        printf(" --> %s: %s\n", ANSI_COLOR_RED "Failed" ANSI_COLOR_RESET, message);
+    if (!expression) {        
         XEXPECT_PASS_SCAN = false;
     } // end if
-    printf(" --> %s:\n", ANSI_COLOR_GREEN "Passed" ANSI_COLOR_RESET);
+
+    if (XTEST_FLAG_VERBOSE) {
+        xtest_output_xexpect(expression, message);
+    } else {
+        printf("%s", (XEXPECT_PASS_SCAN)? "O" : "X");
+    } // end if else
+} // end of func
+
+/**
+ * @brief Custom assertion function with optional message.
+ *
+ * This function allows custom assertions and displays a message if the assertion fails.
+ * It also provides an option to disable further assertion scanning after the first failure.
+ *
+ * @param expression  The expression to be asserted (should evaluate to true for success).
+ * @param message     An optional message to be displayed when the assertion fails.
+ *
+ * @return            None.
+ */
+void xerrors(bool expression, const char *message) {
+    XERRORS_PASS_SCAN = true;
+
+    if (!expression) {
+        XERRORS_PASS_SCAN = false;
+    } // end if, else if
+
+    if (XTEST_FLAG_VERBOSE) {
+        xtest_output_xerrors(expression, message);
+    } else {
+        printf("%s", (XERRORS_PASS_SCAN)? "O" : "X");
+    }
 } // end of func
