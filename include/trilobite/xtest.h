@@ -24,12 +24,12 @@ extern "C"
 // Define the MY_TEST_FRAMEWORK_API macro
 #ifdef TRILOBITE_XTEST_SHARED
     #ifdef TRILOBITE_XTEST_BUILD
-        #define TRILOBITE_XTEST_API TRILOBITE_XTEST_EXPORT
+        #define XTEST_API TRILOBITE_XTEST_EXPORT
     #else
-        #define TRILOBITE_XTEST_API TRILOBITE_XTEST_IMPORT
+        #define XTEST_API TRILOBITE_XTEST_IMPORT
     #endif
 #else
-    #define TRILOBITE_XTEST_API
+    #define XTEST_API
 #endif
   
 #ifdef __cplusplus
@@ -51,115 +51,69 @@ extern "C"
 
 #endif
 
-/**
-    @param XAssert A struct containing a message and a boolean
-    @returns If the boolean is true, the code will reach the
-             return statement. Otherwise, it will not.
-*/
+// Define a structure to represent a test case
 typedef struct {
-    const char *message;
-    bool passed;
-} XAssert;
+    const char* name;
+    void (*test_function)(void);
+    bool ignored;
+    bool is_benchmark;     // New field for benchmark flag
+    clock_t elapsed_time;  // New field for elapsed time
+} XTestCase;
 
+// Define a structure to represent a test fixture
+typedef struct {
+    void (*setup)(void);
+    void (*teardown)(void);
+} XTestFixture;
 
-/**
-    @param passed_count: the number of tests that have passed
-    @param failed_count: the number of tests that have failed
-    @param run_tag: a tag that identifies the test run
-    @returns XUnitRunner: a struct that contains the test results
-*/
+// Define a structure to hold test statistics
 typedef struct {
     int passed_count;
     int failed_count;
-    char *run_tag;
-    void (*setup_function)(void);
-    void (*teardown_function)(void);
+    int ignored_count;
+    int expected_count;
+    int asserts_count;
+    int total_count;
+} XTestStats;
+
+// Define an XUnitRunner structure to group test-related data
+typedef struct {
+    int argc;
+    char** argv;
+    XTestStats stats;
 } XUnitRunner;
 
-/**
-    @param XBench - Structure containing the benchmark name, benchmark function, setup function, teardown function, and elapsed time.
-    @returns The elapsed time of the benchmark.
-*/
-typedef struct {
-    const char *name;
-    void (*benchmark_function)(void);
-    clock_t elapsed_time;
-} XBench;
 
-/**
-    @brief This is the definition of an XTestCase structure.
-
-    @param name: A pointer to a constant character string that holds the name of the test case.
-    @param test_function: A pointer to a function that holds the actual test code.
-    @param setup_function: A pointer to a function that is used to setup the test, usually used to initialize variables and resources that are needed for the test.
-    @param teardown_function: A pointer to a function that is used to clean up after the test, usually used to free resources allocated during the setup_function.
-    @param assertions: A pointer to an array of XAssert structures that hold the assertions used in the test.
-    @param num_assertions: An integer that holds the number of assertions in the assertions array.
-
-    @returns: The XTestCase structure that holds the information about the test case.
-*/
-#ifdef __cplusplus
-class XTestCase {
-public:
-    XTestCase(const char *name, void (*test_function)(void) = nullptr, XAssert *assertions = nullptr, size_t num_assertions = 0)
-        : name(name), test_function(test_function), assertions(assertions), num_assertions(num_assertions) {}
-    const char *name;
-    void (*test_function)(void);
-    XAssert *assertions;
-    size_t num_assertions;
-}; // end class
-
-#else
-typedef struct {
-    const char *name;
-    void (*test_function)(void);
-    XAssert *assertions;
-    size_t num_assertions;
-} XTestCase; // end struct
-#endif
-
-/**
-    This code defines a test case for the framework with the given name.
-
-    @param name: The name of the test case
-    @returns: A XTestCase structure with the given name and the test function pointer
-              set to the function with the same name as the given name.
-*/
-#ifdef __cplusplus
-#define XTEST_CASE(name) \
+// Define XTEST_CASE macro for tests without fixtures
+#define XTEST_CASE(name, expected, asserts) \
     void name##_xtest(void); \
-    XTestCase name(#name, name##_xtest); \
+    const XTestCase name = { #name, name##_xtest, false, false, 0 }; \
     void name##_xtest(void)
-#else
-#define XTEST_CASE(name) \
+
+// Define XTEST_CASE_BENCH macro for benchmark tests without fixtures
+#define XTEST_BENCH(name) \
     void name##_xtest(void); \
-    XTestCase name = { #name, name##_xtest, NULL, 0 }; \
+    const XTestCase name = { #name, name##_xtest, false, true, 0 }; \
     void name##_xtest(void)
-#endif
 
-/**
-    @brief This code defines a XBench structure which can be used to benchmark functions.
-
-    @param name: The name of the function to be benchmarked
-    @returns: The XBench structure with the function name, the benchmark function, and
-              other necessary details for the benchmarking process.
-*/
-#define XBENCH(name) \
-    void name##_xbench(void); \
-    XBench name = { #name, name##_xbench, 0 }; \
-    void name##_xbench(void)
+// Define XTEST_FIXTURE macro for tests with fixtures
+#define XTEST_FIXTURE(fixture_name) \
+    void setup_##fixture_name(void); \
+    void teardown_##fixture_name(void); \
+    const XTestFixture fixture_name = { setup_##fixture_name, teardown_##fixture_name }; \
+    void setup_##fixture_name(void) \
+    void teardown_##fixture_name(void)
 
 //
 // Helper function to run a test case
 //
+XTEST_API XUnitRunner xtest_start(int argc, char **argv);
+XTEST_API int xtest_end(XUnitRunner *runner);
+XTEST_API void xtest_run_unit(const XTestCase* test_case, XTestStats* stats);
+XTEST_API void xtest_run_fixture(const XTestCase* test_case, const XTestFixture* fixture, XTestStats* stats);
 
-TRILOBITE_XTEST_API XUnitRunner xtest_start(int argc, char **argv);
-TRILOBITE_XTEST_API int xtest_end(XUnitRunner *runner);
-TRILOBITE_XTEST_API void xtest_run(XTestCase *test_case, XUnitRunner *runner);
-TRILOBITE_XTEST_API void xbench_run(XBench *benchmark, XUnitRunner *runner);
-TRILOBITE_XTEST_API void xtest_set_setup_teardown(XUnitRunner *runner, void (*setup_func)(void), void (*teardown_func)(void));
-TRILOBITE_XTEST_API void xassert(bool expression, const char *message);
-TRILOBITE_XTEST_API void xexpect(bool expression, const char *message);
+XTEST_API void xassert(bool expression, const char *message);
+XTEST_API void xexpect(bool expression, const char *message);
 
 /**
     @brief This macro adds an assertion to the current test case.
