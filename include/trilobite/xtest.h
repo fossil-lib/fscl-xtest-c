@@ -250,6 +250,16 @@ XTEST_API void xtest_run_unit(const XTestCase* test_case, XTestStats* stats);
 XTEST_API void xtest_run_fixture(const XTestCase* test_case, const XTestFixture* fixture, XTestStats* stats);
 
 /**
+ * @brief Marks a test case as ignored with a specified reason and prints it to stderr.
+ *
+ * This function is used to indicate that a test case should be ignored and provides a reason
+ * for the omission. It prints the specified reason to the standard error stream (stderr).
+ *
+ * @param reason  The reason for ignoring the test case.
+ */
+XTEST_API void xignore(const char* reason);
+
+/**
  * @brief Custom assertion function with optional message.
  *
  * This function allows custom assertions and displays a message if the assertion fails.
@@ -328,6 +338,21 @@ XTEST_API void xexpect(bool expression, const char *message);
 #define XTEST_NOT_IMPLEMENTED() \
     do { \
         XASSERT(false, "Test not implemented yet") \
+    } while (false)
+
+/**
+ * @brief Marks the current test case as ignored with a given reason and returns early.
+ *
+ * This macro is used to indicate that the current test case should be ignored with a provided reason.
+ * It calls the `xignore` function with the specified reason and then returns from the current test case
+ * immediately.
+ *
+ * @param reason  The reason for ignoring the test case.
+ */
+#define XTEST_IGNORE(reason) \
+    do { \
+        xignore(reason); \
+        return; \
     } while (false)
 
 #ifdef __cplusplus
