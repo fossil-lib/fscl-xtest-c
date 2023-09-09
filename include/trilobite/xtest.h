@@ -262,7 +262,7 @@ XTEST_API void xtest_run_test_unit(XTestCase* test_case, XTestStats stats);
  *
  * @return            None.
  */
-XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats);
+XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats stats);
 
 //
 // ------------------------------------------------------------------------
