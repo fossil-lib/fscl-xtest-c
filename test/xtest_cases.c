@@ -10,6 +10,22 @@
 //
 // XUNIT TEST CASES
 //
+XTEST_CASE(capture_and_verify_output) {
+    // Redirect stdout to a buffer
+    fflush(stdout);
+    char buffer[1024];
+    setbuf(stdout, buffer);
+
+    // Call the function that generates output
+    printf("Hello, World!");
+
+    // Restore stdout to the default (usually terminal)
+    setbuf(stdout, NULL);
+
+    // Verify the captured output
+    XASSERT(strcmp(buffer, "Hello, World!") == 0, "Output mismatch");
+} // end case
+
 XTEST_CASE(basic_run_of_int) {
     int this = 32, that = 22, other = 32;
 
@@ -633,6 +649,8 @@ XTEST_CASE(xauto_gaussian_naive_bayes) {
 // XTEST FIXTURE
 //
 void xfixture_basic_cases(XUnitRunner *runner) {
+    xtest_run(&capture_and_verify_output, runner);
+
     xtest_run(&basic_run_of_int, runner);
     xtest_run(&basic_run_of_int8, runner);
     xtest_run(&basic_run_of_int16, runner);
