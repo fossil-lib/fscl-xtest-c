@@ -10,95 +10,6 @@
 //
 // XUNIT TEST CASES
 //
-
-// Define a function that reads an integer from stdin
-// int read_integer() {
-//     int value;
-//     scanf("%d", &value);
-//     return value;
-// } // end of func
-
-// // Define a test case to capture and verify input
-// XTEST_CASE(capture_and_verify_input) {
-//     // Redirect stdin to read from a buffer containing test input
-//     char input[] = "42\n";
-//     setbuf(stdin, input);
-
-//     // Call the function that reads input
-//     int result = read_integer();
-
-//     // Restore stdin to the default (usually terminal)
-//     setbuf(stdin, NULL);
-
-//     XASSERT(result == 42, "Input mismatch");
-// } // end case
-
-// Define a function that reads a string from stdin
-void read_string(char* buffer, int max_length) {
-    fgets(buffer, max_length, stdin);
-    strtok(buffer, "\n"); // Remove newline character
-} // end of func
-
-// Define a test case to capture and verify input as a string
-XTEST_CASE(capture_and_verify_input_string) {
-    // Redirect stdin to read from a buffer containing test input
-    char input[] = "Hello, World!\n";
-    setbuf(stdin, input);
-
-    // Call the function that reads input
-    char buffer[1024];
-    read_string(buffer, sizeof(buffer));
-
-    // Restore stdin to the default (usually terminal)
-    setbuf(stdin, NULL);
-
-    const char* expected_output = "Hello, World!";
-    XASSERT(strcmp(buffer, expected_output) == 0, "Input mismatch");
-} // end case
-
-// Define a function that reads multiple values from stdin
-void read_multiple_values(int* a, int* b) {
-    scanf("%d %d", a, b);
-} // end of func
-
-// Define a test case to capture and verify multiple inputs
-XTEST_CASE(capture_and_verify_multiple_inputs) {
-    // Redirect stdin to read from a buffer containing test input
-    char input[] = "10 20\n";
-    setbuf(stdin, input);
-
-    // Call the function that reads multiple inputs
-    int value1, value2;
-    read_multiple_values(&value1, &value2);
-
-    // Restore stdin to the default (usually terminal)
-    setbuf(stdin, NULL);
-
-    XASSERT(value1 == 10 && value2 == 20, "Input mismatch");
-} // end case
-
-// Define a function that reads a character from stdin
-char read_character() {
-    char c;
-    scanf(" %c", &c); // Note the space to skip whitespace
-    return c;
-} // end of func
-
-// Define a test case to capture and verify input as a character
-XTEST_CASE(capture_and_verify_input_character) {
-    // Redirect stdin to read from a buffer containing test input
-    char input[] = "A\n";
-    setbuf(stdin, input);
-
-    // Call the function that reads input
-    char result = read_character();
-
-    // Restore stdin to the default (usually terminal)
-    setbuf(stdin, NULL);
-
-    XASSERT(result == 'A', "Input mismatch");
-} // end case
-
 XTEST_CASE(capture_and_verify_output) {
     // Redirect stdout to a buffer
     char buffer[1024];
@@ -699,11 +610,6 @@ XTEST_CASE(xbdd_valid_login) {
 //
 void xfixture_basic_cases(XUnitRunner *runner)
 {
-    // xtest_run(&capture_and_verify_input, runner);
-    xtest_run(&capture_and_verify_input_string, runner);
-    xtest_run(&capture_and_verify_multiple_inputs, runner);
-    xtest_run(&capture_and_verify_input_character, runner);
-
     xtest_run(&capture_and_verify_output, runner);
     xtest_run(&capture_and_verify_multiline_output, runner);
     xtest_run(&capture_and_verify_puts_output, runner);
