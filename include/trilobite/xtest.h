@@ -101,6 +101,20 @@ typedef struct {
 } XUnitRunner;
 
 /**
+ * @brief Structure representing a command-line option for a CLI or application.
+ *
+ * This structure is used to define and organize information about a command-line option,
+ * including its long name (e.g., "--verbose"), short name (e.g., "-v"), a description for
+ * usage instructions, and a pointer to a flag that stores the option's value or status.
+ */
+typedef struct {
+    const char* option_long_name;  // Long name of the option (e.g., "--verbose")
+    const char* option_short_name; // Short name of the option (e.g., "-v")
+    const char* description;       // Description of the option for usage instructions
+    int* flag;                     // Pointer to a flag storing the option's value/status
+} XTestCliOption;
+
+/**
  * @brief Define a data structure for a group of test data.
  *
  * This macro is used to define a data structure associated with a specific group or category of test data.
