@@ -262,59 +262,55 @@ XTEST_API void xassert(bool expression, const char *message);
 XTEST_API void xexpect(bool expression, const char *message);
 
 /**
-    @brief This macro adds an assertion to the current test case.
-
-    @param expression: The expression to evaluate.
-    @param message: The message to display if the assertion fails.
-
-    @returns: If the expression evaluates to false, the assertion fails and
-              the message is displayed. Otherwise, the assertion passes and
-              nothing happens.
-*/
+ * @brief Adds an assertion to the current test case.
+ *
+ * @param expression  The expression to evaluate.
+ * @param message     The message to display if the assertion fails.
+ *
+ * @return            If the expression evaluates to false, the assertion fails, and the message is displayed.
+ *                    Otherwise, the assertion passes, and nothing happens.
+ */
 #define XASSERT(expression, message) xassert(expression, message)
 
 /**
-    @brief This macro adds an expectation to the current test case.
-
-    @param expression: The expression to evaluate.
-    @param message: The message to display if the assertion fails.
-
-    @returns: If the expression evaluates to false, the assertion fails and
-              the message is displayed. Otherwise, the assertion passes and
-              nothing happens.
-*/
+ * @brief Adds an expectation to the current test case.
+ *
+ * @param expression  The expression to evaluate.
+ * @param message     The message to display if the expectation fails.
+ *
+ * @return            If the expression evaluates to false, the expectation fails, and the message is displayed.
+ *                    Otherwise, the expectation passes, and nothing happens.
+ */
 #define XEXPECT(expression, message) xexpect(expression, message)
 
 /**
-    @brief Asserts whether a test passes or fails
-
-    @param boolean value - true if the test passed, false otherwise
-    @param string message - a message to be displayed if the test fails
-
-    @return void
-*/
+ * @brief Asserts whether a test passes or fails.
+ *
+ * @param message  A message to be displayed if the test fails.
+ *
+ * @return         This macro calls XASSERT(false, message), indicating a test failure with the provided message.
+ */
 #define XTEST_FAIL(message) \
     do { \
         XASSERT(false, message); \
     } while (false)
 
 /**
-    @brief This macro defines a test that passes
-    @param none
-    @return void
-*/
+ * @brief Defines a test that passes.
+ *
+ * @return  This macro calls XASSERT(true, "Test passed"), indicating a successful test.
+ */
 #define XTEST_PASS() \
     do { \
         XASSERT(true, "Test passed"); \
     } while (false)
 
 /**
-    This macro is used to indicate that a test is not yet implemented.
-
-    @param none
-    @return none
-    @brief Prints out a message to stderr indicating that the test is not yet implemented.
-*/
+ * @brief Indicates that a test is not yet implemented.
+ *
+ * @return  This macro calls XASSERT(false, "Test not implemented yet"), indicating that the test is incomplete.
+ *          A message is printed to stderr to indicate that the test is not yet implemented.
+ */
 #define XTEST_NOT_IMPLEMENTED() \
     do { \
         XASSERT(false, "Test not implemented yet") \
