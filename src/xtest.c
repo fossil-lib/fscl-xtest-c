@@ -367,7 +367,7 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
 
         // Update the appropriate count based on the test result
         if (test_passed) {
-            stats.passed_count++;
+            stats->passed_count++;
         } else {
             stats->failed_count++;
         } // end if else
