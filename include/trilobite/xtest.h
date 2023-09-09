@@ -80,18 +80,24 @@ typedef struct {
 typedef struct {
     int argc;
     char** argv;
+    bool verbose;
+    bool version;
+    bool color;
+    bool help;
+    bool only_tests;
+    bool only_bench;
     XTestStats stats;
 } XUnitRunner;
 
 
 // Define XTEST_CASE macro for tests without fixtures
-#define XTEST_CASE(name, expected, asserts) \
+#define XTEST_CASE(name) \
     void name##_xtest(void); \
     const XTestCase name = { #name, name##_xtest, false, false, 0 }; \
     void name##_xtest(void)
 
 // Define XTEST_CASE_BENCH macro for benchmark tests without fixtures
-#define XTEST_BENCH(name) \
+#define XTEST_CASE_BENCH(name) \
     void name##_xtest(void); \
     const XTestCase name = { #name, name##_xtest, false, true, 0 }; \
     void name##_xtest(void)
@@ -103,6 +109,13 @@ typedef struct {
     const XTestFixture fixture_name = { setup_##fixture_name, teardown_##fixture_name }; \
     void setup_##fixture_name(void) \
     void teardown_##fixture_name(void)
+
+// Define XTEST_CASE_FIXTURE macro for tests with a fixture
+#define XTEST_CASE_FIXTURE(fixture_name, test_case) \
+    void test_case##_xtest_##fixture_name(void); \
+    const XTestCase test_case = { #test_case, test_case##_xtest_##fixture_name, false, false, 0 }; \
+    void test_case##_xtest_##fixture_name(void)
+
 
 //
 // Helper function to run a test case
