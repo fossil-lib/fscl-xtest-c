@@ -27,7 +27,7 @@ static bool XTEST_FLAG_ONLY_TESTS = false;
 static bool XTEST_FLAG_ONLY_BENCH = false;
 
 // XUnit options for the tester to switch on-off
-CLIOption options[] = {
+XTestCliOption options[] = {
      { "--verbose",    "-V", "Show more information to standard output", &XTEST_FLAG_VERBOSE },
      { "--version",    "-v", "Get the version of this test framework", &XTEST_FLAG_VERSION },
      { "--color"  ,    "-c", "Enable color text output", &XTEST_FLAG_COLORED },
@@ -35,6 +35,8 @@ CLIOption options[] = {
      { "--only-tests", "-t", "Only run unit test cases", &XTEST_FLAG_ONLY_TESTS },
      { "--only-bench", "-b", "Only run benchmark cases", &XTEST_FLAG_ONLY_BENCH }
  }; // end of command-line options
+
+// TODO add output functions 
 
 /**
  * @brief Prints usage instructions, including custom options, for a command-line program.
@@ -245,6 +247,18 @@ void xtest_run_fixture(const XTestCase* test_case, const XTestFixture* fixture, 
 
     // Update the total count
     stats->total_count++;
+} // end of func
+
+/**
+ * @brief Marks a test case as ignored with a specified reason and prints it to stderr.
+ *
+ * This function is used to indicate that a test case should be ignored and provides a reason
+ * for the omission. It prints the specified reason to the standard error stream (stderr).
+ *
+ * @param reason  The reason for ignoring the test case.
+ */
+void xignore(const char* reason) {
+    fprintf(stderr, "Test ignored: %s\n", reason);
 } // end of func
 
 /**
