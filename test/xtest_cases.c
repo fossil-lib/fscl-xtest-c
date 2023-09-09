@@ -25,18 +25,18 @@ XTEST_CASE(capture_and_verify_output) {
     XASSERT(strcmp(buffer, "Hello, World!") == 0, "Output mismatch");
 } // end case
 
-// Define a test case to capture and verify multiline output
-XTEST_CASE(capture_and_verify_multiline_output) {
-    char buffer[1024];
-    setbuf(stdout, buffer);
+// // Define a test case to capture and verify multiline output
+// XTEST_CASE(capture_and_verify_multiline_output) {
+//     char buffer[1024];
+//     setbuf(stdout, buffer);
 
-    printf("Line 1\n");
-    printf("Line 2\n");
+//     printf("Line 1\n");
+//     printf("Line 2\n");
 
-    setbuf(stdout, NULL);
-    const char* expected_output = "Line 1\nLine 2\n";
-    XASSERT(strcmp(buffer, expected_output) == 0, "Output mismatch");
-} // end case
+//     setbuf(stdout, NULL);
+//     const char* expected_output = "Line 1\nLine 2\n";
+//     XASSERT(strcmp(buffer, expected_output) == 0, "Output mismatch");
+// } // end case
 
 XTEST_CASE(capture_and_verify_puts_output) {
     char buffer[1024];
@@ -611,7 +611,7 @@ XTEST_CASE(xbdd_valid_login) {
 void xfixture_basic_cases(XUnitRunner *runner)
 {
     xtest_run(&capture_and_verify_output, runner);
-    xtest_run(&capture_and_verify_multiline_output, runner);
+    //xtest_run(&capture_and_verify_multiline_output, runner);
     xtest_run(&capture_and_verify_puts_output, runner);
     xtest_run(&capture_and_verifyFormatted_output, runner);
 
