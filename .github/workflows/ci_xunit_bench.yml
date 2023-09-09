@@ -165,7 +165,7 @@ jobs:
             meson compile -C builddir
     - name: Test Project Code
       run: |
-            meson test -C builddir -v --test-args=--verbose —-color
+            meson test -C builddir -v --test-args='--verbose —-color'
     - uses: actions/upload-artifact@v3
       if: failure()
       with:
