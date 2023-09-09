@@ -126,7 +126,7 @@ typedef struct {
     const char* option_long_name;  // Long name of the option (e.g., "--verbose")
     const char* option_short_name; // Short name of the option (e.g., "-v")
     const char* description;       // Description of the option for usage instructions
-    int* flag;                     // Pointer to a flag storing the option's value/status
+    bool* flag;                     // Pointer to a flag storing the option's value/status
 } XTestCliOption;
 
 /**
