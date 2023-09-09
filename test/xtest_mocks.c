@@ -39,7 +39,7 @@ XTEST_CASE(xmock_stub_foo) {
 //
 void xfixture_mocking_cases(XUnitRunner *runner)
 {
-    xtest_run(&xmock_stub_foo, runner);
-    xtest_run(&xmock_stub_bar, runner);
-    xtest_run(&xmock_stub_baz, runner);
+    xtest_run_unit(&xmock_stub_foo, runner);
+    xtest_run_unit(&xmock_stub_bar, runner);
+    xtest_run_unit(&xmock_stub_baz, runner);
 } // end of fixture
