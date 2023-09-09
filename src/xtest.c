@@ -28,17 +28,13 @@ static bool XTEST_FLAG_VERBOSE    = false;
 static bool XTEST_FLAG_VERSION    = false;
 static bool XTEST_FLAG_COLORED    = false;
 static bool XTEST_FLAG_HELP       = false;
-static bool XTEST_FLAG_ONLY_TESTS = false;
-static bool XTEST_FLAG_ONLY_BENCH = false;
 
 // XUnit options for the tester to switch on-off
 XTestCliOption options[] = {
      { "--verbose",    "-V", "Show more information to standard output", &XTEST_FLAG_VERBOSE },
      { "--version",    "-v", "Get the version of this test framework", &XTEST_FLAG_VERSION },
      { "--color"  ,    "-c", "Enable color text output", &XTEST_FLAG_COLORED },
-     { "--help",       "-h", "Print this message you see before you're eyes", &XTEST_FLAG_HELP },
-     { "--only-tests", "-t", "Only run unit test cases", &XTEST_FLAG_ONLY_TESTS },
-     { "--only-bench", "-b", "Only run benchmark cases", &XTEST_FLAG_ONLY_BENCH }
+     { "--help",       "-h", "Print this message you see before you're eyes", &XTEST_FLAG_HELP }
  }; // end of command-line options
 
 /**
