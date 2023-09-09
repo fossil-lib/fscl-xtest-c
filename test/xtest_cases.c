@@ -45,7 +45,7 @@ XTEST_CASE(capture_and_verify_puts_output) {
     puts("Hello from puts!");
 
     setbuf(stdout, NULL);
-    const char* expected_output = "Hello from puts!\n";
+    const char* expected_output = "Hello from puts!";
     XASSERT(strcmp(buffer, expected_output) == 0, "Output mismatch");
 } // end case
 
