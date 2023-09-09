@@ -257,7 +257,7 @@ int xtest_end(XUnitRunner *runner) {
     if (XTEST_FLAG_VERBOSE) {
         xtest_output_xunittest_report(runner);
     } else {
-        puts("[TRILOBITE XUNIT RUNNER] results of the test");
+        puts("\n[TRILOBITE XUNIT RUNNER] results of the test");
         printf("::passed: %.2d failed: %.2d ignored: %.2d total: %.2d\n", 
             runner->stats.passed_count, runner->stats.failed_count,
             runner->stats.ignored_count, runner->stats.total_count);
@@ -277,7 +277,7 @@ int xtest_end(XUnitRunner *runner) {
  *
  * @return            None.
  */
-void xtest_run_test_unit(XTestCase* test_case, XTestStats stats)  {
+void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
     // Check to see if we can skip
     test_case->ignored = XIGNORE_TEST_CASE;
 
@@ -303,13 +303,13 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats stats)  {
 
         // Update the appropriate count based on the test result
         if (test_passed) {
-            stats.passed_count++;
+            stats->passed_count++;
         } else {
-            stats.failed_count++;
+            stats->failed_count++;
         } // end if else
     } else {
         // Update the ignored count
-        stats.ignored_count++;
+        stats->ignored_count++;
     } // end if else
 
     if (XTEST_FLAG_VERBOSE) {
@@ -333,7 +333,7 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats stats)  {
  *
  * @return            None.
  */
-void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats stats)  {
+void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats)  {
     // Check to see if we can skip
     test_case->ignored = XIGNORE_TEST_CASE;
 
@@ -369,11 +369,11 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
         if (test_passed) {
             stats.passed_count++;
         } else {
-            stats.failed_count++;
+            stats->failed_count++;
         } // end if else
     } else {
         // Update the ignored count
-        stats.ignored_count++;
+        stats->ignored_count++;
     } // end if else
 
     if (XTEST_FLAG_VERBOSE) {
@@ -381,7 +381,7 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
     } // end if
 
     // Update the total count
-    stats.total_count++;
+    stats->total_count++;
     XIGNORE_TEST_CASE = false;
 } // end of func
 
