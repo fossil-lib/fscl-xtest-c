@@ -237,7 +237,7 @@ XUnitRunner xtest_start(int argc, char **argv) {
         puts(XTEST_VERSION);
         exit(EXIT_SUCCESS);
     } else if (XTEST_FLAG_HELP) {
-        xtest_cli_print_usage("Xrunner", options, 6);
+        xtest_cli_print_usage("Xrunner", options, num_options);
         exit(EXIT_SUCCESS);
     } // end if, else if
    
@@ -259,7 +259,7 @@ int xtest_end(XUnitRunner *runner) {
     if (XTEST_FLAG_VERBOSE) {
         xtest_output_xunittest_report(runner);
     } else {
-        puts("\n[TRILOBITE XUNIT RUNNER] results of the test");
+        puts("\n\n[TRILOBITE XUNIT RUNNER] results of the test");
         printf("::passed: %.2d failed: %.2d ignored: %.2d total: %.2d\n", 
             runner->stats.passed_count, runner->stats.failed_count,
             runner->stats.ignored_count, runner->stats.total_count);
