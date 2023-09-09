@@ -110,8 +110,8 @@ int main(int argc, char** argv) {
     const XTestFixture* fixture = &basic_fixture;
 
     // Register test cases with the fixture
-    xtest_run_unit_fixture(&passing_case, fixture, &runner);
-    xtest_run_unit_fixture(&failing_case, fixture, &runner);
+    xtest_run_test_fixture(&passing_case, fixture, &runner);
+    xtest_run_test_fixture(&failing_case, fixture, &runner);
 
     // Finalize the runner and print test results
     return xtest_end(&runner);

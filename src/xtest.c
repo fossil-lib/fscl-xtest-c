@@ -278,7 +278,7 @@ int xtest_end(XUnitRunner *runner) {
  *
  * @return            None.
  */
-void xtest_run_unit_unit(XTestCase* test_case, XTestStats* stats)  {
+void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
     // Check to see if we can skip
     test_case->ignored = XIGNORE_TEST_CASE;
 
@@ -334,7 +334,7 @@ void xtest_run_unit_unit(XTestCase* test_case, XTestStats* stats)  {
  *
  * @return            None.
  */
-void xtest_run_unit_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats)  {
+void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats)  {
     // Check to see if we can skip
     test_case->ignored = XIGNORE_TEST_CASE;
 
