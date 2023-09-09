@@ -132,7 +132,7 @@ static void xtest_output_xignore(const char* reason) {
  *
  * @param test_case  Pointer to the test case for which the format is displayed.
  */
-static void xtest_output_xunittest_format(const XTestCase* test_case) {
+static void xtest_output_xunittest_format(XTestCase* test_case) {
     if (XTEST_FLAG_COLORED) {
         printf("%s[TEST CASE] %s%s\n", ANSI_COLOR_BLUE, test_case->name, ANSI_COLOR_RESET);
         printf("%s[TIME] : %s%s\n", ANSI_COLOR_BLUE, test_case->elapsed_time, ANSI_COLOR_RESET);
@@ -278,7 +278,7 @@ int xtest_end(XUnitRunner *runner) {
  *
  * @return            None.
  */
-void xtest_run_unit_unit(const XTestCase* test_case, XTestStats* stats)  {
+void xtest_run_unit_unit(XTestCase* test_case, XTestStats* stats)  {
     // Check to see if we can skip
     test_case->ignored = XIGNORE_TEST_CASE;
 
@@ -334,7 +334,7 @@ void xtest_run_unit_unit(const XTestCase* test_case, XTestStats* stats)  {
  *
  * @return            None.
  */
-void xtest_run_unit_fixture(const XTestCase* test_case, const XTestFixture* fixture, XTestStats* stats)  {
+void xtest_run_unit_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats)  {
     // Check to see if we can skip
     test_case->ignored = XIGNORE_TEST_CASE;
 
