@@ -78,31 +78,41 @@ typedef struct {
 
 // Define an XUnitRunner structure to group test-related data
 typedef struct {
-    int argc;
-    char** argv;
-    bool verbose;
-    bool version;
-    bool color;
-    bool help;
-    bool only_tests;
-    bool only_bench;
     XTestStats stats;
 } XUnitRunner;
 
 
-// Define XTEST_CASE macro for tests without fixtures
+/**
+ * @brief Define a simple test case without a fixture.
+ *
+ * This macro is used to define a test case along with its associated test function.
+ *
+ * @param name  The name of the test case.
+ */
 #define XTEST_CASE(name) \
     void name##_xtest(void); \
     const XTestCase name = { #name, name##_xtest, false, false, 0 }; \
     void name##_xtest(void)
 
-// Define XTEST_CASE_BENCH macro for benchmark tests without fixtures
-#define XTEST_CASE_BENCH(name) \
+/**
+ * @brief Define a benchmark test without a fixture.
+ *
+ * This macro is used to define a benchmark test along with its associated test function.
+ *
+ * @param name  The name of the benchmark test.
+ */
+#define XTEST_BENCH(name) \
     void name##_xtest(void); \
     const XTestCase name = { #name, name##_xtest, false, true, 0 }; \
     void name##_xtest(void)
 
-// Define XTEST_FIXTURE macro for tests with fixtures
+/**
+ * @brief Define a test fixture with setup and teardown functions.
+ *
+ * This macro is used to define a test fixture along with its associated setup and teardown functions.
+ *
+ * @param fixture_name  The name of the test fixture.
+ */
 #define XTEST_FIXTURE(fixture_name) \
     void setup_##fixture_name(void); \
     void teardown_##fixture_name(void); \
@@ -110,22 +120,114 @@ typedef struct {
     void setup_##fixture_name(void) \
     void teardown_##fixture_name(void)
 
-// Define XTEST_CASE_FIXTURE macro for tests with a fixture
+/**
+ * @brief Define a test case that uses a fixture.
+ *
+ * This macro is used to define a test case that relies on a specific fixture. It associates the test case
+ * with the fixture's setup and teardown functions.
+ *
+ * @param fixture_name  The name of the fixture to use.
+ * @param test_case     The name of the test case.
+ */
 #define XTEST_CASE_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
     const XTestCase test_case = { #test_case, test_case##_xtest_##fixture_name, false, false, 0 }; \
     void test_case##_xtest_##fixture_name(void)
 
+/**
+ * @brief Define a benchmark test that uses a fixture.
+ *
+ * This macro is used to define a benchmark test that relies on a specific fixture. It associates the benchmark
+ * test with the fixture's setup and teardown functions.
+ *
+ * @param fixture_name  The name of the fixture to use.
+ * @param test_case     The name of the benchmark test.
+ */
+#define XTEST_BENCH_FIXTURE(fixture_name, test_case) \
+    void test_case##_xtest_##fixture_name(void); \
+    const XTestCase test_case = { #test_case, test_case##_xtest_##fixture_name, false, true, 0 }; \
+    void test_case##_xtest_##fixture_name(void)
 
 //
 // Helper function to run a test case
 //
+
+/**
+ * @brief Initializes an XUnitRunner and processes command-line arguments.
+ *
+ * This function initializes an XUnitRunner, processes command-line arguments to handle custom options,
+ * and displays version information or usage instructions if requested.
+ *
+ * @param argc  Number of command-line arguments.
+ * @param argv  Array of command-line argument strings.
+ *
+ * @return      An initialized XUnitRunner structure.
+ */
 XTEST_API XUnitRunner xtest_start(int argc, char **argv);
+
+/**
+ * @brief Finalizes the execution of a Trilobite XUnit runner and displays test results.
+ *
+ * This function prints the test results, including the number of tests passed, failed, ignored,
+ * and the total count. It also returns the count of failed tests.
+ *
+ * @param runner    Pointer to the Trilobite XUnit runner containing test statistics.
+ *
+ * @return          The count of failed tests.
+ */
 XTEST_API int xtest_end(XUnitRunner *runner);
+
+/**
+ * @brief Runs a unit test case and updates test statistics.
+ *
+ * This function executes a unit test case, records the execution time, and updates the
+ * test statistics based on the test result.
+ *
+ * @param test_case   Pointer to the unit test case to be executed.
+ * @param stats       Pointer to the structure containing test statistics.
+ *
+ * @return            None.
+ */
 XTEST_API void xtest_run_unit(const XTestCase* test_case, XTestStats* stats);
+
+/**
+ * @brief Runs a test case within a test fixture and updates test statistics.
+ *
+ * This function executes a test case within a given test fixture, records the execution time,
+ * and updates the test statistics based on the test result.
+ *
+ * @param test_case   Pointer to the test case to be executed.
+ * @param fixture     Pointer to the test fixture containing setup and teardown functions.
+ * @param stats       Pointer to the structure containing test statistics.
+ *
+ * @return            None.
+ */
 XTEST_API void xtest_run_fixture(const XTestCase* test_case, const XTestFixture* fixture, XTestStats* stats);
 
+/**
+ * @brief Custom assertion function with optional message.
+ *
+ * This function allows custom assertions and displays a message if the assertion fails.
+ * It also provides an option to disable further assertion scanning after the first failure.
+ *
+ * @param expression  The expression to be asserted (should evaluate to true for success).
+ * @param message     An optional message to be displayed when the assertion fails.
+ *
+ * @return            None.
+ */
 XTEST_API void xassert(bool expression, const char *message);
+
+/**
+ * @brief Custom expectation function with optional message.
+ *
+ * This function allows custom expectations and displays a message if the expectation fails.
+ * It also provides an option to disable further expectation scanning after the first failure.
+ *
+ * @param expression  The expression to be expected (should evaluate to true for success).
+ * @param message     An optional message to be displayed when the expectation fails.
+ *
+ * @return            None.
+ */
 XTEST_API void xexpect(bool expression, const char *message);
 
 /**
