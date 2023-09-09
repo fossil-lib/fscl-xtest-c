@@ -248,7 +248,7 @@ XTEST_API int xtest_end(XUnitRunner *runner);
  *
  * @return            None.
  */
-XTEST_API void xtest_run_unit_unit(const XTestCase* test_case, XTestStats* stats);
+XTEST_API void xtest_run_unit_unit(XTestCase* test_case, XTestStats* stats);
 
 /**
  * @brief Runs a test case within a test fixture and updates test statistics.
@@ -262,7 +262,7 @@ XTEST_API void xtest_run_unit_unit(const XTestCase* test_case, XTestStats* stats
  *
  * @return            None.
  */
-XTEST_API void xtest_run_unit_fixture(const XTestCase* test_case, const XTestFixture* fixture, XTestStats* stats);
+XTEST_API void xtest_run_unit_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats);
 
 //
 // ------------------------------------------------------------------------
