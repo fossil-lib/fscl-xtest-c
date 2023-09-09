@@ -317,7 +317,7 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
     } // end if
 
     // Update the total count
-    stats.total_count++;
+    stats->total_count++;
     XIGNORE_TEST_CASE = false;
 } // end of func
 
