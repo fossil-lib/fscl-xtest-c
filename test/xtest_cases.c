@@ -12,6 +12,7 @@
 //
 XTEST_CASE(capture_and_verify_output) {
     // Redirect stdout to a buffer
+    fflush(stdout);
     char buffer[1024];
     setbuf(stdout, buffer);
 
@@ -39,6 +40,7 @@ XTEST_CASE(capture_and_verify_output) {
 // } // end case
 
 XTEST_CASE(capture_and_verify_puts_output) {
+    fflush(stdout);
     char buffer[1024];
     setbuf(stdout, buffer);
 
@@ -50,9 +52,12 @@ XTEST_CASE(capture_and_verify_puts_output) {
 } // end case
 
 XTEST_CASE(capture_and_verifyFormatted_output) {
+    fflush(stdout);
     char buffer[1024];
     setbuf(stdout, buffer);
+
     printf("The answer is: %d\n", 42);
+
     setbuf(stdout, NULL);
     const char* expected_output = "The answer is: 42\n";
     XASSERT(strcmp(buffer, expected_output) == 0, "Output mismatch");
