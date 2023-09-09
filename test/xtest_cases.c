@@ -10,6 +10,54 @@
 //
 // XUNIT TEST CASES
 //
+XTEST_CASE(capture_and_verify_output) {
+    // Redirect stdout to a buffer
+    char buffer[1024];
+    setbuf(stdout, buffer);
+
+    // Call the function that generates output
+    printf("Hello, World!");
+
+    // Restore stdout to the default (usually terminal)
+    setbuf(stdout, NULL);
+
+    // Verify the captured output
+    XASSERT(strcmp(buffer, "Hello, World!") == 0, "Output mismatch");
+} // end case
+
+// Define a test case to capture and verify multiline output
+XTEST_CASE(capture_and_verify_multiline_output) {
+    char buffer[1024];
+    setbuf(stdout, buffer);
+
+    printf("Line 1\n");
+    printf("Line 2\n");
+
+    setbuf(stdout, NULL);
+    const char* expected_output = "Line 1\nLine 2\n";
+    XASSERT(strcmp(buffer, expected_output) == 0, "Output mismatch");
+} // end case
+
+XTEST_CASE(capture_and_verify_puts_output) {
+    char buffer[1024];
+    setbuf(stdout, buffer);
+
+    puts("Hello from puts!");
+
+    setbuf(stdout, NULL);
+    const char* expected_output = "Hello from puts!\n";
+    XASSERT(strcmp(buffer, expected_output) == 0, "Output mismatch");
+} // end case
+
+XTEST_CASE(capture_and_verifyFormatted_output) {
+    char buffer[1024];
+    setbuf(stdout, buffer);
+    printf("The answer is: %d\n", 42);
+    setbuf(stdout, NULL);
+    const char* expected_output = "The answer is: 42\n";
+    XASSERT(strcmp(buffer, expected_output) == 0, "Output mismatch");
+} // end case
+
 XTEST_CASE(basic_run_of_int) {
     int this = 32, that = 22, other = 32;
 
@@ -562,6 +610,11 @@ XTEST_CASE(xbdd_valid_login) {
 //
 void xfixture_basic_cases(XUnitRunner *runner)
 {
+    xtest_run(&capture_and_verify_output, runner);
+    xtest_run(&capture_and_verify_multiline_output, runner);
+    xtest_run(&capture_and_verify_puts_output, runner);
+    xtest_run(&capture_and_verifyFormatted_output, runner);
+
     xtest_run(&basic_run_of_int, runner);
     xtest_run(&basic_run_of_int8, runner);
     xtest_run(&basic_run_of_int16, runner);
