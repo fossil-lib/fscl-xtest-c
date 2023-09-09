@@ -699,10 +699,10 @@ XTEST_CASE(xbdd_valid_login) {
 //
 void xfixture_basic_cases(XUnitRunner *runner)
 {
-    xtest_run(&capture_and_verify_input, &runner);
-    xtest_run(&capture_and_verify_input_string, &runner);
-    xtest_run(&capture_and_verify_multiple_inputs, &runner);
-    xtest_run(&capture_and_verify_input_character, &runner);
+    xtest_run(&capture_and_verify_input, runner);
+    xtest_run(&capture_and_verify_input_string, runner);
+    xtest_run(&capture_and_verify_multiple_inputs, runner);
+    xtest_run(&capture_and_verify_input_character, runner);
 
     xtest_run(&capture_and_verify_output, runner);
     xtest_run(&capture_and_verify_multiline_output, runner);
