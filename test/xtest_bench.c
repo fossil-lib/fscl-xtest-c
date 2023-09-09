@@ -63,8 +63,8 @@ XTEST_BENCH(comput_bubble_sort_medium_dataset) {
 //
 void xfixture_bench_cases(XUnitRunner *runner)
 {
-    xtest_run_test_unit(&comput_bubble_sort_small_dataset, runner->stats);
-    xtest_run_test_unit(&comput_bubble_sort_medium_dataset, runner->stats);
-    xtest_run_test_unit(&comput_bubble_sort_large_dataset, runner->stats);
+    xtest_run_test_unit(&comput_bubble_sort_small_dataset, &runner->stats);
+    xtest_run_test_unit(&comput_bubble_sort_medium_dataset, &runner->stats);
+    xtest_run_test_unit(&comput_bubble_sort_large_dataset, &runner->stats);
 
 } // end of fixture
