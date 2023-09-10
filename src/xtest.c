@@ -146,11 +146,11 @@ static void xtest_output_xignore(const char* reason) {
 static void xtest_output_xunittest_format_start(XTestCase* test_case, XTestStats *stats) {
     if (XTEST_FLAG_COLORED) {
         printf(ANSI_COLOR_BLUE "[START TEST CASE] Description: %s\n" ANSI_COLOR_RESET, test_case->name);
-        printf(ANSI_COLOR_BLUE "[NUMBER] : " ANSI_COLOR_RESET " %s\n   ", stats->total_count);
+        printf(ANSI_COLOR_BLUE "[NUMBER] : " ANSI_COLOR_RESET " %d\n   ", stats->total_count);
         printf(ANSI_COLOR_BLUE "[TYPE  ] : " ANSI_COLOR_RESET " %s\n   ", test_case->is_benchmark? "Benchmark" : "Unit Test");
     } else {
         printf("[START TEST CASE] Description: %s\n", test_case->name);
-        printf("[NUMBER] : %s\n   ", stats->total_count);
+        printf("[NUMBER] : %d\n   ", stats->total_count);
         printf("[TYPE  ] : %s\n   ", test_case->is_benchmark? "Benchmark" : "Unit Test");
     } // end if else
     puts("#####################################\n");
