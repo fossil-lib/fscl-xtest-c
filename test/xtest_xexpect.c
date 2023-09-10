@@ -252,3 +252,9 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_boolean) {
     XEXPECT_TRUE(true, "should have returned true from a true value");
     XEXPECT_FALSE(false, "should have returned false from a false value");
 } // end case
+
+void xexpect_test_group(XUnitRunner *runner) {
+    xtest_run_test_fixture(xexpect_run_of_int, xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(xexpect_run_of_uint, xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(xexpect_run_of_hex, xexpect_test_fixture, &runner->stats);
+} // end of group
