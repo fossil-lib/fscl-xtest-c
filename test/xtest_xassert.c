@@ -1,0 +1,262 @@
+/*
+   under:   trilobite stdlib
+   author:  Michael Gene Brockus (Dreamer)
+   gmail:   <michaelbrockus@gmail.com>
+   website: <https://trilobite.code.blog>
+*/
+#include "xtest_fixtures.h"
+#include "trilobite/xtest.h"
+#include "trilobite/xassert.h"
+
+//
+// TEST DATA
+//
+
+//
+// TEST FIXTURE
+//
+XTEST_FIXTURE(xassert_test_fixture) {
+    void setup_xassert_test_fixture() {
+        // empty
+    }
+    void teardown_xassert_test_fixture() {
+        // empty
+    }
+}
+
+//
+// TEST CASES
+//
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int) {
+    int first = 32, that = 22, other = 32;
+
+    XASSERT_INT_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_INT_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_INT_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_INT_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_INT_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_INT_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int8) {
+    int8_t first = 32, that = 22, other = 32;
+
+    XASSERT_INT8_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_INT8_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_INT8_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_INT8_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_INT8_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_INT8_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int16) {
+    int16_t first = 32, that = 22, other = 32;
+
+    XASSERT_INT16_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_INT16_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_INT16_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_INT16_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_INT16_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_INT16_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int32) {
+    int32_t first = 32, that = 22, other = 32;
+
+    XASSERT_INT32_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_INT32_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_INT32_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_INT32_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_INT32_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_INT32_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int64) {
+    int64_t first = 32, that = 22, other = 32;
+
+    XASSERT_INT64_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_INT64_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_INT64_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_INT64_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_INT64_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_INT64_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint) {
+    unsigned int first = 32, that = 22, other = 32;
+
+    XASSERT_UINT_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_UINT_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_UINT_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_UINT_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_UINT_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_UINT_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint8) {
+    uint8_t first = 32, that = 22, other = 32;
+
+    XASSERT_UINT8_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_UINT8_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_UINT8_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_UINT8_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_UINT8_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_UINT8_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint16) {
+    uint16_t first = 32, that = 22, other = 32;
+
+    XASSERT_UINT16_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_UINT16_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_UINT16_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_UINT16_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_UINT16_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_UINT16_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint32) {
+    uint32_t first = 32, that = 22, other = 32;
+
+    XASSERT_UINT32_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_UINT32_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_UINT32_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_UINT32_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_UINT32_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_UINT32_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint64) {
+    uint64_t first = 32, that = 22, other = 32;
+
+    XASSERT_UINT64_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_UINT64_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_UINT64_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_UINT64_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_UINT64_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_UINT64_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex) {
+    unsigned int first = 20, that = 16, other = 20;
+
+    XASSERT_HEX_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_HEX_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_HEX_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_HEX_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_HEX_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_HEX_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex8) {
+    unsigned char first = 32, that = 22, other = 32;
+
+    XASSERT_HEX8_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_HEX8_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_HEX8_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_HEX8_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_HEX8_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_HEX8_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex16) {
+    unsigned short first = 32, that = 22, other = 32;
+
+    XASSERT_HEX16_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_HEX16_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_HEX16_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_HEX16_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_HEX16_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_HEX16_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex32) {
+    unsigned int first = 32, that = 22, other = 32;
+
+    XASSERT_HEX32_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_HEX32_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_HEX32_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_HEX32_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_HEX32_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_HEX32_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex64) {
+    unsigned long long first = 32, that = 22, other = 32;
+
+    XASSERT_HEX64_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_HEX64_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_HEX64_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_HEX64_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_HEX64_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_HEX64_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_bit) {
+    unsigned int first = 100000, that = 10110, other = 100000;
+
+    XASSERT_BIT_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_BIT_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_BIT_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_BIT_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_BIT_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_BIT_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_oct) {
+    unsigned int first = 40, that = 26, other = 40;
+
+    XASSERT_INT_EQUAL(first, other,"'x' should be equal to 'y'");
+    XASSERT_INT_GREATER(first, that,"'x' should be greater than 'y'");
+    XASSERT_INT_GREATER_EQUAL(first, that,"'x' should be greater or equal to 'y'");
+    XASSERT_INT_LESS(that, other,"'x' should be lesser than 'y'");
+    XASSERT_INT_LESS_EQUAL(that, first,"'x' should be lesser or equal to 'y'");
+    XASSERT_INT_NOT_EQUAL(first, that,"'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_float) {
+    float first = 40.00, that = 26.00, other = 40.00;
+
+    XASSERT_FLOAT_EQUAL(first, other, that,"'x' should be equal to 'y'");
+    XASSERT_FLOAT_GREATER(first, that, "'x' should be greater than 'y'");
+    XASSERT_FLOAT_GREATER_EQUAL(first, that, "'x' should be greater or equal to 'y'");
+    XASSERT_FLOAT_LESS(that, other, "'x' should be lesser than 'y'");
+    XASSERT_FLOAT_LESS_EQUAL(that, first, "'x' should be lesser or equal to 'y'");
+    XASSERT_FLOAT_NOT_EQUAL(first, that, 50.00, "'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_double) {
+    double first = 40.00, that = 26.00, other = 40.00;
+
+    XASSERT_FLOAT_EQUAL(first, other, that,"'x' should be equal to 'y'");
+    XASSERT_FLOAT_GREATER(first, that, "'x' should be greater than 'y'");
+    XASSERT_FLOAT_GREATER_EQUAL(first, that, "'x' should be greater or equal to 'y'");
+    XASSERT_FLOAT_LESS(that, other, "'x' should be lesser than 'y'");
+    XASSERT_FLOAT_LESS_EQUAL(that, first, "'x' should be lesser or equal to 'y'");
+    XASSERT_FLOAT_NOT_EQUAL(first, that, 50.00, "'x' should not be equal to 'y'");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_string) {
+    char *one = "Something", *two = "Whatever", *three = "Something";
+    XASSERT_STRING_EQUAL(one, three, "one and three should have benn equal");
+    XASSERT_STRING_NOT_EQUAL(one, two, "one and two should not be equal");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_pointer) {
+    XASSERT_NOT_NULL("Coffee Cup", "as a coffee cup should have been a non null value");
+    XASSERT_NULL(NULL, "Why didn't first cup of tea return as null?");
+} // end case
+
+XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_boolean) {
+    XASSERT_TRUE(true, "should have returned true from a true value");
+    XASSERT_FALSE(false, "should have returned false from a false value");
+} // end case
+
+//
+// LOCAL TEST GROUP
+//
+void xassert_test_group(XUnitRunner *runner) {
+    xtest_run_test_fixture(xassert_run_of_int, xassert_test_fixture, &runner->stats);
+    xtest_run_test_fixture(xassert_run_of_uint, xassert_test_fixture, &runner->stats);
+    xtest_run_test_fixture(xassert_run_of_hex, xassert_test_fixture, &runner->stats);
+} // end of group
