@@ -17,8 +17,7 @@ int main(int argc, char **argv)
     XUnitRunner runner = xtest_start(argc, argv);
 
     xmockup_test_group(&runner);
-    xbdd_test_group(   &runner);
-    xbasic_test_group( &runner);
+    unit_test_c_group( &runner);
     xignore_test_group(&runner);
     xexpect_test_group(&runner);
     xassert_test_group(&runner);
