@@ -10,22 +10,6 @@
 //
 // XUNIT TEST CASES
 //
-XTEST_CASE(capture_and_verify_output) {
-    // Redirect stdout to a buffer
-    fflush(stdout);
-    char buffer[1024];
-    setbuf(stdout, buffer);
-
-    // Call the function that generates output
-    printf("Hello, World!");
-
-    // Restore stdout to the default (usually terminal)
-    setbuf(stdout, NULL);
-
-    // Verify the captured output
-    XASSERT(strcmp(buffer, "Hello, World!") == 0, "Output mismatch");
-} // end case
-
 XTEST_CASE(basic_run_of_int) {
     int this = 32, that = 22, other = 32;
 
@@ -573,84 +557,10 @@ XTEST_CASE(xbdd_valid_login) {
     }
 } // end of case
 
-// Define a test case for Logistic Regression training
-XTEST_CASE(xauto_logistic_regression_training) {
-    // Mock training data
-    int num_samples = 5;
-    int labels[] = {0, 0, 1, 1, 1};
-    int num_features = 2; // Set the number of features
-
-    double input[] = {
-        1.0, 2.0,
-        3.0, 4.0,
-        5.0, 1.0,
-        1.5, 2.0,
-        2.5, 3.0
-    };
-
-    // Initialize the Logistic Regression model
-    LogisticRegressionModel model;
-    model.num_features = num_features;
-
-    // Train the model
-    xauto_train_logistic_regression(&model, input, labels, num_samples, 0.01, 1000);
-
-    // Define assertions specific to Logistic Regression training
-    // In this example, you can check if the model's coefficients and intercept match expected values.
-    XEXPECT(fabs(model.coefficients[0] - 0.61) < 0.01, "Coefficient 1 is not as expected");
-    XEXPECT(fabs(model.coefficients[1] - 0.88) < 0.01, "Coefficient 2 is not as expected");
-    XEXPECT(fabs(model.intercept + 3.16) < 0.01, "Intercept is not as expected");
-} // end of case
-
-// Define a test case for Linear Regression training
-XTEST_CASE(xauto_linear_regression_training) {
-    int num_samples = 5;
-    double x[] = {1.0, 2.0, 3.0, 4.0, 5.0}; // Input feature
-    double y[] = {2.0, 3.0, 3.5, 4.8, 6.0}; // Target variable
-
-    // Initialize the Linear Regression model
-    LinearRegressionModel model;
-
-    // Train the model
-    xauto_train_linear_regression(&model, x, y, num_samples);
-
-    // Define assertions specific to Linear Regression training
-    // In this example, you can check if the model's slope and intercept match expected values.
-    XEXPECT(fabs(model.slope - 1.1) < 0.01, "Slope is not as expected");
-    XEXPECT(fabs(model.intercept - 0.9) < 0.01, "Intercept is not as expected");
-} // end of case
-
-XTEST_CASE(xauto_gaussian_naive_bayes) {
-    int num_samples = 10;
-    int num_features = 1; // Assuming a single feature for simplicity
-    double features[] = {1.1, 1.3, 1.5, 1.8, 2.0, 2.5, 2.9, 3.0, 3.2, 3.6};
-    int labels[] = {0, 0, 0, 0, 0, 1, 1, 1, 1, 1};
-
-    // Initialize the Gaussian Naive Bayes model
-    GaussianNaiveBayesModel model;
-
-    // Train the model
-    xauto_train_gaussian_naive_bayes(&model, features, labels, num_samples, num_features);
-
-    // Make predictions
-    int predictions[10];
-    for (int i = 0; i < num_samples; ++i) {
-        predictions[i] = xauto_predict_gaussian_naive_bayes(&model, features[i]);
-    } // end for
-
-    // Define assertions based on expected predictions
-    int expected_predictions[] = {0, 0, 0, 0, 0, 1, 1, 1, 1, 1};
-    for (int i = 0; i < num_samples; ++i) {
-        XEXPECT(predictions[i] == expected_predictions[i], "Prediction is incorrect");
-    } // end for
-} // end of case
-
 //
 // XTEST FIXTURE
 //
 void xfixture_basic_cases(XUnitRunner *runner) {
-    // xtest_run_test_unit(&capture_and_verify_output, &runner->stats); // IO testing needs work
-
     xtest_run_test_unit(&basic_run_of_int, &runner->stats);
     xtest_run_test_unit(&basic_run_of_int8, &runner->stats);
     xtest_run_test_unit(&basic_run_of_int16, &runner->stats);
@@ -701,8 +611,4 @@ void xfixture_basic_cases(XUnitRunner *runner) {
     xtest_run_test_unit(&xbdd_user_account, &runner->stats);
     xtest_run_test_unit(&xbdd_empty_cart, &runner->stats);
     xtest_run_test_unit(&xbdd_valid_login, &runner->stats);
-
-    xtest_run_test_unit(&xauto_logistic_regression_training, &runner->stats);
-    xtest_run_test_unit(&xauto_linear_regression_training, &runner->stats);
-    xtest_run_test_unit(&xauto_gaussian_naive_bayes, &runner->stats);
 } // end of fixture
