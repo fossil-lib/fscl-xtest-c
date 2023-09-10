@@ -253,27 +253,27 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_boolean) {
 // LOCAL TEST GROUP
 //
 void xexpect_test_group(XUnitRunner *runner) {
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_int,    &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_int8,   &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_int16,  &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_int32,  &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_int64,  &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_uint,   &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_uint8,  &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_uint16, &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_uint32, &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_uint64, &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_hex,    &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_hex8,   &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_hex16,  &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_hex32,  &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_hex64,  &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_int,    &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_int8,   &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_int16,  &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_int32,  &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_int64,  &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_uint,   &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_uint8,  &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_uint16, &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_uint32, &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_uint64, &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_hex,    &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_hex8,   &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_hex16,  &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_hex32,  &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_hex64,  &xexpect_test_fixture, &runner->stats);
 
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_bit,    &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_oct,    &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_float,  &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_double, &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_string, &runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_pointer,&runner->stats);
-    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_boolean,&runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_bit,    &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_oct,    &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_float,  &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_double, &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_string, &xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_pointer,&xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_run_of_boolean,&xexpect_test_fixture, &runner->stats);
 } // end of group
