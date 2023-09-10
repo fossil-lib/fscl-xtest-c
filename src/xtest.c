@@ -52,19 +52,19 @@ XTestCliOption options[] = {
  * @param message     An optional message associated with the assertion.
  */
 static void xtest_output_xassert(bool expression, const char *message) {
-    puts("####################################-\n");
     if (XTEST_FLAG_COLORED) {
         puts(ANSI_COLOR_BLUE "[ASSERT] XUnit Test Case Assert" ANSI_COLOR_RESET);
         if (!expression) {
-            printf(ANSI_COLOR_BLUE "[MESSAGE] :" ANSI_COLOR_RESET " %s\n", message);
+            printf(ANSI_COLOR_RED "[MESSAGE] :" ANSI_COLOR_RESET " %s\n", message);
         } // end if
         printf(ANSI_COLOR_BLUE "[RESULT]  :" ANSI_COLOR_RESET " %s\n", expression? "PASS" : "FAIL");
     } else {
         puts("[ASSERT] XUnit Test Case Assert");
-        printf("[MESSAGE] : %s\n", message);
+        if (!expression) {
+            printf("[MESSAGE] : %s\n", message);
+        } // end if
         printf("[RESULT]  : %s\n", expression? "PASS" : "FAIL");
     } // end if else
-    puts("####################################-\n");
 } // end of func
 
 /**
@@ -77,7 +77,6 @@ static void xtest_output_xassert(bool expression, const char *message) {
  * @param message     An optional message associated with the expectation.
  */
 static void xtest_output_xexpect(bool expression, const char *message) {
-    puts("####################################-\n");
     if (XTEST_FLAG_COLORED) {
         puts(ANSI_COLOR_BLUE "[EXPECT] XUnit Test Case Expect" ANSI_COLOR_RESET);
         printf(ANSI_COLOR_BLUE "[MESSAGE] :" ANSI_COLOR_RESET " %s\n", message);
@@ -87,7 +86,6 @@ static void xtest_output_xexpect(bool expression, const char *message) {
         printf("[MESSAGE] : %s\n", message);
         printf("[RESULT]  : %s\n", expression? "PASS" : "FAIL");
     } // end if else
-    puts("####################################-\n");
 } // end of func
 
 /**
@@ -100,7 +98,6 @@ static void xtest_output_xexpect(bool expression, const char *message) {
  * @param message     An optional message associated with the error.
  */
 static void xtest_output_xerrors(bool expression, const char *message) {
-    puts("####################################-\n");
     if (XTEST_FLAG_COLORED) {
         puts(ANSI_COLOR_BLUE "[ERROR] XUnit Test Case Error" ANSI_COLOR_RESET);
         if (!expression) {
@@ -112,7 +109,6 @@ static void xtest_output_xerrors(bool expression, const char *message) {
         printf("[MESSAGE] : %s\n", message);
         printf("[RESULT]  : %s\n", expression? "PASS" : "FAIL");
     } // end if else
-    puts("####################################-\n");
 } // end of func
 
 /**
@@ -123,7 +119,6 @@ static void xtest_output_xerrors(bool expression, const char *message) {
  * @param reason  The reason for ignoring the test case.
  */
 static void xtest_output_xignore(const char* reason) {
-    puts("####################################-\n");
     if (XTEST_FLAG_COLORED) {
         printf(ANSI_COLOR_BLUE "[IGNORE] XUnit Test Case Ignored\n" ANSI_COLOR_RESET);
         printf(ANSI_COLOR_YELLOW "[MESSAGE] : " ANSI_COLOR_RESET " %s\n", reason);
@@ -131,7 +126,6 @@ static void xtest_output_xignore(const char* reason) {
         printf(ANSI_COLOR_BLUE "[IGNORE] XUnit Test Case Ignored\n" ANSI_COLOR_RESET);
         printf(ANSI_COLOR_YELLOW "[MESSAGE] : " ANSI_COLOR_RESET " %s\n", reason);
     } // end if else
-    puts("####################################-\n");
 } // end of func
 
 /**
@@ -144,14 +138,15 @@ static void xtest_output_xignore(const char* reason) {
  * @param stats     The statistics containing the total count of test cases.
  */
 static void xtest_output_xunittest_format_start(XTestCase* test_case, XTestStats *stats) {
+    puts("\n#####################################");
     if (XTEST_FLAG_COLORED) {
         printf(ANSI_COLOR_BLUE "[START TEST CASE] Description: %s\n" ANSI_COLOR_RESET, test_case->name);
-        printf(ANSI_COLOR_BLUE "[NUMBER] : " ANSI_COLOR_RESET " %d\n   ", stats->total_count);
-        printf(ANSI_COLOR_BLUE "[TYPE  ] : " ANSI_COLOR_RESET " %s\n   ", test_case->is_benchmark? "Benchmark" : "Unit Test");
+        printf(ANSI_COLOR_BLUE "[NUMBER] : " ANSI_COLOR_RESET " %d\n", stats->total_count + 1);
+        printf(ANSI_COLOR_BLUE "[TYPE  ] : " ANSI_COLOR_RESET " %s\n", test_case->is_benchmark? "Benchmark" : "Unit Test");
     } else {
         printf("[START TEST CASE] Description: %s\n", test_case->name);
-        printf("[NUMBER] : %d\n   ", stats->total_count);
-        printf("[TYPE  ] : %s\n   ", test_case->is_benchmark? "Benchmark" : "Unit Test");
+        printf("[NUMBER] : %d\n", stats->total_count + 1);
+        printf("[TYPE  ] : %s\n", test_case->is_benchmark? "Benchmark" : "Unit Test");
     } // end if else
     puts("#####################################\n");
 } // end of func
@@ -165,6 +160,7 @@ static void xtest_output_xunittest_format_start(XTestCase* test_case, XTestStats
  * @param test_case The test case for which the information is displayed.
  */
 static void xtest_output_xunittest_format_end(XTestCase* test_case) {
+    puts("\n#####################################");
     if (XTEST_FLAG_COLORED) {
         printf(ANSI_COLOR_BLUE"[END TEST CASE] Description: %s\n" ANSI_COLOR_RESET, test_case->name);
         printf(ANSI_COLOR_BLUE"[TIME  ] : %lu\n" ANSI_COLOR_RESET, test_case->elapsed_time);
@@ -277,7 +273,7 @@ XUnitRunner xtest_start(int argc, char **argv) {
         exit(EXIT_SUCCESS);
     } // end if, else if
    
-    runner.stats = (XTestStats){0, 0, 0, 0, 0, 0};
+    runner.stats = (XTestStats){0, 0, 0, 0};
     return runner;
 } // end of func
 
@@ -357,6 +353,7 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
     } else {
         // Update the ignored count
         stats->ignored_count++;
+        XIGNORE_TEST_CASE = false;
     } // end if else
 
     if (XTEST_FLAG_VERBOSE) {
@@ -365,7 +362,6 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
 
     // Update the total count
     stats->total_count++;
-    XIGNORE_TEST_CASE = false;
 } // end of func
 
 /**
@@ -430,6 +426,7 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
     } else {
         // Update the ignored count
         stats->ignored_count++;
+        XIGNORE_TEST_CASE = false;
     } // end if else
 
     if (XTEST_FLAG_VERBOSE) {
@@ -438,7 +435,6 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
 
     // Update the total count
     stats->total_count++;
-    XIGNORE_TEST_CASE = false;
 } // end of func
 
 /**
