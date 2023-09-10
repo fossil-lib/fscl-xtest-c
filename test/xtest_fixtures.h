@@ -19,8 +19,8 @@ extern "C"
 #include <stdint.h>
 
 void xmockup_test_group(XUnitRunner *runner);
-void xbdd_test_group(XUnitRunner *runner);
-void xbasic_test_group(XUnitRunner *runner);
+void unit_test_c_group(XUnitRunner *runner);
+void unit_test_cpp_group(XUnitRunner *runner);
 void xignore_test_group(XUnitRunner *runner);
 void xexpect_test_group(XUnitRunner *runner);
 void xassert_test_group(XUnitRunner *runner);
