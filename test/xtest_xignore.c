@@ -10,15 +10,15 @@
 //
 // TEST FIXTURE
 //
-XTEST_FIXTURE(xignore_test_fixture) {
-    //
-    void setup_xignore_test_fixture(void) {
-        // empty
-    }
-    void teardown_xignore_test_fixture(void) {
-        // empty
-    }
-}
+XTEST_FIXTURE(xignore_test_fixture);
+
+XTEST_SETUP(xignore_test_fixture) {
+    // empty
+} // end setup
+
+XTEST_TEARDOWN(xignore_test_fixture) {
+    // empty
+} // end teardown
 
 //
 // TEST CASES

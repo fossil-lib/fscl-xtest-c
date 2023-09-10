@@ -25,15 +25,15 @@ XMOCK_FUNC(xmock_int, foo) {
 //
 // TEST FIXTURE
 //
-XTEST_FIXTURE(xmockup_test_fixture) {
-    //
-    void setup_xmockup_test_fixture(void) {
-        // empty
-    }
-    void teardown_xmockup_test_fixture(void) {
-        // empty
-    }
-}
+XTEST_FIXTURE(xmockup_test_fixture);
+
+XTEST_SETUP(xmockup_test_fixture) {
+    // empty
+} // end setup
+
+XTEST_TEARDOWN(xmockup_test_fixture) {
+    // empty
+} // end teardown
 
 //
 // TEST CASES

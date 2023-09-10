@@ -11,15 +11,15 @@
 //
 // TEST FIXTURE
 //
-XTEST_FIXTURE(xexpect_test_fixture) {
-    //
-    void setup_xexpect_test_fixture(void) {
-        // empty
-    }
-    void teardown_xexpect_test_fixture(void) {
-        // empty
-    }
-}
+XTEST_FIXTURE(xexpect_test_fixture);
+
+XTEST_SETUP(xexpect_test_fixture) {
+    // empty
+} // end setup
+
+XTEST_TEARDOWN(xexpect_test_fixture) {
+    // empty
+} // end teardown
 
 //
 // TEST CASES

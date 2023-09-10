@@ -9,20 +9,17 @@
 #include "trilobite/xassert.h"
 
 //
-// TEST DATA
-//
-
-//
 // TEST FIXTURE
 //
-XTEST_FIXTURE(xassert_test_fixture) {
-    void setup_xassert_test_fixture(void) {
-        // empty
-    }
-    void teardown_xassert_test_fixture(void) {
-        // empty
-    }
-}
+XTEST_FIXTURE(xassert_test_fixture);
+
+XTEST_SETUP(xassert_test_fixture) {
+    // empty
+} // end setup
+
+XTEST_TEARDOWN(xassert_test_fixture) {
+    // empty
+} // end teardown
 
 //
 // TEST CASES
