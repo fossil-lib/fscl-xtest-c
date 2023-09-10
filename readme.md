@@ -61,7 +61,6 @@ Example of the usage in C
 
 ```c
 #include <trilobite/xtest.h>   // basic test tools
-#include <trilobite/xassert.h> // extra asserts
 
 //
 // XTEST DATA
