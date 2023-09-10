@@ -4,7 +4,7 @@ if get_option('with_tests').enabled()
         'xtest_runner.c',
         'xtest_cases.c',
         'xtest_cases.cpp',
-        'xtest_xerror.c',
+        'xtest_xignore.c',
         'xtest_xexpect.c',
         'xtest_xassert.c',
         'xtest_mocks.c',
