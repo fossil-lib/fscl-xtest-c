@@ -109,7 +109,7 @@ XTEST_CASE(xbdd_valid_login) {
 //
 // XTEST FIXTURE
 //
-void xfixture_basic_cases(XUnitRunner *runner) {    
+void unit_test_c_group(XUnitRunner *runner) {    
     xtest_run_test_unit(&xbdd_logic_test, &runner->stats);
     xtest_run_test_unit(&xbdd_user_account, &runner->stats);
     xtest_run_test_unit(&xbdd_empty_cart, &runner->stats);
