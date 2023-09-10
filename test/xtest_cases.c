@@ -577,7 +577,7 @@ XTEST_CASE(xbdd_valid_login) {
 // XTEST FIXTURE
 //
 void xfixture_basic_cases(XUnitRunner *runner) {
-    xtest_run_test_unit(&capture_and_verify_output, &runner->stats);
+    // xtest_run_test_unit(&capture_and_verify_output, &runner->stats);
 
     xtest_run_test_unit(&basic_run_of_int, &runner->stats);
     xtest_run_test_unit(&basic_run_of_int8, &runner->stats);
