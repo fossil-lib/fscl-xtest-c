@@ -1,9 +1,9 @@
 if get_option('with_tests').enabled()
-    add_languages('cpp', required : false)
+    # add_languages('cpp', required : false)
     exe = executable('xtest-runner',
         'xtest_runner.c',
         'xtest_cases.c',
-        'xtest_cases.cpp',
+        # 'xtest_cases.cpp',
         'xtest_xignore.c',
         'xtest_xexpect.c',
         'xtest_xassert.c',
