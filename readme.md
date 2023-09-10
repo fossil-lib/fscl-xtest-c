@@ -61,7 +61,6 @@ Example of the usage in C
 
 ```c
 #include <trilobite/xtest.h>   // basic test tools
-#include <trilobite/xassert.h> // extra asserts
 
 //
 // XTEST DATA
@@ -74,30 +73,24 @@ XTEST_DATA(some_data) {
 //
 // XTEST FIXTURE
 //
-// Define a test fixture using XTEST_FIXTURE
-XTEST_FIXTURE(basic_fixture) {
-    void setup(void) {
-        // Perform setup operations here
-        printf("Setting up the test fixture\n");
-    }
+XTEST_FIXTURE(basic_fixture);
+XTEST_SETUP(basic_fixture) {
+     printf("Setting up the test fixture\n"); // Perform setup operations here
+ }
 
-    void teardown(void) {
-        // Perform teardown operations here
-        printf("Tearing down the test fixture\n");
-    }
-}; // end of fixture
+ XTEST_TEARDOWN(basic_fixture) {
+     printf("Tearing down the test fixture\n"); // Perform teardown operations here
+}
 
 //
 // XUNIT TESTS
 //
 XTEST_CASE_FIXTURE(basic_fixture, passing_case) {
-    // This test will always pass.
-    XTEST_PASS();
+    XTEST_PASS(); // This test will always pass.
 } // end of case
 
 XTEST_CASE_FIXTURE(basic_fixture, failing_case) {
-    // This test will always fail.
-    XTEST_FAIL("This test intentionally fails");
+    XTEST_FAIL("This test intentionally fails"); // This test will always fail.
 } // end of case
 
 //
@@ -106,14 +99,9 @@ XTEST_CASE_FIXTURE(basic_fixture, failing_case) {
 int main(int argc, char** argv) {
     XUnitRunner runner = xtest_start(argc, argv);
 
-    // Register the test fixture
-    const XTestFixture* fixture = &basic_fixture;
+    xtest_run_test_fixture(&passing_case, &basic_fixture, &runner->stats);
+    xtest_run_test_fixture(&failing_case, &basic_fixture, &runner->stats);
 
-    // Register test cases with the fixture
-    xtest_run_test_fixture(&passing_case, fixture, &runner);
-    xtest_run_test_fixture(&failing_case, fixture, &runner);
-
-    // Finalize the runner and print test results
     return xtest_end(&runner);
 } // end of function main
 ```

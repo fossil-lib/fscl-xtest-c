@@ -18,9 +18,12 @@ extern "C"
 
 #include <stdint.h>
 
-void xfixture_basic_cases(XUnitRunner *runner);
-void xfixture_mocking_cases(XUnitRunner *runner);
-void xfixture_bench_cases(XUnitRunner *runner);
+void xbenchs_test_group(XUnitRunner *runner);
+void xmockup_test_group(XUnitRunner *runner);
+void unit_test_c_group(XUnitRunner *runner);
+void xignore_test_group(XUnitRunner *runner);
+void xexpect_test_group(XUnitRunner *runner);
+void xassert_test_group(XUnitRunner *runner);
 
 #ifdef __cplusplus
 }
