@@ -34,7 +34,7 @@ void bubble_sort(int *array, size_t size) {
 //
 // XBENCHMARK CASES
 //
-XBENCH(comput_bubble_sort_small_dataset) {
+XTEST_BENCH(comput_bubble_sort_small_dataset) {
     // Example data
     int data[] = {5, 2, 8, 12, 3};
     size_t size = sizeof(data) / sizeof(data[0]);
@@ -42,7 +42,7 @@ XBENCH(comput_bubble_sort_small_dataset) {
     bubble_sort(data, size);
 } // end benchmark
 
-XBENCH(comput_bubble_sort_large_dataset) {
+XTEST_BENCH(comput_bubble_sort_large_dataset) {
     // Example data
     int data[] = {100, 75, 43, 28, 56, 89, 34, 12};
     size_t size = sizeof(data) / sizeof(data[0]);
@@ -50,7 +50,7 @@ XBENCH(comput_bubble_sort_large_dataset) {
     bubble_sort(data, size);
 } // end benchmark
 
-XBENCH(comput_bubble_sort_medium_dataset) {
+XTEST_BENCH(comput_bubble_sort_medium_dataset) {
     // Example data
     int data[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
     size_t size = sizeof(data) / sizeof(data[0]);
@@ -63,8 +63,8 @@ XBENCH(comput_bubble_sort_medium_dataset) {
 //
 void xfixture_bench_cases(XUnitRunner *runner)
 {
-    xbench_run(&comput_bubble_sort_small_dataset, runner);
-    xbench_run(&comput_bubble_sort_medium_dataset, runner);
-    xbench_run(&comput_bubble_sort_large_dataset, runner);
+    xtest_run_test_unit(&comput_bubble_sort_small_dataset, &runner->stats);
+    xtest_run_test_unit(&comput_bubble_sort_medium_dataset, &runner->stats);
+    xtest_run_test_unit(&comput_bubble_sort_large_dataset, &runner->stats);
 
 } // end of fixture
