@@ -14,7 +14,24 @@
 //
 // TEST FIXTURE
 //
+XTEST_FIXTURE(xignore_test_fixture) {
+    //
+    void setup_xignore_test_fixture() {
+        // empty
+    }
+    void teardown_xignore_test_fixture() {
+        // empty
+    }
+}
 
 //
 // TEST CASES
 //
+
+
+//
+// LOCAL TEST GROUP
+//
+void xignore_test_group(XUnitRunner *runner) {
+    //xtest_run_test_fixture(xassert_run_of_int, xassert_test_fixture, &runner->stats);
+} // end of group
