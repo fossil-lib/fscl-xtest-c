@@ -16,9 +16,12 @@ int main(int argc, char **argv)
 {
     XUnitRunner runner = xtest_start(argc, argv);
 
-    xfixture_basic_cases(&runner);
-    xfixture_bench_cases(&runner);
-    xfixture_mocking_cases(&runner);
+    xmockup_test_group(&runner);
+    xbenchs_test_group(&runner);
+    unit_test_c_group( &runner);
+    xignore_test_group(&runner);
+    xexpect_test_group(&runner);
+    xassert_test_group(&runner);
 
     return xtest_end(&runner);
 } // end of function main
