@@ -145,7 +145,7 @@ static void xtest_output_xunittest_format(XTestCase* test_case) {
     } else {
         printf("[TEST CASE] %s\n", test_case->name);
         printf("[TYPE] : %s\n", test_case->is_benchmark? "Benchmark" : "Unit Test");
-        printf("[TIME] : %lu\n", test_case->elapsed_time);
+        printf("[TIME] : %.6lu\n", test_case->elapsed_time);
     } // end if else
     puts("#####################################");
 } // end of func
@@ -307,7 +307,12 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
         bool test_passed = true; // Assume the test passes by default
 
         // Check whether expectation scanning is enabled
-        if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN || !XERRORS_PASS_SCAN) {
+        if (!XEXPECT_PASS_SCAN || !XERRORS_PASS_SCAN) {
+            // If any expectations fail, consider the test as failed
+            test_passed = false;
+        } // end if
+
+        if (!XASSERT_PASS_SCAN) {
             // If any expectations fail, consider the test as failed
             test_passed = false;
         } // end if
@@ -371,7 +376,12 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
         bool test_passed = true; // Assume the test passes by default
 
         // Check whether expectation scanning is enabled
-        if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN || !XERRORS_PASS_SCAN) {
+        if (!XEXPECT_PASS_SCAN || !XERRORS_PASS_SCAN) {
+            // If any expectations fail, consider the test as failed
+            test_passed = false;
+        } // end if
+
+        if (!XASSERT_PASS_SCAN) {
             // If any expectations fail, consider the test as failed
             test_passed = false;
         } // end if
