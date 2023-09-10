@@ -59,12 +59,10 @@ XTEST_BENCH(comput_bubble_sort_medium_dataset) {
 } // end benchmark
 
 //
-// XTEST FIXTURE
+// LOCAL TEST GROUP
 //
-void xfixture_bench_cases(XUnitRunner *runner)
-{
+void xbenchs_test_group(XUnitRunner *runner) {
     xtest_run_test_unit(&comput_bubble_sort_small_dataset, &runner->stats);
     xtest_run_test_unit(&comput_bubble_sort_medium_dataset, &runner->stats);
     xtest_run_test_unit(&comput_bubble_sort_large_dataset, &runner->stats);
-
 } // end of fixture

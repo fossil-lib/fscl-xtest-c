@@ -247,8 +247,6 @@ typedef struct {
     int passed_count;     // Number of passed tests
     int failed_count;     // Number of failed tests
     int ignored_count;    // Number of ignored tests
-    int expected_count;   // Number of expected outcomes
-    int asserts_count;    // Number of assertions made
     int total_count;      // Total number of tests
 } XTestStats;
 
@@ -322,9 +320,29 @@ typedef struct {
 #define XTEST_FIXTURE(fixture_name) \
     void setup_##fixture_name(void); \
     void teardown_##fixture_name(void); \
-    XTestFixture fixture_name = { setup_##fixture_name, teardown_##fixture_name }; \
-    void setup_##fixture_name(void) \
-    void teardown_##fixture_name(void)
+    XTestFixture fixture_name = { setup_##fixture_name, teardown_##fixture_name };
+
+/**
+ * @brief Define a setup function for a test fixture.
+ *
+ * This macro is used to define a setup function for a specific test fixture identified by 'fixture_name'.
+ * The setup function is responsible for preparing the test environment and resources before each test case
+ * within the fixture is executed.
+ *
+ * @param fixture_name The name of the test fixture for which the setup function is defined.
+ */
+#define XTEST_SETUP(fixture_name) void setup_##fixture_name(void)
+
+/**
+ * @brief Define a teardown function for a test fixture.
+ *
+ * This macro is used to define a teardown function for a specific test fixture identified by 'fixture_name'.
+ * The teardown function is responsible for cleaning up resources and restoring the test environment after each
+ * test case within the fixture has been executed.
+ *
+ * @param fixture_name The name of the test fixture for which the teardown function is defined.
+ */
+#define XTEST_TEARDOWN(fixture_name) void teardown_##fixture_name(void)
 
 /**
  * @brief Define a test case that uses a fixture.
