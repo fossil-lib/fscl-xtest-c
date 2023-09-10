@@ -459,7 +459,11 @@ void xignore(const char* reason) {
     if (XTEST_FLAG_VERBOSE) {
         xtest_output_xignore(reason);
     } else {
-        putchar('?');
+        if (XTEST_FLAG_COLORED) {
+            printf(ANSI_COLOR_YELLOW "?" ANSI_COLOR_RESET);
+        } else {
+            putchar('?');
+        } // end if else
     } // end if else
 } // end of func
 
@@ -488,7 +492,7 @@ void xassert(bool expression, const char *message) {
             printf("%s", (XASSERT_PASS_SCAN)? ANSI_COLOR_GREEN "O" ANSI_COLOR_RESET : ANSI_COLOR_RED "X" ANSI_COLOR_RESET);
         } else {
             printf("%s", (XASSERT_PASS_SCAN)? "O" : "X");
-        }
+        } // end if else
     } // end if else
 } // end of func
 
@@ -517,7 +521,7 @@ void xexpect(bool expression, const char *message) {
             printf("%s", (XEXPECT_PASS_SCAN)? ANSI_COLOR_GREEN "O" ANSI_COLOR_RESET : ANSI_COLOR_RED "X" ANSI_COLOR_RESET);
         } else {
             printf("%s", (XEXPECT_PASS_SCAN)? "O" : "X");
-        }
+        } // end if else
     } // end if else
 } // end of func
 
@@ -546,6 +550,6 @@ void xerrors(bool expression, const char *message) {
             printf("%s", (XERRORS_PASS_SCAN)? ANSI_COLOR_GREEN "O" ANSI_COLOR_RESET : ANSI_COLOR_RED "X" ANSI_COLOR_RESET);
         } else {
             printf("%s", (XERRORS_PASS_SCAN)? "O" : "X");
-        }
-    }
+        } // end if else
+    } // end if else
 } // end of func
