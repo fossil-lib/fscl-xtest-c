@@ -15,7 +15,7 @@
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 // Extra
-const char *XTEST_VERSION = "0.3.0";
+const char *XTEST_VERSION = "0.3.1";
 
 // Static control panel for assert/expect and marks
 static bool XERRORS_PASS_SCAN = true;
