@@ -5,11 +5,22 @@
    website: <https://trilobite.code.blog>
 */
 #include "trilobite/xauto.h"
-#include <math.h>
 
 //
 // EXTRA MATH FUNCTIONS
 //
+
+/**
+ * @brief Calculates the exponential of a number using squaring and recursion.
+ *
+ * This function calculates the exponential term 'e^x' using a recursive approach that leverages squaring.
+ * It computes 'e^x' with the specified number of recursive divisions and squaring operations.
+ *
+ * @param x The input value for the exponential term.
+ * @param n The number of recursive divisions and squaring operations.
+ *
+ * @return The approximate value of 'e^x' using squaring and recursion.
+ */
 double xauto_exp_with_squaring(double x, int n) {
     if (n == 0) {
         return 1.0;
@@ -24,12 +35,30 @@ double xauto_exp_with_squaring(double x, int n) {
     } // end if else
 } // end of func
 
-// Sigmoid function
+/**
+ * @brief Calculates the sigmoid function.
+ *
+ * This function computes the sigmoid function for a given value 'x'.
+ *
+ * @param x The input value.
+ *
+ * @return The sigmoid value for the input 'x'.
+ */
 double xauto_sigmoid(double x) {
     return 1.0 / (1.0 + xauto_exp_with_squaring(-x, 10));
 } // end of func
 
-// Taylor series expansion for the exponential term
+/**
+ * @brief Calculates the exponential term using a Taylor series expansion.
+ *
+ * This function approximates the exponential term 'e^x' using a Taylor series expansion with a specified number
+ * of terms.
+ *
+ * @param x           The input value for the exponential term.
+ * @param num_terms   The number of terms to use in the Taylor series expansion.
+ *
+ * @return An approximation of 'e^x' using the Taylor series expansion.
+ */
 double taylor_exp(double x, int num_terms) {
     double result = 1.0;
     double term = 1.0;
@@ -42,7 +71,16 @@ double taylor_exp(double x, int num_terms) {
     return result;
 } // end of func
 
-// Approximation of square root using the Newton-Raphson method
+/**
+ * @brief Approximates the square root of a number using the Newton-Raphson method.
+ *
+ * This function approximates the square root of a given number 'x' using the Newton-Raphson method.
+ * It iteratively refines the estimate until it converges within a specified tolerance.
+ *
+ * @param x The number for which the square root is approximated.
+ *
+ * @return The approximate square root of 'x'.
+ */
 double approximate_sqrt(double x) {
     if (x == 0.0) {
         return 0.0;
@@ -60,7 +98,18 @@ double approximate_sqrt(double x) {
     } // end while
 } // end of func
 
-// Approximated Gaussian probability density function without exp
+/**
+ * @brief Approximates the Gaussian Probability Density Function (PDF).
+ *
+ * This function approximates the Gaussian PDF for a given value 'x' with the provided mean and variance.
+ * It uses an approximation method to compute the PDF.
+ *
+ * @param x        The value for which the PDF is calculated.
+ * @param mean     The mean (average) of the Gaussian distribution.
+ * @param variance The variance of the Gaussian distribution.
+ *
+ * @return The approximate PDF value at 'x' given the mean and variance.
+ */
 double approximate_gaussian_pdf(double x, double mean, double variance) {
     double pi = 3.14159265358979323846;
     double exponent = -((x - mean) * (x - mean)) / (2 * variance);
@@ -72,7 +121,20 @@ double approximate_gaussian_pdf(double x, double mean, double variance) {
 // AI TRAINING
 //
 
-// Training function for Logistic Regression
+/**
+ * @brief Trains a Logistic Regression model using gradient descent.
+ *
+ * This function trains a Logistic Regression model using the provided input, labels, learning rate, and the number
+ * of epochs for training. It initializes model coefficients and intercept to zeros and then performs gradient descent
+ * to update these parameters to fit the data.
+ *
+ * @param model         Pointer to the Logistic Regression model to be trained.
+ * @param input         Pointer to the input data.
+ * @param labels        Pointer to the labels corresponding to the input data.
+ * @param num_samples   Number of data samples.
+ * @param learning_rate Learning rate for gradient descent.
+ * @param num_epochs    Number of training epochs.
+ */
 void xauto_train_logistic_regression(LogisticRegressionModel* model, const double* input, const int* labels, int num_samples, double learning_rate, int num_epochs) {
     // Initialize model coefficients and intercept to zeros
     for (int i = 0; i < model->num_features; ++i) {
@@ -99,7 +161,17 @@ void xauto_train_logistic_regression(LogisticRegressionModel* model, const doubl
     } // end for
 } // end of func
 
-// Training function for Linear Regression
+/**
+ * @brief Trains a Linear Regression model.
+ *
+ * This function trains a Linear Regression model using the provided input (x) and output (y) data.
+ * It calculates the slope and intercept of the linear regression line that best fits the data points.
+ *
+ * @param model         Pointer to the Linear Regression model to be trained.
+ * @param x             Pointer to the input data (features).
+ * @param y             Pointer to the output data (target values).
+ * @param num_samples   Number of data samples.
+ */
 void xauto_train_linear_regression(LinearRegressionModel* model, const double* x, const double* y, int num_samples) {
     double sum_x = 0.0;
     double sum_y = 0.0;
@@ -123,7 +195,18 @@ void xauto_train_linear_regression(LinearRegressionModel* model, const double* x
     model->intercept = intercept;
 } // end of func
 
-// Training function for Gaussian Naive Bayes
+/**
+ * @brief Trains a Gaussian Naive Bayes model.
+ *
+ * This function trains a Gaussian Naive Bayes model using the provided features and labels. It calculates
+ * class probabilities, means, and variances for two classes (assuming binary classification).
+ *
+ * @param model         Pointer to the Gaussian Naive Bayes model to be trained.
+ * @param features      Pointer to the input features.
+ * @param labels        Pointer to the labels corresponding to the features.
+ * @param num_samples   Number of data samples.
+ * @param num_features  Number of features in the input.
+ */
 void xauto_train_gaussian_naive_bayes(GaussianNaiveBayesModel* model, const double* features, const int* labels, int num_samples, int num_features) {
     // Initialize class probabilities, means, and variances
     model->class_probabilities[0] = 0.0;
@@ -172,7 +255,16 @@ void xauto_train_gaussian_naive_bayes(GaussianNaiveBayesModel* model, const doub
     } // end if
 } // end of func
 
-// Prediction function for Gaussian Naive Bayes using the approximate Gaussian PDF
+/**
+ * @brief Predicts using a trained Gaussian Naive Bayes model.
+ *
+ * This function predicts the class label (0 or 1) using a trained Gaussian Naive Bayes model for a given feature.
+ *
+ * @param model    Pointer to the trained Gaussian Naive Bayes model.
+ * @param feature  The feature for which the prediction is made.
+ *
+ * @return        The predicted class label (0 or 1).
+ */
 int xauto_predict_gaussian_naive_bayes(const GaussianNaiveBayesModel* model, double feature) {
     double likelihood_class_0 = approximate_gaussian_pdf(feature, model->mean[0], model->variance[0]);
     double likelihood_class_1 = approximate_gaussian_pdf(feature, model->mean[1], model->variance[1]);
