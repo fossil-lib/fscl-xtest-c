@@ -13,7 +13,6 @@ extern "C"
 #endif
 
 #include "trilobite/xtest.h"
-#include "trilobite/xauto.h"
 #include "trilobite/xassert.h"
 #include "trilobite/xexpect.h"
 
