@@ -1,6 +1,6 @@
 if get_option('with_tests').enabled()
 
-    exe = executable('xrunner',
+    exe = executable('xtest-runner',
         'xtest_runner.c',
         'xtest_cases.c',
         'xtest_mocks.c',
