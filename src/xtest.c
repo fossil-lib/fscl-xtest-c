@@ -187,11 +187,11 @@ static void xtest_output_xunittest_report(XUnitRunner *runner) {
  *
  * @return              None.
  */
-void xtest_cli_print_usage(const char* program_name, const XTestCliOption* options, size_t num_options) {
+void xtest_cli_print_usage(const char* program_name, const XTestCliOption* options, unsigned int num_options) {
     printf("Usage: %s [options]\n", program_name);
     printf("Options:\n");
 
-    for (size_t i = 0; i < num_options; ++i) {
+    for (unsigned int i = 0; i < num_options; ++i) {
         printf("  %s %s\t%s\n", options[i].option_long_name, options[i].option_short_name, options[i].description);
     } // end for
     puts("########################################");
@@ -211,7 +211,7 @@ void xtest_cli_print_usage(const char* program_name, const XTestCliOption* optio
  *
  * @return              0 if the parsing is successful.
  */
-int xtest_cli_parse_args(XTestCliOption* options, size_t num_options, int argc, char** argv) {
+int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int argc, char** argv) {
     for (int i = 1; i < argc; ++i) {
         for (size_t j = 0; j < num_options; ++j) {
             if (strcmp(argv[i], options[j].option_short_name) == 0) {
@@ -239,7 +239,7 @@ int xtest_cli_parse_args(XTestCliOption* options, size_t num_options, int argc, 
  */
 XUnitRunner xtest_start(int argc, char **argv) {
     XUnitRunner runner;
-    size_t num_options = sizeof(options) / sizeof(options[0]);
+    unsigned int num_options = sizeof(options) / sizeof(options[0]);
     xtest_cli_parse_args(options, num_options, argc, (char**)argv);
 
     if (XTEST_FLAG_VERSION) {
