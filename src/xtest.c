@@ -52,14 +52,16 @@ XTestCliOption options[] = {
 static void xtest_output_xassert(bool expression, const char *message) {
     if (XTEST_FLAG_COLORED) {
         puts(ANSI_COLOR_BLUE "[ASSERT] XUnit Test Case Assert" ANSI_COLOR_RESET);
-        printf(ANSI_COLOR_BLUE "[MESSAGE] :" ANSI_COLOR_RESET " %s\n", message);
+        if (!expression) {
+            printf(ANSI_COLOR_BLUE "[MESSAGE] :" ANSI_COLOR_RESET " %s\n", message);
+        } // end if
         printf(ANSI_COLOR_BLUE "[RESULT]  :" ANSI_COLOR_RESET " %s\n", expression? "PASS" : "FAIL");
     } else {
         puts("[ASSERT] XUnit Test Case Assert");
         printf("[MESSAGE] : %s\n", message);
         printf("[RESULT]  : %s\n", expression? "PASS" : "FAIL");
     } // end if else
-    puts("####################################-\n\n");
+    puts("####################################-\n");
 } // end of func
 
 /**
@@ -81,7 +83,7 @@ static void xtest_output_xexpect(bool expression, const char *message) {
         printf("[MESSAGE] : %s\n", message);
         printf("[RESULT]  : %s\n", expression? "PASS" : "FAIL");
     } // end if else
-    puts("####################################-\n\n");
+    puts("####################################-\n");
 } // end of func
 
 /**
@@ -96,14 +98,16 @@ static void xtest_output_xexpect(bool expression, const char *message) {
 static void xtest_output_xerrors(bool expression, const char *message) {
     if (XTEST_FLAG_COLORED) {
         puts(ANSI_COLOR_BLUE "[ERROR] XUnit Test Case Error" ANSI_COLOR_RESET);
-        printf(ANSI_COLOR_BLUE "[MESSAGE] :" ANSI_COLOR_RESET " %s\n", message);
+        if (!expression) {
+            printf(ANSI_COLOR_BLUE "[MESSAGE] :" ANSI_COLOR_RESET " %s\n", message);
+        } // end if
         printf(ANSI_COLOR_BLUE "[RESULT]  :" ANSI_COLOR_RESET " %s\n", expression? "PASS" : "FAIL");
     } else {
         puts("[ERROR] XUnit Test Case Error");
         printf("[MESSAGE] : %s\n", message);
         printf("[RESULT]  : %s\n", expression? "PASS" : "FAIL");
     } // end if else
-    puts("####################################-\n\n");
+    puts("####################################-\n");
 } // end of func
 
 /**
@@ -121,7 +125,7 @@ static void xtest_output_xignore(const char* reason) {
         printf(ANSI_COLOR_BLUE "[IGNORE] XUnit Test Case Ignored\n" ANSI_COLOR_RESET);
         printf(ANSI_COLOR_YELLOW "[MESSAGE] : " ANSI_COLOR_RESET " %s\n", reason);
     } // end if else
-    puts("####################################-\n\n");
+    puts("####################################-\n");
 } // end of func
 
 /**
