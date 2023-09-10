@@ -102,3 +102,10 @@ XTEST_CASE(xbdd_valid_login_cpp) {
         }
     }
 } // end of case
+
+void unit_test_cpp_group(XUnitRunner *runner) {    
+    xtest_run_test_unit(&xbdd_logic_test_cpp, &runner->stats);
+    xtest_run_test_unit(&xbdd_user_account_cpp, &runner->stats);
+    xtest_run_test_unit(&xbdd_empty_cart_cpp, &runner->stats);
+    xtest_run_test_unit(&xbdd_valid_login_cpp, &runner->stats);
+} // end of fixture
