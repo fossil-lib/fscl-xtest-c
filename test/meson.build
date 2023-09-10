@@ -1,5 +1,5 @@
 if get_option('with_tests').enabled()
-
+    add_languages('cpp', required : false)
     exe = executable('xtest-runner',
         'xtest_runner.c',
         'xtest_cases.c',
