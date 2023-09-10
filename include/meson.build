@@ -1,1 +1,1 @@
-inc_dir = include_directories('.')
+dir = include_directories('.')
