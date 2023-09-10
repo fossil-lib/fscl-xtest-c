@@ -188,12 +188,14 @@ static void xtest_output_xunittest_report(XUnitRunner *runner) {
     puts("\n\n#####################################");
     if (XTEST_FLAG_COLORED) {
         puts(ANSI_COLOR_BLUE "[TRILOBITE XUNIT RUNNER] results of the test" ANSI_COLOR_RESET);
+        printf("::assert: %.2d expect: %.2d\n", runner->stats.asserts_count, runner->stats.expected_count);
         printf("Tests passed: %d\n", runner->stats.passed_count);
         printf("Tests failed: %d\n", runner->stats.failed_count);
         printf("Tests ignored: %d\n", runner->stats.ignored_count);
         printf("Total count: %d\n", runner->stats.total_count);
     } else {
         puts("[TRILOBITE XUNIT RUNNER] results of the test");
+        printf("::assert: %.2d expect: %.2d\n", runner->stats.asserts_count, runner->stats.expected_count);
         printf("Tests passed: %d\n", runner->stats.passed_count);
         printf("Tests failed: %d\n", runner->stats.failed_count);
         printf("Tests ignored: %d\n", runner->stats.ignored_count);
