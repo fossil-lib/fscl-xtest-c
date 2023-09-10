@@ -52,6 +52,7 @@ XTestCliOption options[] = {
  * @param message     An optional message associated with the assertion.
  */
 static void xtest_output_xassert(bool expression, const char *message) {
+    puts("####################################-\n");
     if (XTEST_FLAG_COLORED) {
         puts(ANSI_COLOR_BLUE "[ASSERT] XUnit Test Case Assert" ANSI_COLOR_RESET);
         if (!expression) {
@@ -76,6 +77,7 @@ static void xtest_output_xassert(bool expression, const char *message) {
  * @param message     An optional message associated with the expectation.
  */
 static void xtest_output_xexpect(bool expression, const char *message) {
+    puts("####################################-\n");
     if (XTEST_FLAG_COLORED) {
         puts(ANSI_COLOR_BLUE "[EXPECT] XUnit Test Case Expect" ANSI_COLOR_RESET);
         printf(ANSI_COLOR_BLUE "[MESSAGE] :" ANSI_COLOR_RESET " %s\n", message);
@@ -98,6 +100,7 @@ static void xtest_output_xexpect(bool expression, const char *message) {
  * @param message     An optional message associated with the error.
  */
 static void xtest_output_xerrors(bool expression, const char *message) {
+    puts("####################################-\n");
     if (XTEST_FLAG_COLORED) {
         puts(ANSI_COLOR_BLUE "[ERROR] XUnit Test Case Error" ANSI_COLOR_RESET);
         if (!expression) {
@@ -120,6 +123,7 @@ static void xtest_output_xerrors(bool expression, const char *message) {
  * @param reason  The reason for ignoring the test case.
  */
 static void xtest_output_xignore(const char* reason) {
+    puts("####################################-\n");
     if (XTEST_FLAG_COLORED) {
         printf(ANSI_COLOR_BLUE "[IGNORE] XUnit Test Case Ignored\n" ANSI_COLOR_RESET);
         printf(ANSI_COLOR_YELLOW "[MESSAGE] : " ANSI_COLOR_RESET " %s\n", reason);
@@ -138,6 +142,7 @@ static void xtest_output_xignore(const char* reason) {
  * @param test_case  Pointer to the test case for which the format is displayed.
  */
 static void xtest_output_xunittest_format(XTestCase* test_case) {
+    puts("[ RESULTS OF THE CURRENT TEST ]-\n");
     if (XTEST_FLAG_COLORED) {
         printf(ANSI_COLOR_BLUE "[TEST CASE] %s\n" ANSI_COLOR_RESET, test_case->name);
         printf(ANSI_COLOR_BLUE "[TYPE] : " ANSI_COLOR_RESET " %s\n", test_case->is_benchmark? "Benchmark" : "Unit Test");
@@ -147,7 +152,7 @@ static void xtest_output_xunittest_format(XTestCase* test_case) {
         printf("[TYPE] : %s\n", test_case->is_benchmark? "Benchmark" : "Unit Test");
         printf("[TIME] : %.6lu\n", test_case->elapsed_time);
     } // end if else
-    puts("#####################################");
+    puts("#####################################\n");
 } // end of func
 
 /**
@@ -158,6 +163,7 @@ static void xtest_output_xunittest_format(XTestCase* test_case) {
  * @param runner  Pointer to the XUnitRunner structure containing test statistics.
  */
 static void xtest_output_xunittest_report(XUnitRunner *runner) {
+    puts("\n\n#####################################");
     if (XTEST_FLAG_COLORED) {
         puts(ANSI_COLOR_BLUE "[TRILOBITE XUNIT RUNNER] results of the test" ANSI_COLOR_RESET);
         printf("Tests passed: %d\n", runner->stats.passed_count);
@@ -188,6 +194,7 @@ static void xtest_output_xunittest_report(XUnitRunner *runner) {
  * @return              None.
  */
 void xtest_cli_print_usage(const char* program_name, const XTestCliOption* options, unsigned int num_options) {
+    puts("########################################");
     printf("Usage: %s [options]\n", program_name);
     printf("Options:\n");
 
