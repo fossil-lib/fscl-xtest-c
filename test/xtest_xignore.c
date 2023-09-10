@@ -8,18 +8,14 @@
 #include "trilobite/xtest.h"
 
 //
-// TEST DATA
-//
-
-//
 // TEST FIXTURE
 //
 XTEST_FIXTURE(xignore_test_fixture) {
     //
-    void setup_xignore_test_fixture() {
+    void setup_xignore_test_fixture(void) {
         // empty
     }
-    void teardown_xignore_test_fixture() {
+    void teardown_xignore_test_fixture(void) {
         // empty
     }
 }
@@ -27,11 +23,25 @@ XTEST_FIXTURE(xignore_test_fixture) {
 //
 // TEST CASES
 //
+XTEST_CASE_FIXTURE(xignore_test_fixture, xignore_run_of_string) {
+    XTEST_IGNORE("Just some reason to skip strings");
+} // end case
 
+XTEST_CASE_FIXTURE(xignore_test_fixture, xignore_run_of_pointer) {
+    XTEST_IGNORE("Just some reason to skip pointers");
+} // end case
+
+XTEST_CASE_FIXTURE(xignore_test_fixture, xignore_run_of_boolean) {
+    XTEST_IGNORE("Just some reason to skip boolean");
+} // end case
+
+// TODO add xignore case for OS ignore case
 
 //
 // LOCAL TEST GROUP
 //
 void xignore_test_group(XUnitRunner *runner) {
-    //xtest_run_test_fixture(xassert_run_of_int, xassert_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xignore_run_of_string,  &xignore_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xignore_run_of_pointer, &xignore_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xignore_run_of_boolean, &xignore_test_fixture, &runner->stats);
 } // end of group

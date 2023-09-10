@@ -9,18 +9,14 @@
 #include "trilobite/xexpect.h"
 
 //
-// TEST DATA
-//
-
-//
 // TEST FIXTURE
 //
 XTEST_FIXTURE(xexpect_test_fixture) {
     //
-    void setup_xexpect_test_fixture() {
+    void setup_xexpect_test_fixture(void) {
         // empty
     }
-    void teardown_xexpect_test_fixture() {
+    void teardown_xexpect_test_fixture(void) {
         // empty
     }
 }
@@ -253,8 +249,31 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_boolean) {
     XEXPECT_FALSE(false, "should have returned false from a false value");
 } // end case
 
+//
+// LOCAL TEST GROUP
+//
 void xexpect_test_group(XUnitRunner *runner) {
-    xtest_run_test_fixture(xexpect_run_of_int, xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(xexpect_run_of_uint, xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(xexpect_run_of_hex, xexpect_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_int,    &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_int8,   &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_int16,  &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_int32,  &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_int64,  &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_uint,   &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_uint8,  &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_uint16, &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_uint32, &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_uint64, &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_hex,    &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_hex8,   &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_hex16,  &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_hex32,  &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_hex64,  &runner->stats);
+
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_bit,    &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_oct,    &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_float,  &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_double, &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_string, &runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_pointer,&runner->stats);
+    xtest_run_test_fixture(&xexpect_test_fixture, &xexpect_run_of_boolean,&runner->stats);
 } // end of group

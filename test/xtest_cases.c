@@ -5,12 +5,10 @@
    website: <https://trilobite.code.blog>
 */
 #include "xtest_fixtures.h"
-#include <stdint.h>
 
 //
 // XUNIT TEST CASES
 //
-
 XTEST_CASE(xbdd_logic_test) {
     GIVEN("a valid statement is passed") {
         // Set up the context
@@ -107,11 +105,11 @@ XTEST_CASE(xbdd_valid_login) {
 } // end of case
 
 //
-// XTEST FIXTURE
+// LOCAL TEST GROUP
 //
 void unit_test_c_group(XUnitRunner *runner) {    
     xtest_run_test_unit(&xbdd_logic_test, &runner->stats);
     xtest_run_test_unit(&xbdd_user_account, &runner->stats);
     xtest_run_test_unit(&xbdd_empty_cart, &runner->stats);
     xtest_run_test_unit(&xbdd_valid_login, &runner->stats);
-} // end of fixture
+} // end of group
