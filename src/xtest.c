@@ -166,12 +166,10 @@ static void xtest_output_xunittest_format_start(XTestCase* test_case, XTestStats
  */
 static void xtest_output_xunittest_format_end(XTestCase* test_case) {
     if (XTEST_FLAG_COLORED) {
-        printf(ANSI_COLOR_BLUE "[END TEST CASE] Description: %s\n" ANSI_COLOR_RESET, test_case->name);
-        printf(ANSI_COLOR_BLUE "[TYPE  ] : " ANSI_COLOR_RESET " %s\n", test_case->is_benchmark? "Benchmark" : "Unit Test");
-        printf(ANSI_COLOR_BLUE "[TIME  ] : %lu\n" ANSI_COLOR_RESET, test_case->elapsed_time);
+        printf(ANSI_COLOR_BLUE"[END TEST CASE] Description: %s\n" ANSI_COLOR_RESET, test_case->name);
+        printf(ANSI_COLOR_BLUE"[TIME  ] : %lu\n" ANSI_COLOR_RESET, test_case->elapsed_time);
     } else {
         printf("[END TEST CASE] Description: %s\n", test_case->name);
-        printf("[TYPE  ] : %s\n", test_case->is_benchmark? "Benchmark" : "Unit Test");
         printf("[TIME  ] : %.6lu\n", test_case->elapsed_time);
     } // end if else
     puts("#####################################\n");
@@ -188,14 +186,12 @@ static void xtest_output_xunittest_report(XUnitRunner *runner) {
     puts("\n\n#####################################");
     if (XTEST_FLAG_COLORED) {
         puts(ANSI_COLOR_BLUE "[TRILOBITE XUNIT RUNNER] results of the test" ANSI_COLOR_RESET);
-        printf("::assert: %.2d expect: %.2d\n", runner->stats.asserts_count, runner->stats.expected_count);
         printf("Tests passed: %d\n", runner->stats.passed_count);
         printf("Tests failed: %d\n", runner->stats.failed_count);
         printf("Tests ignored: %d\n", runner->stats.ignored_count);
         printf("Total count: %d\n", runner->stats.total_count);
     } else {
         puts("[TRILOBITE XUNIT RUNNER] results of the test");
-        printf("::assert: %.2d expect: %.2d\n", runner->stats.asserts_count, runner->stats.expected_count);
         printf("Tests passed: %d\n", runner->stats.passed_count);
         printf("Tests failed: %d\n", runner->stats.failed_count);
         printf("Tests ignored: %d\n", runner->stats.ignored_count);
@@ -300,8 +296,6 @@ int xtest_end(XUnitRunner *runner) {
         xtest_output_xunittest_report(runner);
     } else {
         puts("\n\n[TRILOBITE XUNIT RUNNER] results of the test");
-        printf("::assert: %.2d expect: %.2d\n", 
-            runner->stats.asserts_count, runner->stats.expected_count);
         printf("::passed: %.2d failed: %.2d ignored: %.2d total: %.2d\n", 
             runner->stats.passed_count, runner->stats.failed_count,
             runner->stats.ignored_count, runner->stats.total_count);

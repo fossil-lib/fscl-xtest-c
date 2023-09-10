@@ -247,8 +247,6 @@ typedef struct {
     int passed_count;     // Number of passed tests
     int failed_count;     // Number of failed tests
     int ignored_count;    // Number of ignored tests
-    int expected_count;   // Number of expected outcomes
-    int asserts_count;    // Number of assertions made
     int total_count;      // Total number of tests
 } XTestStats;
 
