@@ -24,14 +24,175 @@ extern "C"
 // Define the MY_TEST_FRAMEWORK_API macro
 #ifdef TRILOBITE_XTEST_SHARED
     #ifdef TRILOBITE_XTEST_BUILD
-        #define TRILOBITE_XTEST_API TRILOBITE_XTEST_EXPORT
+        #define XTEST_API TRILOBITE_XTEST_EXPORT
     #else
-        #define TRILOBITE_XTEST_API TRILOBITE_XTEST_IMPORT
+        #define XTEST_API TRILOBITE_XTEST_IMPORT
     #endif
 #else
-    #define TRILOBITE_XTEST_API
+    #define XTEST_API
 #endif
-  
+
+// Define platform-specific macros for desktop platforms
+
+// Windows (32-bit and 64-bit)
+#ifdef _WIN32
+#define XIGNORE_ON_WINDOWS
+#endif
+
+// Linux (Various distributions)
+#ifdef __linux__
+#define XIGNORE_ON_LINUX
+#endif
+
+// macOS (Apple Macintosh)
+#ifdef __APPLE__
+#define XIGNORE_ON_MACOS
+#endif
+
+// FreeBSD (Unix-like OS)
+#ifdef __FreeBSD__
+#define XIGNORE_ON_FREEBSD
+#endif
+
+// OpenBSD (Secure Unix-like OS)
+#ifdef __OpenBSD__
+#define XIGNORE_ON_OPENBSD
+#endif
+
+// NetBSD (Unix-like OS)
+#ifdef __NetBSD__
+#define XIGNORE_ON_NETBSD
+#endif
+
+// Solaris (Unix-based OS)
+#ifdef __sun
+#define XIGNORE_ON_SOLARIS
+#endif
+
+// AIX (IBM's Unix OS)
+#ifdef _AIX
+#define XIGNORE_ON_AIX
+#endif
+
+// HP-UX (Hewlett-Packard Unix)
+#ifdef __hpux
+#define XIGNORE_ON_HPUX
+#endif
+
+// Haiku (Open-source OS inspired by BeOS)
+#ifdef __HAIKU__
+#define XIGNORE_ON_HAIKU
+#endif
+
+// ReactOS (Open-source Windows-compatible OS)
+#ifdef __REACTOS__
+#define XIGNORE_ON_REACTOS
+#endif
+
+// Plan 9 (Distributed OS by Bell Labs)
+#ifdef __plan9__
+#define XIGNORE_ON_PLAN9
+#endif
+
+// Custom desktop OS
+#ifdef __CUSTOM_DESKTOP_OS__
+#define XIGNORE_ON_CUSTOM_DESKTOP
+#endif
+
+// Define platform-specific macros for mobile platforms
+
+// Android
+#ifdef __ANDROID__
+#define XIGNORE_ON_ANDROID
+#endif
+
+// iOS (iPhone, iPad, iPod Touch)
+#ifdef __APPLE__
+#define XIGNORE_ON_IOS
+#endif
+
+// Windows Phone
+#ifdef _WIN32
+#define XIGNORE_ON_WINDOWS_PHONE
+#endif
+
+// BlackBerry
+#ifdef __QNX__
+#define XIGNORE_ON_BLACKBERRY
+#endif
+
+// Tizen
+#ifdef __TIZEN__
+#define XIGNORE_ON_TIZEN
+#endif
+
+// Firefox OS
+#ifdef __B2G__
+#define XIGNORE_ON_FIREFOX_OS
+#endif
+
+// Sailfish OS
+#ifdef __SAILFISH__
+#define XIGNORE_ON_SAILFISH
+#endif
+
+// Ubuntu Touch
+#ifdef __UBUNTU_TOUCH__
+#define XIGNORE_ON_UBUNTU_TOUCH
+#endif
+
+// KaiOS
+#ifdef __KAIOS__
+#define XIGNORE_ON_KAIOS
+#endif
+
+// HarmonyOS (Huawei)
+#ifdef __HARMONYOS__
+#define XIGNORE_ON_HARMONYOS
+#endif
+
+// Custom embedded OS (e.g., feature phone)
+#ifdef __CUSTOM_EMBEDDED_OS__
+#define XIGNORE_ON_CUSTOM_EMBEDDED
+#endif
+
+// Define platform-specific macros for embedded platforms
+
+// ARM Cortex-M series
+#if defined(__ARM_ARCH_6M__) || defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
+#define XIGNORE_ON_CORTEX_M
+#endif
+
+// PIC microcontrollers
+#if defined(__PIC16__) || defined(__PIC18__) || defined(__PIC32__)
+#define XIGNORE_ON_PIC
+#endif
+
+// Atmel AVR microcontrollers
+#if defined(__AVR__)
+#define XIGNORE_ON_AVR
+#endif
+
+// Texas Instruments MSP430 series
+#if defined(__MSP430__)
+#define XIGNORE_ON_MSP430
+#endif
+
+// STM32 microcontrollers from STMicroelectronics
+#if defined(STM32F0) || defined(STM32F1) || defined(STM32F2)
+#define XIGNORE_ON_STM32
+#endif
+
+// Nordic Semiconductor nRF series
+#if defined(NRF51) || defined(NRF52)
+#define XIGNORE_ON_NRF
+#endif
+
+// ESP8266 and ESP32
+#if defined(ESP8266) || defined(ESP32)
+#define XIGNORE_ON_ESP
+#endif
+
 #ifdef __cplusplus
 #include <cstring>
 #include <cstdlib>
@@ -52,173 +213,368 @@ extern "C"
 #endif
 
 /**
-    @param XAssert A struct containing a message and a boolean
-    @returns If the boolean is true, the code will reach the
-             return statement. Otherwise, it will not.
-*/
+ * @brief Structure representing a test case.
+ *
+ * This structure encapsulates information about a test case, including its name, test function,
+ * whether it's ignored, whether it's a benchmark, and the elapsed time (for benchmarks).
+ */
 typedef struct {
-    const char *message;
-    bool passed;
-} XAssert;
-
+    const char* name;         // Name of the test case
+    void (*test_function)(void);  // Function pointer to the test case's implementation
+    bool ignored;             // Indicates if the test case is ignored
+    bool is_benchmark;        // Flag to identify benchmark tests
+    clock_t elapsed_time;     // Elapsed time for benchmark tests
+} XTestCase;
 
 /**
-    @param passed_count: the number of tests that have passed
-    @param failed_count: the number of tests that have failed
-    @param run_tag: a tag that identifies the test run
-    @returns XUnitRunner: a struct that contains the test results
-*/
+ * @brief Structure representing a test fixture.
+ *
+ * This structure defines a test fixture, which includes setup and teardown functions that
+ * can be associated with test cases.
+ */
 typedef struct {
-    int passed_count;
-    int failed_count;
-    char *run_tag;
-    void (*setup_function)(void);
-    void (*teardown_function)(void);
+    void (*setup)(void);     // Setup function for the fixture
+    void (*teardown)(void);  // Teardown function for the fixture
+} XTestFixture;
+
+/**
+ * @brief Structure to hold test statistics.
+ *
+ * This structure stores various statistics related to test execution, such as the number of
+ * passed, failed, ignored tests, the number of expected outcomes, and the number of assertions.
+ */
+typedef struct {
+    int passed_count;     // Number of passed tests
+    int failed_count;     // Number of failed tests
+    int ignored_count;    // Number of ignored tests
+    int expected_count;   // Number of expected outcomes
+    int asserts_count;    // Number of assertions made
+    int total_count;      // Total number of tests
+} XTestStats;
+
+/**
+ * @brief Structure to group test-related data.
+ *
+ * This structure is used to group test statistics within an XUnit test runner.
+ */
+typedef struct {
+    XTestStats stats;  // Test statistics including passed, failed, and ignored counts
 } XUnitRunner;
 
 /**
-    @param XBench - Structure containing the benchmark name, benchmark function, setup function, teardown function, and elapsed time.
-    @returns The elapsed time of the benchmark.
-*/
+ * @brief Structure representing a command-line option for a CLI or application.
+ *
+ * This structure is used to define and organize information about a command-line option,
+ * including its long name (e.g., "--verbose"), short name (e.g., "-v"), a description for
+ * usage instructions, and a pointer to a flag that stores the option's value or status.
+ */
 typedef struct {
-    const char *name;
-    void (*benchmark_function)(void);
-    clock_t elapsed_time;
-} XBench;
+    const char* option_long_name;  // Long name of the option (e.g., "--verbose")
+    const char* option_short_name; // Short name of the option (e.g., "-v")
+    const char* description;       // Description of the option for usage instructions
+    bool* flag;                     // Pointer to a flag storing the option's value/status
+} XTestCliOption;
 
 /**
-    @brief This is the definition of an XTestCase structure.
-
-    @param name: A pointer to a constant character string that holds the name of the test case.
-    @param test_function: A pointer to a function that holds the actual test code.
-    @param setup_function: A pointer to a function that is used to setup the test, usually used to initialize variables and resources that are needed for the test.
-    @param teardown_function: A pointer to a function that is used to clean up after the test, usually used to free resources allocated during the setup_function.
-    @param assertions: A pointer to an array of XAssert structures that hold the assertions used in the test.
-    @param num_assertions: An integer that holds the number of assertions in the assertions array.
-
-    @returns: The XTestCase structure that holds the information about the test case.
-*/
-#ifdef __cplusplus
-class XTestCase {
-public:
-    XTestCase(const char *name, void (*test_function)(void) = nullptr, XAssert *assertions = nullptr, size_t num_assertions = 0)
-        : name(name), test_function(test_function), assertions(assertions), num_assertions(num_assertions) {}
-    const char *name;
-    void (*test_function)(void);
-    XAssert *assertions;
-    size_t num_assertions;
-}; // end class
-
-#else
-typedef struct {
-    const char *name;
-    void (*test_function)(void);
-    XAssert *assertions;
-    size_t num_assertions;
-} XTestCase; // end struct
-#endif
+ * @brief Define a data structure for a group of test data.
+ *
+ * This macro is used to define a data structure associated with a specific group or category of test data.
+ * It typically allows you to organize and encapsulate test data relevant to a particular set of test cases
+ * or scenarios.
+ *
+ * @param group_name  The name of the group for which the data structure is defined.
+ * @typedef           Define a typedef for the data structure with the given group name.
+ * @struct            Start defining the data structure.
+ */
+#define XTEST_DATA(group_name) typedef struct group_name##_xdata group_name##_xdata; struct group_name##_xdata
 
 /**
-    This code defines a test case for the framework with the given name.
-
-    @param name: The name of the test case
-    @returns: A XTestCase structure with the given name and the test function pointer
-              set to the function with the same name as the given name.
-*/
-#ifdef __cplusplus
+ * @brief Define a simple test case without a fixture.
+ *
+ * This macro is used to define a test case along with its associated test function.
+ *
+ * @param name  The name of the test case.
+ */
 #define XTEST_CASE(name) \
     void name##_xtest(void); \
-    XTestCase name(#name, name##_xtest); \
+    XTestCase name = { #name, name##_xtest, false, false, 0 }; \
     void name##_xtest(void)
-#else
-#define XTEST_CASE(name) \
-    void name##_xtest(void); \
-    XTestCase name = { #name, name##_xtest, NULL, 0 }; \
-    void name##_xtest(void)
-#endif
 
 /**
-    @brief This code defines a XBench structure which can be used to benchmark functions.
+ * @brief Define a benchmark test without a fixture.
+ *
+ * This macro is used to define a benchmark test along with its associated test function.
+ *
+ * @param name  The name of the benchmark test.
+ */
+#define XTEST_BENCH(name) \
+    void name##_xtest(void); \
+    XTestCase name = { #name, name##_xtest, false, true, 0 }; \
+    void name##_xtest(void)
 
-    @param name: The name of the function to be benchmarked
-    @returns: The XBench structure with the function name, the benchmark function, and
-              other necessary details for the benchmarking process.
-*/
-#define XBENCH(name) \
-    void name##_xbench(void); \
-    XBench name = { #name, name##_xbench, 0 }; \
-    void name##_xbench(void)
+/**
+ * @brief Define a test fixture with setup and teardown functions.
+ *
+ * This macro is used to define a test fixture along with its associated setup and teardown functions.
+ *
+ * @param fixture_name  The name of the test fixture.
+ */
+#define XTEST_FIXTURE(fixture_name) \
+    void setup_##fixture_name(void); \
+    void teardown_##fixture_name(void); \
+    XTestFixture fixture_name = { setup_##fixture_name, teardown_##fixture_name }; \
+    void setup_##fixture_name(void) \
+    void teardown_##fixture_name(void)
+
+/**
+ * @brief Define a test case that uses a fixture.
+ *
+ * This macro is used to define a test case that relies on a specific fixture. It associates the test case
+ * with the fixture's setup and teardown functions.
+ *
+ * @param fixture_name  The name of the fixture to use.
+ * @param test_case     The name of the test case.
+ */
+#define XTEST_CASE_FIXTURE(fixture_name, test_case) \
+    void test_case##_xtest_##fixture_name(void); \
+    XTestCase test_case = { #test_case, test_case##_xtest_##fixture_name, false, false, 0 }; \
+    void test_case##_xtest_##fixture_name(void)
+
+/**
+ * @brief Define a benchmark test that uses a fixture.
+ *
+ * This macro is used to define a benchmark test that relies on a specific fixture. It associates the benchmark
+ * test with the fixture's setup and teardown functions.
+ *
+ * @param fixture_name  The name of the fixture to use.
+ * @param test_case     The name of the benchmark test.
+ */
+#define XTEST_BENCH_FIXTURE(fixture_name, test_case) \
+    void test_case##_xtest_##fixture_name(void); \
+    XTestCase test_case = { #test_case, test_case##_xtest_##fixture_name, false, true, 0 }; \
+    void test_case##_xtest_##fixture_name(void)
 
 //
 // Helper function to run a test case
 //
 
-TRILOBITE_XTEST_API XUnitRunner xtest_start(int argc, char **argv);
-TRILOBITE_XTEST_API int xtest_end(XUnitRunner *runner);
-TRILOBITE_XTEST_API void xtest_run(XTestCase *test_case, XUnitRunner *runner);
-TRILOBITE_XTEST_API void xbench_run(XBench *benchmark, XUnitRunner *runner);
-TRILOBITE_XTEST_API void xtest_set_setup_teardown(XUnitRunner *runner, void (*setup_func)(void), void (*teardown_func)(void));
-TRILOBITE_XTEST_API void xassert(bool expression, const char *message);
-TRILOBITE_XTEST_API void xexpect(bool expression, const char *message);
+/**
+ * @brief Initializes an XUnitRunner and processes command-line arguments.
+ *
+ * This function initializes an XUnitRunner, processes command-line arguments to handle custom options,
+ * and displays version information or usage instructions if requested.
+ *
+ * @param argc  Number of command-line arguments.
+ * @param argv  Array of command-line argument strings.
+ *
+ * @return      An initialized XUnitRunner structure.
+ */
+XTEST_API XUnitRunner xtest_start(int argc, char **argv);
 
 /**
-    @brief This macro adds an assertion to the current test case.
+ * @brief Finalizes the execution of a Trilobite XUnit runner and displays test results.
+ *
+ * This function prints the test results, including the number of tests passed, failed, ignored,
+ * and the total count. It also returns the count of failed tests.
+ *
+ * @param runner    Pointer to the Trilobite XUnit runner containing test statistics.
+ *
+ * @return          The count of failed tests.
+ */
+XTEST_API int xtest_end(XUnitRunner *runner);
 
-    @param expression: The expression to evaluate.
-    @param message: The message to display if the assertion fails.
+/**
+ * @brief Runs a unit test case and updates test statistics.
+ *
+ * This function executes a unit test case, records the execution time, and updates the
+ * test statistics based on the test result.
+ *
+ * @param test_case   Pointer to the unit test case to be executed.
+ * @param stats       Structure containing test statistics.
+ *
+ * @return            None.
+ */
+XTEST_API void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats);
 
-    @returns: If the expression evaluates to false, the assertion fails and
-              the message is displayed. Otherwise, the assertion passes and
-              nothing happens.
-*/
+/**
+ * @brief Runs a test case within a test fixture and updates test statistics.
+ *
+ * This function executes a test case within a given test fixture, records the execution time,
+ * and updates the test statistics based on the test result.
+ *
+ * @param test_case   Pointer to the test case to be executed.
+ * @param fixture     Pointer to the test fixture containing setup and teardown functions.
+ * @param stats       Pointer to the structure containing test statistics.
+ *
+ * @return            None.
+ */
+XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats);
+
+//
+// ------------------------------------------------------------------------
+//
+// List of handy assert types from the XUnit Test framewrok
+//
+// ------------------------------------------------------------------------
+//
+// XEXPECT: expectation function with optional message.
+// XASSERT: assertion function with optional message.
+// XERRORS: throw error function with optional message.
+// XIGNORE: ignored with a specified reason and prints it to stderr
+//
+// ------------------------------------------------------------------------
+//
+
+/**
+ * @brief Marks a test case as ignored with a specified reason and prints it to stderr.
+ *
+ * This function is used to indicate that a test case should be ignored and provides a reason
+ * for the omission. It prints the specified reason to the standard error stream (stderr).
+ *
+ * @param reason  The reason for ignoring the test case.
+ */
+XTEST_API void xignore(const char* reason);
+
+/**
+ * @brief Reports an error condition with an optional error message.
+ *
+ * This function is used to report an error condition, typically within a testing context.
+ * It evaluates an expression and, if it evaluates to false (indicating an error), it may
+ * display an optional error message.
+ *
+ * @param expression  The expression to evaluate for an error condition.
+ * @param message     An optional error message to be displayed if the expression is false.
+ */
+XTEST_API void xerrors(bool expression, const char *message);
+
+/**
+ * @brief Custom assertion function with optional message.
+ *
+ * This function allows custom assertions and displays a message if the assertion fails.
+ * It also provides an option to disable further assertion scanning after the first failure.
+ *
+ * @param expression  The expression to be asserted (should evaluate to true for success).
+ * @param message     An optional message to be displayed when the assertion fails.
+ *
+ * @return            None.
+ */
+XTEST_API void xassert(bool expression, const char *message);
+
+/**
+ * @brief Custom expectation function with optional message.
+ *
+ * This function allows custom expectations and displays a message if the expectation fails.
+ * It also provides an option to disable further expectation scanning after the first failure.
+ *
+ * @param expression  The expression to be expected (should evaluate to true for success).
+ * @param message     An optional message to be displayed when the expectation fails.
+ *
+ * @return            None.
+ */
+XTEST_API void xexpect(bool expression, const char *message);
+
+/**
+ * @brief Adds an assertion to the current test case.
+ *
+ * @param expression  The expression to evaluate.
+ * @param message     The message to display if the assertion fails.
+ *
+ * @return            If the expression evaluates to false, the assertion fails, and the message is displayed.
+ *                    Otherwise, the assertion passes, and nothing happens.
+ */
 #define XASSERT(expression, message) xassert(expression, message)
 
 /**
-    @brief This macro adds an expectation to the current test case.
+ * @brief Adds an error case assertion to the current test case.
+ *
+ * @param expression  The expression to evaluate.
+ * @param message     The message to display if the assertion fails.
+ *
+ * @return            If the expression evaluates to false, the assertion fails, and the message is displayed.
+ *                    Otherwise, the assertion passes, and nothing happens.
+ */
+#define XERRORS(expression, message) xerrors(expression, message)
 
-    @param expression: The expression to evaluate.
-    @param message: The message to display if the assertion fails.
-
-    @returns: If the expression evaluates to false, the assertion fails and
-              the message is displayed. Otherwise, the assertion passes and
-              nothing happens.
-*/
+/**
+ * @brief Adds an expectation to the current test case.
+ *
+ * @param expression  The expression to evaluate.
+ * @param message     The message to display if the expectation fails.
+ *
+ * @return            If the expression evaluates to false, the expectation fails, and the message is displayed.
+ *                    Otherwise, the expectation passes, and nothing happens.
+ */
 #define XEXPECT(expression, message) xexpect(expression, message)
 
 /**
-    @brief Asserts whether a test passes or fails
-
-    @param boolean value - true if the test passed, false otherwise
-    @param string message - a message to be displayed if the test fails
-
-    @return void
-*/
+ * @brief Asserts whether a test passes or fails.
+ *
+ * @param message  A message to be displayed if the test fails.
+ *
+ * @return         This macro calls XASSERT(false, message), indicating a test failure with the provided message.
+ */
 #define XTEST_FAIL(message) \
     do { \
         XASSERT(false, message); \
     } while (false)
 
 /**
-    @brief This macro defines a test that passes
-    @param none
-    @return void
-*/
+ * @brief Defines a test that passes.
+ *
+ * @return  This macro calls XASSERT(true, "Test passed"), indicating a successful test.
+ */
 #define XTEST_PASS() \
     do { \
         XASSERT(true, "Test passed"); \
     } while (false)
 
 /**
-    This macro is used to indicate that a test is not yet implemented.
-
-    @param none
-    @return none
-    @brief Prints out a message to stderr indicating that the test is not yet implemented.
-*/
+ * @brief Indicates that a test is not yet implemented.
+ *
+ * @return  This macro calls XASSERT(false, "Test not implemented yet"), indicating that the test is incomplete.
+ *          A message is printed to stderr to indicate that the test is not yet implemented.
+ */
 #define XTEST_NOT_IMPLEMENTED() \
     do { \
         XASSERT(false, "Test not implemented yet") \
     } while (false)
+
+/**
+ * @brief Marks the current test case as ignored with a given reason and returns early.
+ *
+ * This macro is used to indicate that the current test case should be ignored with a provided reason.
+ * It calls the `xignore` function with the specified reason and then returns from the current test case
+ * immediately.
+ *
+ * @param reason  The reason for ignoring the test case.
+ */
+#define XTEST_IGNORE(reason) \
+    do { \
+        xignore(reason); \
+        return; \
+    } while (false)
+
+/**
+ * @brief Macros for defining a Behavior-Driven Development (BDD) structure with descriptions.
+ *
+ * These macros provide a way to structure and describe different phases (Given, When, Then) of a
+ * test scenario in a BDD-style format. However, they don't have functional behavior by themselves
+ * and are used for descriptive purposes.
+ */
+#define GIVEN(description) \
+    if (0) { \
+        printf("Given %s\n", description); \
+    } else
+
+#define WHEN(description) \
+    if (0) { \
+        printf("When %s\n", description); \
+    } else
+
+#define THEN(description) \
+    if (0) { \
+        printf("Then %s\n", description); \
+    } else
 
 #ifdef __cplusplus
 }
