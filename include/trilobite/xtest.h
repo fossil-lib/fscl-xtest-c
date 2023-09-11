@@ -608,7 +608,7 @@ XTEST_API XError *xerrors_throw(const char* type, const char* message, XError *e
  * @note The behavior of this macro may vary depending on the specific testing framework
  *       or runtime environment in use.
  */
-#define XERRORS_THROW(type, message) xerrors_throw(type, message)
+#define XERRORS_THROW(type, message, error) xerrors_throw(type, message, error)
 
 /**
  * @brief Adds an expectation to the current test case.
