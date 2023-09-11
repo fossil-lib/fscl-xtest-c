@@ -653,5 +653,5 @@ XError *xerrors_throw(const char* type, const char* message) {
     XError error = { type, message };
     errorCondition = 1;
     longjmp(errorBuffer, 1);
-    return error;
+    return &error;
 } // end of func
