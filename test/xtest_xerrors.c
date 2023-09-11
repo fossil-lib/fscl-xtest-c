@@ -12,6 +12,9 @@
 // TEST FIXTURE
 //
 XTEST_FIXTURE(xerrors_test_fixture);
+XTEST_DATA(error_types) {
+    XError error;
+} throw_case;
 
 XTEST_SETUP(xerrors_test_fixture) {
     // empty
@@ -25,18 +28,18 @@ XTEST_TEARDOWN(xerrors_test_fixture) {
 // TEST CASES
 //
 XTEST_CASE_FIXTURE(xerrors_test_fixture, xerrors_do_throw) {
-    XERRORS_EXPECT_THROW(xerrors_throw("Exception", "Test"), "Exception", "Test", "Could not use the function to throw");
-    XERRORS_EXPECT_THROW(XERRORS_THROW("Exception", "Test"), "Exception", "Test", "Could not use the macro to throw");
+    XERRORS_EXPECT_THROW(xerrors_throw("Exception", "Test", &throw_case.error), "Exception", "Test", "Could not use the function to throw");
+    XERRORS_EXPECT_THROW(XERRORS_THROW("Exception", "Test", &throw_case.error), "Exception", "Test", "Could not use the macro to throw");
 } // end case
 
 XTEST_CASE_FIXTURE(xerrors_test_fixture, xerrors_throw_with_message) {
-    XERRORS_EXPECT_THROW_WITH_MESSAGE(xerrors_throw("Exception", "Test"), "Exception", "Test", "Custom message throw failed from function");
-    XERRORS_EXPECT_THROW_WITH_MESSAGE(XERRORS_THROW("Exception", "Test"), "Exception", "Test", "Custom message throw failed from macro");
+    XERRORS_EXPECT_THROW_WITH_MESSAGE(xerrors_throw("Exception", "Test", &throw_case.error), "Exception", "Test", "Custom message throw failed from function");
+    XERRORS_EXPECT_THROW_WITH_MESSAGE(XERRORS_THROW("Exception", "Test", &throw_case.error), "Exception", "Test", "Custom message throw failed from macro");
 } // end case
 
 XTEST_CASE_FIXTURE(xerrors_test_fixture, xerrors_custom_error) {
-    XERRORS_EXPECT_CUSTOM_ERROR(xerrors_throw("CustomError", "Test"), "CustomError", "Test", "Test custom error with function");
-    XERRORS_EXPECT_CUSTOM_ERROR(XERRORS_THROW("CustomError", "Test"), "CustomError", "Test", "Test custom error with macro");
+    XERRORS_EXPECT_CUSTOM_ERROR(xerrors_throw("CustomError", "Test", &throw_case.error), "CustomError", "Test", "Test custom error with function");
+    XERRORS_EXPECT_CUSTOM_ERROR(XERRORS_THROW("CustomError", "Test", &throw_case.error), "CustomError", "Test", "Test custom error with macro");
 } // end case
 
 //
