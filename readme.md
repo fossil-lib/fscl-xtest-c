@@ -62,7 +62,7 @@ Example of the usage in C
 XTEST_DATA(some_data) {
     int some_data;
     const char* some_other_data;
-};
+} my_data;
 
 //
 // XTEST FIXTURE
