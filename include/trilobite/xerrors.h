@@ -30,24 +30,7 @@ extern "C"
  *
  * If the `expression` does not throw the expected exception, the test case will fail.
  */
-#define XERRORS_EXPECT_THROW(expression, exceptionType, message) XERRORS(expression, exceptionType, message)
-
-/**
- * @brief Expect No Exception in XUnit Test Cases
- *
- * The `XERRORS_EXPECT_NO_THROW` macro is used to specify that no exception is expected
- * during an XUnit test case. It evaluates the given `expression` and checks if it does
- * not throw any exceptions. You can provide an optional `message` for additional context.
- *
- * Example usage:
- *
- * ```c
- * XERRORS_EXPECT_NO_THROW(my_function(), "No exception should be thrown.");
- * ```
- *
- * If the `expression` throws an exception, the test case will fail.
- */
-#define XERRORS_EXPECT_NO_THROW(expression, message) XERRORS(expression, NULL, message)
+#define XERRORS_EXPECT_THROW(expression, error_type, error_msg, message) XERRORS(expression, error_type, error_msg, message)
 
 /**
  * @brief Expect Exception with Specific Message in XUnit Test Cases
@@ -67,7 +50,7 @@ extern "C"
  * If the `expression` does not throw the expected exception or the message does not match,
  * the test case will fail.
  */
-#define XERRORS_EXPECT_THROW_WITH_MESSAGE(expression, exceptionType, expectedMessage, message) XERRORS(expression, exceptionType, expectedMessage)
+#define XERRORS_EXPECT_THROW_WITH_MESSAGE(expression, error_type, error_msg, message) XERRORS(expression, error_type, error_msg, message)
 
 /**
  * @brief Expect Custom Error in XUnit Test Cases
@@ -85,7 +68,7 @@ extern "C"
  *
  * If the `expression` does not throw the expected custom error, the test case will fail.
  */
-#define XERRORS_EXPECT_CUSTOM_ERROR(expression, customErrorType, message) XERRORS(expression, customErrorType, message)
+#define XERRORS_EXPECT_CUSTOM_ERROR(expression, error_type, error_msg, message) XERRORS(expression, error_type, error_msg, message)
 
 #ifdef __cplusplus
 }
