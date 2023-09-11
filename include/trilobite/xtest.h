@@ -546,7 +546,7 @@ XTEST_API void xexpect(bool expression, const char *message);
  * @note The behavior of this function may vary depending on the specific testing framework
  *       or runtime environment in use.
  */
-XTEST_API XError *xerrors_throw(const char* type, const char* message, XError *error);
+XTEST_API void xerrors_throw(const char* type, const char* message, XError *error);
 
 /**
  * @brief Adds an assertion to the current test case.
