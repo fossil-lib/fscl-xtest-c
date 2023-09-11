@@ -666,6 +666,9 @@ void xerrors(void (*expression)(const char*, const char*), const char* exception
  *       depending on the compiler and compiler flags used.
  */
 void *xerrors_throw(const char* type, const char* message) {
-    CustomError error = { type, message };
-    longjmp(errorBuffer, (int)&error);
+    CustomError* error = (CustomError*)malloc(sizeof(CustomError));
+    error->type = type;
+    error->message = message;
+    longjmp(errorBuffer, (int)error);
+    return error;
 } // end of func
