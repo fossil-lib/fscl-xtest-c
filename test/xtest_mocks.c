@@ -77,7 +77,7 @@ XTEST_TEARDOWN(xmock_list_test_fixture) {
 
 XTEST_FIXTURE(xmock_map_test_fixture);
 XTEST_SETUP(xmock_map_test_fixture) {
-    mock_structs = xmock_map_create();
+    mock_structs.map = xmock_map_create();
 } // end setup
 
 XTEST_TEARDOWN(xmock_map_test_fixture) {
@@ -86,7 +86,7 @@ XTEST_TEARDOWN(xmock_map_test_fixture) {
 
 XTEST_FIXTURE(xmock_stack_test_fixture);
 XTEST_SETUP(xmock_stack_test_fixture) {
-    mock_structs = xmock_stack_create(100);
+    mock_structs.stack = xmock_stack_create(100);
 } // end setup
 
 XTEST_TEARDOWN(xmock_stack_test_fixture) {
