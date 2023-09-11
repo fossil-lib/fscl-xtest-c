@@ -133,7 +133,6 @@ static void xtest_output_xexpect(bool expression, const char *message) {
  * related to XUnit test case failures. It can output error messages, the failing expression,
  * the associated exception message, and the exception type.
  *
- * @param expression The expression that was expected to pass (or fail).
  * @param exception_type The type of the expected exception (or actual exception).
  * @param exception_message The message associated with the exception (if any).
  * @param message An additional message to display (optional).
@@ -144,7 +143,7 @@ static void xtest_output_xexpect(bool expression, const char *message) {
  * Example usage:
  *
  * ```c
- * xtest_output_xerrors(expression, "ExpectedException", "Exception message.", "Additional message.");
+ * xtest_output_xerrors("ExpectedException", "Exception message.", "Additional message.");
  * ```
  *
  * This function is typically used within the XUnit testing framework to report test case failures.
@@ -153,25 +152,23 @@ static void xtest_output_xexpect(bool expression, const char *message) {
  * @note The behavior and appearance of error messages may vary depending on configuration
  *       and runtime settings.
  */
-static void xtest_output_xerrors(const char* expression, const char* exception_type, const char* exception_message, const char *message) {
+static void xtest_output_xerrors(const char* exception_type, const char* exception_message, const char *message) {
     if (XTEST_FLAG_COLORED) {
         puts(ANSI_COLOR_BLUE "[ERROR] XUnit Test Case Error" ANSI_COLOR_RESET);
-        if (!expression) {
+        if (!XERRORS_PASS_SCAN) {
             printf(ANSI_COLOR_RED "[MESSAGE   ] :" ANSI_COLOR_RESET " %s\n", message);
-            printf(ANSI_COLOR_RED "[EXPRESSION] :" ANSI_COLOR_RESET " %s\n", expression);
             printf(ANSI_COLOR_RED "[ERROR_POST] :" ANSI_COLOR_RESET " %s\n", exception_message);
             printf(ANSI_COLOR_RED "[ERROR_TYPE] :" ANSI_COLOR_RESET " %s\n", exception_type);
         } // end if
-        printf(ANSI_COLOR_BLUE "[RESULT]  :" ANSI_COLOR_RESET " %s\n", expression? "PASS" : "FAIL");
+        printf(ANSI_COLOR_BLUE "[RESULT]  :" ANSI_COLOR_RESET " %s\n", XERRORS_PASS_SCAN? "PASS" : "FAIL");
     } else {
         puts("[ERROR] XUnit Test Case Error");
-        if (!expression) {
+        if (!XERRORS_PASS_SCAN) {
             printf("[MESSAGE   ] : %s\n", message);
-            printf("[EXPRESSION] : %s\n", expression);
             printf("[ERROR_POST] : %s\n", exception_message);
             printf("[ERROR_TYPE] : %s\n", exception_type);
         } // end if
-        printf("[RESULT]  : %s\n", expression? "PASS" : "FAIL");
+        printf("[RESULT]  : %s\n", XERRORS_PASS_SCAN? "PASS" : "FAIL");
     } // end if else
 } // end of func
 
@@ -609,12 +606,13 @@ void xexpect(bool expression, const char *message) {
  * @note The behavior of this function relies on compiler-specific features and may vary
  *       depending on the compiler and compiler flags used.
  */
-void xerrors(const char* expression, const char* exception_type, const char* exception_message) {
+void xerrors(void (*expression)(const char*, const char*), const char* exception_type, const char* exception_message, const char *message) {
     XERRORS_PASS_SCAN = true;
 
     if (setjmp(errorBuffer) == 0) {
+        expression(exception_type, exception_message);
         if (XTEST_FLAG_VERBOSE) {
-            xtest_output_xerrors(expression, exception_type, exception_message, "Expected exception but none was thrown");
+            xtest_output_xerrors(exception_type, message, "Expected exception but none was thrown");
         } // end if
         
         XERRORS_PASS_SCAN = false;
@@ -622,12 +620,12 @@ void xerrors(const char* expression, const char* exception_type, const char* exc
         CustomError* error = (CustomError*)__builtin_extract_return_addr(__builtin_return_address(0));
         if (exception_type && strcmp(error->type, exception_type) != 0) {
             if (XTEST_FLAG_VERBOSE) {
-                xtest_output_xerrors(expression, exception_type, exception_message, "Expected exception");
+                xtest_output_xerrors(exception_type, message, "Expected exception");
             } // end if
             XERRORS_PASS_SCAN = false;
         } else if (exception_message && strcmp(error->message, exception_message) != 0) {
             if (XTEST_FLAG_VERBOSE) {
-                xtest_output_xerrors(expression, exception_type, exception_message, "Exception message mismatch.");
+                xtest_output_xerrors(exception_type, exception_message, "Exception message mismatch.");
             } // if else
             XERRORS_PASS_SCAN = false;
         } // end if, else if
@@ -667,7 +665,7 @@ void xerrors(const char* expression, const char* exception_type, const char* exc
  * @note The behavior of this function relies on compiler-specific features and may vary
  *       depending on the compiler and compiler flags used.
  */
-void xerrors_throw(const char* type, const char* message) {
+void *xerrors_throw(const char* type, const char* message) {
     CustomError error = { type, message };
     longjmp(errorBuffer, (int)&error);
 } // end of func

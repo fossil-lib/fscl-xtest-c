@@ -477,7 +477,7 @@ XTEST_API void xignore(const char* reason);
  * @note The behavior of this function may vary depending on the specific testing framework
  *       or runtime environment in use.
  */
-XTEST_API void xerrors(const char* expression, const char* exception_type, const char* exception_message);
+XTEST_API void xerrors(void (*expression)(const char*, const char*), const char* exception_type, const char* exception_message, const char *message);
 
 /**
  * @brief Custom assertion function with optional message.
@@ -527,7 +527,7 @@ XTEST_API void xexpect(bool expression, const char *message);
  * @note The behavior of this function may vary depending on the specific testing framework
  *       or runtime environment in use.
  */
-XTEST_API void xerrors_throw(const char* type, const char* message);
+XTEST_API void *xerrors_throw(const char* type, const char* message);
 
 /**
  * @brief Adds an assertion to the current test case.
@@ -564,7 +564,7 @@ XTEST_API void xerrors_throw(const char* type, const char* message);
  * @note The behavior of this macro may vary depending on the specific testing framework
  *       or runtime environment in use.
  */
-#define XERRORS(expression, exception_type, expected_message) xerrors(expression, exception_type, expected_message)
+#define XERRORS(expression, exception_type, expected_message, message) xerrors(expression, exception_type, expected_message, message)
 
 /**
  * @brief Throw an Exception with Custom Type and Message Using a Macro
