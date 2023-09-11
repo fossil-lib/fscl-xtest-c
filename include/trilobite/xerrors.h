@@ -14,44 +14,78 @@ extern "C"
 
 #include "xtest.h"
 
-// Define macros for handling exceptions and errors
-#define XERRORS_EXPECT_THROW(expression, exceptionType, message) \
-    XERRORS(expression, exceptionType, message)
+/**
+ * @brief Expect and Handle Exception in XUnit Test Cases
+ *
+ * The `XERRORS_EXPECT_THROW` macro is used to specify that an exception is expected
+ * during an XUnit test case. It evaluates the given `expression` and checks if it throws
+ * an exception of the specified `exceptionType`. You can also provide an optional
+ * `message` for additional context.
+ *
+ * Example usage:
+ *
+ * ```c
+ * XERRORS_EXPECT_THROW(my_function(), "ExceptionType", "Exception message");
+ * ```
+ *
+ * If the `expression` does not throw the expected exception, the test case will fail.
+ */
+#define XERRORS_EXPECT_THROW(expression, exceptionType, message) XERRORS(expression, exceptionType, message)
 
-#define XERRORS_EXPECT_NO_THROW(expression, message) \
-    XERRORS(expression, NULL, message)
+/**
+ * @brief Expect No Exception in XUnit Test Cases
+ *
+ * The `XERRORS_EXPECT_NO_THROW` macro is used to specify that no exception is expected
+ * during an XUnit test case. It evaluates the given `expression` and checks if it does
+ * not throw any exceptions. You can provide an optional `message` for additional context.
+ *
+ * Example usage:
+ *
+ * ```c
+ * XERRORS_EXPECT_NO_THROW(my_function(), "No exception should be thrown.");
+ * ```
+ *
+ * If the `expression` throws an exception, the test case will fail.
+ */
+#define XERRORS_EXPECT_NO_THROW(expression, message) XERRORS(expression, NULL, message)
 
-#define XERRORS_EXPECT_THROW_WITH_MESSAGE(expression, exceptionType, expectedMessage, message) \
-    XERRORS(expression, exceptionType, expectedMessage)
+/**
+ * @brief Expect Exception with Specific Message in XUnit Test Cases
+ *
+ * The `XERRORS_EXPECT_THROW_WITH_MESSAGE` macro is used to specify that an exception
+ * with a specific message is expected during an XUnit test case. It evaluates the given
+ * `expression` and checks if it throws an exception of the specified `exceptionType`
+ * with the `expectedMessage`. You can also provide an optional `message` for additional
+ * context.
+ *
+ * Example usage:
+ *
+ * ```c
+ * XERRORS_EXPECT_THROW_WITH_MESSAGE(my_function(), "ExceptionType", "Expected message", "Additional context.");
+ * ```
+ *
+ * If the `expression` does not throw the expected exception or the message does not match,
+ * the test case will fail.
+ */
+#define XERRORS_EXPECT_THROW_WITH_MESSAGE(expression, exceptionType, expectedMessage, message) XERRORS(expression, exceptionType, expectedMessage)
 
-#define XERRORS_EXPECT_CUSTOM_ERROR(expression, customErrorType, message) \
-    XERRORS(expression, customErrorType, message)
-
-#define XERRORS_EXPECT_CUSTOM_ERROR_WITH_PREDICATE(expression, customErrorType, errorPredicate, message) \
-    do { \
-        if (setjmp(errorBuffer) == 0) { \
-            expression; \
-            fprintf(stderr, "Test failed: Expected custom error '%s' but none was thrown.\n", customErrorType); \
-        } else { \
-            CustomError* error = (CustomError*)__builtin_extract_return_addr(__builtin_return_address(0)); \
-            if (strcmp(error->type, customErrorType) != 0) { \
-                fprintf(stderr, "Test failed: Expected custom error '%s' but got '%s'.\n", customErrorType, error->type); \
-            } else if (!errorPredicate(error->message)) { \
-                fprintf(stderr, "Test failed: Custom error predicate failed.\n"); \
-            } \
-        } \
-    } while (0)
-
-
-/*
-void test_exception_handling() {
-    XERRORS_EXPECT_THROW(xerrors_throw("Exception", "Test"), "Exception", "Test");
-    XERRORS_EXPECT_NO_THROW(printf("No exception\n"));
-    XERRORS_EXPECT_THROW_WITH_MESSAGE(xerrors_throw("Exception", "Test"), "Exception", "Test", "Custom message");
-    XERRORS_EXPECT_CUSTOM_ERROR(xerrors_throw("CustomError", "Test"), "CustomError", "Test");
-    XERRORS_EXPECT_CUSTOM_ERROR_WITH_PREDICATE(xerrors_throw("CustomError", "Test"), "CustomError", custom_error_predicate, "CustomErrorMessage");
-}
-*/
+/**
+ * @brief Expect Custom Error in XUnit Test Cases
+ *
+ * The `XERRORS_EXPECT_CUSTOM_ERROR` macro is used to specify that a custom error is
+ * expected during an XUnit test case. It evaluates the given `expression` and checks if
+ * it throws an exception of the specified `customErrorType`. You can provide an optional
+ * `message` for additional context.
+ *
+ * Example usage:
+ *
+ * ```c
+ * XERRORS_EXPECT_CUSTOM_ERROR(my_function(), "CustomErrorType", "Custom error message");
+ * ```
+ *
+ * If the `expression` does not throw the expected custom error, the test case will fail.
+ */
+#define XERRORS_EXPECT_CUSTOM_ERROR(expression, customErrorType, message) XERRORS(expression, customErrorType, message)
 
 #ifdef __cplusplus
 }
