@@ -474,27 +474,15 @@ XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixtur
 XTEST_API void xignore(const char* reason);
 
 /**
- * @brief Report Error and Raise Exception
+ * @brief Custom assertion function with optional message.
  *
- * The `xerrors` function is used to report an error in the program and raise an exception.
+ * This function allows custom assertions and displays a message if the assertion fails.
+ * It also provides an option to disable further assertion scanning after the first failure.
  *
- * @param expression The expression or context in which the error occurred.
- * @param exception_type The type of exception to raise (e.g., "RuntimeError").
- * @param exception_message The message associated with the exception.
+ * @param expression  The expression to be asserted (should evaluate to true for success).
+ * @param message     An optional message to be displayed when the assertion fails.
  *
- * This function is typically used when a critical error condition is encountered that
- * should be reported, and the program's execution needs to be halted by raising an exception.
- * It can be used for debugging and error handling purposes.
- *
- * Example usage:
- *
- * ```c
- * xerrors("Division by zero", "RuntimeError", "Cannot divide by zero.");
- * ```
- *
- * @note This function is part of the XUnit testing framework.
- * @note The behavior of this function may vary depending on the specific testing framework
- *       or runtime environment in use.
+ * @return            None.
  */
 XTEST_API void xerrors(bool expression, const char *message);
 
