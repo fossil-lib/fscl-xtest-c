@@ -601,7 +601,7 @@ void xerrors(XError (*expression)(const char*, const char*), const char* excepti
         
         XERRORS_PASS_SCAN = false;
     } else {
-        CustomError* error = (CustomError*)__builtin_extract_return_addr(__builtin_return_address(0));
+        XError* error = (XError*)__builtin_extract_return_addr(__builtin_return_address(0));
         if (exception_type && strcmp(error->type, exception_type) != 0) {
             if (XTEST_FLAG_VERBOSE) {
                 xtest_output_xerrors(exception_type, message, "Expected exception");
