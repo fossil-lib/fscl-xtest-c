@@ -496,7 +496,7 @@ XTEST_API void xignore(const char* reason);
  * @note The behavior of this function may vary depending on the specific testing framework
  *       or runtime environment in use.
  */
-XTEST_API void xerrors(void (*expression)(const char*, const char*), const char* exception_type, const char* exception_message, const char *message);
+XTEST_API void xerrors(bool expression, const char *message);
 
 /**
  * @brief Custom assertion function with optional message.
@@ -523,30 +523,6 @@ XTEST_API void xassert(bool expression, const char *message);
  * @return            None.
  */
 XTEST_API void xexpect(bool expression, const char *message);
-
-/**
- * @brief Throw an Exception with Custom Type and Message
- *
- * The `xerrors_throw` function is used to throw an exception with a custom type and message.
- *
- * @param type The type of the exception to throw (e.g., "RuntimeError").
- * @param message The message associated with the exception.
- *
- * This function is typically used to raise an exception with specific error information. It
- * allows for customizing the exception type and message when reporting an error or exceptional
- * condition in the program.
- *
- * Example usage:
- *
- * ```c
- * xerrors_throw("RuntimeError", "Custom error message.");
- * ```
- *
- * @note This function is part of the XUnit testing framework.
- * @note The behavior of this function may vary depending on the specific testing framework
- *       or runtime environment in use.
- */
-XTEST_API void xerrors_throw(const char* type, const char* message, XError *error);
 
 /**
  * @brief Adds an assertion to the current test case.
@@ -583,7 +559,7 @@ XTEST_API void xerrors_throw(const char* type, const char* message, XError *erro
  * @note The behavior of this macro may vary depending on the specific testing framework
  *       or runtime environment in use.
  */
-#define XERRORS(expression, exception_type, expected_message, message) xerrors(expression, exception_type, expected_message, message)
+#define XERRORS(expression, message) xassert(expression, message)
 
 /**
  * @brief Throw an Exception with Custom Type and Message Using a Macro

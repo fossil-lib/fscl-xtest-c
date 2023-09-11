@@ -12,9 +12,6 @@
 // TEST FIXTURE
 //
 XTEST_FIXTURE(xerrors_test_fixture);
-XTEST_DATA(error_types) {
-    XError error;
-} throw_case;
 
 XTEST_SETUP(xerrors_test_fixture) {
     // empty
@@ -27,26 +24,42 @@ XTEST_TEARDOWN(xerrors_test_fixture) {
 //
 // TEST CASES
 //
-XTEST_CASE_FIXTURE(xerrors_test_fixture, xerrors_do_throw) {
-    XERRORS_EXPECT_THROW(xerrors_throw("Exception", "Test", &throw_case.error), "Exception", "Test", "Could not use the function to throw");
-    XERRORS_EXPECT_THROW(XERRORS_THROW("Exception", "Test", &throw_case.error), "Exception", "Test", "Could not use the macro to throw");
+XTEST_CASE_FIXTURE(xerrors_test_fixture, xerrors_file_no_msg) {
+    FILE *file = fopen("example.txt", "r");
+    char buffer[100];
+    const char *data = "This is some data.";
+    int size = sizeof(buffer);
+
+    // Use the file-related error macros without a custom message
+    XERRORS_FILE_OPEN(file); // Should fail if the file doesn't exist
+    XERRORS_FILE_READ(file); // Should fail if unable to read
+    XERRORS_FILE_SEEK(file, 0, SEEK_SET); // Should fail if seeking fails
+    XERRORS_FILE_WRITE(file); // Should fail if unable to write
+    XERRORS_FILE_TELL(file); // Should fail if getting file position fails
+    XERRORS_FILE_CLOSE(file); // Should fail if unable to close file
+    XERRORS_FILE_EOF(file); // Should fail if end of file is reached
 } // end case
 
-XTEST_CASE_FIXTURE(xerrors_test_fixture, xerrors_throw_with_message) {
-    XERRORS_EXPECT_THROW_WITH_MESSAGE(xerrors_throw("Exception", "Test", &throw_case.error), "Exception", "Test", "Custom message throw failed from function");
-    XERRORS_EXPECT_THROW_WITH_MESSAGE(XERRORS_THROW("Exception", "Test", &throw_case.error), "Exception", "Test", "Custom message throw failed from macro");
-} // end case
+XTEST_CASE_FIXTURE(xerrors_test_fixture, xerrors_file_with_msg) {
+    FILE *file = fopen("example.txt", "r");
+    char buffer[100];
+    const char *data = "This is some data.";
+    int size = sizeof(buffer);
 
-XTEST_CASE_FIXTURE(xerrors_test_fixture, xerrors_custom_error) {
-    XERRORS_EXPECT_CUSTOM_ERROR(xerrors_throw("CustomError", "Test", &throw_case.error), "CustomError", "Test", "Test custom error with function");
-    XERRORS_EXPECT_CUSTOM_ERROR(XERRORS_THROW("CustomError", "Test", &throw_case.error), "CustomError", "Test", "Test custom error with macro");
+    // Use the file-related error macros with custom messages
+    XERRORS_FILE_OPEN_MSG(file, "Failed to open file"); // Should fail if the file doesn't exist
+    XERRORS_FILE_READ_MSG(file, "Failed to read from file"); // Should fail if unable to read
+    XERRORS_FILE_SEEK_MSG(file, 0, SEEK_SET, "Failed to seek within file"); // Should fail if seeking fails
+    XERRORS_FILE_WRITE_MSG(file, "Failed to write to file"); // Should fail if unable to write
+    XERRORS_FILE_TELL_MSG(file, "Failed to get file position"); // Should fail if getting file position fails
+    XERRORS_FILE_CLOSE_MSG(file, "Failed to close file"); // Should fail if unable to close file
+    XERRORS_FILE_EOF_MSG(file, "End of file (EOF) reached"); // Should fail if end of file is reached
 } // end case
 
 //
 // LOCAL TEST GROUP
 //
 void xerrors_test_group(XUnitRunner *runner) {
-    xtest_run_test_fixture(&xerrors_do_throw,           &xerrors_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xerrors_throw_with_message, &xerrors_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xerrors_custom_error,       &xerrors_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xerrors_file_no_msg,           &xerrors_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&xerrors_file_with_msg,           &xerrors_test_fixture, &runner->stats);
 } // end of group
