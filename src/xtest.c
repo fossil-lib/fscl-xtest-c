@@ -48,6 +48,9 @@ static bool XTEST_FLAG_HELP       = false;
  */
 static jmp_buf errorBuffer;
 
+// Define a global variable to store the error condition
+static int errorCondition;
+
 /**
  * @brief Custom Error Structure for Exceptions
  *
@@ -666,9 +669,8 @@ void xerrors(void (*expression)(const char*, const char*), const char* exception
  *       depending on the compiler and compiler flags used.
  */
 void *xerrors_throw(const char* type, const char* message) {
-    CustomError* error = (CustomError*)malloc(sizeof(CustomError));
-    error->type = type;
-    error->message = message;
-    longjmp(errorBuffer, (int)error);
-    return error;
+    CustomError error = { type, message };
+    errorCondition = 1;
+    longjmp(errorBuffer, 1);
+    return NULL;
 } // end of func
