@@ -499,7 +499,7 @@ XTEST_API void xassert(bool expression, const char *message);
 XTEST_API void xexpect(bool expression, const char *message);
 
 // Function to throw an exception
-XTEST_API void xerrors_throw(const char* type, const char* message)
+XTEST_API void xerrors_throw(const char* type, const char* message);
 
 /**
  * @brief Adds an assertion to the current test case.
