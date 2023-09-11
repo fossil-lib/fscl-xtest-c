@@ -232,6 +232,9 @@ typedef struct {
     const char* message;
 } XError;
 
+// Define a custom error structure pointer type
+typedef XError* (*XErrorThrow)(const char*, const char*);
+
 /**
  * @brief Structure representing a test case.
  *
@@ -496,7 +499,7 @@ XTEST_API void xignore(const char* reason);
  * @note The behavior of this function may vary depending on the specific testing framework
  *       or runtime environment in use.
  */
-XTEST_API void xerrors(XError (*expression)(const char*, const char*), const char* exception_type, const char* exception_message, const char *message);
+XTEST_API void xerrors(XErrorThrow expression, const char* exception_type, const char* exception_message, const char *message);
 
 /**
  * @brief Custom assertion function with optional message.
