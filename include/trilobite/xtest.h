@@ -511,7 +511,7 @@ XTEST_API void xexpect(bool expression, const char *message);
  * @return            If the expression evaluates to false, the assertion fails, and the message is displayed.
  *                    Otherwise, the assertion passes, and nothing happens.
  */
-#define XERRORS(expression, message) xerrors(expression, message)
+#define XERRORS(expression, exception_type, expected_message) xerrors(expression, exception_type, expected_message)
 
 /**
  * @brief Adds an expectation to the current test case.
