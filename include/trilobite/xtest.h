@@ -206,11 +206,18 @@ extern "C"
 #include <string.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <setjmp.h>
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
 
 #endif
+
+// Define a custom error structure for exceptions
+typedef struct {
+    const char* type;
+    const char* message;
+} CustomError;
 
 /**
  * @brief Structure representing a test case.
@@ -490,6 +497,9 @@ XTEST_API void xassert(bool expression, const char *message);
  * @return            None.
  */
 XTEST_API void xexpect(bool expression, const char *message);
+
+// Function to throw an exception
+XTEST_API void xerrors_throw(const char* type, const char* message)
 
 /**
  * @brief Adds an assertion to the current test case.
