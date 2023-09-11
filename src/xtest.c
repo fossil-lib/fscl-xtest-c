@@ -51,25 +51,6 @@ static jmp_buf errorBuffer;
 // Define a global variable to store the error condition
 static int errorCondition;
 
-/**
- * @brief Custom Error Structure for Exceptions
- *
- * The `CustomError` structure is used to define a custom error for handling exceptions.
- * It contains two members: `type` to store the error type or exception type, and `message`
- * to store the error message or exception message. This structure allows you to create
- * and manage custom errors with specific types and messages for exception handling.
- *
- * Example usage:
- *
- * ```c
- * CustomError error = { "CustomErrorType", "Custom error message" };
- * ```
- */
-typedef struct {
-    const char* type;
-    const char* message;
-} CustomError;
-
 // XUnit options for the tester to switch on-off
 XTestCliOption options[] = {
      { "--verbose",    "-V", "Show more information to standard output", &XTEST_FLAG_VERBOSE },
