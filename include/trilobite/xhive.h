@@ -4,8 +4,8 @@
    gmail:   <michaelbrockus@gmail.com>
    website: <https://trilobite.code.blog>
 */
-#ifndef TRILOBITE_XAUTO_H
-#define TRILOBITE_XAUTO_H
+#ifndef TRILOBITE_XHIVE_H
+#define TRILOBITE_XHIVE_H
 
 #ifdef __cplusplus
 extern "C"
@@ -21,7 +21,7 @@ extern "C"
  * by machine learning models in the context of this code.
  */
 enum {
-    XAUTO_MAX_FEATURES = 100
+    XHIVE_MAX_FEATURES = 100
 }; // end enum
 
 /**
@@ -31,7 +31,7 @@ enum {
  * an intercept, and the number of features used in the model.
  */
 typedef struct {
-    double coefficients[XAUTO_MAX_FEATURES];
+    double coefficients[XHIVE_MAX_FEATURES];
     double intercept;
     int num_features;
 } LogisticRegressionModel;
@@ -72,7 +72,7 @@ typedef struct {
  * @param learning_rate Learning rate for training.
  * @param num_epochs    Number of training epochs.
  */
-XTEST_API void xauto_train_logistic_regression(LogisticRegressionModel* model, const double* input, const int* labels, int num_samples, double learning_rate, int num_epochs);
+XTEST_API void xhive_train_logistic_regression(LogisticRegressionModel* model, const double* input, const int* labels, int num_samples, double learning_rate, int num_epochs);
 
 /**
  * @brief Trains a Linear Regression model.
@@ -84,7 +84,7 @@ XTEST_API void xauto_train_logistic_regression(LogisticRegressionModel* model, c
  * @param y             Pointer to the output data (target values).
  * @param num_samples   Number of data samples.
  */
-XTEST_API void xauto_train_linear_regression(LinearRegressionModel* model, const double* x, const double* y, int num_samples);
+XTEST_API void xhive_train_linear_regression(LinearRegressionModel* model, const double* x, const double* y, int num_samples);
 
 /**
  * @brief Trains a Gaussian Naive Bayes model.
@@ -98,7 +98,7 @@ XTEST_API void xauto_train_linear_regression(LinearRegressionModel* model, const
  * @param num_samples   Number of data samples.
  * @param num_features  Number of features in the input.
  */
-XTEST_API void xauto_train_gaussian_naive_bayes(GaussianNaiveBayesModel* model, const double* features, const int* labels, int num_samples, int num_features);
+XTEST_API void xhive_train_gaussian_naive_bayes(GaussianNaiveBayesModel* model, const double* features, const int* labels, int num_samples, int num_features);
 
 /**
  * @brief Predicts using a Gaussian Naive Bayes model.
@@ -110,7 +110,7 @@ XTEST_API void xauto_train_gaussian_naive_bayes(GaussianNaiveBayesModel* model, 
  *
  * @return        The predicted label.
  */
-XTEST_API int xauto_predict_gaussian_naive_bayes(const GaussianNaiveBayesModel* model, double feature);
+XTEST_API int xhive_predict_gaussian_naive_bayes(const GaussianNaiveBayesModel* model, double feature);
 
 #ifdef __cplusplus
 }
