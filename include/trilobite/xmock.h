@@ -137,26 +137,26 @@ typedef struct {
 // Create and initialize a mock stack
 // @param capacity: Maximum capacity of the stack
 // @return: A pointer to the newly created stack
-XMockStack* xmock_stack_create(int capacity);
+XTEST_API XMockStack* xmock_stack_create(int capacity);
 
 // Push an element onto the mock stack
 // @param stack: Pointer to the stack
 // @param element: Element to be pushed onto the stack
-void xmock_stack_push(XMockStack* stack, int element);
+XTEST_API void xmock_stack_push(XMockStack* stack, int element);
 
 // Pop an element from the mock stack
 // @param stack: Pointer to the stack
 // @return: The popped element
-int xmock_stack_pop(XMockStack* stack);
+XTEST_API int xmock_stack_pop(XMockStack* stack);
 
 // Get the size of the mock stack
 // @param stack: Pointer to the stack
 // @return: Current size of the stack
-int xmock_stack_size(XMockStack* stack);
+XTEST_API int xmock_stack_size(XMockStack* stack);
 
 // Destroy the mock stack and release resources
 // @param stack: Pointer to the stack to be destroyed
-void xmock_stack_destroy(XMockStack* stack);
+XTEST_API void xmock_stack_destroy(XMockStack* stack);
 
 
 //
@@ -179,36 +179,36 @@ typedef struct {
 
 // @brief Create and initialize a mock doubly linked list.
 // @return A pointer to the created mock doubly linked list or NULL if allocation fails.
-XMockDoublyLinkedList* xmock_doubly_linked_list_create();
+XTEST_API XMockDoublyLinkedList* xmock_doubly_linked_list_create();
 
 // @brief Insert an element at the beginning of the list.
 // @param list The mock doubly linked list to which the element will be added.
 // @param data The data to insert.
-void xmock_doubly_linked_list_push_front(XMockDoublyLinkedList* list, int data);
+XTEST_API void xmock_doubly_linked_list_push_front(XMockDoublyLinkedList* list, int data);
 
 // @brief Insert an element at the end of the list.
 // @param list The mock doubly linked list to which the element will be added.
 // @param data The data to insert.
-void xmock_doubly_linked_list_push_back(XMockDoublyLinkedList* list, int data);
+XTEST_API void xmock_doubly_linked_list_push_back(XMockDoublyLinkedList* list, int data);
 
 // @brief Remove and return the first element of the list.
 // @param list The mock doubly linked list from which the first element will be removed.
 // @return The value of the first element or 0 if the list is empty.
-int xmock_doubly_linked_list_pop_front(XMockDoublyLinkedList* list);
+XTEST_API int xmock_doubly_linked_list_pop_front(XMockDoublyLinkedList* list);
 
 // @brief Remove and return the last element of the list.
 // @param list The mock doubly linked list from which the last element will be removed.
 // @return The value of the last element or 0 if the list is empty.
-int xmock_doubly_linked_list_pop_back(XMockDoublyLinkedList* list);
+XTEST_API int xmock_doubly_linked_list_pop_back(XMockDoublyLinkedList* list);
 
 // @brief Get the size of the list.
 // @param list The mock doubly linked list for which to determine the size.
 // @return The current size of the list.
-int xmock_doubly_linked_list_size(XMockDoublyLinkedList* list);
+XTEST_API int xmock_doubly_linked_list_size(XMockDoublyLinkedList* list);
 
 // @brief Destroy the mock doubly linked list and release allocated resources.
 // @param list The mock doubly linked list to destroy.
-void xmock_doubly_linked_list_destroy(XMockDoublyLinkedList* list);
+XTEST_API void xmock_doubly_linked_list_destroy(XMockDoublyLinkedList* list);
 
 
 //
@@ -227,26 +227,26 @@ typedef struct {
 // @brief Create and initialize a mock queue.
 // @param capacity The maximum capacity of the queue.
 // @return A pointer to the created mock queue or NULL if allocation fails.
-XMockQueue* xmock_queue_create(int capacity);
+XTEST_API XMockQueue* xmock_queue_create(int capacity);
 
 // @brief Enqueue an element into the mock queue.
 // @param queue The mock queue to which the element will be enqueued.
 // @param element The element to be enqueued.
-void xmock_queue_enqueue(XMockQueue* queue, int element);
+XTEST_API void xmock_queue_enqueue(XMockQueue* queue, int element);
 
 // @brief Dequeue and return the front element of the mock queue.
 // @param queue The mock queue from which the front element will be dequeued.
 // @return The front element of the queue or 0 if the queue is empty.
-int xmock_queue_dequeue(XMockQueue* queue);
+XTEST_API int xmock_queue_dequeue(XMockQueue* queue);
 
 // @brief Get the size of the mock queue.
 // @param queue The mock queue for which to determine the size.
 // @return The current size of the queue.
-int xmock_queue_size(XMockQueue* queue);
+XTEST_API int xmock_queue_size(XMockQueue* queue);
 
 // @brief Destroy the mock queue and release allocated resources.
 // @param queue The mock queue to destroy.
-void xmock_queue_destroy(XMockQueue* queue);
+XTEST_API void xmock_queue_destroy(XMockQueue* queue);
 
 
 
@@ -270,39 +270,39 @@ typedef struct {
 } XMockMap;
 
 // @brief Create and initialize a mock map.
-XMockMap* xmock_map_create();
+XTEST_API XMockMap* xmock_map_create();
 
 // @brief Put a key-value pair into the mock map.
 // @param map The mock map to which the entry will be added.
 // @param key The key of the entry to add.
 // @param value The value associated with the key.
-void xmock_map_put(XMockMap* map, int key, int value);
+XTEST_API void xmock_map_put(XMockMap* map, int key, int value);
 
 // @brief Get the value associated with a key from the mock map.
 // @param map The mock map to search for the key.
 // @param key The key to look up in the map.
 // @return The value associated with the key or 0 if the key is not found.
-int xmock_map_get(XMockMap* map, int key);
+XTEST_API int xmock_map_get(XMockMap* map, int key);
 
 // @brief Check if a key exists in the mock map.
 // @param map The mock map to check for the key.
 // @param key The key to check for existence.
 // @return 1 if the key exists in the map, 0 otherwise.
-int xmock_map_contains(XMockMap* map, int key);
+XTEST_API int xmock_map_contains(XMockMap* map, int key);
 
 // @brief Remove a key-value pair from the mock map.
 // @param map The mock map from which the entry will be removed.
 // @param key The key of the entry to remove.
-void xmock_map_remove(XMockMap* map, int key);
+XTEST_API void xmock_map_remove(XMockMap* map, int key);
 
 // @brief Get the number of key-value pairs in the mock map.
 // @param map The mock map for which to count the entries.
 // @return The number of key-value pairs in the map.
-int xmock_map_size(XMockMap* map);
+XTEST_API int xmock_map_size(XMockMap* map);
 
 // @brief Destroy the mock map and release allocated resources.
 // @param map The mock map to destroy.
-void xmock_map_destroy(XMockMap* map);
+XTEST_API void xmock_map_destroy(XMockMap* map);
 
 
 #ifdef __cplusplus
