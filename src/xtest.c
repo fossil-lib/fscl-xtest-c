@@ -29,28 +29,6 @@ static bool XTEST_FLAG_VERSION    = false;
 static bool XTEST_FLAG_COLORED    = false;
 static bool XTEST_FLAG_HELP       = false;
 
-/**
- * @brief Error Handling Buffer
- *
- * The `errorBuffer` is a `jmp_buf` object used for handling errors and exceptions using the
- * setjmp and longjmp mechanism. It provides a way to set a point in the code (with `setjmp`)
- * from which the program can jump back to in case of an error or exception (with `longjmp`).
- * This is often used for implementing exception-like behavior in C programs.
- *
- * Example usage:
- *
- * ```c
- * if (setjmp(errorBuffer) == 0) {
- *     // Code that might encounter an error or exception
- *     // If an error occurs, use longjmp to jump back to this point
- * }
- * ```
- */
-static jmp_buf errorBuffer;
-
-// Define a global variable to store the error condition
-static int errorCondition;
-
 // XUnit options for the tester to switch on-off
 XTestCliOption options[] = {
      { "--verbose",    "-V", "Show more information to standard output", &XTEST_FLAG_VERBOSE },
