@@ -105,7 +105,7 @@ XTEST_TEARDOWN(xmock_queue_test_fixture) {
 //
 // TEST CASES
 //
-XTEST_CASE_FIXTURE(mock_list_test_fixture, mock_list_operations) {
+XTEST_CASE_FIXTURE(xmock_list_test_fixture, mock_list_operations) {
     xmock_doubly_linked_list_push_front(mock_structs.list, 22);
     xmock_doubly_linked_list_push_front(mock_structs.list, 32);
 
@@ -116,12 +116,12 @@ XTEST_CASE_FIXTURE(mock_list_test_fixture, mock_list_operations) {
     XASSERT_INT_EQUAL(xmock_doubly_linked_list_size(mock_structs.list), 1, "Should have been one node");
 }
 
-XTEST_CASE_FIXTURE(mock_map_test_fixture, mock_map_operations) {
+XTEST_CASE_FIXTURE(xmock_map_test_fixture, mock_map_operations) {
     xmock_map_put(mock_structs.map, 22, 42);
     XASSERT_TRUE(xmock_map_contains(mock_structs, 22), "Shoud have contain key 22");
 }
 
-XTEST_CASE_FIXTURE(mock_stack_test_fixture, mock_stack_operations) {
+XTEST_CASE_FIXTURE(xmock_stack_test_fixture, mock_stack_operations) {
     xmock_stack_push(mock_structs.stack, 22);
     xmock_stack_push(mock_structs.stack, 23);
     xmock_stack_push(mock_structs.stack, 11);
@@ -129,7 +129,7 @@ XTEST_CASE_FIXTURE(mock_stack_test_fixture, mock_stack_operations) {
     XASSERT_INT_EQUAL(xmock_stack_size(mock_structs.stack), 3, "Should have been three nodes");
 }
 
-XTEST_CASE_FIXTURE(mock_queue_test_fixture, mock_queue_operations) {
+XTEST_CASE_FIXTURE(xmock_queue_test_fixture, mock_queue_operations) {
     xmock_queue_enqueue(mock_structs.queue, 22);
     xmock_queue_enqueue(mock_structs.queue, 23);
     xmock_queue_enqueue(mock_structs.queue, 11);
@@ -146,8 +146,8 @@ void xmockup_test_group(XUnitRunner *runner)
     xtest_run_test_fixture(&xmock_stub_bar, &xmockup_test_fixture, &runner->stats);
     xtest_run_test_fixture(&xmock_stub_baz, &xmockup_test_fixture, &runner->stats);
 
-    xtest_run_test_fixture(&mock_list_operations, &mock_list_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&mock_map_operations, &mock_map_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&mock_stack_operations, &mock_stack_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&mock_queue_operations, &mock_queue_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&mock_list_operations, &xmock_list_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&mock_map_operations, &xmock_map_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&mock_stack_operations, &xmock_stack_test_fixture, &runner->stats);
+    xtest_run_test_fixture(&mock_queue_operations, &xmock_queue_test_fixture, &runner->stats);
 } // end of fixture
