@@ -609,7 +609,7 @@ void xexpect(bool expression, const char *message) {
  * @note The behavior of this function relies on compiler-specific features and may vary
  *       depending on the compiler and compiler flags used.
  */
-void xerrors(void (*expression)(const char*, const char*), const char* exception_type, const char* exception_message, const char *message) {
+void xerrors(XError (*expression)(const char*, const char*), const char* exception_type, const char* exception_message, const char *message) {
     XERRORS_PASS_SCAN = true;
 
     if (setjmp(errorBuffer) == 0) {
@@ -668,9 +668,9 @@ void xerrors(void (*expression)(const char*, const char*), const char* exception
  * @note The behavior of this function relies on compiler-specific features and may vary
  *       depending on the compiler and compiler flags used.
  */
-void *xerrors_throw(const char* type, const char* message) {
-    CustomError error = { type, message };
+XError *xerrors_throw(const char* type, const char* message) {
+    XError error = { type, message };
     errorCondition = 1;
     longjmp(errorBuffer, 1);
-    return NULL;
+    return error;
 } // end of func
