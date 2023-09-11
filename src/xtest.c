@@ -16,6 +16,8 @@
 
 // Extra
 const char *XTEST_VERSION = "0.3.1";
+// Define a global jump buffer for error handling
+static jmp_buf errorBuffer;
 
 // Static control panel for assert/expect and marks
 static bool XERRORS_PASS_SCAN = true;
@@ -528,6 +530,7 @@ void xexpect(bool expression, const char *message) {
  *
  * @return            None.
  */
+/*
 void xerrors(bool expression, const char *message) {
     XERRORS_PASS_SCAN = true;
 
@@ -544,4 +547,29 @@ void xerrors(bool expression, const char *message) {
             printf("%s", (XERRORS_PASS_SCAN)? "O" : "X");
         } // end if else
     } // end if else
+} // end of func
+*/
+
+// Encapsulate the error handling logic into a function
+void xerrors(const char* expression, const char* expectedExceptionType, const char* expectedMessage) {
+    if (setjmp(errorBuffer) == 0) {
+        eval_expression(expression);
+        XERRORS_PASS_SCAN = false;
+        fprintf(stderr, "Test failed: Expected exception '%s' but none was thrown.\n", expectedExceptionType);
+    } else {
+        CustomError* error = (CustomError*)__builtin_extract_return_addr(__builtin_return_address(0));
+        if (expectedExceptionType && strcmp(error->type, expectedExceptionType) != 0) {
+            fprintf(stderr, "Test failed: Expected exception '%s' but got '%s'.\n", expectedExceptionType, error->type);
+            XERRORS_PASS_SCAN = false;
+        } else if (expectedMessage && strcmp(error->message, expectedMessage) != 0) {
+            fprintf(stderr, "Test failed: Exception message mismatch.\n");
+            XERRORS_PASS_SCAN = false;
+        } // end if, else if
+    } // end if else
+} // end of func
+
+// Function to throw an exception
+void xerrors_throw(const char* type, const char* message) {
+    CustomError error = { type, message };
+    longjmp(errorBuffer, (int)&error);
 } // end of func
