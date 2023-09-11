@@ -214,6 +214,25 @@ extern "C"
 #endif
 
 /**
+ * @brief Custom Error Structure for Exceptions
+ *
+ * The `CustomError` structure is used to define a custom error for handling exceptions.
+ * It contains two members: `type` to store the error type or exception type, and `message`
+ * to store the error message or exception message. This structure allows you to create
+ * and manage custom errors with specific types and messages for exception handling.
+ *
+ * Example usage:
+ *
+ * ```c
+ * XError error = { "CustomErrorType", "Custom error message" };
+ * ```
+ */
+typedef struct {
+    const char* type;
+    const char* message;
+} XError;
+
+/**
  * @brief Structure representing a test case.
  *
  * This structure encapsulates information about a test case, including its name, test function,
