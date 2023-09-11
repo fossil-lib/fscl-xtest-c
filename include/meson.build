@@ -1,2 +1,2 @@
-install_headers(subdir : 'trilobite', strip_directory : false)
+install_headers(subdir : 'trilobite', preserve_path : true)
 dir = include_directories('.')
