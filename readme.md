@@ -1,16 +1,10 @@
-# Xunit test framework
+# **Xunit test framework**
 
-Introducing the Trilobite Xunit Test: a robust and versatile unit testing framework designed to elevate your software development process. Crafted with meticulous attention to detail, this lightweight testing solution, coded in C11 and newer standards, empowers developers with an arsenal of cutting-edge features.
+Trilobite XUnit Test Framework is a powerful and versatile testing framework designed for C and C++ developers. It offers a comprehensive suite of testing tools and features to ensure the quality and reliability of your codebase. Whether you’re developing in embedded, desktop apps, or mobile apps, Trilobite Xunit has you covered.
 
-The Trilobite Xunit Test stands out with its comprehensive approach, offering a wide array of testing types to ensure your software's quality and reliability. From UI and UX testing to enhance user experience, the framework covers it all. Its IO testing capabilities guarantee seamless data interaction.
+Refer to the documentation and examples to quickly get started with Trilobite and begin testing your C and C++ projects effectively.
 
-One of the framework's standout features is its extensive collection of assertions, providing you with an abundance of options to validate your code's correctness. To facilitate isolation and control, Trilobite also incorporates a robust mocking system, allowing you to create controlled environments for testing intricate scenarios.
-
-Benchmark testing becomes a breeze with the Trilobite Xunit Test, allowing you to measure performance with precision. The integration of a CLI interface ensures user-friendly execution of tests, and the colored text output provides clarity in result interpretation.
-
-The Trilobite Xunit Test seamlessly integrates into your development process by leveraging the Meson build system. Its compatibility with the Meson WrapDB tool simplifies installation and keeps dependencies in check, enabling a seamless setup experience.
-
-In essence, the Trilobite Xunit Test redefines unit testing for C developers, offering a comprehensive, lightweight, and adaptable framework that propels your software projects toward excellence.
+Trilobite XUnit Test Framework empowers developers to write reliable, high-quality code by providing a rich set of testing and evaluation tools. Whether you’re working on C, C++, D or Rust projects, Trilobites help you deliver robust software. Start testing with Trilobite XUnit today!
 
 ## Intended Audience
 
@@ -68,7 +62,7 @@ Example of the usage in C
 XTEST_DATA(some_data) {
     int some_data;
     const char* some_other_data;
-};
+} my_data;
 
 //
 // XTEST FIXTURE
