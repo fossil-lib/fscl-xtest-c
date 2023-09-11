@@ -1,6 +1,6 @@
 # **Xunit test framework**
 
-Trilobite XUnit Test Framework is a powerful and versatile testing framework designed for C and C++ developers. It offers a comprehensive suite of testing tools and features to ensure the quality and reliability of your codebase. Whether you’re developing in C11, C23, C++17, or C++23, Trilobite has you covered.
+Trilobite XUnit Test Framework is a powerful and versatile testing framework designed for C and C++ developers. It offers a comprehensive suite of testing tools and features to ensure the quality and reliability of your codebase. Whether you’re developing in embedded, desktop apps, or mobile apps, Trilobite Xunit has you covered.
 
 Refer to the documentation and examples to quickly get started with Trilobite and begin testing your C and C++ projects effectively.
 
