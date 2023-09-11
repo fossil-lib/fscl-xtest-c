@@ -1,4 +1,4 @@
-source = files('xtest.c', 'hive.c')
+source = files('xtest.c', 'xhive.c')
 
 lib = library('trilo-xtest-c',
     source,
