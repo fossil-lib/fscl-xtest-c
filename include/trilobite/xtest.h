@@ -463,7 +463,7 @@ XTEST_API void xignore(const char* reason);
  * @param expression  The expression to evaluate for an error condition.
  * @param message     An optional error message to be displayed if the expression is false.
  */
-XTEST_API void xerrors(bool expression, const char *message);
+XTEST_API void xerrors(const char* expression, const char* expectedExceptionType, const char* expectedMessage);
 
 /**
  * @brief Custom assertion function with optional message.
