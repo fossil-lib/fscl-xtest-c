@@ -4,7 +4,7 @@
    gmail:   <michaelbrockus@gmail.com>
    website: <https://trilobite.code.blog>
 */
-#include "trilobite/xauto.h"
+#include "trilobite/xhive.h"
 
 //
 // EXTRA MATH FUNCTIONS
@@ -21,16 +21,16 @@
  *
  * @return The approximate value of 'e^x' using squaring and recursion.
  */
-double xauto_exp_with_squaring(double x, int n) {
+double xhive_exp_with_squaring(double x, int n) {
     if (n == 0) {
         return 1.0;
     } // end if
 
     if (n % 2 == 0) {
-        double half = xauto_exp_with_squaring(x, n / 2);
+        double half = xhive_exp_with_squaring(x, n / 2);
         return half * half;
     } else {
-        double half = xauto_exp_with_squaring(x, (n - 1) / 2);
+        double half = xhive_exp_with_squaring(x, (n - 1) / 2);
         return half * half * x;
     } // end if else
 } // end of func
@@ -44,8 +44,8 @@ double xauto_exp_with_squaring(double x, int n) {
  *
  * @return The sigmoid value for the input 'x'.
  */
-double xauto_sigmoid(double x) {
-    return 1.0 / (1.0 + xauto_exp_with_squaring(-x, 10));
+double xhive_sigmoid(double x) {
+    return 1.0 / (1.0 + xhive_exp_with_squaring(-x, 10));
 } // end of func
 
 /**
@@ -135,7 +135,7 @@ double approximate_gaussian_pdf(double x, double mean, double variance) {
  * @param learning_rate Learning rate for gradient descent.
  * @param num_epochs    Number of training epochs.
  */
-void xauto_train_logistic_regression(LogisticRegressionModel* model, const double* input, const int* labels, int num_samples, double learning_rate, int num_epochs) {
+void xhive_train_logistic_regression(LogisticRegressionModel* model, const double* input, const int* labels, int num_samples, double learning_rate, int num_epochs) {
     // Initialize model coefficients and intercept to zeros
     for (int i = 0; i < model->num_features; ++i) {
         model->coefficients[i] = 0.0;
@@ -149,7 +149,7 @@ void xauto_train_logistic_regression(LogisticRegressionModel* model, const doubl
             for (int feature = 0; feature < model->num_features; ++feature) {
                 prediction += model->coefficients[feature] * input[sample * model->num_features + feature];
             } // end for
-            double probability = xauto_sigmoid(prediction);
+            double probability = xhive_sigmoid(prediction);
 
             // Update coefficients and intercept using gradient descent
             double error = labels[sample] - probability;
@@ -172,7 +172,7 @@ void xauto_train_logistic_regression(LogisticRegressionModel* model, const doubl
  * @param y             Pointer to the output data (target values).
  * @param num_samples   Number of data samples.
  */
-void xauto_train_linear_regression(LinearRegressionModel* model, const double* x, const double* y, int num_samples) {
+void xhive_train_linear_regression(LinearRegressionModel* model, const double* x, const double* y, int num_samples) {
     double sum_x = 0.0;
     double sum_y = 0.0;
     double sum_xy = 0.0;
@@ -207,7 +207,7 @@ void xauto_train_linear_regression(LinearRegressionModel* model, const double* x
  * @param num_samples   Number of data samples.
  * @param num_features  Number of features in the input.
  */
-void xauto_train_gaussian_naive_bayes(GaussianNaiveBayesModel* model, const double* features, const int* labels, int num_samples, int num_features) {
+void xhive_train_gaussian_naive_bayes(GaussianNaiveBayesModel* model, const double* features, const int* labels, int num_samples, int num_features) {
     // Initialize class probabilities, means, and variances
     model->class_probabilities[0] = 0.0;
     model->class_probabilities[1] = 0.0;
@@ -265,7 +265,7 @@ void xauto_train_gaussian_naive_bayes(GaussianNaiveBayesModel* model, const doub
  *
  * @return        The predicted class label (0 or 1).
  */
-int xauto_predict_gaussian_naive_bayes(const GaussianNaiveBayesModel* model, double feature) {
+int xhive_predict_gaussian_naive_bayes(const GaussianNaiveBayesModel* model, double feature) {
     double likelihood_class_0 = approximate_gaussian_pdf(feature, model->mean[0], model->variance[0]);
     double likelihood_class_1 = approximate_gaussian_pdf(feature, model->mean[1], model->variance[1]);
 
