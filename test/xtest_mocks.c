@@ -118,7 +118,7 @@ XTEST_CASE_FIXTURE(xmock_list_test_fixture, mock_list_operations) {
 
 XTEST_CASE_FIXTURE(xmock_map_test_fixture, mock_map_operations) {
     xmock_map_put(mock_structs.map, 22, 42);
-    XASSERT_TRUE(xmock_map_contains(mock_structs.map, 22));
+    XASSERT_BOOL_TRUE(xmock_map_contains(mock_structs.map, 22));
 }
 
 XTEST_CASE_FIXTURE(xmock_stack_test_fixture, mock_stack_operations) {
