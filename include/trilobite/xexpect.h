@@ -682,7 +682,6 @@ extern "C"
 #define XEXPECT_STRING_EQUAL(actual, expected) XEXPECT((actual) == (expected), "String equality expectation not met")
 #define XEXPECT_STRING_NOT_EQUAL(actual, expected) XEXPECT((actual) != (expected), "String inequality expectation not met")
 #define XEXPECT_STRING_LENGTH(actual, expected) XEXPECT((actual).length() == (expected), "String length expectation not met")
-#endif
 #else
 #define XEXPECT_STRING_EQUAL(actual, expected) XEXPECT(strcmp((actual), (expected)) == 0, "String equality expectation not met")
 #define XEXPECT_STRING_NOT_EQUAL(actual, expected) XEXPECT(strcmp((actual), (expected)) != 0, "String inequality expectation not met")
