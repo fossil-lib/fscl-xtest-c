@@ -22,9 +22,9 @@ XTEST_CASE(xbdd_logic_test) {
                 // Check the expected outcome
                 bool thenExecuted = true;
 
-                XEXPECT(givenExecuted);
-                XEXPECT(whenExecuted);
-                XEXPECT(thenExecuted);
+                XEXPECT_BOOL_TRUE(givenExecuted);
+                XEXPECT_BOOL_TRUE(whenExecuted);
+                XEXPECT_BOOL_TRUE(thenExecuted);
             }
         }
     }
