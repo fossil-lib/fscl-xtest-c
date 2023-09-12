@@ -7,7 +7,6 @@
 #include "xtest_fixtures.h"
 #include "trilobite/xtest.h"
 #include "trilobite/xexpect.h"
-#include <stdint.h>
 
 //
 // TEST FIXTURE

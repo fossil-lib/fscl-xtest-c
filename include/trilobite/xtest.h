@@ -47,31 +47,11 @@ extern "C"
 #include <stdlib.h>
 #include <stdint.h>
 #include <stddef.h>
-#include <setjmp.h>
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
 
 #endif
-
-/**
- * @brief Custom Error Structure for Exceptions
- *
- * The `CustomError` structure is used to define a custom error for handling exceptions.
- * It contains two members: `type` to store the error type or exception type, and `message`
- * to store the error message or exception message. This structure allows you to create
- * and manage custom errors with specific types and messages for exception handling.
- *
- * Example usage:
- *
- * ```c
- * XError error = { "CustomErrorType", "Custom error message" };
- * ```
- */
-typedef struct {
-    const char* type;
-    const char* message;
-} XError;
 
 /**
  * @brief Structure representing a test case.
@@ -315,15 +295,14 @@ XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixtur
 XTEST_API void xignore(const char* reason);
 
 /**
- * @brief Custom assertion function with optional message.
+ * @brief Reports an error condition with an optional error message.
  *
- * This function allows custom assertions and displays a message if the assertion fails.
- * It also provides an option to disable further assertion scanning after the first failure.
+ * This function is used to report an error condition, typically within a testing context.
+ * It evaluates an expression and, if it evaluates to false (indicating an error), it may
+ * display an optional error message.
  *
- * @param expression  The expression to be asserted (should evaluate to true for success).
- * @param message     An optional message to be displayed when the assertion fails.
- *
- * @return            None.
+ * @param expression  The expression to evaluate for an error condition.
+ * @param message     An optional error message to be displayed if the expression is false.
  */
 XTEST_API void xerrors(bool expression, const char *message);
 
@@ -365,55 +344,15 @@ XTEST_API void xexpect(bool expression, const char *message);
 #define XASSERT(expression, message) xassert(expression, message)
 
 /**
- * @brief Verify and Report an Exception Using a Macro
+ * @brief Adds an error case assertion to the current test case.
  *
- * The `XERRORS` macro is used to verify and report an exception in the context of testing
- * using the XUnit framework. It evaluates an expression, checks whether it raises an exception
- * of the specified type, and verifies the expected exception message.
+ * @param expression  The expression to evaluate.
+ * @param message     The message to display if the assertion fails.
  *
- * @param expression The expression to evaluate, which should raise an exception.
- * @param exception_type The expected type of the exception (e.g., "RuntimeError").
- * @param expected_message The expected message associated with the exception.
- *
- * This macro simplifies the process of testing whether a specific expression raises an exception
- * of the expected type and with the expected message during unit testing.
- *
- * Example usage:
- *
- * ```c
- * XERRORS(some_function(), "RuntimeError", "Expected error message.");
- * ```
- *
- * @note This macro is part of the XUnit testing framework.
- * @note The behavior of this macro may vary depending on the specific testing framework
- *       or runtime environment in use.
+ * @return            If the expression evaluates to false, the assertion fails, and the message is displayed.
+ *                    Otherwise, the assertion passes, and nothing happens.
  */
-#define XERRORS(expression, message) xassert(expression, message)
-
-/**
- * @brief Throw an Exception with Custom Type and Message Using a Macro
- *
- * The `XERRORS_THROW` macro is a convenient way to throw an exception with a custom type and message
- * using the `xerrors_throw` function.
- *
- * @param type The type of the exception to throw (e.g., "RuntimeError").
- * @param message The message associated with the exception.
- *
- * This macro simplifies the process of raising an exception with specific error information. It allows
- * for customizing the exception type and message when reporting an error or exceptional condition
- * in the program.
- *
- * Example usage:
- *
- * ```c
- * XERRORS_THROW("RuntimeError", "Custom error message.");
- * ```
- *
- * @note This macro is part of the XUnit testing framework.
- * @note The behavior of this macro may vary depending on the specific testing framework
- *       or runtime environment in use.
- */
-#define XERRORS_THROW(type, message, error) xerrors_throw(type, message, error)
+#define XERRORS(expression, message) xerrors(expression, message)
 
 /**
  * @brief Adds an expectation to the current test case.

@@ -21,7 +21,6 @@ int main(int argc, char **argv)
     unit_test_c_group( &runner);
     xignore_test_group(&runner);
     xexpect_test_group(&runner);
-    xerrors_test_group(&runner);
     xassert_test_group(&runner);
 
     return xtest_end(&runner);
