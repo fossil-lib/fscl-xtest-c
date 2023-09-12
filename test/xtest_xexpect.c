@@ -583,7 +583,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_files) {
     if (file == NULL) {
         fprintf(stderr, "Failed to open file.\n");
         return 1;
-    }
+    } // end if
 
     char buffer[1024];
     size_t size = sizeof(buffer);
