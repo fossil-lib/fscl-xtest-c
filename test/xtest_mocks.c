@@ -109,16 +109,16 @@ XTEST_CASE_FIXTURE(xmock_list_test_fixture, mock_list_operations) {
     xmock_doubly_linked_list_push_front(mock_structs.list, 22);
     xmock_doubly_linked_list_push_front(mock_structs.list, 32);
 
-    XASSERT_INT_EQUAL(xmock_doubly_linked_list_size(mock_structs.list), 2, "Should have been two nodes");
+    XASSERT_INT_EQUAL(xmock_doubly_linked_list_size(mock_structs.list), 2);
 
     xmock_doubly_linked_list_pop_front(mock_structs.list);
 
-    XASSERT_INT_EQUAL(xmock_doubly_linked_list_size(mock_structs.list), 1, "Should have been one node");
+    XASSERT_INT_EQUAL(xmock_doubly_linked_list_size(mock_structs.list), 1);
 }
 
 XTEST_CASE_FIXTURE(xmock_map_test_fixture, mock_map_operations) {
     xmock_map_put(mock_structs.map, 22, 42);
-    XASSERT_TRUE(xmock_map_contains(mock_structs.map, 22), "Shoud have contain key 22");
+    XASSERT_TRUE(xmock_map_contains(mock_structs.map, 22));
 }
 
 XTEST_CASE_FIXTURE(xmock_stack_test_fixture, mock_stack_operations) {
@@ -126,7 +126,7 @@ XTEST_CASE_FIXTURE(xmock_stack_test_fixture, mock_stack_operations) {
     xmock_stack_push(mock_structs.stack, 23);
     xmock_stack_push(mock_structs.stack, 11);
 
-    XASSERT_INT_EQUAL(xmock_stack_size(mock_structs.stack), 3, "Should have been three nodes");
+    XASSERT_INT_EQUAL(xmock_stack_size(mock_structs.stack), 3);
 }
 
 XTEST_CASE_FIXTURE(xmock_queue_test_fixture, mock_queue_operations) {
@@ -134,7 +134,7 @@ XTEST_CASE_FIXTURE(xmock_queue_test_fixture, mock_queue_operations) {
     xmock_queue_enqueue(mock_structs.queue, 23);
     xmock_queue_enqueue(mock_structs.queue, 11);
 
-    XASSERT_INT_EQUAL(xmock_queue_size(mock_structs.queue), 3, "Should have been three nodes");
+    XASSERT_INT_EQUAL(xmock_queue_size(mock_structs.queue), 3);
 }
 
 //
