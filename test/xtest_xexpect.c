@@ -603,7 +603,6 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_arrays) {
     int arr[] = {1, 2, 3, 4, 5};
     int size = sizeof(arr) / sizeof(arr[0]);
     int index1 = 2;
-    int index2 = 5;
 
     XEXPECT_ARRAY_INVALID_SIZE(size);                    // Should pass
     XEXPECT_ARRAY_INDEX_OUT_OF_BOUNDS(index1, size);     // Should pass
