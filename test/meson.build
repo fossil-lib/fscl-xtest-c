@@ -1,6 +1,7 @@
 if get_option('with_tests').enabled()
     exe = executable('xtest-runner',
         'xtest_runner.c',
+        'xtest_xerrors.c',
         'xtest_cases.c',
         'xtest_xignore.c',
         'xtest_xexpect.c',

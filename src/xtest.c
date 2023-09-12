@@ -37,7 +37,7 @@ XTestCliOption options[] = {
      { "--help",       "-h", "Print this message you see before you're eyes", &XTEST_FLAG_HELP }
  }; // end of command-line options
 
-// TODO: add —-only-tests, —-only-bench, —-only-ai, —-repeat, —-thread-run
+// TODO: add —-only-tests, —-only-bench, —-only-hive, --skip-error, --skip-assert, --skip-expect, --skip-bench, —-repeat, —-thread-run
 //       test <test_name> bench <bench_name> fixture <name>
 
 // TODO: add C++ compatibility for binding.
@@ -518,20 +518,37 @@ void xexpect(bool expression, const char *message) {
 } // end of func
 
 /**
- * @brief Custom assertion function with optional message.
+ * @brief Perform XUnit Test Case Error Check
  *
- * This function allows custom assertions and displays a message if the assertion fails.
- * It also provides an option to disable further assertion scanning after the first failure.
+ * The `xerrors` function is responsible for checking whether an exception was thrown
+ * during an XUnit test case. It compares the expected exception type and message (if provided)
+ * with the actual exception that occurred. If they match, the test case is considered to pass.
+ * Otherwise, it is marked as a failure.
  *
- * @param expression  The expression to be asserted (should evaluate to true for success).
- * @param message     An optional message to be displayed when the assertion fails.
+ * @param expression The expression that was expected to throw an exception.
+ * @param exception_type The type of the expected exception (or NULL for any type).
+ * @param exception_message The expected message associated with the exception (or NULL for any message).
  *
- * @return            None.
+ * The function uses setjmp and longjmp to handle exceptions. If no exception is thrown, it reports
+ * a failure. If an exception is thrown, it compares the type and message of the exception with
+ * the expected values.
+ *
+ * Example usage:
+ *
+ * ```c
+ * xerrors("expression_to_test()", "ExpectedException", "Exception message");
+ * ```
+ *
+ * This function is typically used within the XUnit testing framework to verify that specific
+ * exceptions are thrown during test cases.
+ *
+ * @note The behavior of this function relies on compiler-specific features and may vary
+ *       depending on the compiler and compiler flags used.
  */
 void xerrors(bool expression, const char *message) {
-    XERRORS_PASS_SCAN = true;
-
-    if (!expression) {
+    if (!XERRORS_PASS_SCAN) {
+        return;
+    } else if (!expression) {
         XERRORS_PASS_SCAN = false;
     } // end if, else if
 
