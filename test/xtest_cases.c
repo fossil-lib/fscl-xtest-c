@@ -22,9 +22,9 @@ XTEST_CASE(xbdd_logic_test) {
                 // Check the expected outcome
                 bool thenExecuted = true;
 
-                XEXPECT_TRUE(givenExecuted, "should have returned true from a true given");
-                XEXPECT_TRUE(whenExecuted, "should have returned true from a true when");
-                XEXPECT_TRUE(thenExecuted, "should have returned true from a true then");
+                XEXPECT(givenExecuted);
+                XEXPECT(whenExecuted);
+                XEXPECT(thenExecuted);
             }
         }
     }
@@ -46,7 +46,7 @@ XTEST_CASE(xbdd_user_account) {
 
                 // Simulate the scenario
                 float compareBalance = 500.0;
-                XEXPECT_FLOAT_LESS(accountBalance, compareBalance,"Insufficient funds for withdrawal");
+                XEXPECT_FLOAT_LESS(accountBalance, compareBalance);
             }
         }
     }
@@ -64,7 +64,7 @@ XTEST_CASE(xbdd_empty_cart) {
                 // Check the expected outcome
                 cartItemCount++;
 
-                XEXPECT_INT_EQUAL(cartItemCount, 1,"Darn it we forgot to add eggs in the cart");
+                XEXPECT_INT_EQUAL(cartItemCount, 1);
             }
         }
     }
@@ -84,8 +84,8 @@ XTEST_CASE(xbdd_valid_login) {
             THEN("the login should be successful") {
                 // Check the expected outcome
                 // Simulate login validation
-                XEXPECT_STRING_EQUAL(inputUsername, validUsername, "Invalid username");
-                XEXPECT_STRING_EQUAL(inputPassword, validPassword, "Invalid password");
+                XEXPECT_STRING_EQUAL(inputUsername, validUsername);
+                XEXPECT_STRING_EQUAL(inputPassword, validPassword);
             }
         }
 
@@ -97,8 +97,8 @@ XTEST_CASE(xbdd_valid_login) {
             THEN("the login should fail with an error message") {
                 // Check the expected outcome
                 // Simulate login validation
-                XEXPECT_STRING_EQUAL(inputUsername, validUsername, "Valid username but password should fail");
-                XEXPECT_STRING_NOT_EQUAL(inputPassword, validPassword, "Invalid password but didn't block");
+                XEXPECT_STRING_EQUAL(inputUsername, validUsername);
+                XEXPECT_STRING_NOT_EQUAL(inputPassword, validPassword);
             }
         }
     }
