@@ -352,11 +352,11 @@ extern "C"
 #define XEXPECT_BITS_NOT_LESS(actual, expected, mask)  XEXPECT(((actual) & (mask)) >= ((expected) & (mask)), "Bitwise less-than check failed")
 #define XEXPECT_BITS_LESS(actual, expected, mask)      XEXPECT(((actual) & (mask)) < ((expected) & (mask)), "Bitwise greater-than check failed")
 #define XEXPECT_BITS_NOT_GREATER(actual, expected, mask)            XEXPECT(((actual) & (mask)) <= ((expected) & (mask)), "Bitwise less-than-or-equal check failed")
-#define XEXPECT_BITS_GREATER(actual, expected, mask, message)       XEXPECT(((actual) & (mask)) > ((expected) & (mask)), "Bitwise greater-than-or-equal check failed")
+#define XEXPECT_BITS_GREATER(actual, expected, mask)                XEXPECT(((actual) & (mask)) > ((expected) & (mask)), "Bitwise greater-than-or-equal check failed")
 #define XEXPECT_BITS_NOT_LESS_EQUAL(actual, expected, mask)         XEXPECT(((actual) & (mask)) > ((expected) & (mask)), "Bitwise less-than-or-equal check failed")
 #define XEXPECT_BITS_LESS_EQUAL(actual, expected, mask)             XEXPECT(((actual) & (mask)) <= ((expected) & (mask)), "Bitwise greater-than-or-equal check failed")
 #define XEXPECT_BITS_NOT_GREATER_EQUAL(actual, expected, mask)      XEXPECT(((actual) & (mask)) < ((expected) & (mask)), "Bitwise less-than-or-equal check failed")
-#define XEXPECT_BITS_GREATER_EQUAL(actual, expected, mask, message) XEXPECT(((actual) & (mask)) >= ((expected) & (mask)), "Bitwise greater-than-or-equal check failed")
+#define XEXPECT_BITS_GREATER_EQUAL(actual, expected, mask)          XEXPECT(((actual) & (mask)) >= ((expected) & (mask)), "Bitwise greater-than-or-equal check failed")
 
 /**
  * @brief Macros for Expecting Various Value Comparisons
@@ -409,28 +409,26 @@ extern "C"
  * ```
  */
 
-#define XEXPECT_INT_WITHIN(actual, expected, tolerance)     XEXPECT(fabs((actual) - (expected)) <= (tolerance), "Integer value not within tolerance")
-#define XEXPECT_INT8_WITHIN(actual, expected, tolerance)    XEXPECT(fabs((actual) - (expected)) <= (tolerance), "8-bit Integer value not within tolerance")
-#define XEXPECT_INT16_WITHIN(actual, expected, tolerance)   XEXPECT(fabs((actual) - (expected)) <= (tolerance), "16-bit Integer value not within tolerance")
-#define XEXPECT_INT32_WITHIN(actual, expected, tolerance)   XEXPECT(fabs((actual) - (expected)) <= (tolerance), "32-bit Integer value not within tolerance")
-#define XEXPECT_INT64_WITHIN(actual, expected, tolerance)   XEXPECT(fabs((actual) - (expected)) <= (tolerance), "64-bit Integer value not within tolerance")
-#define XEXPECT_UINT_WITHIN(actual, expected, tolerance)    XEXPECT(fabs((actual) - (expected)) <= (tolerance), "Unsigned integer value not within tolerance")
-#define XEXPECT_UINT8_WITHIN(actual, expected, tolerance)   XEXPECT(fabs((actual) - (expected)) <= (tolerance), "8-bit Unsigned Integer value not within tolerance")
-#define XEXPECT_UINT16_WITHIN(actual, expected, tolerance)  XEXPECT(fabs((actual) - (expected)) <= (tolerance), "16-bit Unsigned Integer value not within tolerance")
-#define XEXPECT_UINT32_WITHIN(actual, expected, tolerance)  XEXPECT(fabs((actual) - (expected)) <= (tolerance), "32-bit Unsigned Integer value not within tolerance")
-#define XEXPECT_UINT64_WITHIN(actual, expected, tolerance)  XEXPECT(fabs((actual) - (expected)) <= (tolerance), "64-bit Unsigned Integer value not within tolerance")
-#define XEXPECT_HEX_WITHIN(actual, expected, tolerance)     XEXPECT(fabs((actual) - (expected)) <= (tolerance), "Hexadecimal value not within tolerance")
-#define XEXPECT_HEX8_WITHIN(actual, expected, tolerance)    XEXPECT(fabs((actual) - (expected)) <= (tolerance), "8-bit Hexadecimal value not within tolerance")
-#define XEXPECT_HEX16_WITHIN(actual, expected, tolerance)   XEXPECT(fabs((actual) - (expected)) <= (tolerance), "16-bit Hexadecimal value not within tolerance")
-#define XEXPECT_HEX32_WITHIN(actual, expected, tolerance)   XEXPECT(fabs((actual) - (expected)) <= (tolerance), "32-bit Hexadecimal value not within tolerance")
-#define XEXPECT_HEX64_WITHIN(actual, expected, tolerance)   XEXPECT(fabs((actual) - (expected)) <= (tolerance), "64-bit Hexadecimal value not within tolerance")
+#define XEXPECT_INT_WITHIN(actual, expected, tolerance)     XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "Integer value not within tolerance")
+#define XEXPECT_INT8_WITHIN(actual, expected, tolerance)    XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "8-bit Integer value not within tolerance")
+#define XEXPECT_INT16_WITHIN(actual, expected, tolerance)   XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "16-bit Integer value not within tolerance")
+#define XEXPECT_INT32_WITHIN(actual, expected, tolerance)   XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "32-bit Integer value not within tolerance")
+#define XEXPECT_INT64_WITHIN(actual, expected, tolerance)   XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "64-bit Integer value not within tolerance")
+#define XEXPECT_UINT_WITHIN(actual, expected, tolerance)    XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "Unsigned integer value not within tolerance")
+#define XEXPECT_UINT64_WITHIN(actual, expected, tolerance)  XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "64-bit Unsigned Integer value not within tolerance")
+#define XEXPECT_HEX_WITHIN(actual, expected, tolerance)     XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "Hexadecimal value not within tolerance")
+#define XEXPECT_HEX8_WITHIN(actual, expected, tolerance)    XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "8-bit Hexadecimal value not within tolerance")
+#define XEXPECT_HEX16_WITHIN(actual, expected, tolerance)   XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "16-bit Hexadecimal value not within tolerance")
+#define XEXPECT_HEX32_WITHIN(actual, expected, tolerance)   XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "32-bit Hexadecimal value not within tolerance")
+#define XEXPECT_HEX64_WITHIN(actual, expected, tolerance)   XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "64-bit Hexadecimal value not within tolerance")
+#define XEXPECT_BIN_WITHIN(actual, expected, tolerance)     XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "Binary value not within tolerance")
+#define XEXPECT_OCT_WITHIN(actual, expected, tolerance)     XEXPECT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "Octal value not within tolerance")
 
-#define XEXPECT_BIN_WITHIN(actual, expected, tolerance)     XEXPECT(fabs((actual) - (expected)) <= (tolerance), "Binary value not within tolerance")
-#define XEXPECT_OCT_WITHIN(actual, expected, tolerance)     XEXPECT(fabs((actual) - (expected)) <= (tolerance), "Octal value not within tolerance")
 #define XEXPECT_FLOAT_WITHIN(actual, expected, epsilon)     XEXPECT(fabs((actual) - (expected)) <= (epsilon), "Float value not within epsilon")
 #define XEXPECT_DOUBLE_WITHIN(actual, expected, epsilon)    XEXPECT(fabs((actual) - (expected)) <= (epsilon), "Double value not within epsilon")
-#define XEXPECT_CHAR_WITHIN(actual, min, max)               XEXPECT((value) > (min) || (value) < (max), "Character value not within range")
-#define XEXPECT_WCHAR_WITHIN(actual, min, max)              XEXPECT((value) > (min) || (value) < (max), "W-Character value not within range")
+
+#define XEXPECT_CHAR_WITHIN(actual, min, max)               XEXPECT((actual) > (min) || (actual) < (max), "Character value not within range")
+#define XEXPECT_WCHAR_WITHIN(actual, min, max)              XEXPECT((actual) > (min) || (actual) < (max), "W-Character value not within range")
 
 /**
  * @brief Macros for Expecting Float Value Comparisons
@@ -800,8 +798,8 @@ extern "C"
  */
 
 #define XEXPECT_FILE_OPEN(file)                 XEXPECT((file) != NULL, "Failed to open file")
-#define XEXPECT_FILE_READ(file)                 XEXPECT(fread(buffer, sizeof(char), size, file) == size, "Failed to read from file")
-#define XEXPECT_FILE_WRITE(file)                XEXPECT(fwrite(data, sizeof(char), size, file) == size, "Failed to write to file")
+#define XEXPECT_FILE_READ(file, buffer, size)   XEXPECT(fread(buffer, sizeof(char), size, file) == size, "Failed to read from file")
+#define XEXPECT_FILE_WRITE(file, data, size)    XEXPECT(fwrite(data, sizeof(char), size, file) == size, "Failed to write to file")
 #define XEXPECT_FILE_SEEK(file, offset, whence) XEXPECT(fseek(file, offset, whence) == 0, "Failed to seek within file")
 #define XEXPECT_FILE_TELL(file)                 XEXPECT(ftell(file) != -1L, "Failed to get file position")
 #define XEXPECT_FILE_CLOSE(file)                XEXPECT(fclose(file) == 0, "Failed to close file")

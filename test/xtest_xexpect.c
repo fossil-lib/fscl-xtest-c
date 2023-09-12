@@ -267,7 +267,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_bits) {
     XEXPECT_BITS_LOW(value2, mask);                           // Should pass
     XEXPECT_BITS_NOT_EQUAL(value1, value2, mask);              // Should pass
     XEXPECT_BITS_LESS(value2, value1, mask);                   // Should pass
-    XEXPECT_BITS_GREATER(value2, value1, mask, "Error here");  // Should pass
+    XEXPECT_BITS_GREATER(value2, value1, mask);                // Should pass
     XEXPECT_BITS_LESS_EQUAL(value2, value1, mask);             // Should pass
     XEXPECT_BITS_GREATER_EQUAL(value2, value1, mask);          // Should pass
 } // end case
@@ -582,7 +582,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_files) {
     FILE *file = fopen("example.txt", "r");
     if (file == NULL) {
         fprintf(stderr, "Failed to open file.\n");
-        return 1;
+        XTEST_IGNORE("File not found in test directory");
     } // end if
 
     char buffer[1024];
