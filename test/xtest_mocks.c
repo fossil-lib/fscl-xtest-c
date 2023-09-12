@@ -40,17 +40,17 @@ XTEST_TEARDOWN(xmockup_test_fixture) {
 //
 XTEST_CASE_FIXTURE(xmockup_test_fixture, xmock_stub_bar) {
     xmock_float result = xmock_bar(3.0f); // Result: 4.500000
-    XASSERT_FLOAT_EQUAL(result, 4.6f, 4.3, "'x' should be equal to 'y'");
+    XASSERT_FLOAT_EQUAL(result, 4.6f, 4.3);
 } // end of case
 
 XTEST_CASE_FIXTURE(xmockup_test_fixture, xmock_stub_baz) {
     xmock_string result = xmock_baz("Hello, world!");
-    XASSERT_STRING_EQUAL(result, "Hello, world!", "'x' should be equal to 'y'");
+    XASSERT_STRING_EQUAL(result, "Hello, world!");
 } // end of case
 
 XTEST_CASE_FIXTURE(xmockup_test_fixture, xmock_stub_foo) {
     xmock_int result = xmock_foo(10);
-    XASSERT_INT_EQUAL(result, 20, "'x' should be equal to 'y'");
+    XASSERT_INT_EQUAL(result, 20);
 } // end of case
 
 //

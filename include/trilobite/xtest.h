@@ -278,7 +278,6 @@ XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixtur
 //
 // XEXPECT: expectation function with optional message.
 // XASSERT: assertion function with optional message.
-// XERRORS: throw error function with optional message.
 // XIGNORE: ignored with a specified reason and prints it to stderr
 //
 // ------------------------------------------------------------------------
@@ -293,18 +292,6 @@ XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixtur
  * @param reason  The reason for ignoring the test case.
  */
 XTEST_API void xignore(const char* reason);
-
-/**
- * @brief Reports an error condition with an optional error message.
- *
- * This function is used to report an error condition, typically within a testing context.
- * It evaluates an expression and, if it evaluates to false (indicating an error), it may
- * display an optional error message.
- *
- * @param expression  The expression to evaluate for an error condition.
- * @param message     An optional error message to be displayed if the expression is false.
- */
-XTEST_API void xerrors(bool expression, const char *message);
 
 /**
  * @brief Custom assertion function with optional message.
@@ -342,17 +329,6 @@ XTEST_API void xexpect(bool expression, const char *message);
  *                    Otherwise, the assertion passes, and nothing happens.
  */
 #define XASSERT(expression, message) xassert(expression, message)
-
-/**
- * @brief Adds an error case assertion to the current test case.
- *
- * @param expression  The expression to evaluate.
- * @param message     The message to display if the assertion fails.
- *
- * @return            If the expression evaluates to false, the assertion fails, and the message is displayed.
- *                    Otherwise, the assertion passes, and nothing happens.
- */
-#define XERRORS(expression, message) xerrors(expression, message)
 
 /**
  * @brief Adds an expectation to the current test case.

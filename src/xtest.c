@@ -18,7 +18,6 @@
 const char *XTEST_VERSION = "0.3.1";
 
 // Static control panel for assert/expect and marks
-static bool XERRORS_PASS_SCAN = true;
 static bool XEXPECT_PASS_SCAN = true;
 static bool XASSERT_PASS_SCAN = true;
 static bool XIGNORE_TEST_CASE = false;
@@ -83,29 +82,6 @@ static void xtest_output_xexpect(bool expression, const char *message) {
         printf(ANSI_COLOR_BLUE "[RESULT]  :" ANSI_COLOR_RESET " %s\n", expression? "PASS" : "FAIL");
     } else {
         puts("[EXPECT] XUnit Test Case Expect");
-        printf("[MESSAGE] : %s\n", message);
-        printf("[RESULT]  : %s\n", expression? "PASS" : "FAIL");
-    } // end if else
-} // end of func
-
-/**
- * @brief Output for XUnit Test Case Error.
- *
- * Outputs information related to an error condition in a test case, including the error status (PASS/FAIL)
- * and an optional error message.
- *
- * @param expression  The result of the error condition (true for pass, false for fail).
- * @param message     An optional message associated with the error.
- */
-static void xtest_output_xerrors(bool expression, const char *message) {
-    if (XTEST_FLAG_COLORED) {
-        puts(ANSI_COLOR_BLUE "[ERROR] XUnit Test Case Error" ANSI_COLOR_RESET);
-        if (!expression) {
-            printf(ANSI_COLOR_BLUE "[MESSAGE] :" ANSI_COLOR_RESET " %s\n", message);
-        } // end if
-        printf(ANSI_COLOR_BLUE "[RESULT]  :" ANSI_COLOR_RESET " %s\n", expression? "PASS" : "FAIL");
-    } else {
-        puts("[ERROR] XUnit Test Case Error");
         printf("[MESSAGE] : %s\n", message);
         printf("[RESULT]  : %s\n", expression? "PASS" : "FAIL");
     } // end if else
@@ -334,12 +310,7 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
         bool test_passed = true; // Assume the test passes by default
 
         // Check whether expectation scanning is enabled
-        if (!XEXPECT_PASS_SCAN || !XERRORS_PASS_SCAN) {
-            // If any expectations fail, consider the test as failed
-            test_passed = false;
-        } // end if
-
-        if (!XASSERT_PASS_SCAN) {
+        if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN) {
             // If any expectations fail, consider the test as failed
             test_passed = false;
         } // end if
@@ -407,12 +378,7 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
         bool test_passed = true; // Assume the test passes by default
 
         // Check whether expectation scanning is enabled
-        if (!XEXPECT_PASS_SCAN || !XERRORS_PASS_SCAN) {
-            // If any expectations fail, consider the test as failed
-            test_passed = false;
-        } // end if
-
-        if (!XASSERT_PASS_SCAN) {
+        if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN) {
             // If any expectations fail, consider the test as failed
             test_passed = false;
         } // end if
@@ -513,35 +479,6 @@ void xexpect(bool expression, const char *message) {
             printf("%s", (XEXPECT_PASS_SCAN)? ANSI_COLOR_GREEN "O" ANSI_COLOR_RESET : ANSI_COLOR_RED "X" ANSI_COLOR_RESET);
         } else {
             printf("%s", (XEXPECT_PASS_SCAN)? "O" : "X");
-        } // end if else
-    } // end if else
-} // end of func
-
-/**
- * @brief Custom assertion function with optional message.
- *
- * This function allows custom assertions and displays a message if the assertion fails.
- * It also provides an option to disable further assertion scanning after the first failure.
- *
- * @param expression  The expression to be asserted (should evaluate to true for success).
- * @param message     An optional message to be displayed when the assertion fails.
- *
- * @return            None.
- */
-void xerrors(bool expression, const char *message) {
-    XERRORS_PASS_SCAN = true;
-
-    if (!expression) {
-        XERRORS_PASS_SCAN = false;
-    } // end if, else if
-
-    if (XTEST_FLAG_VERBOSE) {
-        xtest_output_xerrors(expression, message);
-    } else {
-        if (XTEST_FLAG_COLORED) {
-            printf("%s", (XERRORS_PASS_SCAN)? ANSI_COLOR_GREEN "O" ANSI_COLOR_RESET : ANSI_COLOR_RED "X" ANSI_COLOR_RESET);
-        } else {
-            printf("%s", (XERRORS_PASS_SCAN)? "O" : "X");
         } // end if else
     } // end if else
 } // end of func
