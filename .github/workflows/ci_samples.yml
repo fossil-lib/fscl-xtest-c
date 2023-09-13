@@ -3,7 +3,7 @@
 # author: Michael Gene Brockus (Dreamer)
 # gmail: <michaelbrockus@gmail.com>
 #
-name: Meson Build Run CI
+name: Samples CI
 
 #
 # We have is configured so that ci_runner_linux only runs
