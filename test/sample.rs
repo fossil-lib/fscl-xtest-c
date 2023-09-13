@@ -33,7 +33,7 @@ impl XTestSetup for BasicFixture {
         println!("Setting up the test fixture");
         // Perform setup operations here
     }
-}
+} // end of setup
 
 impl XTestTeardown for BasicFixture {
     fn teardown(&mut self) {
