@@ -22,7 +22,7 @@ XTEST_SETUP(basic_fixture) {
      printf("Setting up the test fixture\n"); // Perform setup operations here
  } // end of setup
 
- XTEST_TEARDOWN(basic_fixture) {
+XTEST_TEARDOWN(basic_fixture) {
      printf("Tearing down the test fixture\n"); // Perform teardown operations here
 } // end of teardown
 
