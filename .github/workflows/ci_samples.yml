@@ -54,7 +54,7 @@ jobs:
     - name: Install GDC for C/C++ (MacOS)
       if: matrix.os == 'macos-latest'
       run: |
-          brew install -y gcc
+          brew install gcc
     - name: Install Rust Compiler (Linux)
       if: matrix.os == 'ubuntu-latest'
       run: |
