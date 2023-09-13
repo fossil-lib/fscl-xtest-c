@@ -14,7 +14,7 @@ use trilobite::xtest::*;
 struct SomeData {
     some_data: i32,
     some_other_data: *const i8,
-}
+} // end of test data
 
 lazy_static::lazy_static! {
     static ref MY_DATA: SomeData = SomeData {
