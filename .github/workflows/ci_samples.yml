@@ -41,12 +41,11 @@ jobs:
     - name: Install Meson Build System
       run: |
           pip install meson ninja
-          sudo apt-get install -y gcc
     - name: Install GDC for D (Linux)
       if: matrix.os == 'ubuntu-latest'
       run: |
           sudo apt-get update
-          sudo apt-get install -y gdc
+          sudo apt-get install -y gdc gcc
     - name: Install Rust Compiler (Linux)
       if: matrix.os == 'ubuntu-latest'
       run: |
