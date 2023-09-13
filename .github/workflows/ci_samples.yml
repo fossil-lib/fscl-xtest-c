@@ -45,7 +45,16 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
           sudo apt-get update
-          sudo apt-get install -y gdc gcc
+          sudo apt-get install -y gdc gcc g++
+    - name: Install GDC for C/C++ (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc g++
+    - name: Install GDC for C/C++ (MacOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+          brew install -y gcc
     - name: Install Rust Compiler (Linux)
       if: matrix.os == 'ubuntu-latest'
       run: |
