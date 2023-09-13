@@ -9,5 +9,10 @@ if get_option('with_tests').enabled()
         'xtest_bench.c',
         dependencies : [trilo_xtest_c_dep])
 
+
     test('Execute project tests', exe)
+    test('Execute C Sample', executable('c-sample', 'sample.c', dependencies : [trilo_xtest_c_dep]))
+    if add_languages('cpp', required : false)
+        test('Execute C++ Sample', executable('c-sample', 'sample.cpp', dependencies : [trilo_xtest_c_dep]))
+    endif
 endif
