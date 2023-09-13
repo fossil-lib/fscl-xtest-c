@@ -26,7 +26,7 @@ on:
       - "**.build"
 
 jobs:
-  c_sample:
+  run_samples_on_linux:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
