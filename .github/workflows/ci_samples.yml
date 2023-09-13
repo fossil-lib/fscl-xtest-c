@@ -26,8 +26,11 @@ on:
       - "**.build"
 
 jobs:
-  run_samples_on_linux:
-    runs-on: ubuntu-latest
+  build_and_test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
     - name: Setup Python
@@ -39,6 +42,21 @@ jobs:
       run: |
           pip install meson ninja
           sudo apt-get install -y gcc
+    - name: Install D Compiler (Linux)
+      run: |
+          sudo apt-get update
+          sudo apt-get install -y dmd
+    - name: Install Rust Compiler (Linux)
+      run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    - name: Install D Compiler (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+          # Insert Windows-specific D compiler installation command here
+    - name: Install Rust Compiler (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+          # Insert Windows-specific Rust compiler installation command here
     - name: Setup Build Directory
       run: |
             meson setup builddir -Dwith_demo=enabled
@@ -49,55 +67,3 @@ jobs:
       run: |
             meson test -C builddir -v
       continue-on-error: true # Mark this step to continue even if it fails
-
-  run_samples_on_macos:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-        architecture: x64
-    - name: Install Meson Build System
-      run: |
-          pip install meson ninja
-    - name: Setup Build Directory
-      run: |
-            meson setup builddir -Dwith_demo=enabled
-    - name: Compile Source Code
-      run: |
-            meson compile -C builddir
-    - name: Test Project Code
-      run: |
-            meson test -C builddir -v
-      continue-on-error: true # Mark this step to continue even if it fails
-
-  run_samples_on_windows:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-        architecture: x64
-    - name: Install Meson Build System
-      run: |
-          pip install meson ninja
-    - name: Setup Build Directory
-      run: |
-            meson setup builddir -Dwith_demo=enabled
-    - name: Compile Source Code
-      run: |
-            meson compile -C builddir
-    - name: Test Project Code
-      run: |
-            meson test -C builddir -v
-      continue-on-error: true # Mark this step to continue even if it fails
-
-
-
-
-
-
