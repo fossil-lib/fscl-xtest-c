@@ -21,11 +21,11 @@ XTEST_DATA(SomeData) {
 XTEST_FIXTURE(basic_fixture);
 XTEST_SETUP(basic_fixture) {
      std::cout << "Setting up the test fixture" << std::endl; // Perform setup operations here
- }
+ } // end of setup
 
  XTEST_TEARDOWN(basic_fixture) {
      std::cout << "Tearing down the test fixture\n" << std::endl; // Perform teardown operations here
-}
+} // end of teardown
 
 //
 // XUNIT TESTS
