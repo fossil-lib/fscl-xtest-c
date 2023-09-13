@@ -3,3 +3,9 @@ option('with_tests',
     value : 'disabled',
     description : 'enable unit testing for this project'
 )
+
+option('with_demo',
+    type : 'feature',
+    value : 'disabled',
+    description : 'enable samples for this project'
+)
