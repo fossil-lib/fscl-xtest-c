@@ -13,7 +13,7 @@
 XTEST_DATA(SomeData) {
     int some_data;
     const char* some_other_data;
-}my_data;
+}my_data; // end test data
 
 //
 // XTEST FIXTURE
