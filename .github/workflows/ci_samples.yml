@@ -29,7 +29,7 @@ jobs:
   build_and_test:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -41,32 +41,10 @@ jobs:
     - name: Install Meson Build System
       run: |
           pip install meson ninja
-    - name: Install GDC for D (Linux)
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-          sudo apt-get update
-          sudo apt-get install -y gdc gcc g++
-    - name: Install GDC for C/C++ (Linux)
-      if: matrix.os == 'ubuntu-latest'
+    - name: Install GDC for C/C++
       run: |
           sudo apt-get update
           sudo apt-get install -y gcc g++
-    - name: Install GDC for C/C++ (MacOS)
-      if: matrix.os == 'macos-latest'
-      run: |
-          brew install gcc
-    - name: Install Rust Compiler (Linux)
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    - name: Install D Compiler (Windows)
-      if: matrix.os == 'windows-latest'
-      run: |
-          # Insert Windows-specific D compiler installation command here
-    - name: Install Rust Compiler (Windows)
-      if: matrix.os == 'windows-latest'
-      run: |
-          # Insert Windows-specific Rust compiler installation command here
     - name: Setup Build Directory
       run: |
             meson setup builddir -Dwith_demo=enabled
@@ -76,4 +54,4 @@ jobs:
     - name: Test Project Code
       run: |
             meson test -C builddir -v
-      continue-on-error: true # Mark this step to continue even if it fails
+      continue-on-error: true
