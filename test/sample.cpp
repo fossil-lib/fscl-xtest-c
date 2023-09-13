@@ -44,8 +44,8 @@ XTEST_CASE_FIXTURE(basic_fixture, failing_case) {
 int main(int argc, char** argv) {
     XUnitRunner runner = xtest_start(argc, argv);
 
-    xtest_run_test_fixture(&passing_case, &basic_fixture, &runner->stats);
-    xtest_run_test_fixture(&failing_case, &basic_fixture, &runner->stats);
+    xtest_run_test_fixture(&passing_case, &basic_fixture, &runner.stats);
+    xtest_run_test_fixture(&failing_case, &basic_fixture, &runner.stats);
 
     return xtest_end(&runner);
 } // end of function main
