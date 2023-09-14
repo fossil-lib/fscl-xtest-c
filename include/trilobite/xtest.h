@@ -1,4 +1,4 @@
-d/*
+/*
    under:   trilobite stdlib
    author:  Michael Gene Brockus (Dreamer)
    gmail:   <michaelbrockus@gmail.com>
