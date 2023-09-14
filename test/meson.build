@@ -11,3 +11,10 @@ if get_option('with_tests').enabled()
 
     test('Execute project tests', exe)
 endif
+
+if get_option('with_demo').enabled()
+    test('Execute C Sample', executable('c-sample', 'sample.c', dependencies : [trilo_xtest_c_dep]))
+    if add_languages('cpp', required : false)
+        test('Execute C++ Sample', executable('cpp-sample', 'sample.cpp', dependencies : [trilo_xtest_c_dep]))
+    endif
+endif

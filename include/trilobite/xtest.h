@@ -40,7 +40,6 @@ extern "C"
 #include <cstdio>
 #include <cmath>
 #include <ctime>
-
 #else
 #include <stdbool.h>
 #include <string.h>
@@ -50,9 +49,8 @@ extern "C"
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
-
 #endif
-
+   
 /**
  * @brief Structure representing a test case.
  *
