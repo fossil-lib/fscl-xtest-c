@@ -38,11 +38,10 @@ jobs:
       run: |
           pip install meson ninja
     - name: Install GCC for C/C++
+    - if: matrix.os == 'ubuntu-latest'
       run: |
-          if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
             sudo apt-get update
             sudo apt-get install -y gcc g++
-          fi
     - name: Setup Build Directory
       run: |
           meson setup builddir -Dwith_demo=enabled
