@@ -11,8 +11,6 @@ on:
       - "**.txt"
       - "**.c"
       - "**.cpp"
-      - "**.rs"
-      - "**.d"
       - "**.build"
   pull_request:
     branches:
@@ -21,15 +19,13 @@ on:
       - "**.txt"
       - "**.c"
       - "**.cpp"
-      - "**.rs"
-      - "**.d"
       - "**.build"
 
 jobs:
   build_and_test:
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -41,7 +37,7 @@ jobs:
     - name: Install Meson Build System
       run: |
           pip install meson ninja
-    - name: Install GDC for C/C++
+    - name: Install GCC for C/C++
       run: |
           sudo apt-get update
           sudo apt-get install -y gcc g++
