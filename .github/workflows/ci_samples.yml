@@ -25,7 +25,7 @@ jobs:
   build_and_test:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest]  # Add Windows to the matrix
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -39,15 +39,17 @@ jobs:
           pip install meson ninja
     - name: Install GCC for C/C++
       run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc g++
+          if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+            sudo apt-get update
+            sudo apt-get install -y gcc g++
+          fi
     - name: Setup Build Directory
       run: |
-            meson setup builddir -Dwith_demo=enabled
+          meson setup builddir -Dwith_demo=enabled
     - name: Compile Source Code
       run: |
-            meson compile -C builddir
+          meson compile -C builddir
     - name: Test Project Code
       run: |
-            meson test -C builddir -v
+          meson test -C builddir -v
       continue-on-error: true
