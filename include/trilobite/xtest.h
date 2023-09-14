@@ -1,4 +1,4 @@
-/*
+d/*
    under:   trilobite stdlib
    author:  Michael Gene Brockus (Dreamer)
    gmail:   <michaelbrockus@gmail.com>
@@ -32,16 +32,6 @@ extern "C"
     #define XTEST_API
 #endif
 
-#ifdef __cplusplus
-#include <cstring>
-#include <cstdlib>
-#include <cstdint>
-#include <cstddef>
-#include <cstdio>
-#include <cmath>
-#include <ctime>
-
-#else
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
@@ -50,8 +40,6 @@ extern "C"
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
-
-#endif
 
 /**
  * @brief Structure representing a test case.
@@ -413,6 +401,44 @@ XTEST_API void xexpect(bool expression, const char *message);
 
 #ifdef __cplusplus
 }
+#endif
+
+
+#ifdef __cplusplus
+#include <cstring>
+#include <cstdlib>
+#include <cstdint>
+#include <cstddef>
+#include <cstdio>
+#include <cmath>
+#include <ctime>
+
+namespace trilobite {
+
+    class XUnitRun {
+    public:
+        XUnitRun(int argc, char** argv) {
+            xtest_start(argc, argv, &runner_);
+        } // end of method
+
+        ~XUnitRun() {
+            xtest_end(&runner_);
+        } // end of method
+
+        int run_test_unit(XTestCase* test_case, XTestStats* stats) {
+            xtest_run_test_unit(test_case, stats);
+        } // end of method
+
+        int run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats) {
+            xtest_run_test_fixture(test_case, fixture, stats);
+        } // end of method
+
+    private:
+        XUnitRunner runner_;
+    };
+
+} // namespace trilobite
+
 #endif
 
 #endif
