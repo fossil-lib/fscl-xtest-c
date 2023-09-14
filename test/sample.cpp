@@ -5,7 +5,7 @@
    website: <https://trilobite.code.blog>
 */
 #include <trilobite/xtest.h>   // basic test tools
-#include <iostream>
+#include <iostream> // using std::cout and std::endl
 
 //
 // XTEST DATA
