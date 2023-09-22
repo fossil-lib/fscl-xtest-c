@@ -603,29 +603,122 @@ typedef struct {
 } XMockI2C;
 
 // Initialization function for mock peripheral
-void xmock_uart_init(XMockUART *uart, uint8_t id, uint32_t baud_rate, uint8_t data_bits, uint8_t stop_bits, uint8_t parity);
-void xmock_i2s_init(XMockI2S *i2s, uint8_t id, uint32_t sample_rate, uint8_t data_format, uint8_t channel_mode);
-void xmock_can_init(XMockCAN *can, uint8_t id, uint32_t bitrate);
-void xmock_bluetooth_init(XMockBluetooth *bluetooth, uint8_t id);
-void xmock_modbus_init(XMockModbus *modbus, uint8_t id, uint32_t baud_rate);
-void xmock_i2c_init(XMockI2C *i2c, uint8_t id, uint32_t speed, uint8_t address, uint8_t dir, uint8_t start, uint8_t ack);
-void xmock_spi_init(XMockSPI *spi, uint8_t id, uint8_t mode, uint32_t speed, uint8_t order, uint8_t cs, uint8_t bits, uint8_t duplex);
+XTEST_API void xmock_uart_init(XMockUART *uart, uint8_t id, uint32_t baud_rate, uint8_t data_bits, uint8_t stop_bits, uint8_t parity);
+XTEST_API void xmock_i2s_init(XMockI2S *i2s, uint8_t id, uint32_t sample_rate, uint8_t data_format, uint8_t channel_mode);
+XTEST_API void xmock_can_init(XMockCAN *can, uint8_t id, uint32_t bitrate);
+XTEST_API void xmock_bluetooth_init(XMockBluetooth *bluetooth, uint8_t id);
+XTEST_API void xmock_modbus_init(XMockModbus *modbus, uint8_t id, uint32_t baud_rate);
+XTEST_API void xmock_i2c_init(XMockI2C *i2c, uint8_t id, uint32_t speed, uint8_t address, uint8_t dir, uint8_t start, uint8_t ack);
+XTEST_API void xmock_spi_init(XMockSPI *spi, uint8_t id, uint8_t mode, uint32_t speed, uint8_t order, uint8_t cs, uint8_t bits, uint8_t duplex);
 
 // Transmit function for mock peripheral
-void xmock_uart_transmit(XMockUART *uart, uint8_t *tx_buffer, uint32_t length);
-void xmock_i2s_transmit(XMockI2S *i2s, uint8_t *tx_buffer, uint32_t length);
-void xmock_can_transmit(XMockCAN *can, uint8_t *tx_buffer, uint32_t length);
-void xmock_bluetooth_transmit(XMockBluetooth *bluetooth, uint8_t *tx_buffer, uint32_t length);
-void xmock_modbus_transmit(XMockModbus *modbus, uint8_t *tx_buffer, uint32_t length);
-void xmock_i2c_write(XMockI2C *i2c, uint8_t device_address, uint8_t *data, uint32_t length);
-void xmock_spi_transfer(XMockSPI *spi, uint8_t *tx_buffer, uint8_t *rx_buffer, uint32_t length);
+XTEST_API void xmock_uart_transmit(XMockUART *uart, uint8_t *tx_buffer, uint32_t length);
+XTEST_API void xmock_i2s_transmit(XMockI2S *i2s, uint8_t *tx_buffer, uint32_t length);
+XTEST_API void xmock_can_transmit(XMockCAN *can, uint8_t *tx_buffer, uint32_t length);
+XTEST_API void xmock_bluetooth_transmit(XMockBluetooth *bluetooth, uint8_t *tx_buffer, uint32_t length);
+XTEST_API void xmock_modbus_transmit(XMockModbus *modbus, uint8_t *tx_buffer, uint32_t length);
+XTEST_API void xmock_i2c_write(XMockI2C *i2c, uint8_t device_address, uint8_t *data, uint32_t length);
+XTEST_API void xmock_spi_transfer(XMockSPI *spi, uint8_t *tx_buffer, uint8_t *rx_buffer, uint32_t length);
 
 // Receive function for mock peripheral
-void xmock_uart_receive(XMockUART *uart, uint8_t *rx_buffer, uint32_t length);
-void xmock_can_receive(XMockCAN *can, uint8_t *rx_buffer, uint32_t length);
-void xmock_bluetooth_receive(XMockBluetooth *bluetooth, uint8_t *rx_buffer, uint32_t length);
-void xmock_modbus_receive(XMockModbus *modbus, uint8_t *rx_buffer, uint32_t length);
-void xmock_i2c_read(XMockI2C *i2c, uint8_t device_address, uint8_t *data, uint32_t length);
+XTEST_API void xmock_uart_receive(XMockUART *uart, uint8_t *rx_buffer, uint32_t length);
+XTEST_API void xmock_can_receive(XMockCAN *can, uint8_t *rx_buffer, uint32_t length);
+XTEST_API void xmock_bluetooth_receive(XMockBluetooth *bluetooth, uint8_t *rx_buffer, uint32_t length);
+XTEST_API void xmock_modbus_receive(XMockModbus *modbus, uint8_t *rx_buffer, uint32_t length);
+XTEST_API void xmock_i2c_read(XMockI2C *i2c, uint8_t device_address, uint8_t *data, uint32_t length);
+
+/**
+ * @struct XMockBattery
+ * @brief Represents a mock battery with voltage, current, capacity, and charging status.
+ *
+ * This structure simulates the behavior of a battery for testing and simulation purposes.
+ *
+ * @var XMockBattery::battery_id
+ *   The unique identifier of the battery.
+ * @var XMockBattery::voltage
+ *   The voltage of the battery in volts.
+ * @var XMockBattery::current
+ *   The current of the battery in amperes (positive for charging, negative for discharging).
+ * @var XMockBattery::capacity
+ *   The capacity of the battery in ampere-hours.
+ * @var XMockBattery::charging
+ *   The charging status of the battery (0 for not charging, 1 for charging).
+ */
+typedef struct {
+    uint8_t battery_id;
+    float voltage;
+    float current;
+    float capacity;
+    int charging;
+} XMockBattery;
+
+/**
+ * @brief Initializes an XMockBattery instance with the provided parameters.
+ *
+ * This function sets up the initial state of an XMockBattery instance, including its ID, voltage,
+ * capacity, and charging status.
+ *
+ * @param battery   Pointer to the XMockBattery instance to initialize.
+ * @param id        The unique identifier of the battery.
+ * @param voltage   The initial voltage of the battery in volts.
+ * @param capacity  The capacity of the battery in ampere-hours.
+ */
+XTEST_API void xmock_battery_init(XMockBattery *battery, uint8_t id, float voltage, float capacity);
+
+/**
+ * @brief Sets the current for the battery to simulate charging or discharging.
+ *
+ * This function allows you to set the current of the battery. A positive current value represents
+ * charging, while a negative current value represents discharging (power consumption).
+ *
+ * @param battery   Pointer to the XMockBattery instance.
+ * @param current   The current to set for the battery in amperes.
+ */
+XTEST_API void xmock_battery_set_current(XMockBattery *battery, float current);
+
+/**
+ * @brief Gets the voltage of the battery.
+ *
+ * This function returns the current voltage of the battery, which is a measure of its electrical
+ * potential in volts.
+ *
+ * @param battery   Pointer to the XMockBattery instance.
+ * @return The voltage of the battery in volts.
+ */
+XTEST_API float xmock_battery_get_voltage(XMockBattery *battery);
+
+/**
+ * @brief Gets the current of the battery.
+ *
+ * This function returns the current of the battery, which represents its charging (positive) or
+ * discharging (negative) rate in amperes.
+ *
+ * @param battery   Pointer to the XMockBattery instance.
+ * @return The current of the battery in amperes.
+ */
+XTEST_API float xmock_battery_get_current(XMockBattery *battery);
+
+/**
+ * @brief Gets the capacity of the battery.
+ *
+ * This function returns the total capacity of the battery, which is the amount of charge it can
+ * store in ampere-hours.
+ *
+ * @param battery   Pointer to the XMockBattery instance.
+ * @return The capacity of the battery in ampere-hours.
+ */
+XTEST_API float xmock_battery_get_capacity(XMockBattery *battery);
+
+/**
+ * @brief Sets the charging status of the battery.
+ *
+ * This function allows you to simulate the charging status of the battery. A value of 1 indicates
+ * that the battery is charging, while 0 indicates that it is not charging.
+ *
+ * @param battery       Pointer to the XMockBattery instance.
+ * @param is_charging   A flag indicating whether the battery is charging (1) or not (0).
+ */
+XTEST_API void xmock_battery_set_charging(XMockBattery *battery, int is_charging);
 
 /**
  * @brief Mock Microcontroller Emulation Structures

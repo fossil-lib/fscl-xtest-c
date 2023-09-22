@@ -1003,7 +1003,7 @@ void xmock_bluetooth_receive(XMockBluetooth *bluetooth, uint8_t *rx_buffer, uint
  */
 void xmock_modbus_init(XMockModbus *modbus, uint8_t id, uint32_t baud_rate) {
     modbus->modbus_id = id;
-    // Initialize Modbus configuration and data buffers if needed
+    modbus->baud_rate = baud_rate;
 } // end of func
 
 /**
@@ -1021,7 +1021,6 @@ void xmock_modbus_init(XMockModbus *modbus, uint8_t id, uint32_t baud_rate) {
  */
 void xmock_modbus_transmit(XMockModbus *modbus, uint8_t *tx_buffer, uint32_t length) {
     // Simulate Modbus transmission (replace with actual Modbus transmit logic)
-    // For demonstration, we'll print a message.
     printf("Modbus Transmit on Modbus %d\n", modbus->modbus_id);
 } // end of func
 
@@ -1040,7 +1039,6 @@ void xmock_modbus_transmit(XMockModbus *modbus, uint8_t *tx_buffer, uint32_t len
  */
 void xmock_modbus_receive(XMockModbus *modbus, uint8_t *rx_buffer, uint32_t length) {
     // Simulate Modbus reception (replace with actual Modbus receive logic)
-    // For demonstration, we'll print a message.
     printf("Modbus Receive on Modbus %d\n", modbus->modbus_id);
 } // end of func
 
@@ -1068,7 +1066,6 @@ void xmock_i2c_init(XMockI2C *i2c, uint8_t id, uint32_t speed, uint8_t address, 
     i2c->transfer_dir = dir;
     i2c->repeated_start = start;
     i2c->acknowledge = ack;
-    // Initialize I2C data buffers or other settings if needed
 } // end of func
 
 /**
@@ -1087,7 +1084,6 @@ void xmock_i2c_init(XMockI2C *i2c, uint8_t id, uint32_t speed, uint8_t address, 
  */
 void xmock_i2c_write(XMockI2C *i2c, uint8_t device_address, uint8_t *data, uint32_t length) {
     // Simulate I2C write (replace with actual I2C write logic)
-    // For demonstration, we'll print a message.
     printf("I2C Write on I2C %d\n", i2c->i2c_id);
 } // end of func
 
@@ -1107,7 +1103,6 @@ void xmock_i2c_write(XMockI2C *i2c, uint8_t device_address, uint8_t *data, uint3
  */
 void xmock_i2c_read(XMockI2C *i2c, uint8_t device_address, uint8_t *data, uint32_t length) {
     // Simulate I2C read (replace with actual I2C read logic)
-    // For demonstration, we'll print a message.
     printf("I2C Read on I2C %d\n", i2c->i2c_id);
 } // end of func
 
@@ -1155,6 +1150,96 @@ void xmock_spi_init(XMockSPI *spi, uint8_t id, uint8_t mode, uint32_t speed, uin
  */
 void xmock_spi_transfer(XMockSPI *spi, uint8_t *tx_buffer, uint8_t *rx_buffer, uint32_t length) {
     // Simulate SPI transfer (replace with actual SPI transfer logic)
-    // For demonstration, we'll print a message.
     printf("SPI Transfer on SPI %d\n", spi->spi_id);
+} // end of func
+
+/**
+ * @brief Initializes an XMockBattery instance.
+ *
+ * This function initializes the attributes of an XMockBattery instance, including its ID, voltage, capacity,
+ * and charging status. These attributes simulate the characteristics of a battery for testing and
+ * simulation purposes.
+ *
+ * @param battery   Pointer to the XMockBattery instance to initialize.
+ * @param id        The battery's unique identifier.
+ * @param voltage   The initial voltage of the battery.
+ * @param capacity  The capacity of the battery.
+ *
+ * @return None.
+ */
+void xmock_battery_init(XMockBattery *battery, uint8_t id, float voltage, float capacity) {
+    battery->battery_id = id;
+    battery->voltage = voltage;
+    battery->current = 0.0f; // Initialize current to 0
+    battery->capacity = capacity;
+    battery->charging = 0; // Not charging by default
+} // end of func
+
+/**
+ * @brief Sets the current for the battery (simulate power consumption or charging).
+ *
+ * This function simulates setting the current for the battery. A positive current value represents
+ * charging, while a negative current value represents power consumption or discharging.
+ *
+ * @param battery   Pointer to the XMockBattery instance.
+ * @param current   The current to set for the battery.
+ *
+ * @return None.
+ */
+void xmock_battery_set_current(XMockBattery *battery, float current) {
+    battery->current = current;
+} // end of func
+
+/**
+ * @brief Gets the voltage of the battery.
+ *
+ * This function returns the voltage of the battery, which is a measure of its electrical potential.
+ *
+ * @param battery   Pointer to the XMockBattery instance.
+ *
+ * @return The voltage of the battery.
+ */
+float xmock_battery_get_voltage(XMockBattery *battery) {
+    return battery->voltage;
+} // end of func
+
+/**
+ * @brief Gets the current of the battery.
+ *
+ * This function returns the current of the battery, which represents its charging or discharging rate.
+ *
+ * @param battery   Pointer to the XMockBattery instance.
+ *
+ * @return The current of the battery.
+ */
+float xmock_battery_get_current(XMockBattery *battery) {
+    return battery->current;
+} // end of func
+
+/**
+ * @brief Gets the capacity of the battery.
+ *
+ * This function returns the capacity of the battery, which is the total amount of charge it can store.
+ *
+ * @param battery   Pointer to the XMockBattery instance.
+ *
+ * @return The capacity of the battery.
+ */
+float xmock_battery_get_capacity(XMockBattery *battery) {
+    return battery->capacity;
+} // end of func
+
+/**
+ * @brief Sets the charging status of the battery.
+ *
+ * This function simulates setting the charging status of the battery. If 'is_charging' is non-zero (true),
+ * it indicates that the battery is currently charging; otherwise, it's not charging.
+ *
+ * @param battery       Pointer to the XMockBattery instance.
+ * @param is_charging   A flag indicating whether the battery is charging (1) or not (0).
+ *
+ * @return None.
+ */
+void xmock_battery_set_charging(XMockBattery *battery, int is_charging) {
+    battery->charging = is_charging;
 } // end of func
