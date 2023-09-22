@@ -5,6 +5,7 @@ if get_option('with_tests').enabled()
         'xtest_xignore.c',
         'xtest_xexpect.c',
         'xtest_xassert.c',
+        'xmock_embedded.c',
         'xtest_mocks.c',
         'xtest_bench.c',
         dependencies : [trilo_xtest_c_dep])
