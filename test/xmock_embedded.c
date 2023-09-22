@@ -14,6 +14,7 @@ XTEST_DATA(TestHardware) {
     XMockActuator actuator;
     XMockSensor sensor;
     XMockMotor motor;
+    XMockBattery battery;
 } hardware; // end of mock hardware
 
 XTEST_DATA(TestHardwareRapPi) {
@@ -89,6 +90,26 @@ XTEST_CASE_FIXTURE(xmockup_hardware_fixture, xmock_hardware_actuator_turn_on_off
     xmock_actuator_turn_off(&hardware.actuator);
     XASSERT_UINT8_EQUAL(6, hardware.actuator.actuator_id);
     XASSERT_INT_EQUAL(0, hardware.actuator.state);
+}
+
+XTEST_CASE_FIXTURE(xmockup_hardware_fixture, xmock_hardware_battery) {
+    XMockBattery battery;
+    xmock_battery_init(&battery, 1, 3.7f, 2000.0f); // Initialize a battery with 3.7V and 2000mAh capacity
+
+    // Simulate discharging with a current of 100mA
+    xmock_battery_set_current(&battery, -0.1f);
+
+    // Check battery voltage and current
+    XASSERT_FLOAT_EQUAL(3.7f, xmock_battery_get_voltage(&battery), 0.001);
+    XASSERT_FLOAT_EQUAL(-0.1f, xmock_battery_get_current(&battery), 0.001);
+
+    // Simulate charging with a current of 500mA
+    xmock_battery_set_charging(&battery, 1);
+    xmock_battery_set_current(&battery, 0.5f);
+
+    // Check battery charging status and current
+    XASSERT_INT_EQUAL(1, battery.charging);
+    XASSERT_FLOAT_EQUAL(0.5f, xmock_battery_get_current(&battery), 0.001);
 }
 
 //
@@ -460,6 +481,7 @@ void xmockup_hardware_group(XUnitRunner *runner) {
     xtest_run_test_fixture(&xmock_hardware_motor_set_speed,      &xmockup_hardware_fixture, &runner->stats);
     xtest_run_test_fixture(&xmock_hardware_actuator_init,        &xmockup_hardware_fixture, &runner->stats);
     xtest_run_test_fixture(&xmock_hardware_actuator_turn_on_off, &xmockup_hardware_fixture, &runner->stats);
+    xtest_run_test_fixture(&xmock_hardware_battery,              &xmockup_hardware_fixture, &runner->stats);
 
     xtest_run_test_fixture(&xmock_raspi3_init_pin,    &xmockup_raspi3_fixture, &runner->stats);
     xtest_run_test_fixture(&xmock_raspi3_read_pin,    &xmockup_raspi3_fixture, &runner->stats);
