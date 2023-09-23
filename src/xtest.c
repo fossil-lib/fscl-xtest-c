@@ -212,11 +212,11 @@ static void xtest_output_xunittest_format_end(XTestCase* test_case) {
         if (XTEST_FLAG_COLORED) {
             printf(ANSI_COLOR_BLUE "time: %.6lu\nignore: %s\n" ANSI_COLOR_RESET,
                 test_case->elapsed_time, test_case->ignored? "yes" : "no");
-            puts(ANSI_COLOR_BLUE "[Current unit done]\n" ANSI_COLOR_RESET);
+            puts(ANSI_COLOR_BLUE "[Current unit done]\n\n" ANSI_COLOR_RESET);
         } else {
-            printf("time: %.6lu\nignore: %s\n\n",
+            printf("time: %.6lu\nignore: %s\n",
                 test_case->elapsed_time, test_case->ignored? "yes" : "no");
-            puts("[Current unit done]\n");
+            puts("[Current unit done]\n\n");
         } // end if else
     } else if (XTEST_FLAG_CUTBACK) {
         if (XTEST_FLAG_COLORED) {
