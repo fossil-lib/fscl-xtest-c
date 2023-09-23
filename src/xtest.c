@@ -41,8 +41,6 @@ XTestCliOption options[] = {
 // TODO: add —-only-tests, —-only-bench, —-only-ai, —-repeat, —-thread-run
 //       test <test_name> bench <bench_name> fixture <name>
 
-// TODO: add C++ compatibility for binding.
-
 /**
  * @brief Output for XUnit Test Case Assert.
  *
