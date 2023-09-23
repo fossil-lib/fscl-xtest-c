@@ -18,15 +18,15 @@ XTEST_DATA(TestHardware) {
 } hardware; // end of mock hardware
 
 XTEST_DATA(TestHardwareRapPi) {
-    XMockRaspberryPiGPIO gpio;
+    XMockRaspberryPiGPIO *gpio;
 } raspi_controller; // end of mock hardware
 
 XTEST_DATA(TestHardwareSTMicro) {
-    XMockStMicroGPIO gpio;
+    XMockStMicroGPIO *gpio;
 } stm_controller; // end of mock hardware
 
 XTEST_DATA(TestHardwareArduino) {
-    XMockArduinoUnoGPIO gpio;
+    XMockArduinoUnoGPIO *gpio;
 } uno_controller; // end of mock hardware
 
 //
