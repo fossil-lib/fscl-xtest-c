@@ -94,6 +94,20 @@ XMockFile* xmock_io_fopen(const char* filename, const char* mode);
 size_t xmock_io_fread(void* ptr, size_t size, size_t count, XMockFile* stream);
 
 /**
+ * @brief Sets the file position indicator of a mocked file stream.
+ *
+ * This function simulates setting the file position indicator of the specified file stream to
+ * the given offset from the specified origin. It allows seeking within the file stream's data.
+ *
+ * @param stream    The XMockFile pointer representing the file stream to seek within.
+ * @param offset    The offset in bytes from the origin.
+ * @param origin    The origin from which to calculate the new position (SEEK_SET, SEEK_CUR, or SEEK_END).
+ *
+ * @return 0 if the seek operation is successful, non-zero otherwise.
+ */
+int xmock_io_fseek(XMockFile* stream, long offset, int origin);
+
+/**
  * @brief Closes a mocked file stream.
  *
  * This function simulates closing the specified file stream, releasing any associated resources.
