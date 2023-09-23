@@ -84,7 +84,7 @@ XTEST_CASE_FIXTURE(xmockup_func_fixture, xmock_func_log_message) {
     FILE* logFile = fopen("log.txt", "r");
     char buffer[100];
     fgets(buffer, sizeof(buffer), logFile);
-    XASSERT_EQUAL_STRING("Log: Test log message (Level: 3)\n", buffer);
+    XASSERT_STRING_EQUAL("Log: Test log message (Level: 3)\n", buffer);
 
     fclose(logFile);
 }
