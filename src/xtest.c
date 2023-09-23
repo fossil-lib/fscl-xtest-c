@@ -31,7 +31,7 @@ static bool XTEST_FLAG_HELP       = false;
 
 // XUnit options for the tester to switch on-off
 XTestCliOption options[] = {
-     { "--cutback",    "-C", "Show more information to standard output", &XTEST_FLAG_CUTBACK },
+     { "--cutback",    "-C", "Show less information to standard output", &XTEST_FLAG_CUTBACK },
      { "--verbose",    "-V", "Show more information to standard output", &XTEST_FLAG_VERBOSE },
      { "--version",    "-v", "Get the version of this test framework", &XTEST_FLAG_VERSION },
      { "--color"  ,    "-c", "Enable color text output", &XTEST_FLAG_COLORED },
@@ -53,6 +53,7 @@ XTestCliOption options[] = {
  * @param message     An optional message associated with the assertion.
  */
 static void xtest_output_xassert(bool expression, const char *message, const char* file, int line, const char* func) {
+    if (!expression) {
     if (XTEST_FLAG_VERBOSE) {
         if (XTEST_FLAG_COLORED) {
             puts(ANSI_COLOR_BLUE  "[Asserted case faild]" ANSI_COLOR_RESET);
@@ -80,6 +81,7 @@ static void xtest_output_xassert(bool expression, const char *message, const cha
             printf("message: %s\n", message);
         } // end if else
     } // end if, if else, else
+    } // end if
 } // end of func
 
 /**
@@ -92,6 +94,7 @@ static void xtest_output_xassert(bool expression, const char *message, const cha
  * @param message     An optional message associated with the expectation.
  */
 static void xtest_output_xexpect(bool expression, const char *message, const char* file, int line, const char* func) {
+    if (!expression) {
     if (XTEST_FLAG_VERBOSE) {
         if (XTEST_FLAG_COLORED) {
             puts(ANSI_COLOR_BLUE  "[Expect assert faild]" ANSI_COLOR_RESET);
@@ -119,6 +122,7 @@ static void xtest_output_xexpect(bool expression, const char *message, const cha
             printf("message: %s\n", message);
         } // end if else
     } // end if, if else, else
+    } // end if
 } // end of func
 
 /**
@@ -206,26 +210,26 @@ static void xtest_output_xunittest_format_start(XTestCase* test_case, XTestStats
 static void xtest_output_xunittest_format_end(XTestCase* test_case) {
     if (XTEST_FLAG_VERBOSE) {
         if (XTEST_FLAG_COLORED) {
-            printf(ANSI_COLOR_BLUE "time: %.6lu\nignore: %s\n" ANSI_COLOR_RESET,
+            printf(ANSI_COLOR_BLUE "time: %.6lu\nignore: %s\n\n" ANSI_COLOR_RESET,
                 test_case->elapsed_time, test_case->ignored? "yes" : "no");
-            puts(ANSI_COLOR_BLUE "[Current unit done]" ANSI_COLOR_RESET);
+            puts(ANSI_COLOR_BLUE "[Current unit done]\n" ANSI_COLOR_RESET);
         } else {
-            printf("time: %.6lu\nignore: %s\n",
+            printf("time: %.6lu\nignore: %s\n\n",
                 test_case->elapsed_time, test_case->ignored? "yes" : "no");
-            puts("[Current unit done]");
+            puts("[Current unit done]\n");
         } // end if else
     } else if (XTEST_FLAG_CUTBACK) {
         if (XTEST_FLAG_COLORED) {
-            printf(ANSI_COLOR_BLUE "time: %.6lu\n" ANSI_COLOR_RESET, test_case->elapsed_time);
+            printf(ANSI_COLOR_BLUE "time: %.6lu\n\n" ANSI_COLOR_RESET, test_case->elapsed_time);
         } else {
-            printf("time: %.6lu\n", test_case->elapsed_time);
+            printf("time: %.6lu\n\n", test_case->elapsed_time);
         } // end if else
     } else {
         if (XTEST_FLAG_COLORED) {
-            printf(ANSI_COLOR_BLUE "time: %.6lu\nignore: %s\n" ANSI_COLOR_RESET,
+            printf(ANSI_COLOR_BLUE "time: %.6lu\nignore: %s\n\n" ANSI_COLOR_RESET,
                 test_case->elapsed_time, test_case->ignored? "yes" : "no");
         } else {
-            printf("time: %.6lu\nignore: %s\n",
+            printf("time: %.6lu\nignore: %s\n\n",
                 test_case->elapsed_time, test_case->ignored? "yes" : "no");
         } // end if else
     } // end if, if else, else
