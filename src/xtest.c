@@ -37,8 +37,8 @@ XTestCliOption options[] = {
      { "--verbose",    "-V", "Show more information to standard output", &XTEST_FLAG_VERBOSE },
      { "--version",    "-v", "Get the version of this test framework", &XTEST_FLAG_VERSION },
      { "--color"  ,    "-c", "Enable color text output", &XTEST_FLAG_COLORED },
-     { "--help",       "-h", "Print this message you see before you're eyes", &XTEST_FLAG_HELP }
-     { "--reapet"  ,   "-r", "Reapet test cases number of times (0-100)", &XTEST_FLAG_REPEAT },
+     { "--help",       "-h", "Print this message you see before you're eyes", &XTEST_FLAG_HELP },
+     { "--reapet"  ,   "-r", "Reapet test cases number of times (0-100)", &XTEST_FLAG_REPEAT }
  }; // end of command-line options
 
 /**
