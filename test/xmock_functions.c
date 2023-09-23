@@ -6,6 +6,7 @@
 */
 #include "xtest_fixtures.h"
 #include "trilobite/xmock.h"
+#include <stdio.h> // for printf and file reading
 
 //
 // MOCK FUNCTIONS
