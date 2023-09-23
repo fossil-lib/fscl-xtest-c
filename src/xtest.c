@@ -360,7 +360,7 @@ XUnitRunner xtest_start(int argc, char **argv) {
 
             if (*end_ptr != '\0') {
                 fprintf(stderr, "Error: Invalid number after --repeat\n");
-                return 1; // Exit with an error code
+                exit(1); // Exit with an error code
             } // end if
 
             i++; // Skip the next argument since we've already processed it
