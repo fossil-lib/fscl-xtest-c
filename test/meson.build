@@ -1,4 +1,5 @@
 if get_option('with_tests').enabled()
+    install_data('test.txt', 'empty.txt', 'large.txt')
     exe = executable('xtest-runner',
         'xtest_runner.c',
         'xtest_cases.c',
@@ -8,7 +9,6 @@ if get_option('with_tests').enabled()
         'xtest_mocks.c',
         'xtest_bench.c',
         'xmock_files.c',
-        include_directories : include_directories('.'),
         dependencies : [trilo_xtest_c_dep])
 
     test('Execute project tests', exe)
