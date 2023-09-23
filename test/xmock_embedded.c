@@ -47,7 +47,7 @@ XTEST_TEARDOWN(xmockup_hardware_fixture) {
 XTEST_CASE_FIXTURE(xmockup_hardware_fixture, xmock_hardware_sensor_init) {
     xmock_sensor_init(&hardware.sensor, 1);
     XASSERT_UINT8_EQUAL(1, hardware.sensor.sensor_id);
-    XASSERT_FLOAT_WITHIN(0.001, 0.0, hardware.sensor.value);
+    XASSERT_FLOAT_WITHIN(0.0, 0.0001, hardware.sensor.value);
 }
 
 XTEST_CASE_FIXTURE(xmockup_hardware_fixture, xmock_hardware_sensor_read) {
