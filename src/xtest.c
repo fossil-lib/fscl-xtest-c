@@ -358,7 +358,7 @@ XUnitRunner xtest_start(int argc, char **argv) {
             char* end_ptr; // To check for conversion errors
             XTEST_ITER_REAPET = strtol(argv[i + 1], &end_ptr, 10);
 
-            if (*endPtr != '\0') {
+            if (*end_ptr != '\0') {
                 fprintf(stderr, "Error: Invalid number after --repeat\n");
                 return 1; // Exit with an error code
             } // end if
