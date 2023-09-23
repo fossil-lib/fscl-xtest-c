@@ -22,6 +22,7 @@ int main(int argc, char **argv)
     xignore_test_group(&runner);
     xexpect_test_group(&runner);
     xassert_test_group(&runner);
+    xmockup_hardware_group(&runner);
 
     return xtest_end(&runner);
 } // end of function main
