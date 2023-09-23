@@ -627,6 +627,7 @@ XTEST_API void xmock_bluetooth_receive(XMockBluetooth *bluetooth, uint8_t *rx_bu
 XTEST_API void xmock_modbus_receive(XMockModbus *modbus, uint8_t *rx_buffer, uint32_t length);
 XTEST_API void xmock_i2c_read(XMockI2C *i2c, uint8_t device_address, uint8_t *data, uint32_t length);
 
+
 /**
  * @struct XMockBattery
  * @brief Represents a mock battery with voltage, current, capacity, and charging status.
