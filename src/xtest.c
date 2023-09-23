@@ -177,7 +177,7 @@ static void xtest_output_xunittest_format_start(XTestCase* test_case, XTestStats
                 test_case->name, stats->total_count + 1, !test_case->is_benchmark? "Unit test" : "Benchmark");
         } else {
             puts("[Running XUnit Test]");
-            printf("name  : %s\n number: %.4i\ntype: %s\n",
+            printf("name  : %s\nnumber: %.4i\ntype: %s\n",
                 test_case->name, stats->total_count + 1, !test_case->is_benchmark? "Unit test" : "Benchmark");
         } // end if else
     } else if (XTEST_FLAG_CUTBACK) {
@@ -210,7 +210,7 @@ static void xtest_output_xunittest_format_start(XTestCase* test_case, XTestStats
 static void xtest_output_xunittest_format_end(XTestCase* test_case) {
     if (XTEST_FLAG_VERBOSE) {
         if (XTEST_FLAG_COLORED) {
-            printf(ANSI_COLOR_BLUE "time: %.6lu\nignore: %s\n\n" ANSI_COLOR_RESET,
+            printf(ANSI_COLOR_BLUE "time: %.6lu\nignore: %s\n" ANSI_COLOR_RESET,
                 test_case->elapsed_time, test_case->ignored? "yes" : "no");
             puts(ANSI_COLOR_BLUE "[Current unit done]\n" ANSI_COLOR_RESET);
         } else {
@@ -292,7 +292,7 @@ static void xtest_output_xunittest_report(XUnitRunner *runner) {
 void xtest_cli_print_usage(const char* program_name, const XTestCliOption* options, unsigned int num_options) {
     puts("########################################");
     printf("Usage: %s [options]\n", program_name);
-    printf("Options:\n");
+    puts("Options:");
 
     for (unsigned int i = 0; i < num_options; ++i) {
         printf("  %s %s\t%s\n", options[i].option_long_name, options[i].option_short_name, options[i].description);
@@ -368,15 +368,7 @@ XUnitRunner xtest_start(int argc, char **argv) {
  * @return          The count of failed tests.
  */
 int xtest_end(XUnitRunner *runner) {
-    if (XTEST_FLAG_VERBOSE) {
-        xtest_output_xunittest_report(runner);
-    } else {
-        puts("\n\n[TRILOBITE XUNIT RUNNER] results of the test");
-        printf("::passed: %.2d failed: %.2d ignored: %.2d total: %.2d\n", 
-            runner->stats.passed_count, runner->stats.failed_count,
-            runner->stats.ignored_count, runner->stats.total_count);
-    } // end if else
-
+    xtest_output_xunittest_report(runner);
     return runner->stats.failed_count;
 } // end of func
 
