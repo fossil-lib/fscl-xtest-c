@@ -418,10 +418,10 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
     } else {
         // Update the ignored count
         stats->ignored_count++;
-        XIGNORE_TEST_CASE = false;
     } // end if else
 
     xtest_output_xunittest_format_end(test_case);
+    XIGNORE_TEST_CASE = false;
 
     // Update the total count
     stats->total_count++;
@@ -482,10 +482,10 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
     } else {
         // Update the ignored count
         stats->ignored_count++;
-        XIGNORE_TEST_CASE = false;
     } // end if else
 
     xtest_output_xunittest_format_end(test_case);
+    XIGNORE_TEST_CASE = false;
 
     // Update the total count
     stats->total_count++;
