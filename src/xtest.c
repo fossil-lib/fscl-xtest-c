@@ -39,7 +39,7 @@ XTestCliOption options[] = {
  }; // end of command-line options
 
 // TODO: add —-only-tests, —-only-bench, —-only-ai, —-repeat, —-thread-run
-//       test <test_name> bench <bench_name> fixture <name>
+//       test <test_name> mark <bench_name>
 
 /**
  * @brief Output for XUnit Test Case Assert.
