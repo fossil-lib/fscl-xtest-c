@@ -1,9 +1,4 @@
-#
-# under: devops:
-# author: Michael Gene Brockus (Dreamer)
-# gmail: <michaelbrockus@gmail.com>
-#
-name: Samples CI
+name: CI Project Samples
 
 on:
   push:

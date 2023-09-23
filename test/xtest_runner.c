@@ -23,6 +23,7 @@ int main(int argc, char **argv)
     xassert_test_group(&runner);
     xmockup_test_group(&runner);
     xmockup_structs_group(&runner);
+    xmockup_hardware_group(&runner);
 
     return xtest_end(&runner);
 } // end of function main

@@ -1,9 +1,4 @@
-#
-# under: trilobite devpos:
-# author: Michael Gene Ridge Brockus
-# gmail: <michaelbrockus@gmail.com>
-#
-name: Analysis CodeQL
+name: CI Secere Code
 
 #
 # We have is configured so that analysis_codeql only runs
@@ -13,7 +8,6 @@ name: Analysis CodeQL
 on:
   push:
     paths:
-      - ".github/workflows/analysis_codeql.yml"
       - "**.c"     # C source files
       - "**.h"     # C header files
   pull_request:
@@ -21,7 +15,6 @@ on:
       - "main"
       - "next"
     paths:
-      - ".github/workflows/analysis_codeql.yml"
       - "**.c"     # C source files
       - "**.h"     # C header files
   schedule:

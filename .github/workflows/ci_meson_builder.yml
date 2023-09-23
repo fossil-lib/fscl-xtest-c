@@ -1,9 +1,4 @@
-#
-# under: devops:
-# author: Michael Gene Brockus (Dreamer)
-# gmail: <michaelbrockus@gmail.com>
-#
-name: Meson Build Run CI
+name: CI Meson Build Tester
 
 #
 # We have is configured so that ci_runner_linux only runs
@@ -13,13 +8,16 @@ name: Meson Build Run CI
 on:
   push:
     paths:
+      - "**.c"
+      - "**.h"
       - "**.txt"
       - "**.build"
   pull_request:
     branches:
       - "main"
-      - "next"
     paths:
+      - "**.c"
+      - "**.h"
       - "**.txt"
       - "**.build"
 
