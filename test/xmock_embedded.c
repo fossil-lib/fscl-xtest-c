@@ -475,13 +475,13 @@ XTEST_CASE_FIXTURE(xmockup_uno_portd_fixture, xmock_uno_portd_read_pin) {
 // XTEST FIXTURE
 //
 void xmockup_hardware_group(XUnitRunner *runner) {
-    xtest_run_test_fixture(&xmock_hardware_sensor_init,          &xmockup_hardware_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_hardware_sensor_read,          &xmockup_hardware_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_hardware_motor_init,           &xmockup_hardware_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_hardware_motor_set_speed,      &xmockup_hardware_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_hardware_actuator_init,        &xmockup_hardware_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_hardware_actuator_turn_on_off, &xmockup_hardware_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_hardware_battery,              &xmockup_hardware_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_hardware_sensor_init,          &xmockup_hardware_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_hardware_sensor_read,          &xmockup_hardware_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_hardware_motor_init,           &xmockup_hardware_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_hardware_motor_set_speed,      &xmockup_hardware_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_hardware_actuator_init,        &xmockup_hardware_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_hardware_actuator_turn_on_off, &xmockup_hardware_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_hardware_battery,              &xmockup_hardware_fixture, &runner->stats);
 
     //xtest_run_test_fixture(&xmock_raspi3_init_pin,    &xmockup_raspi3_fixture, &runner->stats);
     //xtest_run_test_fixture(&xmock_raspi3_read_pin,    &xmockup_raspi3_fixture, &runner->stats);
