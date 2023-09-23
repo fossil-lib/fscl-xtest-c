@@ -8,7 +8,7 @@
 #include "trilobite/xmock.h"
 
 XTEST_DATA(MockFiles) {
-    XMockFile file;
+    XMockFile *file;
 } dir;
 
 //
