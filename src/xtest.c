@@ -257,19 +257,19 @@ static void xtest_output_xunittest_report(XUnitRunner *runner) {
         } // end if else
     } else if (XTEST_FLAG_CUTBACK) {
         if (XTEST_FLAG_COLORED) {
-            printf(ANSI_COLOR_BLUE "pass: %.3i\nfail: %.3i\n" ANSI_COLOR_RESET,
+            printf(ANSI_COLOR_BLUE "pass: %.3i, fail: %.3i\n" ANSI_COLOR_RESET,
                 runner->stats.passed_count, runner->stats.failed_count);
         } else {
-            printf("pass: %.3i\nfail: %.3i\n",
+            printf("pass: %.3i, fail: %.3i\n",
                 runner->stats.passed_count, runner->stats.failed_count);
         } // end if else
     } else {
         if (XTEST_FLAG_COLORED) {
-            printf(ANSI_COLOR_BLUE "pass: %.3i\nfail: %.3i\nskip: %.3i\ntotal: %.3i\n"  ANSI_COLOR_RESET,
+            printf(ANSI_COLOR_BLUE "pass: %.3i, fail: %.3i, skip: %.3i, total: %.3i\n"  ANSI_COLOR_RESET,
                 runner->stats.passed_count, runner->stats.failed_count,
                 runner->stats.ignored_count, runner->stats.total_count);
         } else {
-            printf("pass: %.3i\nfail: %.3i\nskip: %.3i\ntotal: %.3i\n",
+            printf("pass: %.3i, fail: %.3i, skip: %.3i, total: %.3i\n",
                 runner->stats.passed_count, runner->stats.failed_count,
                 runner->stats.ignored_count, runner->stats.total_count);
         } // end if else
