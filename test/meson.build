@@ -8,6 +8,7 @@ if get_option('with_tests').enabled()
         'xtest_mocks.c',
         'xtest_bench.c',
         'xmock_files.c',
+        include_directories : include_directories('.'),
         dependencies : [trilo_xtest_c_dep])
 
     test('Execute project tests', exe)
