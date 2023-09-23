@@ -209,3 +209,72 @@ jobs:
     - name: Test Project Code
       run: |
             meson test -C builddir -v --test-args='--cutback —-color'
+
+  run_repeat_10:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        architecture: x64
+    - name: Install Meson Build System
+      run: |
+          pip install meson ninja
+          sudo apt-get install -y gcc
+    - name: Setup Build Directory
+      run: |
+            meson setup builddir -Dwith_tests=enabled
+    - name: Compile Source Code
+      run: |
+            meson compile -C builddir
+    - name: Test Project Code
+      run: |
+            meson test -C builddir -v --test-args='--repeat 10'
+
+  run_repeat_50:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        architecture: x64
+    - name: Install Meson Build System
+      run: |
+          pip install meson ninja
+          sudo apt-get install -y gcc
+    - name: Setup Build Directory
+      run: |
+            meson setup builddir -Dwith_tests=enabled
+    - name: Compile Source Code
+      run: |
+            meson compile -C builddir
+    - name: Test Project Code
+      run: |
+            meson test -C builddir -v --test-args='--repeat 50'
+
+  run_repeat_100:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        architecture: x64
+    - name: Install Meson Build System
+      run: |
+          pip install meson ninja
+          sudo apt-get install -y gcc
+    - name: Setup Build Directory
+      run: |
+            meson setup builddir -Dwith_tests=enabled
+    - name: Compile Source Code
+      run: |
+            meson compile -C builddir
+    - name: Test Project Code
+      run: |
+            meson test -C builddir -v --test-args='--repeat 100'
