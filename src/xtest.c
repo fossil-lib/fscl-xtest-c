@@ -351,21 +351,23 @@ XUnitRunner xtest_start(int argc, char **argv) {
         exit(EXIT_SUCCESS);
     } // end if, else if
 
-    for (int i = 1; i < argc; i++) {
-        // Check if the argument is "--repeat" and the next argument exists
-        if (strcmp(argv[i], "--repeat") == 0 && i + 1 < argc) {
+    if (XTEST_FLAG_REPEAT) {
+        for (int i = 1; i < argc; i++) {
+            // Check if the argument is "--repeat" and the next argument exists
+            if (strcmp(argv[i], "--repeat") == 0 && i + 1 < argc) {
             // Attempt to convert the next argument to an integer
-            char* end_ptr; // To check for conversion errors
-            XTEST_ITER_REAPET = strtol(argv[i + 1], &end_ptr, 10);
+                char* end_ptr; // To check for conversion errors
+                XTEST_ITER_REAPET = strtol(argv[i + 1], &end_ptr, 10);
 
-            if (*end_ptr != '\0') {
-                fprintf(stderr, "Error: Invalid number after --repeat\n");
-                exit(1); // Exit with an error code
+                if (*end_ptr != '\0') {
+                    fprintf(stderr, "Error: Invalid number after --repeat\n");
+                    exit(1); // Exit with an error code
+                } // end if
+
+                i++; // Skip the next argument since we've already processed it
             } // end if
-
-            i++; // Skip the next argument since we've already processed it
-        } // end if
-    } // end for
+        } // end for
+    } // end if
 
     runner.stats = (XTestStats){0, 0, 0, 0};
     return runner;
