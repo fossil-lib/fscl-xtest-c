@@ -45,6 +45,67 @@ typedef void *xmock_default;
 #define XMOCK_FUNC(type, name) type xmock_##name(type arg)
 
 /**
+ * @struct XMockFile
+ * @brief Represents a mocked file stream for testing and simulation.
+ *
+ * This structure simulates a file stream with associated data, size, and position.
+ *
+ * @var XMockFile::data
+ *   A pointer to the data buffer associated with the file stream.
+ * @var XMockFile::size
+ *   The size of the data buffer in bytes.
+ * @var XMockFile::position
+ *   The current read/write position within the data buffer.
+ */
+typedef struct {
+    char* data;      /**< A pointer to the data buffer associated with the file stream. */
+    size_t size;     /**< The size of the data buffer in bytes. */
+    size_t position; /**< The current read/write position within the data buffer. */
+} XMockFile;
+
+/**
+ * @brief Creates a mocked file stream for testing and simulation purposes.
+ *
+ * This function simulates opening a file with the specified filename and mode. It returns an
+ * XMockFile pointer representing the opened file stream.
+ *
+ * @param filename  The name of the file to open.
+ * @param mode      The mode in which to open the file (e.g., "r" for read, "w" for write).
+ *
+ * @return An XMockFile pointer representing the opened file stream. Returns NULL if the file could
+ * not be opened or if it is not found.
+ */
+XMockFile* xmock_io_fopen(const char* filename, const char* mode);
+
+/**
+ * @brief Reads data from a mocked file stream.
+ *
+ * This function simulates reading data from the specified file stream into the provided buffer.
+ * It mimics the behavior of the standard C library's fread function.
+ *
+ * @param ptr       Pointer to the destination buffer to store the read data.
+ * @param size      The size of each item to read (in bytes).
+ * @param count     The number of items to read.
+ * @param stream    The XMockFile pointer representing the file stream to read from.
+ *
+ * @return The total number of items successfully read, which may be less than (size * count) if
+ * the end of the file is reached or an error occurs.
+ */
+size_t xmock_io_fread(void* ptr, size_t size, size_t count, XMockFile* stream);
+
+/**
+ * @brief Closes a mocked file stream.
+ *
+ * This function simulates closing the specified file stream, releasing any associated resources.
+ * It mimics the behavior of the standard C library's fclose function.
+ *
+ * @param stream    The XMockFile pointer representing the file stream to close.
+ *
+ * @return None.
+ */
+void xmock_io_fclose(XMockFile* stream);
+
+/**
  * @file mock_data_structures.h
  *
  * @brief Mock Data Structures
