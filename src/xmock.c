@@ -85,6 +85,48 @@ size_t xmock_io_fread(void* ptr, size_t size, size_t count, XMockFile* stream) {
 } // end of func
 
 /**
+ * @brief Sets the file position indicator of a mocked file stream.
+ *
+ * This function simulates setting the file position indicator of the specified file stream to
+ * the given offset from the specified origin. It allows seeking within the file stream's data.
+ *
+ * @param stream    The XMockFile pointer representing the file stream to seek within.
+ * @param offset    The offset in bytes from the origin.
+ * @param origin    The origin from which to calculate the new position (SEEK_SET, SEEK_CUR, or SEEK_END).
+ *
+ * @return 0 if the seek operation is successful, non-zero otherwise.
+ */
+int xmock_io_fseek(XMockFile* stream, long offset, int origin) {
+    if (!stream) {
+        return -1; // Return an error code if the stream is invalid.
+    } // end if
+
+    switch (origin) {
+        case SEEK_SET:
+            if (offset < 0 || (size_t)offset > stream->size) {
+                return -1; // Invalid seek position.
+            } // end if
+            stream->position = (size_t)offset;
+            break;
+        case SEEK_CUR:
+            if ((stream->position + offset) > stream->size || (stream->position + offset) < 0) {
+                return -1; // Invalid seek position.
+            } // end if
+            stream->position += (size_t)offset;
+            break;
+        case SEEK_END:
+            if (offset > 0 || (stream->size + offset) < 0) {
+                return -1; // Invalid seek position.
+            } // end if
+            stream->position = stream->size + (size_t)offset;
+            break;
+        default:
+            return -1; // Invalid seek origin.
+    } // end switch case
+    return 0; // Seek operation successful.
+} // end of func
+
+/**
  * @brief Closes a mocked file stream.
  *
  * This function simulates closing the specified file stream, releasing any associated resources.
