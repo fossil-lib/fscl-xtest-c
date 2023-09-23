@@ -24,6 +24,7 @@ void unit_test_c_group(XUnitRunner *runner);
 void xignore_test_group(XUnitRunner *runner);
 void xexpect_test_group(XUnitRunner *runner);
 void xassert_test_group(XUnitRunner *runner);
+void xmockup_file_group(XUnitRunner *runner);
 
 #ifdef __cplusplus
 }
