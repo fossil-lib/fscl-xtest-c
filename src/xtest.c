@@ -51,7 +51,7 @@ XTestCliOption options[] = {
  * @param message     An optional message associated with the assertion.
  */
 static void xtest_output_xassert(bool expression, const char *message, const char* file, int line, const char* func) {
-    if (!expression) {
+    if (!expression || !XASSERT_PASS_SCAN) {
     if (XTEST_FLAG_VERBOSE) {
         if (XTEST_FLAG_COLORED) {
             puts(ANSI_COLOR_BLUE  "[Asserted case faild]" ANSI_COLOR_RESET);
@@ -180,10 +180,10 @@ static void xtest_output_xunittest_format_start(XTestCase* test_case, XTestStats
         } // end if else
     } else if (XTEST_FLAG_CUTBACK) {
         if (XTEST_FLAG_COLORED) {
-            printf(ANSI_COLOR_BLUE "name: %s\ntype: %s\n" ANSI_COLOR_RESET,
+            printf(ANSI_COLOR_BLUE "name: %s, type: %s\n" ANSI_COLOR_RESET,
                 test_case->name, !test_case->is_benchmark? "unit" : "mark");
         } else {
-            printf("name: %s\ntype: %s\n",
+            printf("name: %s, type: %s\n",
                 test_case->name, !test_case->is_benchmark? "unit" : "mark");
         } // end if else
     } else {
