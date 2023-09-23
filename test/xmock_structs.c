@@ -166,7 +166,7 @@ XTEST_CASE_FIXTURE(xmock_queue_test_fixture, mock_queue_dequeue) {
 //
 // XTEST FIXTURE
 //
-void xmockup_struct_group(XUnitRunner *runner) {
+void xmockup_structs_group(XUnitRunner *runner) {
     xtest_run_test_fixture(&mock_list_push_front, &xmock_list_test_fixture,  &runner->stats);
     xtest_run_test_fixture(&mock_list_push_back,  &xmock_list_test_fixture,  &runner->stats);
     xtest_run_test_fixture(&mock_list_pop_front,  &xmock_list_test_fixture,  &runner->stats);
