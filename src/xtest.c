@@ -28,6 +28,8 @@ static bool XTEST_FLAG_VERBOSE    = false;
 static bool XTEST_FLAG_VERSION    = false;
 static bool XTEST_FLAG_COLORED    = false;
 static bool XTEST_FLAG_HELP       = false;
+static bool XTEST_FLAG_REPEAT     = false;
+static int XTEST_ITER_REAPET      = 0;
 
 // XUnit options for the tester to switch on-off
 XTestCliOption options[] = {
@@ -36,10 +38,8 @@ XTestCliOption options[] = {
      { "--version",    "-v", "Get the version of this test framework", &XTEST_FLAG_VERSION },
      { "--color"  ,    "-c", "Enable color text output", &XTEST_FLAG_COLORED },
      { "--help",       "-h", "Print this message you see before you're eyes", &XTEST_FLAG_HELP }
+     { "--reapet"  ,   "-r", "Reapet test cases number of times (0-100)", &XTEST_FLAG_REPEAT },
  }; // end of command-line options
-
-// TODO: add —-only-tests, —-only-bench, —-only-ai, —-repeat, —-thread-run
-//       test <test_name> mark <bench_name>
 
 /**
  * @brief Output for XUnit Test Case Assert.
@@ -51,7 +51,7 @@ XTestCliOption options[] = {
  * @param message     An optional message associated with the assertion.
  */
 static void xtest_output_xassert(bool expression, const char *message, const char* file, int line, const char* func) {
-    if (!expression || !XASSERT_PASS_SCAN) {
+    if (!expression) {
     if (XTEST_FLAG_VERBOSE) {
         if (XTEST_FLAG_COLORED) {
             puts(ANSI_COLOR_BLUE  "[Asserted case faild]" ANSI_COLOR_RESET);
@@ -350,7 +350,23 @@ XUnitRunner xtest_start(int argc, char **argv) {
         xtest_cli_print_usage("Xrunner", options, num_options);
         exit(EXIT_SUCCESS);
     } // end if, else if
-   
+
+    for (int i = 1; i < argc; i++) {
+        // Check if the argument is "--repeat" and the next argument exists
+        if (strcmp(argv[i], "--repeat") == 0 && i + 1 < argc) {
+            // Attempt to convert the next argument to an integer
+            char* end_ptr; // To check for conversion errors
+            XTEST_ITER_REAPET = strtol(argv[i + 1], &end_ptr, 10);
+
+            if (*endPtr != '\0') {
+                fprintf(stderr, "Error: Invalid number after --repeat\n");
+                return 1; // Exit with an error code
+            } // end if
+
+            i++; // Skip the next argument since we've already processed it
+        } // end if
+    } // end for
+
     runner.stats = (XTestStats){0, 0, 0, 0};
     return runner;
 } // end of func
@@ -387,8 +403,10 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
     // Execute the test function
     if (!XIGNORE_TEST_CASE) {
         clock_t start_time = clock(); // Record start time
-
-        test_case->test_function();
+        
+        for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
+            test_case->test_function();
+        } // end for
 
         clock_t end_time = clock(); // Record end time
 
@@ -445,7 +463,9 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
             fixture->setup();
         } // end if
    
-        test_case->test_function();
+        for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
+            test_case->test_function();
+        } // end for
    
         if (fixture->teardown) {
             fixture->teardown();
