@@ -40,9 +40,20 @@ typedef char *xmock_string;
 
 typedef void *xmock_default;
 
-// Define a mocked function using macro concatenation.
-// This macro provides a way to define mocked functions with specified return types and arguments.
-#define XMOCK_FUNC(type, name) type xmock_##name(type arg)
+/**
+ * @def XMOCK_FUNC
+ * @brief Macro for creating a mock function with the specified return type, name, and parameters.
+ *
+ * This macro simplifies the creation of mock functions by defining a function with the given return
+ * type, name, and parameters. The function name will be prefixed with "xmock_" to clearly indicate
+ * that it is a mock function.
+ *
+ * @param return_type   The return type of the mock function.
+ * @param name          The name of the mock function.
+ * @param ...           The parameters of the mock function in the format: (type1 param1, type2 param2, ...).
+ * @return The return type specified for the mock function.
+ */
+#define XMOCK_FUNC(return_type, name, ...) return_type xmock_##name(__VA_ARGS__)
 
 /**
  * @file mock_data_structures.h

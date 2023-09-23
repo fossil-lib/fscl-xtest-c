@@ -19,12 +19,14 @@ extern "C"
 #include <stdint.h>
 
 void xbenchs_test_group(XUnitRunner *runner);
-void xmockup_test_group(XUnitRunner *runner);
 void unit_test_c_group(XUnitRunner *runner);
 void xignore_test_group(XUnitRunner *runner);
 void xexpect_test_group(XUnitRunner *runner);
 void xassert_test_group(XUnitRunner *runner);
+void xmockup_structs_group(XUnitRunner *runner);
+void xmockup_test_group(XUnitRunner *runner);
 void xmockup_hardware_group(XUnitRunner *runner);
+
 
 #ifdef __cplusplus
 }
