@@ -384,13 +384,10 @@ int xtest_end(XUnitRunner *runner) {
  * @return            None.
  */
 void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
-    // Check to see if we can skip
-    test_case->ignored = XIGNORE_TEST_CASE;
-
     xtest_output_xunittest_format_start(test_case, stats);
 
     // Execute the test function
-    if (!test_case->ignored) {
+    if (!XIGNORE_TEST_CASE) {
         clock_t start_time = clock(); // Record start time
 
         test_case->test_function();
@@ -420,7 +417,7 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
         stats->ignored_count++;
         XIGNORE_TEST_CASE = false;
     } // end if else
-
+    test_case->ignored = XIGNORE_TEST_CASE;
     xtest_output_xunittest_format_end(test_case);
 
     // Update the total count
@@ -440,13 +437,10 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
  * @return            None.
  */
 void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats)  {
-    // Check to see if we can skip
-    test_case->ignored = XIGNORE_TEST_CASE;
-
     xtest_output_xunittest_format_start(test_case, stats);
 
     // Execute the test function within the fixture
-    if (!test_case->ignored) {
+    if (!XIGNORE_TEST_CASE) {
         clock_t start_time = clock(); // Record start time
 
         if (fixture->setup) {
@@ -484,7 +478,7 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
         stats->ignored_count++;
         XIGNORE_TEST_CASE = false;
     } // end if else
-
+    test_case->ignored = XIGNORE_TEST_CASE;
     xtest_output_xunittest_format_end(test_case);
 
     // Update the total count
