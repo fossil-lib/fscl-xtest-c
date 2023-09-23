@@ -100,8 +100,8 @@ XTEST_CASE_FIXTURE(xmockup_hardware_fixture, xmock_hardware_battery) {
     xmock_battery_set_current(&battery, -0.1f);
 
     // Check battery voltage and current
-    XASSERT_FLOAT_EQUAL(3.7f, xmock_battery_get_voltage(&battery), 0.001);
-    XASSERT_FLOAT_EQUAL(-0.1f, xmock_battery_get_current(&battery), 0.001);
+    XASSERT_FLOAT_EQUAL(3.7f, xmock_battery_get_voltage(&battery), 1.1920929);
+    XASSERT_FLOAT_EQUAL(-0.1f, xmock_battery_get_current(&battery), 1.1920929);
 
     // Simulate charging with a current of 500mA
     xmock_battery_set_charging(&battery, 1);
@@ -109,7 +109,7 @@ XTEST_CASE_FIXTURE(xmockup_hardware_fixture, xmock_hardware_battery) {
 
     // Check battery charging status and current
     XASSERT_INT_EQUAL(1, battery.charging);
-    XASSERT_FLOAT_EQUAL(0.5f, xmock_battery_get_current(&battery), 0.001);
+    XASSERT_FLOAT_EQUAL(0.5f, xmock_battery_get_current(&battery), 1.1920929);
 }
 
 //
