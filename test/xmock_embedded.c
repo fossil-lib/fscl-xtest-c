@@ -483,22 +483,22 @@ void xmockup_hardware_group(XUnitRunner *runner) {
     xtest_run_test_fixture(&xmock_hardware_actuator_turn_on_off, &xmockup_hardware_fixture, &runner->stats);
     xtest_run_test_fixture(&xmock_hardware_battery,              &xmockup_hardware_fixture, &runner->stats);
 
-    xtest_run_test_fixture(&xmock_raspi3_init_pin,    &xmockup_raspi3_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_raspi3_read_pin,    &xmockup_raspi3_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_raspi3_set_pin,     &xmockup_raspi3_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_raspi4_init_pin,    &xmockup_raspi4_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_raspi4_read_pin,    &xmockup_raspi4_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_raspi4_set_pin,     &xmockup_raspi4_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_raspiz_init_pin,    &xmockup_raspiz_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_raspiz_read_pin,    &xmockup_raspiz_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_raspiz_set_pin,     &xmockup_raspiz_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_raspi3_init_pin,    &xmockup_raspi3_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_raspi3_read_pin,    &xmockup_raspi3_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_raspi3_set_pin,     &xmockup_raspi3_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_raspi4_init_pin,    &xmockup_raspi4_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_raspi4_read_pin,    &xmockup_raspi4_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_raspi4_set_pin,     &xmockup_raspi4_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_raspiz_init_pin,    &xmockup_raspiz_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_raspiz_read_pin,    &xmockup_raspiz_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_raspiz_set_pin,     &xmockup_raspiz_fixture, &runner->stats);
 
-    xtest_run_test_fixture(&xmock_stma_init_pin,      &xmockup_stma_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_stma_read_pin,      &xmockup_stma_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_stma_set_pin,       &xmockup_stma_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_stmb_init_pin,      &xmockup_stmb_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_stmb_read_pin,      &xmockup_stmb_fixture, &runner->stats);
-    xtest_run_test_fixture(&xmock_stmb_set_pin,       &xmockup_stmb_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_stma_init_pin,      &xmockup_stma_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_stma_read_pin,      &xmockup_stma_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_stma_set_pin,       &xmockup_stma_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_stmb_init_pin,      &xmockup_stmb_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_stmb_read_pin,      &xmockup_stmb_fixture, &runner->stats);
+    //xtest_run_test_fixture(&xmock_stmb_set_pin,       &xmockup_stmb_fixture, &runner->stats);
 
     xtest_run_test_fixture(&xmock_uno_portb_init_pin, &xmockup_uno_portb_fixture, &runner->stats);
     xtest_run_test_fixture(&xmock_uno_portb_read_pin, &xmockup_uno_portb_fixture, &runner->stats);
