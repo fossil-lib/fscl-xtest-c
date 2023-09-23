@@ -289,7 +289,7 @@ XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixtur
  *
  * @param reason  The reason for ignoring the test case.
  */
-XTEST_API void xignore(const char* reason);
+XTEST_API void xignore(const char* reason, const char* file, int line, const char* func);
 
 /**
  * @brief Custom assertion function with optional message.
@@ -302,7 +302,7 @@ XTEST_API void xignore(const char* reason);
  *
  * @return            None.
  */
-XTEST_API void xassert(bool expression, const char *message);
+XTEST_API void xassert(bool expression, const char *message, const char* file, int line, const char* func);
 
 /**
  * @brief Custom expectation function with optional message.
@@ -315,7 +315,7 @@ XTEST_API void xassert(bool expression, const char *message);
  *
  * @return            None.
  */
-XTEST_API void xexpect(bool expression, const char *message);
+XTEST_API void xexpect(bool expression, const char *message, const char* file, int line, const char* func);
 
 /**
  * @brief Adds an assertion to the current test case.
@@ -326,7 +326,7 @@ XTEST_API void xexpect(bool expression, const char *message);
  * @return            If the expression evaluates to false, the assertion fails, and the message is displayed.
  *                    Otherwise, the assertion passes, and nothing happens.
  */
-#define XASSERT(expression, message) xassert(expression, message)
+#define XASSERT(expression, message) xassert(expression, message, __FILE__, __LINE__, __func__)
 
 /**
  * @brief Adds an expectation to the current test case.
@@ -337,7 +337,7 @@ XTEST_API void xexpect(bool expression, const char *message);
  * @return            If the expression evaluates to false, the expectation fails, and the message is displayed.
  *                    Otherwise, the expectation passes, and nothing happens.
  */
-#define XEXPECT(expression, message) xexpect(expression, message)
+#define XEXPECT(expression, message) xexpect(expression, message, __FILE__, __LINE__, __func__)
 
 /**
  * @brief Asserts whether a test passes or fails.
@@ -383,7 +383,7 @@ XTEST_API void xexpect(bool expression, const char *message);
  */
 #define XTEST_IGNORE(reason) \
     do { \
-        xignore(reason); \
+        xignore(reason, __FILE__, __LINE__, __func__); \
         return; \
     } while (false)
 
