@@ -54,7 +54,7 @@ Before you proceed, ensure you have the following prerequisites installed:
 Example of the usage in C
 
 ```c
-#include <trilobite/xtest.h>   // basic test tools
+#include <trilobite/xtest.h> // basic test tools
 
 //
 // XTEST DATA
@@ -69,11 +69,11 @@ XTEST_DATA(MyTestData) {
 //
 XTEST_FIXTURE(basic_fixture);
 XTEST_SETUP(basic_fixture) {
-     puts("Setting up the test fixture"); // Perform setup operations here
- }
+     XTEST_NOTE("Setting up the test fixture"); // Perform setup operations here
+}
 
- XTEST_TEARDOWN(basic_fixture) {
-     puts("Tearing down the test fixture"); // Perform teardown operations here
+XTEST_TEARDOWN(basic_fixture) {
+     XTEST_NOTE("Tearing down the test fixture"); // Perform teardown operations here
 }
 
 //
