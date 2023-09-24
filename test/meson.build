@@ -9,7 +9,7 @@ if get_option('with_tests').enabled()
         'xmock_functions.c',
         'xmock_embedded.c',
         'xtest_bench.c',
-        dependencies : [trilo_xtest_c_dep])
+        dependencies : [trilo_xtest_c_dep, trilo_xmock_c_dep])
 
     test('Execute project tests', exe)
 endif
