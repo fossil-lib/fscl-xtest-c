@@ -574,7 +574,6 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_char) {
 XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_files) {
     FILE *file = fopen("example.txt", "r");
     if (file == NULL) {
-        fprintf(stderr, "Failed to open file.\n");
         XTEST_IGNORE("File not found in test directory");
     } // end if
 
