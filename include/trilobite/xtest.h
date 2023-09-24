@@ -267,8 +267,6 @@ XTEST_API void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats);
  */
 XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats);
 
-
-
 /**
  * @brief Initializes an XUnitRunner and processes command-line arguments.
  *
@@ -414,6 +412,22 @@ XTEST_API void xexpect(bool expression, const char *message, const char* file, i
     do { \
         XASSERT(true, "Test passed"); \
     } while (false)
+
+/**
+ * @brief A macro for adding comments or notes to the code.
+ *
+ * This macro allows developers to insert comments or notes directly into the code
+ * for debugging, documentation, or explanatory purposes. It prints the provided
+ * comment text with a "XTEST NOTE:" prefix to the standard error stream (stderr).
+ *
+ * Example usage:
+ *   XTEST_NOTE("This is a custom note for debugging.");
+ *
+ * @param comment The comment or note text to be added to the code.
+ */
+#define XTEST_NOTE(comment) do { \
+    fprintf(stderr, "XTEST NOTE: %s\n", comment); \
+} while(0)
 
 /**
  * @brief Indicates that a test is not yet implemented.
