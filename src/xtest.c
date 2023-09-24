@@ -15,7 +15,7 @@
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 // Extra
-const char *XTEST_VERSION = "0.3.2";
+const char *XTEST_VERSION = "0.4.0";
 
 // Static control panel for assert/expect and marks
 static bool XEXPECT_PASS_SCAN = true;
@@ -28,6 +28,8 @@ static bool XTEST_FLAG_VERBOSE    = false;
 static bool XTEST_FLAG_VERSION    = false;
 static bool XTEST_FLAG_COLORED    = false;
 static bool XTEST_FLAG_HELP       = false;
+static bool XTEST_FLAG_REPEAT     = false;
+static int XTEST_ITER_REAPET      = 1;
 
 // XUnit options for the tester to switch on-off
 XTestCliOption options[] = {
@@ -35,11 +37,9 @@ XTestCliOption options[] = {
      { "--verbose",    "-V", "Show more information to standard output", &XTEST_FLAG_VERBOSE },
      { "--version",    "-v", "Get the version of this test framework", &XTEST_FLAG_VERSION },
      { "--color"  ,    "-c", "Enable color text output", &XTEST_FLAG_COLORED },
-     { "--help",       "-h", "Print this message you see before you're eyes", &XTEST_FLAG_HELP }
+     { "--help",       "-h", "Print this message you see before you're eyes", &XTEST_FLAG_HELP },
+     { "--reapet"  ,   "-r", "Reapet test cases number of times (0-100)", &XTEST_FLAG_REPEAT }
  }; // end of command-line options
-
-// TODO: add —-only-tests, —-only-bench, —-only-ai, —-repeat, —-thread-run
-//       test <test_name> mark <bench_name>
 
 /**
  * @brief Output for XUnit Test Case Assert.
@@ -180,10 +180,10 @@ static void xtest_output_xunittest_format_start(XTestCase* test_case, XTestStats
         } // end if else
     } else if (XTEST_FLAG_CUTBACK) {
         if (XTEST_FLAG_COLORED) {
-            printf(ANSI_COLOR_BLUE "name: %s\ntype: %s\n" ANSI_COLOR_RESET,
+            printf(ANSI_COLOR_BLUE "name: %s, type: %s\n" ANSI_COLOR_RESET,
                 test_case->name, !test_case->is_benchmark? "unit" : "mark");
         } else {
-            printf("name: %s\ntype: %s\n",
+            printf("name: %s, type: %s\n",
                 test_case->name, !test_case->is_benchmark? "unit" : "mark");
         } // end if else
     } else {
@@ -313,19 +313,46 @@ void xtest_cli_print_usage(const char* program_name, const XTestCliOption* optio
  * @return              0 if the parsing is successful.
  */
 int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int argc, char** argv) {
+    int repeatCount = -1; // Default value in case "--repeat" is not provided
+
     for (int i = 1; i < argc; ++i) {
-        for (size_t j = 0; j < num_options; ++j) {
-            if (strcmp(argv[i], options[j].option_short_name) == 0) {
-                *(options[j].flag) = 1;
-                break;
-            } else if (strcmp(argv[i], options[j].option_long_name) == 0) {
-                *(options[j].flag) = 1;
-                break;
-            } // end if, else if
-        } // end for
-    } // end for
+        if (strcmp(argv[i], "--repeat") == 0 && i + 1 < argc) {
+            // Attempt to convert the next argument to an integer
+            char* endPtr; // To check for conversion errors
+            repeatCount = strtol(argv[i + 1], &endPtr, 10);
+
+            if (*endPtr != '\0') {
+                fprintf(stderr, "Error: Invalid number after --repeat\n");
+                return 1; // Exit with an error code
+            }
+
+            i++; // Skip the next argument since we've already processed it
+        } else {
+            // Check for other command-line options and set corresponding flags
+            for (size_t j = 0; j < num_options; ++j) {
+                if (strcmp(argv[i], options[j].option_short_name) == 0) {
+                    *(options[j].flag) = 1;
+                    break;
+                } else if (strcmp(argv[i], options[j].option_long_name) == 0) {
+                    *(options[j].flag) = 1;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Now you have the repeatCount value and can use it as needed
+    if (repeatCount != -1) {
+        printf("Repeat count: %d\n", repeatCount);
+    } else {
+        printf("Repeat count not provided. Using default value or -1 if not specified.\n");
+    }
+    XTEST_ITER_REAPET = repeatCount;
+
     return 0;
 } // end of func
+
+
 
 /**
  * @brief Initializes an XUnitRunner and processes command-line arguments.
@@ -350,7 +377,20 @@ XUnitRunner xtest_start(int argc, char **argv) {
         xtest_cli_print_usage("Xrunner", options, num_options);
         exit(EXIT_SUCCESS);
     } // end if, else if
-   
+
+    if (XTEST_FLAG_REPEAT) {
+        if (strcmp(options->option_long_name, "--repeat") == 0 && num_options + 1 < argc) {
+        // Attempt to convert the next argument to an integer
+            char* end_ptr; // To check for conversion errors
+            XTEST_ITER_REAPET = strtol(argv[num_options + 1], &end_ptr, 10);
+
+            if (*end_ptr != '\0') {
+                fprintf(stderr, "Error: Invalid number after --repeat\n");
+                exit(1); // Exit with an error code
+            } // end if
+        } // end if
+    } // end if
+
     runner.stats = (XTestStats){0, 0, 0, 0};
     return runner;
 } // end of func
@@ -387,8 +427,9 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
     // Execute the test function
     if (!XIGNORE_TEST_CASE) {
         clock_t start_time = clock(); // Record start time
-
-        test_case->test_function();
+        for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
+            test_case->test_function();
+        } // end for
 
         clock_t end_time = clock(); // Record end time
 
@@ -441,15 +482,18 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
     if (!XIGNORE_TEST_CASE) {
         clock_t start_time = clock(); // Record start time
 
-        if (fixture->setup) {
-            fixture->setup();
-        } // end if
+        for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
+            if (fixture->setup) {
+                fixture->setup();
+            } // end if
+
+            test_case->test_function();
    
-        test_case->test_function();
-   
-        if (fixture->teardown) {
-            fixture->teardown();
-        } // end if
+            if (fixture->teardown) {
+                fixture->teardown();
+            } // end if
+
+        } // end for
 
         clock_t end_time = clock(); // Record end time
 

@@ -1,6 +1,6 @@
 project('Trilobite XUnit', 'c',
     license: 'apache-2.0',
-    version: '0.3.2',
+    version: '0.4.0',
     meson_version: '>=1.0.0',
     default_options: ['werror=true', 'c_std=c11'])
 

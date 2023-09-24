@@ -54,12 +54,12 @@ Before you proceed, ensure you have the following prerequisites installed:
 Example of the usage in C
 
 ```c
-#include <trilobite/xtest.h>   // basic test tools
+#include <trilobite/xtest.h> // basic test tools
 
 //
 // XTEST DATA
 //
-XTEST_DATA(some_data) {
+XTEST_DATA(MyTestData) {
     int some_data;
     const char* some_other_data;
 } my_data;
@@ -69,11 +69,11 @@ XTEST_DATA(some_data) {
 //
 XTEST_FIXTURE(basic_fixture);
 XTEST_SETUP(basic_fixture) {
-     printf("Setting up the test fixture\n"); // Perform setup operations here
- }
+     XTEST_NOTE("Setting up the test fixture"); // Perform setup operations here
+}
 
- XTEST_TEARDOWN(basic_fixture) {
-     printf("Tearing down the test fixture\n"); // Perform teardown operations here
+XTEST_TEARDOWN(basic_fixture) {
+     XTEST_NOTE("Tearing down the test fixture"); // Perform teardown operations here
 }
 
 //
@@ -91,12 +91,12 @@ XTEST_CASE_FIXTURE(basic_fixture, failing_case) {
 // XTEST RUNNER
 //
 int main(int argc, char** argv) {
-    XUnitRunner runner = xtest_start(argc, argv);
+    XUnitRunner runner = XTEST_RUNNER_START(argc, argv);
 
-    xtest_run_test_fixture(&passing_case, &basic_fixture, &runner->stats);
-    xtest_run_test_fixture(&failing_case, &basic_fixture, &runner->stats);
+    XTEST_RUN_FIXTURE(passing_case, basic_fixture, runner);
+    XTEST_RUN_FIXTURE(failing_case, basic_fixture, runner);
 
-    return xtest_end(&runner);
+    return XTEST_RUNNER_END(runner);
 } // end of function main
 ```
 
