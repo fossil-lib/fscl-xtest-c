@@ -267,6 +267,60 @@ XTEST_API void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats);
  */
 XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats);
 
+
+
+/**
+ * @brief Initializes an XUnitRunner and processes command-line arguments.
+ *
+ * This function initializes an XUnitRunner, processes command-line arguments to handle custom options,
+ * and displays version information or usage instructions if requested.
+ *
+ * @param argc  Number of command-line arguments.
+ * @param argv  Array of command-line argument strings.
+ *
+ * @return      An initialized XUnitRunner structure.
+ */
+#define XTEST_RUNNER_START(argc, argv) xtest_start(argc, argv)
+
+/**
+ * @brief Finalizes the execution of a Trilobite XUnit runner and displays test results.
+ *
+ * This function prints the test results, including the number of tests passed, failed, ignored,
+ * and the total count. It also returns the count of failed tests.
+ *
+ * @param runner    Pointer to the Trilobite XUnit runner containing test statistics.
+ *
+ * @return          The count of failed tests.
+ */
+#define XTEST_RUNNER_END(runner) xtest_end(&runner)
+
+/**
+ * @brief Runs a unit test case and updates test statistics.
+ *
+ * This function executes a unit test case, records the execution time, and updates the
+ * test statistics based on the test result.
+ *
+ * @param test_case   Pointer to the unit test case to be executed.
+ * @param stats       Structure containing test statistics.
+ *
+ * @return            None.
+ */
+#define XTEST_RUN_UNIT(test_case, runner) xtest_run_test_unit(&test_case, &runner->stats)
+
+/**
+ * @brief Runs a test case within a test fixture and updates test statistics.
+ *
+ * This function executes a test case within a given test fixture, records the execution time,
+ * and updates the test statistics based on the test result.
+ *
+ * @param test_case   Pointer to the test case to be executed.
+ * @param fixture     Pointer to the test fixture containing setup and teardown functions.
+ * @param stats       Pointer to the structure containing test statistics.
+ *
+ * @return            None.
+ */
+#define XTEST_RUN_FIXTURE(test_case, fixture, runner) xtest_run_test_fixture(&test_case, &fixture, &runner->stats)
+
 //
 // ------------------------------------------------------------------------
 //
