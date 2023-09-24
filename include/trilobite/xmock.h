@@ -12,7 +12,42 @@ extern "C"
 {
 #endif
 
-#include "xtest.h"
+ // Define platform-specific macros
+#ifdef _WIN32
+    #define TRILOBITE_XMOCK_EXPORT __declspec(dllexport)
+    #define TRILOBITE_XMOCK_IMPORT __declspec(dllimport)
+#else
+    #define TRILOBITE_XMOCK_EXPORT __attribute__((visibility("default")))
+    #define TRILOBITE_XMOCK_IMPORT
+#endif
+
+// Define the MY_MOCK_FRAMEWORK_API macro
+#ifdef TRILOBITE_XMOCK_SHARED
+    #ifdef TRILOBITE_XMOCK_BUILD
+        #define XMOCK_API TRILOBITE_XTEST_EXPORT
+    #else
+        #define XMOCK_API TRILOBITE_XTEST_IMPORT
+    #endif
+#else
+    #define XMOCK_API
+#endif
+
+#ifdef __cplusplus
+#include <cstring>
+#include <cstdlib>
+#include <cstdint>
+#include <cstddef>
+#include <cstdio>
+#include <cmath>
+#else
+#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <math.h>
+#endif
 
 // Define mock function return types based on types.
 typedef int xmock_int;
@@ -148,26 +183,26 @@ typedef struct {
 // Create and initialize a mock stack
 // @param capacity: Maximum capacity of the stack
 // @return: A pointer to the newly created stack
-XTEST_API XMockStack* xmock_stack_create(int capacity);
+XMOCK_API XMockStack* xmock_stack_create(int capacity);
 
 // Push an element onto the mock stack
 // @param stack: Pointer to the stack
 // @param element: Element to be pushed onto the stack
-XTEST_API void xmock_stack_push(XMockStack* stack, int element);
+XMOCK_API void xmock_stack_push(XMockStack* stack, int element);
 
 // Pop an element from the mock stack
 // @param stack: Pointer to the stack
 // @return: The popped element
-XTEST_API int xmock_stack_pop(XMockStack* stack);
+XMOCK_API int xmock_stack_pop(XMockStack* stack);
 
 // Get the size of the mock stack
 // @param stack: Pointer to the stack
 // @return: Current size of the stack
-XTEST_API int xmock_stack_size(XMockStack* stack);
+XMOCK_API int xmock_stack_size(XMockStack* stack);
 
 // Destroy the mock stack and release resources
 // @param stack: Pointer to the stack to be destroyed
-XTEST_API void xmock_stack_destroy(XMockStack* stack);
+XMOCK_API void xmock_stack_destroy(XMockStack* stack);
 
 
 //
@@ -190,36 +225,36 @@ typedef struct {
 
 // @brief Create and initialize a mock doubly linked list.
 // @return A pointer to the created mock doubly linked list or NULL if allocation fails.
-XTEST_API XMockDoublyLinkedList* xmock_doubly_linked_list_create();
+XMOCK_API XMockDoublyLinkedList* xmock_doubly_linked_list_create();
 
 // @brief Insert an element at the beginning of the list.
 // @param list The mock doubly linked list to which the element will be added.
 // @param data The data to insert.
-XTEST_API void xmock_doubly_linked_list_push_front(XMockDoublyLinkedList* list, int data);
+XMOCK_API void xmock_doubly_linked_list_push_front(XMockDoublyLinkedList* list, int data);
 
 // @brief Insert an element at the end of the list.
 // @param list The mock doubly linked list to which the element will be added.
 // @param data The data to insert.
-XTEST_API void xmock_doubly_linked_list_push_back(XMockDoublyLinkedList* list, int data);
+XMOCK_API void xmock_doubly_linked_list_push_back(XMockDoublyLinkedList* list, int data);
 
 // @brief Remove and return the first element of the list.
 // @param list The mock doubly linked list from which the first element will be removed.
 // @return The value of the first element or 0 if the list is empty.
-XTEST_API int xmock_doubly_linked_list_pop_front(XMockDoublyLinkedList* list);
+XMOCK_API int xmock_doubly_linked_list_pop_front(XMockDoublyLinkedList* list);
 
 // @brief Remove and return the last element of the list.
 // @param list The mock doubly linked list from which the last element will be removed.
 // @return The value of the last element or 0 if the list is empty.
-XTEST_API int xmock_doubly_linked_list_pop_back(XMockDoublyLinkedList* list);
+XMOCK_API int xmock_doubly_linked_list_pop_back(XMockDoublyLinkedList* list);
 
 // @brief Get the size of the list.
 // @param list The mock doubly linked list for which to determine the size.
 // @return The current size of the list.
-XTEST_API int xmock_doubly_linked_list_size(XMockDoublyLinkedList* list);
+XMOCK_API int xmock_doubly_linked_list_size(XMockDoublyLinkedList* list);
 
 // @brief Destroy the mock doubly linked list and release allocated resources.
 // @param list The mock doubly linked list to destroy.
-XTEST_API void xmock_doubly_linked_list_destroy(XMockDoublyLinkedList* list);
+XMOCK_API void xmock_doubly_linked_list_destroy(XMockDoublyLinkedList* list);
 
 
 //
@@ -238,26 +273,26 @@ typedef struct {
 // @brief Create and initialize a mock queue.
 // @param capacity The maximum capacity of the queue.
 // @return A pointer to the created mock queue or NULL if allocation fails.
-XTEST_API XMockQueue* xmock_queue_create(int capacity);
+XMOCK_API XMockQueue* xmock_queue_create(int capacity);
 
 // @brief Enqueue an element into the mock queue.
 // @param queue The mock queue to which the element will be enqueued.
 // @param element The element to be enqueued.
-XTEST_API void xmock_queue_enqueue(XMockQueue* queue, int element);
+XMOCK_API void xmock_queue_enqueue(XMockQueue* queue, int element);
 
 // @brief Dequeue and return the front element of the mock queue.
 // @param queue The mock queue from which the front element will be dequeued.
 // @return The front element of the queue or 0 if the queue is empty.
-XTEST_API int xmock_queue_dequeue(XMockQueue* queue);
+XMOCK_API int xmock_queue_dequeue(XMockQueue* queue);
 
 // @brief Get the size of the mock queue.
 // @param queue The mock queue for which to determine the size.
 // @return The current size of the queue.
-XTEST_API int xmock_queue_size(XMockQueue* queue);
+XMOCK_API int xmock_queue_size(XMockQueue* queue);
 
 // @brief Destroy the mock queue and release allocated resources.
 // @param queue The mock queue to destroy.
-XTEST_API void xmock_queue_destroy(XMockQueue* queue);
+XMOCK_API void xmock_queue_destroy(XMockQueue* queue);
 
 
 
@@ -281,39 +316,39 @@ typedef struct {
 } XMockMap;
 
 // @brief Create and initialize a mock map.
-XTEST_API XMockMap* xmock_map_create();
+XMOCK_API XMockMap* xmock_map_create();
 
 // @brief Put a key-value pair into the mock map.
 // @param map The mock map to which the entry will be added.
 // @param key The key of the entry to add.
 // @param value The value associated with the key.
-XTEST_API void xmock_map_put(XMockMap* map, int key, int value);
+XMOCK_API void xmock_map_put(XMockMap* map, int key, int value);
 
 // @brief Get the value associated with a key from the mock map.
 // @param map The mock map to search for the key.
 // @param key The key to look up in the map.
 // @return The value associated with the key or 0 if the key is not found.
-XTEST_API int xmock_map_get(XMockMap* map, int key);
+XMOCK_API int xmock_map_get(XMockMap* map, int key);
 
 // @brief Check if a key exists in the mock map.
 // @param map The mock map to check for the key.
 // @param key The key to check for existence.
 // @return 1 if the key exists in the map, 0 otherwise.
-XTEST_API int xmock_map_contains(XMockMap* map, int key);
+XMOCK_API int xmock_map_contains(XMockMap* map, int key);
 
 // @brief Remove a key-value pair from the mock map.
 // @param map The mock map from which the entry will be removed.
 // @param key The key of the entry to remove.
-XTEST_API void xmock_map_remove(XMockMap* map, int key);
+XMOCK_API void xmock_map_remove(XMockMap* map, int key);
 
 // @brief Get the number of key-value pairs in the mock map.
 // @param map The mock map for which to count the entries.
 // @return The number of key-value pairs in the map.
-XTEST_API int xmock_map_size(XMockMap* map);
+XMOCK_API int xmock_map_size(XMockMap* map);
 
 // @brief Destroy the mock map and release allocated resources.
 // @param map The mock map to destroy.
-XTEST_API void xmock_map_destroy(XMockMap* map);
+XMOCK_API void xmock_map_destroy(XMockMap* map);
 
 
 /**
@@ -392,7 +427,7 @@ typedef struct {
  *
  * @return None.
  */
-void xmock_sensor_init(XMockSensor *sensor, uint8_t id);
+XMOCK_API void xmock_sensor_init(XMockSensor *sensor, uint8_t id);
 
 /**
  * @brief Reads the value from an XMockSensor.
@@ -404,7 +439,7 @@ void xmock_sensor_init(XMockSensor *sensor, uint8_t id);
  *
  * @return The current sensor value.
  */
-float xmock_sensor_read(XMockSensor *sensor);
+XMOCK_API float xmock_sensor_read(XMockSensor *sensor);
 
 /**
  * @brief Initializes an XMockMotor instance.
@@ -416,7 +451,7 @@ float xmock_sensor_read(XMockSensor *sensor);
  *
  * @return None.
  */
-XTEST_API void xmock_motor_init(XMockMotor *motor, uint8_t id);
+XMOCK_API void xmock_motor_init(XMockMotor *motor, uint8_t id);
 
 /**
  * @brief Sets the speed of an XMockMotor.
@@ -426,7 +461,7 @@ XTEST_API void xmock_motor_init(XMockMotor *motor, uint8_t id);
  *
  * @return None.
  */
-XTEST_API void xmock_motor_set_speed(XMockMotor *motor, int speed);
+XMOCK_API void xmock_motor_set_speed(XMockMotor *motor, int speed);
 
 /**
  * @brief Gets the current speed of an XMockMotor.
@@ -435,7 +470,7 @@ XTEST_API void xmock_motor_set_speed(XMockMotor *motor, int speed);
  *
  * @return The current speed of the motor.
  */
-XTEST_API int xmock_motor_get_speed(XMockMotor *motor);
+XMOCK_API int xmock_motor_get_speed(XMockMotor *motor);
 
 /**
  * @brief Starts an XMockMotor.
@@ -447,7 +482,7 @@ XTEST_API int xmock_motor_get_speed(XMockMotor *motor);
  *
  * @return None.
  */
-XTEST_API void xmock_motor_start(XMockMotor *motor);
+XMOCK_API void xmock_motor_start(XMockMotor *motor);
 
 /**
  * @brief Stops an XMockMotor.
@@ -459,7 +494,7 @@ XTEST_API void xmock_motor_start(XMockMotor *motor);
  *
  * @return None.
  */
-XTEST_API void xmock_motor_stop(XMockMotor *motor);
+XMOCK_API void xmock_motor_stop(XMockMotor *motor);
 
 /**
  * @brief Initializes an XMockActuator instance.
@@ -471,7 +506,7 @@ XTEST_API void xmock_motor_stop(XMockMotor *motor);
  *
  * @return None.
  */
-XTEST_API void xmock_actuator_init(XMockActuator *actuator, uint8_t id);
+XMOCK_API void xmock_actuator_init(XMockActuator *actuator, uint8_t id);
 
 /**
  * @brief Turns on an XMockActuator.
@@ -482,7 +517,7 @@ XTEST_API void xmock_actuator_init(XMockActuator *actuator, uint8_t id);
  *
  * @return None.
  */
-XTEST_API void xmock_actuator_turn_on(XMockActuator *actuator);
+XMOCK_API void xmock_actuator_turn_on(XMockActuator *actuator);
 
 /**
  * @brief Turns off an XMockActuator.
@@ -493,7 +528,7 @@ XTEST_API void xmock_actuator_turn_on(XMockActuator *actuator);
  *
  * @return None.
  */
-XTEST_API void xmock_actuator_turn_off(XMockActuator *actuator);
+XMOCK_API void xmock_actuator_turn_off(XMockActuator *actuator);
 
 /**
  * @brief Gets the current state of an XMockActuator.
@@ -502,7 +537,7 @@ XTEST_API void xmock_actuator_turn_off(XMockActuator *actuator);
  *
  * @return The current state of the actuator (0 for OFF, 1 for ON).
  */
-XTEST_API int xmock_actuator_get_state(XMockActuator *actuator);
+XMOCK_API int xmock_actuator_get_state(XMockActuator *actuator);
 
 /**
  * @brief Mock Peripheral Emulation Structures
@@ -614,29 +649,29 @@ typedef struct {
 } XMockI2C;
 
 // Initialization function for mock peripheral
-XTEST_API void xmock_uart_init(XMockUART *uart, uint8_t id, uint32_t baud_rate, uint8_t data_bits, uint8_t stop_bits, uint8_t parity);
-XTEST_API void xmock_i2s_init(XMockI2S *i2s, uint8_t id, uint32_t sample_rate, uint8_t data_format, uint8_t channel_mode);
-XTEST_API void xmock_can_init(XMockCAN *can, uint8_t id, uint32_t bitrate);
-XTEST_API void xmock_bluetooth_init(XMockBluetooth *bluetooth, uint8_t id);
-XTEST_API void xmock_modbus_init(XMockModbus *modbus, uint8_t id, uint32_t baud_rate);
-XTEST_API void xmock_i2c_init(XMockI2C *i2c, uint8_t id, uint32_t speed, uint8_t address, uint8_t dir, uint8_t start, uint8_t ack);
-XTEST_API void xmock_spi_init(XMockSPI *spi, uint8_t id, uint8_t mode, uint32_t speed, uint8_t order, uint8_t cs, uint8_t bits, uint8_t duplex);
+XMOCK_API void xmock_uart_init(XMockUART *uart, uint8_t id, uint32_t baud_rate, uint8_t data_bits, uint8_t stop_bits, uint8_t parity);
+XMOCK_API void xmock_i2s_init(XMockI2S *i2s, uint8_t id, uint32_t sample_rate, uint8_t data_format, uint8_t channel_mode);
+XMOCK_API void xmock_can_init(XMockCAN *can, uint8_t id, uint32_t bitrate);
+XMOCK_API void xmock_bluetooth_init(XMockBluetooth *bluetooth, uint8_t id);
+XMOCK_API void xmock_modbus_init(XMockModbus *modbus, uint8_t id, uint32_t baud_rate);
+XMOCK_API void xmock_i2c_init(XMockI2C *i2c, uint8_t id, uint32_t speed, uint8_t address, uint8_t dir, uint8_t start, uint8_t ack);
+XMOCK_API void xmock_spi_init(XMockSPI *spi, uint8_t id, uint8_t mode, uint32_t speed, uint8_t order, uint8_t cs, uint8_t bits, uint8_t duplex);
 
 // Transmit function for mock peripheral
-XTEST_API void xmock_uart_transmit(XMockUART *uart, uint8_t *tx_buffer, uint32_t length);
-XTEST_API void xmock_i2s_transmit(XMockI2S *i2s, uint8_t *tx_buffer, uint32_t length);
-XTEST_API void xmock_can_transmit(XMockCAN *can, uint8_t *tx_buffer, uint32_t length);
-XTEST_API void xmock_bluetooth_transmit(XMockBluetooth *bluetooth, uint8_t *tx_buffer, uint32_t length);
-XTEST_API void xmock_modbus_transmit(XMockModbus *modbus, uint8_t *tx_buffer, uint32_t length);
-XTEST_API void xmock_i2c_write(XMockI2C *i2c, uint8_t device_address, uint8_t *data, uint32_t length);
-XTEST_API void xmock_spi_transfer(XMockSPI *spi, uint8_t *tx_buffer, uint8_t *rx_buffer, uint32_t length);
+XMOCK_API void xmock_uart_transmit(XMockUART *uart, uint8_t *tx_buffer, uint32_t length);
+XMOCK_API void xmock_i2s_transmit(XMockI2S *i2s, uint8_t *tx_buffer, uint32_t length);
+XMOCK_API void xmock_can_transmit(XMockCAN *can, uint8_t *tx_buffer, uint32_t length);
+XMOCK_API void xmock_bluetooth_transmit(XMockBluetooth *bluetooth, uint8_t *tx_buffer, uint32_t length);
+XMOCK_API void xmock_modbus_transmit(XMockModbus *modbus, uint8_t *tx_buffer, uint32_t length);
+XMOCK_API void xmock_i2c_write(XMockI2C *i2c, uint8_t device_address, uint8_t *data, uint32_t length);
+XMOCK_API void xmock_spi_transfer(XMockSPI *spi, uint8_t *tx_buffer, uint8_t *rx_buffer, uint32_t length);
 
 // Receive function for mock peripheral
-XTEST_API void xmock_uart_receive(XMockUART *uart, uint8_t *rx_buffer, uint32_t length);
-XTEST_API void xmock_can_receive(XMockCAN *can, uint8_t *rx_buffer, uint32_t length);
-XTEST_API void xmock_bluetooth_receive(XMockBluetooth *bluetooth, uint8_t *rx_buffer, uint32_t length);
-XTEST_API void xmock_modbus_receive(XMockModbus *modbus, uint8_t *rx_buffer, uint32_t length);
-XTEST_API void xmock_i2c_read(XMockI2C *i2c, uint8_t device_address, uint8_t *data, uint32_t length);
+XMOCK_API void xmock_uart_receive(XMockUART *uart, uint8_t *rx_buffer, uint32_t length);
+XMOCK_API void xmock_can_receive(XMockCAN *can, uint8_t *rx_buffer, uint32_t length);
+XMOCK_API void xmock_bluetooth_receive(XMockBluetooth *bluetooth, uint8_t *rx_buffer, uint32_t length);
+XMOCK_API void xmock_modbus_receive(XMockModbus *modbus, uint8_t *rx_buffer, uint32_t length);
+XMOCK_API void xmock_i2c_read(XMockI2C *i2c, uint8_t device_address, uint8_t *data, uint32_t length);
 
 
 /**
@@ -675,7 +710,7 @@ typedef struct {
  * @param voltage   The initial voltage of the battery in volts.
  * @param capacity  The capacity of the battery in ampere-hours.
  */
-XTEST_API void xmock_battery_init(XMockBattery *battery, uint8_t id, float voltage, float capacity);
+XMOCK_API void xmock_battery_init(XMockBattery *battery, uint8_t id, float voltage, float capacity);
 
 /**
  * @brief Sets the current for the battery to simulate charging or discharging.
@@ -686,7 +721,7 @@ XTEST_API void xmock_battery_init(XMockBattery *battery, uint8_t id, float volta
  * @param battery   Pointer to the XMockBattery instance.
  * @param current   The current to set for the battery in amperes.
  */
-XTEST_API void xmock_battery_set_current(XMockBattery *battery, float current);
+XMOCK_API void xmock_battery_set_current(XMockBattery *battery, float current);
 
 /**
  * @brief Gets the voltage of the battery.
@@ -697,7 +732,7 @@ XTEST_API void xmock_battery_set_current(XMockBattery *battery, float current);
  * @param battery   Pointer to the XMockBattery instance.
  * @return The voltage of the battery in volts.
  */
-XTEST_API float xmock_battery_get_voltage(XMockBattery *battery);
+XMOCK_API float xmock_battery_get_voltage(XMockBattery *battery);
 
 /**
  * @brief Gets the current of the battery.
@@ -708,7 +743,7 @@ XTEST_API float xmock_battery_get_voltage(XMockBattery *battery);
  * @param battery   Pointer to the XMockBattery instance.
  * @return The current of the battery in amperes.
  */
-XTEST_API float xmock_battery_get_current(XMockBattery *battery);
+XMOCK_API float xmock_battery_get_current(XMockBattery *battery);
 
 /**
  * @brief Gets the capacity of the battery.
@@ -719,7 +754,7 @@ XTEST_API float xmock_battery_get_current(XMockBattery *battery);
  * @param battery   Pointer to the XMockBattery instance.
  * @return The capacity of the battery in ampere-hours.
  */
-XTEST_API float xmock_battery_get_capacity(XMockBattery *battery);
+XMOCK_API float xmock_battery_get_capacity(XMockBattery *battery);
 
 /**
  * @brief Sets the charging status of the battery.
@@ -730,7 +765,7 @@ XTEST_API float xmock_battery_get_capacity(XMockBattery *battery);
  * @param battery       Pointer to the XMockBattery instance.
  * @param is_charging   A flag indicating whether the battery is charging (1) or not (0).
  */
-XTEST_API void xmock_battery_set_charging(XMockBattery *battery, int is_charging);
+XMOCK_API void xmock_battery_set_charging(XMockBattery *battery, int is_charging);
 
 #ifdef __cplusplus
 }
