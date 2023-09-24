@@ -15,7 +15,7 @@
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 // Extra
-const char *XTEST_VERSION = "0.3.2";
+const char *XTEST_VERSION = "0.3.3";
 
 // Static control panel for assert/expect and marks
 static bool XEXPECT_PASS_SCAN = true;
@@ -427,7 +427,6 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
     // Execute the test function
     if (!XIGNORE_TEST_CASE) {
         clock_t start_time = clock(); // Record start time
-        printf("::::::::: %i\n\n", XTEST_ITER_REAPET);
         for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
             test_case->test_function();
         } // end for
