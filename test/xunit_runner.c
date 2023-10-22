@@ -6,6 +6,14 @@
 */
 #include "xtest_fixtures.h"
 
+extern void xbenchs_test_group(XUnitRunner *runner);
+extern void unit_test_c_group(XUnitRunner *runner);
+extern void xignore_test_group(XUnitRunner *runner);
+extern void xexpect_test_group(XUnitRunner *runner);
+extern void xassert_test_group(XUnitRunner *runner);
+extern void xmockup_structs_group(XUnitRunner *runner);
+extern void xmockup_test_group(XUnitRunner *runner);
+extern void xmockup_hardware_group(XUnitRunner *runner);
 
 /*
  >
