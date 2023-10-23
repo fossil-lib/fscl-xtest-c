@@ -36,22 +36,9 @@
 #include <wchar.h>
 
 //
-// TEST FIXTURE
-//
-XTEST_FIXTURE(xassert_test_fixture);
-
-XTEST_SETUP(xassert_test_fixture) {
-    // empty
-} // end setup
-
-XTEST_TEARDOWN(xassert_test_fixture) {
-    // empty
-} // end teardown
-
-//
 // TEST CASES
 //
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int) {
+XTEST_CASE(xassert_run_of_int) {
     int x = 42;
     int y = 20;
 
@@ -64,7 +51,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int) {
     XASSERT_INT_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int8) {
+XTEST_CASE(xassert_run_of_int8) {
     int8_t x = 42;
     int8_t y = 20;
 
@@ -77,7 +64,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int8) {
     XASSERT_INT8_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int16) {
+XTEST_CASE(xassert_run_of_int16) {
     int16_t x = 42;
     int16_t y = 20;
 
@@ -90,7 +77,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int16) {
     XASSERT_INT16_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int32) {
+XTEST_CASE(xassert_run_of_int32) {
     int32_t x = 42;
     int32_t y = 20;
 
@@ -103,7 +90,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int32) {
     XASSERT_INT32_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int64) {
+XTEST_CASE(xassert_run_of_int64) {
     int64_t x = 42;
     int64_t y = 20;
 
@@ -116,7 +103,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_int64) {
     XASSERT_INT64_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint) {
+XTEST_CASE(xassert_run_of_uint) {
     unsigned int x = 42;
     unsigned int y = 20;
 
@@ -129,7 +116,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint) {
     XASSERT_UINT_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint8) {
+XTEST_CASE(xassert_run_of_uint8) {
     uint8_t x = 42;
     uint8_t y = 20;
 
@@ -142,7 +129,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint8) {
     XASSERT_UINT8_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint16) {
+XTEST_CASE(xassert_run_of_uint16) {
     uint16_t x = 42;
     uint16_t y = 20;
 
@@ -155,7 +142,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint16) {
     XASSERT_UINT16_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint32) {
+XTEST_CASE(xassert_run_of_uint32) {
     uint32_t x = 42;
     uint32_t y = 20;
 
@@ -168,7 +155,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint32) {
     XASSERT_UINT32_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint64) {
+XTEST_CASE(xassert_run_of_uint64) {
     uint64_t x = 42;
     uint64_t y = 20;
 
@@ -181,7 +168,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_uint64) {
     XASSERT_UINT64_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex) {
+XTEST_CASE(xassert_run_of_hex) {
     int hex_value1 = 0x42;
     int hex_value2 = 0x20;
 
@@ -194,7 +181,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex) {
     XASSERT_HEX_GREATER(hex_value1, hex_value2);        // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex8) {
+XTEST_CASE(xassert_run_of_hex8) {
     // Test cases for 8-bit hexadecimal
     uint8_t hex8_value1 = 0x42;
     uint8_t hex8_value2 = 0x20;
@@ -206,7 +193,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex8) {
     XASSERT_HEX8_GREATER(hex8_value1, hex8_value2);        // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex16) {
+XTEST_CASE(xassert_run_of_hex16) {
     // Test cases for 16-bit hexadecimal
     uint16_t hex16_value1 = 0xABCD;
     uint16_t hex16_value2 = 0x1234;
@@ -218,7 +205,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex16) {
     XASSERT_HEX16_GREATER(hex16_value1, hex16_value2);        // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex32) {
+XTEST_CASE(xassert_run_of_hex32) {
     uint32_t hex32_value1 = 0x12345678;
     uint32_t hex32_value2 = 0x87654321;
     XASSERT_HEX32_EQUAL(hex32_value1, 0x12345678);                // Should pass
@@ -229,7 +216,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex32) {
     XASSERT_HEX32_GREATER(hex32_value2, hex32_value1);            // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex64) {
+XTEST_CASE(xassert_run_of_hex64) {
     // Test cases for 64-bit hexadecimal
     uint64_t hex64_value1 = 0x0123456789ABCDEF;
     uint64_t hex64_value2 = 0xFEDCBA9876543210;
@@ -241,7 +228,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_hex64) {
     XASSERT_HEX64_GREATER(hex64_value2, hex64_value1);                   // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_bit) {
+XTEST_CASE(xassert_run_of_bit) {
     // Test cases for bitwise operations
     int value1 = 0b11011011;  // Binary literal
     int value2 = 0b10101010;  // Binary literal
@@ -281,7 +268,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_bit) {
     // XASSERT_BIT_LOW(value2, bitIndex);        // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_bits) {
+XTEST_CASE(xassert_run_of_bits) {
     // Test cases for bitwise operations
     int value1 = 0b101010; // Binary literal
     int value2 = 0b110011; // Binary literal
@@ -296,7 +283,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_bits) {
     XASSERT_BITS_GREATER_EQUAL(value2, value1, mask);          // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_oct) {
+XTEST_CASE(xassert_run_of_oct) {
     // Test cases for octal values
     int oct_value1 = 01234;  // Octal literal
     int oct_value2 = 04567;  // Octal literal
@@ -310,7 +297,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_oct) {
 
 
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_float) {
+XTEST_CASE(xassert_run_of_float) {
     // Test cases for floating-point assertions
     double value1 = 3.14;
     double value2 = 2.71;
@@ -338,7 +325,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_float) {
     XASSERT_FLOAT_GREATER_EQUAL(value1, value1);         // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_float_only) {
+XTEST_CASE(xassert_run_of_float_only) {
     // Test cases for floating-point special values
     double inf = 1.0 / 0.0;
     double neg_inf = -1.0 / 0.0;
@@ -361,7 +348,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_float_only) {
 } // end case
 
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_double) {
+XTEST_CASE(xassert_run_of_double) {
     // Test cases for double-precision values
     double epsilon = 1e-6;
 
@@ -390,7 +377,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_double) {
     XASSERT_DOUBLE_LESS_EQUAL(value1, value2);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_double_only) {
+XTEST_CASE(xassert_run_of_double_only) {
     double inf = 1.0 / 0.0;
     double neg_inf = -1.0 / 0.0;
     double finite = 42.0;
@@ -405,7 +392,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_double_only) {
     XASSERT_DOUBLE_IS_NAN(nan);          // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_nullptr) {
+XTEST_CASE(xassert_run_of_nullptr) {
     int* valid_ptr = NULL;
     int* invalid_ptr = (int*)0x12345678;
 
@@ -418,7 +405,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_nullptr) {
     XASSERT_PTR_INVALID_MEMORY_ACCESS(invalid_ptr);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_pointer) {
+XTEST_CASE(xassert_run_of_pointer) {
     int arr[5] = {1, 2, 3, 4, 5};
     int* valid_ptr = arr;
     int* invalid_ptr = (int*)0x12345678;
@@ -431,7 +418,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_pointer) {
     XASSERT_PTR_GREATER_EQUAL(valid_ptr, valid_ptr);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_string) {
+XTEST_CASE(xassert_run_of_string) {
     const char* str1 = "Hello";
     const char* str2 = "World";
     const char* str3 = "Hello";
@@ -444,7 +431,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_string) {
     XASSERT_STRING_LENGTH(str1, 5);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_char) {
+XTEST_CASE(xassert_run_of_char) {
     char ch1 = 'A';
     char ch2 = 'B';
     char ch3 = 'A';
@@ -462,7 +449,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_char) {
     XASSERT_CHAR_GREATER_EQUAL(ch4, ch1);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_wchar) {
+XTEST_CASE(xassert_run_of_wchar) {
     wchar_t wchar1 = L'A';
     wchar_t wchar2 = L'B';
     wchar_t wchar3 = L'A';
@@ -481,7 +468,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_wchar) {
 } // end case
 
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_boolean) {
+XTEST_CASE(xassert_run_of_boolean) {
     int value1 = 5;
     int value2 = 10;
 
@@ -497,7 +484,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_boolean) {
 } // end case
 
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_int) {
+XTEST_CASE(xassert_run_of_within_int) {
     // Test cases for integer comparisons within tolerance
     int int1 = 10;
     int int2 = 12;
@@ -511,7 +498,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_int) {
     XASSERT_INT64_WITHIN(int1, 10, 0);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_uint) {
+XTEST_CASE(xassert_run_of_within_uint) {
     // Test cases for unsigned integer comparisons within tolerance
     unsigned int uint1 = 10;
     unsigned int uint2 = 12;
@@ -526,7 +513,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_uint) {
 } // end case
 
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_hex) {
+XTEST_CASE(xassert_run_of_within_hex) {
     // Test cases for hexadecimal comparisons within tolerance
     unsigned int hex1 = 0x10;
     unsigned int hex2 = 0x20;
@@ -541,7 +528,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_hex) {
 
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_oct) {
+XTEST_CASE(xassert_run_of_within_oct) {
     // Test cases for octal comparisons within tolerance
     int oct1 = 012;
     int oct2 = 075;
@@ -550,7 +537,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_oct) {
     XASSERT_OCT_WITHIN(oct2, 075, 04);       // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_bit) {
+XTEST_CASE(xassert_run_of_within_bit) {
     // Test cases for binary comparisons within tolerance
     int bin1 = 0b110;
     int bin2 = 0b1010;
@@ -559,7 +546,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_bit) {
     XASSERT_BIN_WITHIN(bin2, 0b1010, 0b100); // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_float) {
+XTEST_CASE(xassert_run_of_within_float) {
     // Test cases for float and double comparisons within tolerance
     float float1 = 1.23;
     float float2 = 4.56;
@@ -568,7 +555,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_float) {
     XASSERT_FLOAT_WITHIN(float2, 4.56, 0.1);    // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_double) {
+XTEST_CASE(xassert_run_of_within_double) {
     // Test cases for float and double comparisons within tolerance
     double double1 = 1.234567;
     double double2 = 4.567890;
@@ -577,7 +564,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_double) {
     XASSERT_DOUBLE_WITHIN(double2, 4.567890, 0.001);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_wchar) {
+XTEST_CASE(xassert_run_of_within_wchar) {
     // Test cases for char and wchar_t comparisons within range
     wchar_t wchar1 = L'0';
     wchar_t wchar2 = L'9';
@@ -586,7 +573,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_wchar) {
     XASSERT_WCHAR_WITHIN(wchar2, L'0', L'9'); // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_char) {
+XTEST_CASE(xassert_run_of_within_char) {
     // Test cases for char and wchar_t comparisons within range
     char char1 = 'A';
     char char2 = 'Z';
@@ -595,7 +582,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_within_char) {
     XASSERT_CHAR_WITHIN(char2, 'A', 'Z');     // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_files) {
+XTEST_CASE(xassert_run_of_files) {
     FILE *file = fopen("example.txt", "r");
     if (file == NULL) {
         XTEST_IGNORE("File not found in test directory");
@@ -614,7 +601,7 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_files) {
     fclose(file);
 } // end case
 
-XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_arrays) {
+XTEST_CASE(xassert_run_of_arrays) {
     // Test cases for array-related assertions
     int arr[] = {1, 2, 3, 4, 5};
     int size = sizeof(arr) / sizeof(arr[0]);
@@ -631,46 +618,46 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_arrays) {
 // LOCAL TEST GROUP
 //
 void xassert_test_group(XUnitRunner *runner) {
-    XTEST_RUN_FIXTURE(xassert_run_of_int,    xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_int8,   xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_int16,  xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_int32,  xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_int64,  xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_uint,   xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_uint8,  xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_uint16, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_uint32, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_uint64, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_hex,    xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_hex8,   xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_hex16,  xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_hex32,  xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_hex64,  xassert_test_fixture, runner);
+    XTEST_RUN_UNIT(xassert_run_of_int, runner);
+    XTEST_RUN_UNIT(xassert_run_of_int8, runner);
+    XTEST_RUN_UNIT(xassert_run_of_int16, runner);
+    XTEST_RUN_UNIT(xassert_run_of_int32, runner);
+    XTEST_RUN_UNIT(xassert_run_of_int64, runner);
+    XTEST_RUN_UNIT(xassert_run_of_uint, runner);
+    XTEST_RUN_UNIT(xassert_run_of_uint8, runner);
+    XTEST_RUN_UNIT(xassert_run_of_uint16, runner);
+    XTEST_RUN_UNIT(xassert_run_of_uint32, runner);
+    XTEST_RUN_UNIT(xassert_run_of_uint64, runner);
+    XTEST_RUN_UNIT(xassert_run_of_hex, runner);
+    XTEST_RUN_UNIT(xassert_run_of_hex8, runner);
+    XTEST_RUN_UNIT(xassert_run_of_hex16, runner);
+    XTEST_RUN_UNIT(xassert_run_of_hex32, runner);
+    XTEST_RUN_UNIT(xassert_run_of_hex64, runner);
 
-    XTEST_RUN_FIXTURE(xassert_run_of_bit,    xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_bits,   xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_oct,    xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_float,  xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_float_only, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_double, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_double_only, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_nullptr, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_pointer, xassert_test_fixture, runner);
+    XTEST_RUN_UNIT(xassert_run_of_bit, runner);
+    XTEST_RUN_UNIT(xassert_run_of_bits, runner);
+    XTEST_RUN_UNIT(xassert_run_of_oct, runner);
+    XTEST_RUN_UNIT(xassert_run_of_float, runner);
+    XTEST_RUN_UNIT(xassert_run_of_float_only, runner);
+    XTEST_RUN_UNIT(xassert_run_of_double, runner);
+    XTEST_RUN_UNIT(xassert_run_of_double_only, runner);
+    XTEST_RUN_UNIT(xassert_run_of_nullptr, runner);
+    XTEST_RUN_UNIT(xassert_run_of_pointer, runner);
 
-    XTEST_RUN_FIXTURE(xassert_run_of_char, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_wchar, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_string, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_within_int, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_within_uint, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_within_hex, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_within_oct, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_within_bit, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_within_float, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_within_double, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_within_wchar, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_within_char, xassert_test_fixture, runner);
+    XTEST_RUN_UNIT(xassert_run_of_char, runner);
+    XTEST_RUN_UNIT(xassert_run_of_wchar, runner);
+    XTEST_RUN_UNIT(xassert_run_of_string, runner);
+    XTEST_RUN_UNIT(xassert_run_of_within_int, runner);
+    XTEST_RUN_UNIT(xassert_run_of_within_uint, runner);
+    XTEST_RUN_UNIT(xassert_run_of_within_hex, runner);
+    XTEST_RUN_UNIT(xassert_run_of_within_oct, runner);
+    XTEST_RUN_UNIT(xassert_run_of_within_bit, runner);
+    XTEST_RUN_UNIT(xassert_run_of_within_float, runner);
+    XTEST_RUN_UNIT(xassert_run_of_within_double, runner);
+    XTEST_RUN_UNIT(xassert_run_of_within_wchar, runner);
+    XTEST_RUN_UNIT(xassert_run_of_within_char, runner);
 
-    XTEST_RUN_FIXTURE(xassert_run_of_boolean, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_files, xassert_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xassert_run_of_arrays, xassert_test_fixture, runner);
+    XTEST_RUN_UNIT(xassert_run_of_boolean, runner);
+    XTEST_RUN_UNIT(xassert_run_of_files, runner);
+    XTEST_RUN_UNIT(xassert_run_of_arrays, runner);
 } // end of group

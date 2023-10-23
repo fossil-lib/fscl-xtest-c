@@ -618,46 +618,46 @@ XTEST_CASE(xexpect_run_of_arrays) {
 // LOCAL TEST GROUP
 //
 void xexpect_test_group(XUnitRunner *runner) {
-    XTEST_RUN_FIXTURE(xexpect_run_of_int,    xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_int8,   xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_int16,  xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_int32,  xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_int64,  xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_uint,   xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_uint8,  xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_uint16, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_uint32, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_uint64, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_hex,    xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_hex8,   xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_hex16,  xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_hex32,  xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_hex64,  xexpect_test_fixture, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_int, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_int8, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_int16, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_int32, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_int64, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_uint, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_uint8, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_uint16, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_uint32, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_uint64, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_hex, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_hex8, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_hex16, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_hex32, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_hex64, runner);
 
-    XTEST_RUN_FIXTURE(xexpect_run_of_bit,    xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_bits,   xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_oct,    xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_float,  xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_float_only, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_double, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_double_only, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_nullptr, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_pointer, xexpect_test_fixture, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_bit, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_bits, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_oct, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_float, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_float_only, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_double, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_double_only, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_nullptr, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_pointer, runner);
 
-    XTEST_RUN_FIXTURE(xexpect_run_of_char, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_wchar, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_string, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_within_int, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_within_uint, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_within_hex, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_within_oct, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_within_bit, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_within_float, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_within_double, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_within_wchar, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_within_char, xexpect_test_fixture, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_char, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_wchar, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_string, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_int, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_uint, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_hex, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_oct, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_bit, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_float, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_double, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_wchar, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_char, runner);
 
-    XTEST_RUN_FIXTURE(xexpect_run_of_boolean, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_files, xexpect_test_fixture, runner);
-    XTEST_RUN_FIXTURE(xexpect_run_of_arrays, xexpect_test_fixture, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_boolean, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_files, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_arrays, runner);
 } // end of group
