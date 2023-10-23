@@ -118,11 +118,11 @@ XTEST_CASE(xmock_hardware_battery) {
 // XUNIT-GROUP:
 //
 void group_mockup_hardware(XUnitRunner *runner) {
-    XTEST_RUN_FIXTURE(xmock_hardware_sensor_init,          runner);
-    XTEST_RUN_FIXTURE(xmock_hardware_sensor_read,          runner);
-    XTEST_RUN_FIXTURE(xmock_hardware_motor_init,           runner);
-    XTEST_RUN_FIXTURE(xmock_hardware_motor_set_speed,      runner);
-    XTEST_RUN_FIXTURE(xmock_hardware_actuator_init,        runner);
-    XTEST_RUN_FIXTURE(xmock_hardware_actuator_turn_on_off, runner);
-    XTEST_RUN_FIXTURE(xmock_hardware_battery,              runner);
+    XTEST_RUN_UNIT(xmock_hardware_sensor_init,          runner);
+    XTEST_RUN_UNIT(xmock_hardware_sensor_read,          runner);
+    XTEST_RUN_UNIT(xmock_hardware_motor_init,           runner);
+    XTEST_RUN_UNIT(xmock_hardware_motor_set_speed,      runner);
+    XTEST_RUN_UNIT(xmock_hardware_actuator_init,        runner);
+    XTEST_RUN_UNIT(xmock_hardware_actuator_turn_on_off, runner);
+    XTEST_RUN_UNIT(xmock_hardware_battery,              runner);
 } // end group
