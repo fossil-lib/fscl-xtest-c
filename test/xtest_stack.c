@@ -1,5 +1,5 @@
 /*  ----------------------------------------------------------------------------
-    File: xunit_runner.c
+    File: xtest_stack.c
 
     Description:
     This test file contains unit tests for the various functions and utilities provided
@@ -29,36 +29,50 @@
     (Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0)
     ----------------------------------------------------------------------------
 */
-#include <trilobite/xtest.h>
+#include <trilobite/xtest.h>   // basic test tools
+#include <trilobite/xassert.h> // extra asserts
+#include <trilobite/xmock.h>   // adds mocks
+
+XMockStack *stack;
 
 //
-// XUNIT-GROUP: list of test groups for the runner
+// TEST FIXTURE
 //
-extern void xassert_test_group(XUnitRunner *runner);
-extern void xexpect_test_group(XUnitRunner *runner);
-extern void xbenchs_test_group(XUnitRunner *runner);
-extern void group_mockup_software(XUnitRunner *runner);
-extern void group_mockup_hardware(XUnitRunner *runner);
-extern void group_mockup_stack(XUnitRunner *runner);
-extern void group_mockup_queue(XUnitRunner *runner);
-extern void group_mockup_list(XUnitRunner *runner);
-extern void group_mockup_map(XUnitRunner *runner);
+XTEST_FIXTURE(xmock_stack_test_fixture);
+XTEST_SETUP(xmock_stack_test_fixture) {
+    stack = xmock_stack_create(100);
+} // end setup
+
+XTEST_TEARDOWN(xmock_stack_test_fixture) {
+    xmock_stack_destroy(stack);
+} // end teardown
 
 //
-// XUNIT-TEST RUNNER:
+// TEST CASES
 //
-int main(int argc, char **argv) {
-    XUnitRunner runner = XTEST_RUNNER_START(argc, argv);
+XTEST_CASE_FIXTURE(xmock_stack_test_fixture, mock_stack_push) {
+    xmock_stack_push(stack, 22);
+    xmock_stack_push(stack, 23);
+    xmock_stack_push(stack, 11);
 
-    xassert_test_group(&runner);
-    xexpect_test_group(&runner);
-    xbenchs_test_group(&runner);
-    group_mockup_software(&runner);
-    group_mockup_hardware(&runner);
-    group_mockup_stack(&runner);
-    group_mockup_queue(&runner);
-    group_mockup_list(&runner);
-    group_mockup_map(&runner);
+    XASSERT_INT_EQUAL(xmock_stack_size(stack), 3);
+}
 
-    return XTEST_RUNNER_END(runner);
-} // end of func
+XTEST_CASE_FIXTURE(xmock_stack_test_fixture, mock_stack_pop) {
+    xmock_stack_push(stack, 22);
+    xmock_stack_push(stack, 23);
+    xmock_stack_push(stack, 11);
+
+    XASSERT_INT_EQUAL(xmock_stack_size(stack), 3);
+
+    xmock_stack_pop(stack);
+    XASSERT_INT_EQUAL(xmock_stack_size(stack), 2);
+}
+
+//
+// XUNIT-GROUP:
+//
+void group_mockup_stack(XUnitRunner *runner) {
+    XTEST_RUN_FIXTURE(mock_stack_push,      xmock_stack_test_fixture, runner);
+    XTEST_RUN_FIXTURE(mock_stack_pop,       xmock_stack_test_fixture, runner);
+} // end group

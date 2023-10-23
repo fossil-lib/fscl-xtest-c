@@ -1,5 +1,5 @@
 /*  ----------------------------------------------------------------------------
-    File: xunit_runner.c
+    File: xtest_map.c
 
     Description:
     This test file contains unit tests for the various functions and utilities provided
@@ -29,36 +29,43 @@
     (Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0)
     ----------------------------------------------------------------------------
 */
-#include <trilobite/xtest.h>
+#include <trilobite/xtest.h>   // basic test tools
+#include <trilobite/xassert.h> // extra asserts
+#include <trilobite/xmock.h>   // adds mocks
+
+XMockMap *map;
 
 //
-// XUNIT-GROUP: list of test groups for the runner
+// TEST FIXTURE
 //
-extern void xassert_test_group(XUnitRunner *runner);
-extern void xexpect_test_group(XUnitRunner *runner);
-extern void xbenchs_test_group(XUnitRunner *runner);
-extern void group_mockup_software(XUnitRunner *runner);
-extern void group_mockup_hardware(XUnitRunner *runner);
-extern void group_mockup_stack(XUnitRunner *runner);
-extern void group_mockup_queue(XUnitRunner *runner);
-extern void group_mockup_list(XUnitRunner *runner);
-extern void group_mockup_map(XUnitRunner *runner);
+XTEST_FIXTURE(xmock_map_test_fixture);
+XTEST_SETUP(xmock_map_test_fixture) {
+    map = xmock_map_create();
+} // end setup
+
+XTEST_TEARDOWN(xmock_map_test_fixture) {
+    xmock_map_destroy(map);
+} // end teardown
 
 //
-// XUNIT-TEST RUNNER:
+// TEST CASES
 //
-int main(int argc, char **argv) {
-    XUnitRunner runner = XTEST_RUNNER_START(argc, argv);
+XTEST_CASE_FIXTURE(xmock_map_test_fixture, mock_map_put_item) {
+    xmock_map_put(map, 22, 42);
+    XASSERT_BOOL_TRUE(xmock_map_contains(map, 22));
+}
 
-    xassert_test_group(&runner);
-    xexpect_test_group(&runner);
-    xbenchs_test_group(&runner);
-    group_mockup_software(&runner);
-    group_mockup_hardware(&runner);
-    group_mockup_stack(&runner);
-    group_mockup_queue(&runner);
-    group_mockup_list(&runner);
-    group_mockup_map(&runner);
+XTEST_CASE_FIXTURE(xmock_map_test_fixture, mock_map_remove) {
+    xmock_map_put(map, 22, 42);
+    XASSERT_BOOL_TRUE(xmock_map_contains(map, 22));
+    xmock_map_remove(map, 22);
+    XASSERT_BOOL_FALSE(xmock_map_contains(map, 22));
+}
 
-    return XTEST_RUNNER_END(runner);
-} // end of func
+//
+// XUNIT-GROUP:
+//
+void group_mockup_map(XUnitRunner *runner) {
+    XTEST_RUN_FIXTURE(mock_map_put_item,    xmock_map_test_fixture,   runner);
+    XTEST_RUN_FIXTURE(mock_map_remove,      xmock_map_test_fixture,   runner);
+} // end group

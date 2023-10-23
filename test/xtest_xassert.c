@@ -1,12 +1,36 @@
-/*
-   under:   trilobite stdlib
-   author:  Michael Gene Brockus (Dreamer)
-   gmail:   <michaelbrockus@gmail.com>
-   website: <https://trilobite.code.blog>
+/*  ----------------------------------------------------------------------------
+    File: xtest_xassert.c
+
+    Description:
+    This test file contains unit tests for the various functions and utilities provided
+    by the Trilobite Stdlib. These tests ensure the correctness and reliability of the
+    library's components and demonstrate their intended usage.
+
+    Author: Michael Gene Brockus (Dreamer)
+    Email: michaelbrockus@gmail.com
+    Website: [Trilobite Coder Blog](https://trilobite.code.blog)
+
+    Project: Trilobite Stdlib
+
+    License: Apache License 2.0
+    SPDX Identifier: Apache-2.0
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the License
+    is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+    or implied. See the License for the specific language governing permissions and limitations
+    under the License.
+
+    Please review the full text of the Apache License 2.0 for the complete terms and conditions.
+
+    (Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0)
+    ----------------------------------------------------------------------------
 */
-#include "xtest_fixtures.h"
-#include "trilobite/xtest.h"
-#include "trilobite/xassert.h"
+#include <trilobite/xtest.h>
+#include <trilobite/xassert.h>
 
 #include <stdint.h>
 #include <wchar.h>
@@ -607,46 +631,46 @@ XTEST_CASE_FIXTURE(xassert_test_fixture, xassert_run_of_arrays) {
 // LOCAL TEST GROUP
 //
 void xassert_test_group(XUnitRunner *runner) {
-    xtest_run_test_fixture(&xassert_run_of_int,    &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_int8,   &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_int16,  &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_int32,  &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_int64,  &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_uint,   &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_uint8,  &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_uint16, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_uint32, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_uint64, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_hex,    &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_hex8,   &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_hex16,  &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_hex32,  &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_hex64,  &xassert_test_fixture, &runner->stats);
+    XTEST_RUN_FIXTURE(xassert_run_of_int,    xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_int8,   xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_int16,  xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_int32,  xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_int64,  xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_uint,   xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_uint8,  xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_uint16, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_uint32, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_uint64, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_hex,    xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_hex8,   xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_hex16,  xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_hex32,  xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_hex64,  xassert_test_fixture, runner);
 
-    xtest_run_test_fixture(&xassert_run_of_bit,    &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_bits,   &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_oct,    &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_float,  &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_float_only, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_double, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_double_only, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_nullptr, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_pointer, &xassert_test_fixture, &runner->stats);
+    XTEST_RUN_FIXTURE(xassert_run_of_bit,    xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_bits,   xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_oct,    xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_float,  xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_float_only, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_double, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_double_only, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_nullptr, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_pointer, xassert_test_fixture, runner);
 
-    xtest_run_test_fixture(&xassert_run_of_char, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_wchar, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_string, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_within_int, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_within_uint, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_within_hex, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_within_oct, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_within_bit, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_within_float, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_within_double, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_within_wchar, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_within_char, &xassert_test_fixture, &runner->stats);
+    XTEST_RUN_FIXTURE(xassert_run_of_char, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_wchar, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_string, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_within_int, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_within_uint, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_within_hex, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_within_oct, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_within_bit, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_within_float, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_within_double, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_within_wchar, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_within_char, xassert_test_fixture, runner);
 
-    xtest_run_test_fixture(&xassert_run_of_boolean, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_files, &xassert_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xassert_run_of_arrays, &xassert_test_fixture, &runner->stats);
+    XTEST_RUN_FIXTURE(xassert_run_of_boolean, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_files, xassert_test_fixture, runner);
+    XTEST_RUN_FIXTURE(xassert_run_of_arrays, xassert_test_fixture, runner);
 } // end of group
