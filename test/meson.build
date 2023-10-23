@@ -1,22 +1,14 @@
-if get_option('with_tests').enabled()
-    exe = executable('xtest-runner',
-        'xtest_runner.c',
-        'xtest_cases.c',
-        'xtest_xignore.c',
-        'xtest_xexpect.c',
-        'xtest_xassert.c',
-        'xmock_structs.c',
-        'xmock_functions.c',
-        'xmock_embedded.c',
-        'xtest_bench.c',
-        dependencies : [trilo_xtest_c_dep, trilo_xmock_c_dep])
+if get_option('with_test').enabled()
+    test_source = files(
+        'xtest_xexpect.c',  'xtest_xassert.c',
+        'xtest_queue.c',    'xtest_map.c',
+        'xtest_stack.c',    'xtest_list.c',
+        'xtest_software.c', 'xtest_hardware.c',
+        'xtest_bench.c',    'xunit_runner.c')
 
-    test('Execute project tests', exe)
-endif
+    configure_file(input: 'example.txt', output: 'example.txt', copy: true)
 
-if get_option('with_demo').enabled()
-    test('Execute C Sample', executable('c-sample', 'sample.c', dependencies : [trilo_xtest_c_dep]))
-    if add_languages('cpp', required : false)
-        test('Execute C++ Sample', executable('cpp-sample', 'sample.cpp', dependencies : [trilo_xtest_c_dep]))
-    endif
+    test('Execute project Xunit tests', 
+        executable('xrunner', test_source,
+        dependencies : [trilo_xtest_c_dep, trilo_xmock_c_dep]))
 endif

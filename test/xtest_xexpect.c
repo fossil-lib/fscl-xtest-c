@@ -1,33 +1,44 @@
-/*
-   under:   trilobite stdlib
-   author:  Michael Gene Brockus (Dreamer)
-   gmail:   <michaelbrockus@gmail.com>
-   website: <https://trilobite.code.blog>
+/*  ----------------------------------------------------------------------------
+    File: xtest_xexpect.c
+
+    Description:
+    This test file contains unit tests for the various functions and utilities provided
+    by the Trilobite Stdlib. These tests ensure the correctness and reliability of the
+    library's components and demonstrate their intended usage.
+
+    Author: Michael Gene Brockus (Dreamer)
+    Email: michaelbrockus@gmail.com
+    Website: [Trilobite Coder Blog](https://trilobite.code.blog)
+
+    Project: Trilobite Stdlib
+
+    License: Apache License 2.0
+    SPDX Identifier: Apache-2.0
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the License
+    is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+    or implied. See the License for the specific language governing permissions and limitations
+    under the License.
+
+    Please review the full text of the Apache License 2.0 for the complete terms and conditions.
+
+    (Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0)
+    ----------------------------------------------------------------------------
 */
-#include "xtest_fixtures.h"
-#include "trilobite/xtest.h"
-#include "trilobite/xexpect.h"
+#include <trilobite/xtest.h>
+#include <trilobite/xexpect.h>
 
 #include <stdint.h>
 #include <wchar.h>
 
 //
-// TEST FIXTURE
-//
-XTEST_FIXTURE(xexpect_test_fixture);
-
-XTEST_SETUP(xexpect_test_fixture) {
-    // empty
-} // end setup
-
-XTEST_TEARDOWN(xexpect_test_fixture) {
-    // empty
-} // end teardown
-
-//
 // TEST CASES
 //
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_int) {
+XTEST_CASE(xexpect_run_of_int) {
     int x = 42;
     int y = 20;
 
@@ -40,7 +51,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_int) {
     XEXPECT_INT_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_int8) {
+XTEST_CASE(xexpect_run_of_int8) {
     int8_t x = 42;
     int8_t y = 20;
 
@@ -53,7 +64,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_int8) {
     XEXPECT_INT8_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_int16) {
+XTEST_CASE(xexpect_run_of_int16) {
     int16_t x = 42;
     int16_t y = 20;
 
@@ -66,7 +77,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_int16) {
     XEXPECT_INT16_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_int32) {
+XTEST_CASE(xexpect_run_of_int32) {
     int32_t x = 42;
     int32_t y = 20;
 
@@ -79,7 +90,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_int32) {
     XEXPECT_INT32_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_int64) {
+XTEST_CASE(xexpect_run_of_int64) {
     int64_t x = 42;
     int64_t y = 20;
 
@@ -92,7 +103,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_int64) {
     XEXPECT_INT64_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_uint) {
+XTEST_CASE(xexpect_run_of_uint) {
     unsigned int x = 42;
     unsigned int y = 20;
 
@@ -105,7 +116,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_uint) {
     XEXPECT_UINT_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_uint8) {
+XTEST_CASE(xexpect_run_of_uint8) {
     uint8_t x = 42;
     uint8_t y = 20;
 
@@ -118,7 +129,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_uint8) {
     XEXPECT_UINT8_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_uint16) {
+XTEST_CASE(xexpect_run_of_uint16) {
     uint16_t x = 42;
     uint16_t y = 20;
 
@@ -131,7 +142,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_uint16) {
     XEXPECT_UINT16_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_uint32) {
+XTEST_CASE(xexpect_run_of_uint32) {
     uint32_t x = 42;
     uint32_t y = 20;
 
@@ -144,7 +155,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_uint32) {
     XEXPECT_UINT32_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_uint64) {
+XTEST_CASE(xexpect_run_of_uint64) {
     uint64_t x = 42;
     uint64_t y = 20;
 
@@ -157,7 +168,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_uint64) {
     XEXPECT_UINT64_GREATER(x, y);              // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_hex) {
+XTEST_CASE(xexpect_run_of_hex) {
     int hex_value1 = 0x42;
     int hex_value2 = 0x20;
 
@@ -170,7 +181,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_hex) {
     XEXPECT_HEX_GREATER(hex_value1, hex_value2);        // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_hex8) {
+XTEST_CASE(xexpect_run_of_hex8) {
     // Test cases for 8-bit hexadecimal
     uint8_t hex8_value1 = 0x42;
     uint8_t hex8_value2 = 0x20;
@@ -182,7 +193,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_hex8) {
     XEXPECT_HEX8_GREATER(hex8_value1, hex8_value2);        // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_hex16) {
+XTEST_CASE(xexpect_run_of_hex16) {
     // Test cases for 16-bit hexadecimal
     uint16_t hex16_value1 = 0xABCD;
     uint16_t hex16_value2 = 0x1234;
@@ -194,7 +205,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_hex16) {
     XEXPECT_HEX16_GREATER(hex16_value1, hex16_value2);        // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_hex32) {
+XTEST_CASE(xexpect_run_of_hex32) {
     uint32_t hex32_value1 = 0x12345678;
     uint32_t hex32_value2 = 0x87654321;
     XEXPECT_HEX32_EQUAL(hex32_value1, 0x12345678);                // Should pass
@@ -205,7 +216,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_hex32) {
     XEXPECT_HEX32_GREATER(hex32_value2, hex32_value1);            // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_hex64) {
+XTEST_CASE(xexpect_run_of_hex64) {
     // Test cases for 64-bit hexadecimal
     uint64_t hex64_value1 = 0x0123456789ABCDEF;
     uint64_t hex64_value2 = 0xFEDCBA9876543210;
@@ -217,7 +228,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_hex64) {
     XEXPECT_HEX64_GREATER(hex64_value2, hex64_value1);                   // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_bit) {
+XTEST_CASE(xexpect_run_of_bit) {
     // Test cases for bitwise operations
     int value1 = 0b11011011;  // Binary literal
     int value2 = 0b10101010;  // Binary literal
@@ -257,7 +268,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_bit) {
     // XEXPECT_BIT_LOW(value2, bitIndex);        // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_bits) {
+XTEST_CASE(xexpect_run_of_bits) {
     // Test cases for bitwise operations
     int value1 = 0b101010; // Binary literal
     int value2 = 0b110011; // Binary literal
@@ -272,7 +283,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_bits) {
     XEXPECT_BITS_GREATER_EQUAL(value2, value1, mask);          // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_oct) {
+XTEST_CASE(xexpect_run_of_oct) {
     // Test cases for octal values
     int oct_value1 = 01234;  // Octal literal
     int oct_value2 = 04567;  // Octal literal
@@ -286,7 +297,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_oct) {
 
 
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_float) {
+XTEST_CASE(xexpect_run_of_float) {
     // Test cases for floating-point assertions
     double value1 = 3.14;
     double value2 = 2.71;
@@ -314,7 +325,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_float) {
     XEXPECT_FLOAT_GREATER_EQUAL(value1, value1);         // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_float_only) {
+XTEST_CASE(xexpect_run_of_float_only) {
     // Test cases for floating-point special values
     double inf = 1.0 / 0.0;
     double neg_inf = -1.0 / 0.0;
@@ -337,7 +348,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_float_only) {
 } // end case
 
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_double) {
+XTEST_CASE(xexpect_run_of_double) {
     // Test cases for double-precision values
     double epsilon = 1e-6;
 
@@ -366,7 +377,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_double) {
     XEXPECT_DOUBLE_LESS_EQUAL(value1, value2);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_double_only) {
+XTEST_CASE(xexpect_run_of_double_only) {
     double inf = 1.0 / 0.0;
     double neg_inf = -1.0 / 0.0;
     double finite = 42.0;
@@ -381,7 +392,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_double_only) {
     XEXPECT_DOUBLE_IS_NAN(nan);          // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_nullptr) {
+XTEST_CASE(xexpect_run_of_nullptr) {
     int* valid_ptr = NULL;
     int* invalid_ptr = (int*)0x12345678;
 
@@ -394,7 +405,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_nullptr) {
     XEXPECT_PTR_INVALID_MEMORY_ACCESS(invalid_ptr);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_pointer) {
+XTEST_CASE(xexpect_run_of_pointer) {
     int arr[5] = {1, 2, 3, 4, 5};
     int* valid_ptr = arr;
     int* invalid_ptr = (int*)0x12345678;
@@ -407,7 +418,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_pointer) {
     XEXPECT_PTR_GREATER_EQUAL(valid_ptr, valid_ptr);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_string) {
+XTEST_CASE(xexpect_run_of_string) {
     const char* str1 = "Hello";
     const char* str2 = "World";
     const char* str3 = "Hello";
@@ -420,7 +431,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_string) {
     XEXPECT_STRING_LENGTH(str1, 5);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_char) {
+XTEST_CASE(xexpect_run_of_char) {
     char ch1 = 'A';
     char ch2 = 'B';
     char ch3 = 'A';
@@ -438,7 +449,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_char) {
     XEXPECT_CHAR_GREATER_EQUAL(ch4, ch1);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_wchar) {
+XTEST_CASE(xexpect_run_of_wchar) {
     wchar_t wchar1 = L'A';
     wchar_t wchar2 = L'B';
     wchar_t wchar3 = L'A';
@@ -457,7 +468,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_wchar) {
 } // end case
 
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_boolean) {
+XTEST_CASE(xexpect_run_of_boolean) {
     int value1 = 5;
     int value2 = 10;
 
@@ -473,7 +484,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_boolean) {
 } // end case
 
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_int) {
+XTEST_CASE(xexpect_run_of_within_int) {
     // Test cases for integer comparisons within tolerance
     int int1 = 10;
     int int2 = 12;
@@ -487,7 +498,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_int) {
     XEXPECT_INT64_WITHIN(int1, 10, 0);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_uint) {
+XTEST_CASE(xexpect_run_of_within_uint) {
     // Test cases for unsigned integer comparisons within tolerance
     unsigned int uint1 = 10;
     unsigned int uint2 = 12;
@@ -502,7 +513,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_uint) {
 } // end case
 
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_hex) {
+XTEST_CASE(xexpect_run_of_within_hex) {
     // Test cases for hexadecimal comparisons within tolerance
     unsigned int hex1 = 0x10;
     unsigned int hex2 = 0x20;
@@ -517,7 +528,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_hex) {
 
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_oct) {
+XTEST_CASE(xexpect_run_of_within_oct) {
     // Test cases for octal comparisons within tolerance
     int oct1 = 012;
     int oct2 = 075;
@@ -526,7 +537,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_oct) {
     XEXPECT_OCT_WITHIN(oct2, 075, 04);       // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_bit) {
+XTEST_CASE(xexpect_run_of_within_bit) {
     // Test cases for binary comparisons within tolerance
     int bin1 = 0b110;
     int bin2 = 0b1010;
@@ -535,7 +546,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_bit) {
     XEXPECT_BIN_WITHIN(bin2, 0b1010, 0b100); // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_float) {
+XTEST_CASE(xexpect_run_of_within_float) {
     // Test cases for float and double comparisons within tolerance
     float float1 = 1.23;
     float float2 = 4.56;
@@ -544,7 +555,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_float) {
     XEXPECT_FLOAT_WITHIN(float2, 4.56, 0.1);    // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_double) {
+XTEST_CASE(xexpect_run_of_within_double) {
     // Test cases for float and double comparisons within tolerance
     double double1 = 1.234567;
     double double2 = 4.567890;
@@ -553,7 +564,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_double) {
     XEXPECT_DOUBLE_WITHIN(double2, 4.567890, 0.001);  // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_wchar) {
+XTEST_CASE(xexpect_run_of_within_wchar) {
     // Test cases for char and wchar_t comparisons within range
     wchar_t wchar1 = L'0';
     wchar_t wchar2 = L'9';
@@ -562,7 +573,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_wchar) {
     XEXPECT_WCHAR_WITHIN(wchar2, L'0', L'9'); // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_char) {
+XTEST_CASE(xexpect_run_of_within_char) {
     // Test cases for char and wchar_t comparisons within range
     char char1 = 'A';
     char char2 = 'Z';
@@ -571,7 +582,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_within_char) {
     XEXPECT_CHAR_WITHIN(char2, 'A', 'Z');     // Should pass
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_files) {
+XTEST_CASE(xexpect_run_of_files) {
     FILE *file = fopen("example.txt", "r");
     if (file == NULL) {
         XTEST_IGNORE("File not found in test directory");
@@ -590,7 +601,7 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_files) {
     fclose(file);
 } // end case
 
-XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_arrays) {
+XTEST_CASE(xexpect_run_of_arrays) {
     // Test cases for array-related assertions
     int arr[] = {1, 2, 3, 4, 5};
     int size = sizeof(arr) / sizeof(arr[0]);
@@ -607,46 +618,46 @@ XTEST_CASE_FIXTURE(xexpect_test_fixture, xexpect_run_of_arrays) {
 // LOCAL TEST GROUP
 //
 void xexpect_test_group(XUnitRunner *runner) {
-    xtest_run_test_fixture(&xexpect_run_of_int,    &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_int8,   &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_int16,  &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_int32,  &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_int64,  &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_uint,   &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_uint8,  &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_uint16, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_uint32, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_uint64, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_hex,    &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_hex8,   &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_hex16,  &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_hex32,  &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_hex64,  &xexpect_test_fixture, &runner->stats);
+    XTEST_RUN_UNIT(xexpect_run_of_int, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_int8, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_int16, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_int32, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_int64, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_uint, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_uint8, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_uint16, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_uint32, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_uint64, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_hex, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_hex8, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_hex16, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_hex32, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_hex64, runner);
 
-    xtest_run_test_fixture(&xexpect_run_of_bit,    &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_bits,   &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_oct,    &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_float,  &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_float_only, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_double, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_double_only, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_nullptr, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_pointer, &xexpect_test_fixture, &runner->stats);
+    XTEST_RUN_UNIT(xexpect_run_of_bit, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_bits, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_oct, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_float, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_float_only, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_double, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_double_only, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_nullptr, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_pointer, runner);
 
-    xtest_run_test_fixture(&xexpect_run_of_char, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_wchar, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_string, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_within_int, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_within_uint, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_within_hex, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_within_oct, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_within_bit, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_within_float, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_within_double, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_within_wchar, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_within_char, &xexpect_test_fixture, &runner->stats);
+    XTEST_RUN_UNIT(xexpect_run_of_char, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_wchar, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_string, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_int, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_uint, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_hex, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_oct, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_bit, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_float, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_double, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_wchar, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_within_char, runner);
 
-    xtest_run_test_fixture(&xexpect_run_of_boolean, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_files, &xexpect_test_fixture, &runner->stats);
-    xtest_run_test_fixture(&xexpect_run_of_arrays, &xexpect_test_fixture, &runner->stats);
+    XTEST_RUN_UNIT(xexpect_run_of_boolean, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_files, runner);
+    XTEST_RUN_UNIT(xexpect_run_of_arrays, runner);
 } // end of group

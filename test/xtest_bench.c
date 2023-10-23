@@ -1,10 +1,36 @@
-/*
-   under:   trilobite stdlib
-   author:  Michael Gene Brockus (Dreamer)
-   gmail:   <michaelbrockus@gmail.com>
-   website: <https://trilobite.code.blog>
+/*  ----------------------------------------------------------------------------
+    File: xtest_bench.c
+
+    Description:
+    This test file contains unit tests for the various functions and utilities provided
+    by the Trilobite Stdlib. These tests ensure the correctness and reliability of the
+    library's components and demonstrate their intended usage.
+
+    Author: Michael Gene Brockus (Dreamer)
+    Email: michaelbrockus@gmail.com
+    Website: [Trilobite Coder Blog](https://trilobite.code.blog)
+
+    Project: Trilobite Stdlib
+
+    License: Apache License 2.0
+    SPDX Identifier: Apache-2.0
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the License
+    is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+    or implied. See the License for the specific language governing permissions and limitations
+    under the License.
+
+    Please review the full text of the Apache License 2.0 for the complete terms and conditions.
+
+    (Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0)
+    ----------------------------------------------------------------------------
 */
-#include "xtest_fixtures.h"
+#include <trilobite/xtest.h>   // basic test tools
+#include <trilobite/xassert.h> // extra asserts
 
 /**
     @brief This is an example function for the benchmark cases
@@ -32,7 +58,7 @@ void bubble_sort(int *array, size_t size) {
 } // end of func
 
 //
-// XBENCHMARK CASES
+// XUNIT-TEST:
 //
 XTEST_BENCH(comput_bubble_sort_small_dataset) {
     // Example data
@@ -58,11 +84,38 @@ XTEST_BENCH(comput_bubble_sort_medium_dataset) {
     bubble_sort(data, size);
 } // end benchmark
 
+XTEST_BENCH(comput_bubble_sort_empty_dataset) {
+    // Edge case: Empty dataset
+    int data[] = {};
+    size_t size = 0;
+
+    bubble_sort(data, size);
+} // end benchmark
+
+XTEST_BENCH(comput_bubble_sort_sorted_dataset) {
+    // Edge case: Already sorted dataset
+    int data[] = {1, 2, 3, 4, 5};
+    size_t size = sizeof(data) / sizeof(data[0]);
+
+    bubble_sort(data, size);
+} // end benchmark
+
+XTEST_BENCH(comput_bubble_sort_reverse_sorted_dataset) {
+    // Edge case: Reverse sorted dataset
+    int data[] = {5, 4, 3, 2, 1};
+    size_t size = sizeof(data) / sizeof(data[0]);
+
+    bubble_sort(data, size);
+} // end benchmark
+
 //
-// LOCAL TEST GROUP
+// XUNIT-GROUP:
 //
 void xbenchs_test_group(XUnitRunner *runner) {
-    xtest_run_test_unit(&comput_bubble_sort_small_dataset, &runner->stats);
-    xtest_run_test_unit(&comput_bubble_sort_medium_dataset, &runner->stats);
-    xtest_run_test_unit(&comput_bubble_sort_large_dataset, &runner->stats);
-} // end of fixture
+    XTEST_RUN_UNIT(comput_bubble_sort_small_dataset, runner);
+    XTEST_RUN_UNIT(comput_bubble_sort_medium_dataset, runner);
+    XTEST_RUN_UNIT(comput_bubble_sort_large_dataset, runner);
+    XTEST_RUN_UNIT(comput_bubble_sort_empty_dataset, runner);
+    XTEST_RUN_UNIT(comput_bubble_sort_sorted_dataset, runner);
+    XTEST_RUN_UNIT(comput_bubble_sort_reverse_sorted_dataset, runner);
+} // end of group

@@ -1,13 +1,39 @@
-/*
-   under:   trilobite stdlib
-   author:  Michael Gene Brockus (Dreamer)
-   gmail:   <michaelbrockus@gmail.com>
-   website: <https://trilobite.code.blog>
+/*  ----------------------------------------------------------------------------
+    File: demo.c
+
+    Description:
+    This demo file serves as a showcase of the Trilobite Stdlib in action. It provides
+    example code snippets and usage scenarios to help users understand how to leverage
+    the library's features and functions in their own projects.
+
+    Author: Michael Gene Brockus (Dreamer)
+    Email: michaelbrockus@gmail.com
+    Website: [Trilobite Coder Blog](https://trilobite.code.blog)
+
+    Project: Trilobite Stdlib
+
+    License: Apache License 2.0
+    SPDX Identifier: Apache-2.0
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the License
+    is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+    or implied. See the License for the specific language governing permissions and limitations
+    under the License.
+
+    Please review the full text of the Apache License 2.0 for the complete terms and conditions.
+
+    (Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0)
+    ----------------------------------------------------------------------------
 */
-#include "xtest_fixtures.h"
+#include <trilobite/xtest.h>
+#include <trilobite/xexpect.h>
 
 //
-// XUNIT TEST CASES
+// XUNIT-TEST: test case
 //
 XTEST_CASE(xbdd_logic_test) {
     GIVEN("a valid statement is passed") {
@@ -105,11 +131,22 @@ XTEST_CASE(xbdd_valid_login) {
 } // end of case
 
 //
-// LOCAL TEST GROUP
+// XUNIT-GROUP:
 //
-void unit_test_c_group(XUnitRunner *runner) {    
-    xtest_run_test_unit(&xbdd_logic_test, &runner->stats);
-    xtest_run_test_unit(&xbdd_user_account, &runner->stats);
-    xtest_run_test_unit(&xbdd_empty_cart, &runner->stats);
-    xtest_run_test_unit(&xbdd_valid_login, &runner->stats);
+void group_bdd_test(XUnitRunner *runner) {
+    XTEST_RUN_UNIT(xbdd_logic_test,   runner);
+    XTEST_RUN_UNIT(xbdd_user_account, runner);
+    XTEST_RUN_UNIT(xbdd_empty_cart,   runner);
+    XTEST_RUN_UNIT(xbdd_valid_login,  runner);
 } // end of group
+
+//
+// XUNIT-RUNNER:
+//
+int main(int argc, char **argv) {
+    XUnitRunner runner = XTEST_RUNNER_START(argc, argv);
+
+    group_bdd_test(&runner);
+
+    return XTEST_RUNNER_END(runner);
+} // end of func
