@@ -2132,10 +2132,6 @@ XTEST_CASE(test_to_lower_wchar) {
     TEST_ASSERT_TO_LOWER_WCHAR(character, expected); // Should pass
 }
 
-
-
-
-
 //
 // LOCAL TEST GROUP
 //
