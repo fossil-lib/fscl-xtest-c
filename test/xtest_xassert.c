@@ -39,7 +39,7 @@
 // TEST CASES
 //
 // Test case for memory equality
-XTEST_CASE(test_memory_equality) {
+XTEST_CASE(assert_case_memory_equality) {
     char expected[] = "Hello, World!";
     char actual[] = "Hello, World!";
     size_t size = sizeof(expected);
@@ -48,7 +48,7 @@ XTEST_CASE(test_memory_equality) {
 }
 
 // Test case for memory inequality
-XTEST_CASE(test_memory_inequality) {
+XTEST_CASE(assert_case_memory_inequality) {
     char expected[] = "Hello, World!";
     char actual[] = "Goodbye, World!";
     size_t size = sizeof(expected);
@@ -57,7 +57,7 @@ XTEST_CASE(test_memory_inequality) {
 }
 
 // Test case for memory contains
-XTEST_CASE(test_memory_contains) {
+XTEST_CASE(assert_case_memory_contains) {
     char haystack[] = "This is a test string.";
     char needle[] = "test";
     size_t haystackSize = sizeof(haystack);
@@ -67,7 +67,7 @@ XTEST_CASE(test_memory_contains) {
 }
 
 // Test case for memory not contains
-XTEST_CASE(test_memory_not_contains) {
+XTEST_CASE(assert_case_memory_not_contains) {
     char haystack[] = "This is a test string.";
     char needle[] = "example";
     size_t haystackSize = sizeof(haystack);
@@ -77,7 +77,7 @@ XTEST_CASE(test_memory_not_contains) {
 }
 
 // Test case for memory copied
-XTEST_CASE(test_memory_copied) {
+XTEST_CASE(assert_case_memory_copied) {
     char source[] = "Source String";
     char dest[sizeof(source)];
     size_t size = sizeof(source);
@@ -88,7 +88,7 @@ XTEST_CASE(test_memory_copied) {
 }
 
 // Test case for memory not copied
-XTEST_CASE(test_memory_not_copied) {
+XTEST_CASE(assert_case_memory_not_copied) {
     char source[] = "Source String";
     char dest[sizeof(source)];
     size_t size = sizeof(source);
@@ -99,7 +99,7 @@ XTEST_CASE(test_memory_not_copied) {
 }
 
 // Test case for boolean equality
-XTEST_CASE(test_boolean_equality) {
+XTEST_CASE(assert_case_boolean_equality) {
     bool expected = true;
     bool actual = true;
 
@@ -107,7 +107,7 @@ XTEST_CASE(test_boolean_equality) {
 }
 
 // Test case for boolean inequality
-XTEST_CASE(test_boolean_inequality) {
+XTEST_CASE(assert_case_boolean_inequality) {
     bool expected = true;
     bool actual = false;
 
@@ -115,7 +115,7 @@ XTEST_CASE(test_boolean_inequality) {
 }
 
 // Test case for boolean less than
-XTEST_CASE(test_boolean_less_than) {
+XTEST_CASE(assert_case_boolean_less_than) {
     bool expected = false;
     bool actual = true;
 
@@ -123,7 +123,7 @@ XTEST_CASE(test_boolean_less_than) {
 }
 
 // Test case for boolean greater than
-XTEST_CASE(test_boolean_greater_than) {
+XTEST_CASE(assert_case_boolean_greater_than) {
     bool expected = true;
     bool actual = false;
 
@@ -131,28 +131,28 @@ XTEST_CASE(test_boolean_greater_than) {
 }
 
 // Test case for boolean unless
-XTEST_CASE(test_boolean_unless) {
+XTEST_CASE(assert_case_boolean_unless) {
     bool condition = false;
 
     TEST_ASSERT_UNLESS_BOOL(condition); // Should pass
 }
 
 // Test case for boolean true
-XTEST_CASE(test_boolean_true) {
+XTEST_CASE(assert_case_boolean_true) {
     bool condition = true;
 
     TEST_ASSERT_TRUE_BOOL(condition); // Should pass
 }
 
 // Test case for boolean false
-XTEST_CASE(test_boolean_false) {
+XTEST_CASE(assert_case_boolean_false) {
     bool condition = false;
 
     TEST_ASSERT_FALSE_BOOL(condition); // Should pass
 }
 
 // Test case for boolean message
-XTEST_CASE(test_boolean_message) {
+XTEST_CASE(assert_case_boolean_message) {
     bool condition = false;
 
     TEST_ASSERT_MSG_BOOL(condition, "This is a custom message."); // Should pass with the custom message
@@ -165,7 +165,7 @@ typedef enum {
 } Color;
 
 // Test case for enum equality
-XTEST_CASE(test_enum_equality) {
+XTEST_CASE(assert_case_enum_equality) {
     Color expected = GREEN;
     Color actual = GREEN;
 
@@ -173,7 +173,7 @@ XTEST_CASE(test_enum_equality) {
 }
 
 // Test case for enum inequality
-XTEST_CASE(test_enum_inequality) {
+XTEST_CASE(assert_case_enum_inequality) {
     Color expected = RED;
     Color actual = BLUE;
 
@@ -181,7 +181,7 @@ XTEST_CASE(test_enum_inequality) {
 }
 
 // Test case for enum less than
-XTEST_CASE(test_enum_less_than) {
+XTEST_CASE(assert_case_enum_less_than) {
     Color expected = RED;
     Color actual = BLUE;
 
@@ -189,7 +189,7 @@ XTEST_CASE(test_enum_less_than) {
 }
 
 // Test case for enum greater than
-XTEST_CASE(test_enum_greater_than) {
+XTEST_CASE(assert_case_enum_greater_than) {
     Color expected = BLUE;
     Color actual = RED;
 
@@ -197,7 +197,7 @@ XTEST_CASE(test_enum_greater_than) {
 }
 
 // Test case for enum less than or equal
-XTEST_CASE(test_enum_less_than_or_equal) {
+XTEST_CASE(assert_case_enum_less_than_or_equal) {
     Color expected = GREEN;
     Color actual = BLUE;
 
@@ -205,7 +205,7 @@ XTEST_CASE(test_enum_less_than_or_equal) {
 }
 
 // Test case for enum greater than or equal
-XTEST_CASE(test_enum_greater_than_or_equal) {
+XTEST_CASE(assert_case_enum_greater_than_or_equal) {
     Color expected = RED;
     Color actual = RED;
 
@@ -213,7 +213,7 @@ XTEST_CASE(test_enum_greater_than_or_equal) {
 }
 
 // Test case for integer equality
-XTEST_CASE(test_int_equality) {
+XTEST_CASE(assert_case_int_equality) {
     int expected = 42;
     int actual = 42;
 
@@ -221,7 +221,7 @@ XTEST_CASE(test_int_equality) {
 }
 
 // Test case for integer inequality
-XTEST_CASE(test_int_inequality) {
+XTEST_CASE(assert_case_int_inequality) {
     int expected = 42;
     int actual = 20;
 
@@ -229,7 +229,7 @@ XTEST_CASE(test_int_inequality) {
 }
 
 // Test case for integer less than
-XTEST_CASE(test_int_less_than) {
+XTEST_CASE(assert_case_int_less_than) {
     int expected = 20;
     int actual = 42;
 
@@ -237,7 +237,7 @@ XTEST_CASE(test_int_less_than) {
 }
 
 // Test case for integer greater than
-XTEST_CASE(test_int_greater_than) {
+XTEST_CASE(assert_case_int_greater_than) {
     int expected = 20;
     int actual = 42;
 
@@ -245,7 +245,7 @@ XTEST_CASE(test_int_greater_than) {
 }
 
 // Test case for integer less than or equal
-XTEST_CASE(test_int_less_than_or_equal) {
+XTEST_CASE(assert_case_int_less_than_or_equal) {
     int expected = 42;
     int actual = 42;
 
@@ -253,7 +253,7 @@ XTEST_CASE(test_int_less_than_or_equal) {
 }
 
 // Test case for integer greater than or equal
-XTEST_CASE(test_int_greater_than_or_equal) {
+XTEST_CASE(assert_case_int_greater_than_or_equal) {
     int expected = 42;
     int actual = 20;
 
@@ -261,7 +261,7 @@ XTEST_CASE(test_int_greater_than_or_equal) {
 }
 
 // Test case for integer equality
-XTEST_CASE(test_int8_equality) {
+XTEST_CASE(assert_case_int8_equality) {
     int8_t expected = 42;
     int8_t actual = 42;
 
@@ -269,7 +269,7 @@ XTEST_CASE(test_int8_equality) {
 }
 
 // Test case for integer inequality
-XTEST_CASE(test_int8_inequality) {
+XTEST_CASE(assert_case_int8_inequality) {
     int8_t expected = 42;
     int8_t actual = 20;
 
@@ -277,7 +277,7 @@ XTEST_CASE(test_int8_inequality) {
 }
 
 // Test case for integer less than
-XTEST_CASE(test_int8_less_than) {
+XTEST_CASE(assert_case_int8_less_than) {
     int8_t expected = 20;
     int8_t actual = 42;
 
@@ -285,7 +285,7 @@ XTEST_CASE(test_int8_less_than) {
 }
 
 // Test case for integer greater than
-XTEST_CASE(test_int8_greater_than) {
+XTEST_CASE(assert_case_int8_greater_than) {
     int8_t expected = 20;
     int8_t actual = 42;
 
@@ -293,7 +293,7 @@ XTEST_CASE(test_int8_greater_than) {
 }
 
 // Test case for integer less than or equal
-XTEST_CASE(test_int8_less_than_or_equal) {
+XTEST_CASE(assert_case_int8_less_than_or_equal) {
     int8_t expected = 42;
     int8_t actual = 42;
 
@@ -301,7 +301,7 @@ XTEST_CASE(test_int8_less_than_or_equal) {
 }
 
 // Test case for integer greater than or equal
-XTEST_CASE(test_int8_greater_than_or_equal) {
+XTEST_CASE(assert_case_int8_greater_than_or_equal) {
     int8_t expected = 42;
     int8_t actual = 20;
 
@@ -309,7 +309,7 @@ XTEST_CASE(test_int8_greater_than_or_equal) {
 }
 
 // Test case for integer equality
-XTEST_CASE(test_int16_equality) {
+XTEST_CASE(assert_case_int16_equality) {
     int16_t expected = 42;
     int16_t actual = 42;
 
@@ -317,7 +317,7 @@ XTEST_CASE(test_int16_equality) {
 }
 
 // Test case for integer inequality
-XTEST_CASE(test_int16_inequality) {
+XTEST_CASE(assert_case_int16_inequality) {
     int16_t expected = 42;
     int16_t actual = 20;
 
@@ -325,7 +325,7 @@ XTEST_CASE(test_int16_inequality) {
 }
 
 // Test case for integer less than
-XTEST_CASE(test_int16_less_than) {
+XTEST_CASE(assert_case_int16_less_than) {
     int16_t expected = 20;
     int16_t actual = 42;
 
@@ -333,7 +333,7 @@ XTEST_CASE(test_int16_less_than) {
 }
 
 // Test case for integer greater than
-XTEST_CASE(test_int16_greater_than) {
+XTEST_CASE(assert_case_int16_greater_than) {
     int16_t expected = 20;
     int16_t actual = 42;
 
@@ -341,7 +341,7 @@ XTEST_CASE(test_int16_greater_than) {
 }
 
 // Test case for integer less than or equal
-XTEST_CASE(test_int16_less_than_or_equal) {
+XTEST_CASE(assert_case_int16_less_than_or_equal) {
     int16_t expected = 42;
     int16_t actual = 42;
 
@@ -349,7 +349,7 @@ XTEST_CASE(test_int16_less_than_or_equal) {
 }
 
 // Test case for integer greater than or equal
-XTEST_CASE(test_int16_greater_than_or_equal) {
+XTEST_CASE(assert_case_int16_greater_than_or_equal) {
     int16_t expected = 42;
     int16_t actual = 20;
 
@@ -357,7 +357,7 @@ XTEST_CASE(test_int16_greater_than_or_equal) {
 }
 
 // Test case for integer equality
-XTEST_CASE(test_int32_equality) {
+XTEST_CASE(assert_case_int32_equality) {
     int32_t expected = 42;
     int32_t actual = 42;
 
@@ -365,7 +365,7 @@ XTEST_CASE(test_int32_equality) {
 }
 
 // Test case for integer inequality
-XTEST_CASE(test_int32_inequality) {
+XTEST_CASE(assert_case_int32_inequality) {
     int32_t expected = 42;
     int32_t actual = 20;
 
@@ -373,7 +373,7 @@ XTEST_CASE(test_int32_inequality) {
 }
 
 // Test case for integer less than
-XTEST_CASE(test_int32_less_than) {
+XTEST_CASE(assert_case_int32_less_than) {
     int32_t expected = 20;
     int32_t actual = 42;
 
@@ -381,7 +381,7 @@ XTEST_CASE(test_int32_less_than) {
 }
 
 // Test case for integer greater than
-XTEST_CASE(test_int32_greater_than) {
+XTEST_CASE(assert_case_int32_greater_than) {
     int32_t expected = 20;
     int32_t actual = 42;
 
@@ -389,7 +389,7 @@ XTEST_CASE(test_int32_greater_than) {
 }
 
 // Test case for integer less than or equal
-XTEST_CASE(test_int32_less_than_or_equal) {
+XTEST_CASE(assert_case_int32_less_than_or_equal) {
     int32_t expected = 42;
     int32_t actual = 42;
 
@@ -397,7 +397,7 @@ XTEST_CASE(test_int32_less_than_or_equal) {
 }
 
 // Test case for integer greater than or equal
-XTEST_CASE(test_int32_greater_than_or_equal) {
+XTEST_CASE(assert_case_int32_greater_than_or_equal) {
     int32_t expected = 42;
     int32_t actual = 20;
 
@@ -405,7 +405,7 @@ XTEST_CASE(test_int32_greater_than_or_equal) {
 }
 
 // Test case for integer equality
-XTEST_CASE(test_int64_equality) {
+XTEST_CASE(assert_case_int64_equality) {
     int64_t expected = 42;
     int64_t actual = 42;
 
@@ -413,7 +413,7 @@ XTEST_CASE(test_int64_equality) {
 }
 
 // Test case for integer inequality
-XTEST_CASE(test_int64_inequality) {
+XTEST_CASE(assert_case_int64_inequality) {
     int64_t expected = 42;
     int64_t actual = 20;
 
@@ -421,7 +421,7 @@ XTEST_CASE(test_int64_inequality) {
 }
 
 // Test case for integer less than
-XTEST_CASE(test_int64_less_than) {
+XTEST_CASE(assert_case_int64_less_than) {
     int64_t expected = 20;
     int64_t actual = 42;
 
@@ -429,7 +429,7 @@ XTEST_CASE(test_int64_less_than) {
 }
 
 // Test case for integer greater than
-XTEST_CASE(test_int64_greater_than) {
+XTEST_CASE(assert_case_int64_greater_than) {
     int64_t expected = 20;
     int64_t actual = 42;
 
@@ -437,7 +437,7 @@ XTEST_CASE(test_int64_greater_than) {
 }
 
 // Test case for integer less than or equal
-XTEST_CASE(test_int64_less_than_or_equal) {
+XTEST_CASE(assert_case_int64_less_than_or_equal) {
     int64_t expected = 42;
     int64_t actual = 42;
 
@@ -445,7 +445,7 @@ XTEST_CASE(test_int64_less_than_or_equal) {
 }
 
 // Test case for integer greater than or equal
-XTEST_CASE(test_int64_greater_than_or_equal) {
+XTEST_CASE(assert_case_int64_greater_than_or_equal) {
     int64_t expected = 42;
     int64_t actual = 20;
 
@@ -457,7 +457,7 @@ XTEST_CASE(test_int64_greater_than_or_equal) {
 
 
 // Test case for integer equality
-XTEST_CASE(test_uint8_equality) {
+XTEST_CASE(assert_case_uint8_equality) {
     uint8_t expected = 42;
     uint8_t actual = 42;
 
@@ -465,7 +465,7 @@ XTEST_CASE(test_uint8_equality) {
 }
 
 // Test case for integer inequality
-XTEST_CASE(test_uint8_inequality) {
+XTEST_CASE(assert_case_uint8_inequality) {
     uint8_t expected = 42;
     uint8_t actual = 20;
 
@@ -473,7 +473,7 @@ XTEST_CASE(test_uint8_inequality) {
 }
 
 // Test case for integer less than
-XTEST_CASE(test_uint8_less_than) {
+XTEST_CASE(assert_case_uint8_less_than) {
     uint8_t expected = 20;
     uint8_t actual = 42;
 
@@ -481,7 +481,7 @@ XTEST_CASE(test_uint8_less_than) {
 }
 
 // Test case for integer greater than
-XTEST_CASE(test_uint8_greater_than) {
+XTEST_CASE(assert_case_uint8_greater_than) {
     uint8_t expected = 20;
     uint8_t actual = 42;
 
@@ -489,7 +489,7 @@ XTEST_CASE(test_uint8_greater_than) {
 }
 
 // Test case for integer less than or equal
-XTEST_CASE(test_uint8_less_than_or_equal) {
+XTEST_CASE(assert_case_uint8_less_than_or_equal) {
     uint8_t expected = 42;
     uint8_t actual = 42;
 
@@ -497,7 +497,7 @@ XTEST_CASE(test_uint8_less_than_or_equal) {
 }
 
 // Test case for integer greater than or equal
-XTEST_CASE(test_uint8_greater_than_or_equal) {
+XTEST_CASE(assert_case_uint8_greater_than_or_equal) {
     uint8_t expected = 42;
     uint8_t actual = 20;
 
@@ -505,7 +505,7 @@ XTEST_CASE(test_uint8_greater_than_or_equal) {
 }
 
 // Test case for integer equality
-XTEST_CASE(test_uint16_equality) {
+XTEST_CASE(assert_case_uint16_equality) {
     uint16_t expected = 42;
     uint16_t actual = 42;
 
@@ -513,7 +513,7 @@ XTEST_CASE(test_uint16_equality) {
 }
 
 // Test case for integer inequality
-XTEST_CASE(test_uint16_inequality) {
+XTEST_CASE(assert_case_uint16_inequality) {
     uint16_t expected = 42;
     uint16_t actual = 20;
 
@@ -521,7 +521,7 @@ XTEST_CASE(test_uint16_inequality) {
 }
 
 // Test case for integer less than
-XTEST_CASE(test_uint16_less_than) {
+XTEST_CASE(assert_case_uint16_less_than) {
     uint16_t expected = 20;
     uint16_t actual = 42;
 
@@ -529,7 +529,7 @@ XTEST_CASE(test_uint16_less_than) {
 }
 
 // Test case for integer greater than
-XTEST_CASE(test_uint16_greater_than) {
+XTEST_CASE(assert_case_uint16_greater_than) {
     uint16_t expected = 20;
     uint16_t actual = 42;
 
@@ -537,7 +537,7 @@ XTEST_CASE(test_uint16_greater_than) {
 }
 
 // Test case for integer less than or equal
-XTEST_CASE(test_uint16_less_than_or_equal) {
+XTEST_CASE(assert_case_uint16_less_than_or_equal) {
     uint16_t expected = 42;
     uint16_t actual = 42;
 
@@ -545,7 +545,7 @@ XTEST_CASE(test_uint16_less_than_or_equal) {
 }
 
 // Test case for integer greater than or equal
-XTEST_CASE(test_uint16_greater_than_or_equal) {
+XTEST_CASE(assert_case_uint16_greater_than_or_equal) {
     uint16_t expected = 42;
     uint16_t actual = 20;
 
@@ -553,7 +553,7 @@ XTEST_CASE(test_uint16_greater_than_or_equal) {
 }
 
 // Test case for integer equality
-XTEST_CASE(test_uint32_equality) {
+XTEST_CASE(assert_case_uint32_equality) {
     uint32_t expected = 42;
     uint32_t actual = 42;
 
@@ -561,7 +561,7 @@ XTEST_CASE(test_uint32_equality) {
 }
 
 // Test case for integer inequality
-XTEST_CASE(test_uint32_inequality) {
+XTEST_CASE(assert_case_uint32_inequality) {
     uint32_t expected = 42;
     uint32_t actual = 20;
 
@@ -569,7 +569,7 @@ XTEST_CASE(test_uint32_inequality) {
 }
 
 // Test case for integer less than
-XTEST_CASE(test_uint32_less_than) {
+XTEST_CASE(assert_case_uint32_less_than) {
     uint32_t expected = 20;
     uint32_t actual = 42;
 
@@ -577,7 +577,7 @@ XTEST_CASE(test_uint32_less_than) {
 }
 
 // Test case for integer greater than
-XTEST_CASE(test_uint32_greater_than) {
+XTEST_CASE(assert_case_uint32_greater_than) {
     uint32_t expected = 20;
     uint32_t actual = 42;
 
@@ -585,7 +585,7 @@ XTEST_CASE(test_uint32_greater_than) {
 }
 
 // Test case for integer less than or equal
-XTEST_CASE(test_uint32_less_than_or_equal) {
+XTEST_CASE(assert_case_uint32_less_than_or_equal) {
     uint32_t expected = 42;
     uint32_t actual = 42;
 
@@ -593,7 +593,7 @@ XTEST_CASE(test_uint32_less_than_or_equal) {
 }
 
 // Test case for integer greater than or equal
-XTEST_CASE(test_uint32_greater_than_or_equal) {
+XTEST_CASE(assert_case_uint32_greater_than_or_equal) {
     uint32_t expected = 42;
     uint32_t actual = 20;
 
@@ -601,7 +601,7 @@ XTEST_CASE(test_uint32_greater_than_or_equal) {
 }
 
 // Test case for integer equality
-XTEST_CASE(test_uint64_equality) {
+XTEST_CASE(assert_case_uint64_equality) {
     uint64_t expected = 42;
     uint64_t actual = 42;
 
@@ -609,7 +609,7 @@ XTEST_CASE(test_uint64_equality) {
 }
 
 // Test case for integer inequality
-XTEST_CASE(test_uint64_inequality) {
+XTEST_CASE(assert_case_uint64_inequality) {
     uint64_t expected = 42;
     uint64_t actual = 20;
 
@@ -617,7 +617,7 @@ XTEST_CASE(test_uint64_inequality) {
 }
 
 // Test case for integer less than
-XTEST_CASE(test_uint64_less_than) {
+XTEST_CASE(assert_case_uint64_less_than) {
     uint64_t expected = 20;
     uint64_t actual = 42;
 
@@ -625,7 +625,7 @@ XTEST_CASE(test_uint64_less_than) {
 }
 
 // Test case for integer greater than
-XTEST_CASE(test_uint64_greater_than) {
+XTEST_CASE(assert_case_uint64_greater_than) {
     uint64_t expected = 20;
     uint64_t actual = 42;
 
@@ -633,7 +633,7 @@ XTEST_CASE(test_uint64_greater_than) {
 }
 
 // Test case for integer less than or equal
-XTEST_CASE(test_uint64_less_than_or_equal) {
+XTEST_CASE(assert_case_uint64_less_than_or_equal) {
     uint64_t expected = 42;
     uint64_t actual = 42;
 
@@ -641,7 +641,7 @@ XTEST_CASE(test_uint64_less_than_or_equal) {
 }
 
 // Test case for integer greater than or equal
-XTEST_CASE(test_uint64_greater_than_or_equal) {
+XTEST_CASE(assert_case_uint64_greater_than_or_equal) {
     uint64_t expected = 42;
     uint64_t actual = 20;
 
@@ -649,7 +649,7 @@ XTEST_CASE(test_uint64_greater_than_or_equal) {
 }
 
 // Test case for hexadecimal equality
-XTEST_CASE(test_hex_equality) {
+XTEST_CASE(assert_case_hex_equality) {
     int expected = 0x42;
     int actual = 0x42;
 
@@ -657,7 +657,7 @@ XTEST_CASE(test_hex_equality) {
 }
 
 // Test case for hexadecimal inequality
-XTEST_CASE(test_hex_inequality) {
+XTEST_CASE(assert_case_hex_inequality) {
     int expected = 0x42;
     int actual = 0x20;
 
@@ -665,7 +665,7 @@ XTEST_CASE(test_hex_inequality) {
 }
 
 // Test case for hexadecimal less than
-XTEST_CASE(test_hex_less_than) {
+XTEST_CASE(assert_case_hex_less_than) {
     int expected = 0x20;
     int actual = 0x42;
 
@@ -673,7 +673,7 @@ XTEST_CASE(test_hex_less_than) {
 }
 
 // Test case for hexadecimal greater than
-XTEST_CASE(test_hex_greater_than) {
+XTEST_CASE(assert_case_hex_greater_than) {
     int expected = 0x20;
     int actual = 0x42;
 
@@ -681,7 +681,7 @@ XTEST_CASE(test_hex_greater_than) {
 }
 
 // Test case for hexadecimal less than or equal
-XTEST_CASE(test_hex_less_than_or_equal) {
+XTEST_CASE(assert_case_hex_less_than_or_equal) {
     int expected = 0x42;
     int actual = 0x42;
 
@@ -689,7 +689,7 @@ XTEST_CASE(test_hex_less_than_or_equal) {
 }
 
 // Test case for hexadecimal greater than or equal
-XTEST_CASE(test_hex_greater_than_or_equal) {
+XTEST_CASE(assert_case_hex_greater_than_or_equal) {
     int expected = 0x42;
     int actual = 0x20;
 
@@ -697,7 +697,7 @@ XTEST_CASE(test_hex_greater_than_or_equal) {
 }
 
 // Test case for 8-bit hexadecimal equality
-XTEST_CASE(test_hex8_equality) {
+XTEST_CASE(assert_case_hex8_equality) {
     uint8_t expected = 0x42;
     uint8_t actual = 0x42;
 
@@ -705,7 +705,7 @@ XTEST_CASE(test_hex8_equality) {
 }
 
 // Test case for 8-bit hexadecimal inequality
-XTEST_CASE(test_hex8_inequality) {
+XTEST_CASE(assert_case_hex8_inequality) {
     uint8_t expected = 0x42;
     uint8_t actual = 0x20;
 
@@ -713,7 +713,7 @@ XTEST_CASE(test_hex8_inequality) {
 }
 
 // Test case for 8-bit hexadecimal less than
-XTEST_CASE(test_hex8_less_than) {
+XTEST_CASE(assert_case_hex8_less_than) {
     uint8_t expected = 0x20;
     uint8_t actual = 0x42;
 
@@ -721,7 +721,7 @@ XTEST_CASE(test_hex8_less_than) {
 }
 
 // Test case for 8-bit hexadecimal greater than
-XTEST_CASE(test_hex8_greater_than) {
+XTEST_CASE(assert_case_hex8_greater_than) {
     uint8_t expected = 0x20;
     uint8_t actual = 0x42;
 
@@ -729,7 +729,7 @@ XTEST_CASE(test_hex8_greater_than) {
 }
 
 // Test case for 8-bit hexadecimal less than or equal
-XTEST_CASE(test_hex8_less_than_or_equal) {
+XTEST_CASE(assert_case_hex8_less_than_or_equal) {
     uint8_t expected = 0x42;
     uint8_t actual = 0x42;
 
@@ -737,7 +737,7 @@ XTEST_CASE(test_hex8_less_than_or_equal) {
 }
 
 // Test case for 8-bit hexadecimal greater than or equal
-XTEST_CASE(test_hex8_greater_than_or_equal) {
+XTEST_CASE(assert_case_hex8_greater_than_or_equal) {
     uint8_t expected = 0x42;
     uint8_t actual = 0x20;
 
@@ -745,7 +745,7 @@ XTEST_CASE(test_hex8_greater_than_or_equal) {
 }
 
 // Test case for 16-bit hexadecimal equality
-XTEST_CASE(test_hex16_equality) {
+XTEST_CASE(assert_case_hex16_equality) {
     uint16_t expected = 0x1234;
     uint16_t actual = 0x1234;
 
@@ -753,7 +753,7 @@ XTEST_CASE(test_hex16_equality) {
 }
 
 // Test case for 16-bit hexadecimal inequality
-XTEST_CASE(test_hex16_inequality) {
+XTEST_CASE(assert_case_hex16_inequality) {
     uint16_t expected = 0x1234;
     uint16_t actual = 0xABCD;
 
@@ -761,7 +761,7 @@ XTEST_CASE(test_hex16_inequality) {
 }
 
 // Test case for 16-bit hexadecimal less than
-XTEST_CASE(test_hex16_less_than) {
+XTEST_CASE(assert_case_hex16_less_than) {
     uint16_t expected = 0xABCD;
     uint16_t actual = 0x1234;
 
@@ -769,7 +769,7 @@ XTEST_CASE(test_hex16_less_than) {
 }
 
 // Test case for 16-bit hexadecimal greater than
-XTEST_CASE(test_hex16_greater_than) {
+XTEST_CASE(assert_case_hex16_greater_than) {
     uint16_t expected = 0x1234;
     uint16_t actual = 0xABCD;
 
@@ -777,7 +777,7 @@ XTEST_CASE(test_hex16_greater_than) {
 }
 
 // Test case for 16-bit hexadecimal less than or equal
-XTEST_CASE(test_hex16_less_than_or_equal) {
+XTEST_CASE(assert_case_hex16_less_than_or_equal) {
     uint16_t expected = 0x1234;
     uint16_t actual = 0x1234;
 
@@ -785,7 +785,7 @@ XTEST_CASE(test_hex16_less_than_or_equal) {
 }
 
 // Test case for 16-bit hexadecimal greater than or equal
-XTEST_CASE(test_hex16_greater_than_or_equal) {
+XTEST_CASE(assert_case_hex16_greater_than_or_equal) {
     uint16_t expected = 0x1234;
     uint16_t actual = 0xABCD;
 
@@ -793,7 +793,7 @@ XTEST_CASE(test_hex16_greater_than_or_equal) {
 }
 
 // Test case for 32-bit hexadecimal equality
-XTEST_CASE(test_hex32_equality) {
+XTEST_CASE(assert_case_hex32_equality) {
     uint32_t expected = 0x12345678;
     uint32_t actual = 0x12345678;
 
@@ -801,7 +801,7 @@ XTEST_CASE(test_hex32_equality) {
 }
 
 // Test case for 32-bit hexadecimal inequality
-XTEST_CASE(test_hex32_inequality) {
+XTEST_CASE(assert_case_hex32_inequality) {
     uint32_t expected = 0x12345678;
     uint32_t actual = 0xABCD1234;
 
@@ -809,7 +809,7 @@ XTEST_CASE(test_hex32_inequality) {
 }
 
 // Test case for 32-bit hexadecimal less than
-XTEST_CASE(test_hex32_less_than) {
+XTEST_CASE(assert_case_hex32_less_than) {
     uint32_t expected = 0xABCDEF00;
     uint32_t actual = 0x12345678;
 
@@ -817,7 +817,7 @@ XTEST_CASE(test_hex32_less_than) {
 }
 
 // Test case for 32-bit hexadecimal greater than
-XTEST_CASE(test_hex32_greater_than) {
+XTEST_CASE(assert_case_hex32_greater_than) {
     uint32_t expected = 0x12345678;
     uint32_t actual = 0xABCDEF00;
 
@@ -825,7 +825,7 @@ XTEST_CASE(test_hex32_greater_than) {
 }
 
 // Test case for 32-bit hexadecimal less than or equal
-XTEST_CASE(test_hex32_less_than_or_equal) {
+XTEST_CASE(assert_case_hex32_less_than_or_equal) {
     uint32_t expected = 0x12345678;
     uint32_t actual = 0x12345678;
 
@@ -833,7 +833,7 @@ XTEST_CASE(test_hex32_less_than_or_equal) {
 }
 
 // Test case for 32-bit hexadecimal greater than or equal
-XTEST_CASE(test_hex32_greater_than_or_equal) {
+XTEST_CASE(assert_case_hex32_greater_than_or_equal) {
     uint32_t expected = 0x12345678;
     uint32_t actual = 0xABCDEF00;
 
@@ -841,7 +841,7 @@ XTEST_CASE(test_hex32_greater_than_or_equal) {
 }
 
 // Test case for 64-bit hexadecimal equality
-XTEST_CASE(test_hex64_equality) {
+XTEST_CASE(assert_case_hex64_equality) {
     uint64_t expected = 0x1234567890ABCDEF;
     uint64_t actual = 0x1234567890ABCDEF;
 
@@ -849,7 +849,7 @@ XTEST_CASE(test_hex64_equality) {
 }
 
 // Test case for 64-bit hexadecimal inequality
-XTEST_CASE(test_hex64_inequality) {
+XTEST_CASE(assert_case_hex64_inequality) {
     uint64_t expected = 0x1234567890ABCDEF;
     uint64_t actual = 0xFEDCBA0987654321;
 
@@ -857,7 +857,7 @@ XTEST_CASE(test_hex64_inequality) {
 }
 
 // Test case for 64-bit hexadecimal less than
-XTEST_CASE(test_hex64_less_than) {
+XTEST_CASE(assert_case_hex64_less_than) {
     uint64_t expected = 0xFEDCBA0987654321;
     uint64_t actual = 0x1234567890ABCDEF;
 
@@ -865,7 +865,7 @@ XTEST_CASE(test_hex64_less_than) {
 }
 
 // Test case for 64-bit hexadecimal greater than
-XTEST_CASE(test_hex64_greater_than) {
+XTEST_CASE(assert_case_hex64_greater_than) {
     uint64_t expected = 0x1234567890ABCDEF;
     uint64_t actual = 0xFEDCBA0987654321;
 
@@ -873,7 +873,7 @@ XTEST_CASE(test_hex64_greater_than) {
 }
 
 // Test case for 64-bit hexadecimal less than or equal
-XTEST_CASE(test_hex64_less_than_or_equal) {
+XTEST_CASE(assert_case_hex64_less_than_or_equal) {
     uint64_t expected = 0x1234567890ABCDEF;
     uint64_t actual = 0x1234567890ABCDEF;
 
@@ -881,7 +881,7 @@ XTEST_CASE(test_hex64_less_than_or_equal) {
 }
 
 // Test case for 64-bit hexadecimal greater than or equal
-XTEST_CASE(test_hex64_greater_than_or_equal) {
+XTEST_CASE(assert_case_hex64_greater_than_or_equal) {
     uint64_t expected = 0xFEDCBA0987654321;
     uint64_t actual = 0x1234567890ABCDEF;
 
@@ -889,7 +889,7 @@ XTEST_CASE(test_hex64_greater_than_or_equal) {
 }
 
 // Test case for octal equality
-XTEST_CASE(test_oct_equality) {
+XTEST_CASE(assert_case_oct_equality) {
     unsigned expected = 01234; // Octal representation
     unsigned actual = 01234;
 
@@ -897,7 +897,7 @@ XTEST_CASE(test_oct_equality) {
 }
 
 // Test case for octal inequality
-XTEST_CASE(test_oct_inequality) {
+XTEST_CASE(assert_case_oct_inequality) {
     unsigned expected = 01234; // Octal representation
     unsigned actual = 05671; // Different octal value
 
@@ -905,7 +905,7 @@ XTEST_CASE(test_oct_inequality) {
 }
 
 // Test case for octal less than
-XTEST_CASE(test_oct_less_than) {
+XTEST_CASE(assert_case_oct_less_than) {
     unsigned expected = 01234; // Octal representation
     unsigned actual = 06754; // Different octal value
 
@@ -913,7 +913,7 @@ XTEST_CASE(test_oct_less_than) {
 }
 
 // Test case for octal greater than
-XTEST_CASE(test_oct_greater_than) {
+XTEST_CASE(assert_case_oct_greater_than) {
     unsigned expected = 06754; // Octal representation
     unsigned actual = 01234; // Different octal value
 
@@ -921,7 +921,7 @@ XTEST_CASE(test_oct_greater_than) {
 }
 
 // Test case for octal less than or equal
-XTEST_CASE(test_oct_less_than_or_equal) {
+XTEST_CASE(assert_case_oct_less_than_or_equal) {
     unsigned expected = 01234; // Octal representation
     unsigned actual = 01234;
 
@@ -929,7 +929,7 @@ XTEST_CASE(test_oct_less_than_or_equal) {
 }
 
 // Test case for octal greater than or equal
-XTEST_CASE(test_oct_greater_than_or_equal) {
+XTEST_CASE(assert_case_oct_greater_than_or_equal) {
     unsigned expected = 06754; // Octal representation
     unsigned actual = 01234; // Different octal value
 
@@ -941,7 +941,7 @@ XTEST_CASE(test_oct_greater_than_or_equal) {
 //
 //
 // Test case for bitwise equality
-XTEST_CASE(test_bit_equality) {
+XTEST_CASE(assert_case_bit_equality) {
     unsigned expected = 0x0F; // Binary 00001111
     unsigned actual = 0x0F;   // Binary 00001111
 
@@ -949,7 +949,7 @@ XTEST_CASE(test_bit_equality) {
 }
 
 // Test case for bitwise inequality
-XTEST_CASE(test_bit_inequality) {
+XTEST_CASE(assert_case_bit_inequality) {
     unsigned expected = 0x0F; // Binary 00001111
     unsigned actual = 0x33;   // Binary 00110011
 
@@ -957,7 +957,7 @@ XTEST_CASE(test_bit_inequality) {
 }
 
 // Test case for bitwise less than
-XTEST_CASE(test_bit_less_than) {
+XTEST_CASE(assert_case_bit_less_than) {
     unsigned expected = 0x0F; // Binary 00001111
     unsigned actual = 0x33;   // Binary 00110011
 
@@ -965,7 +965,7 @@ XTEST_CASE(test_bit_less_than) {
 }
 
 // Test case for bitwise greater than
-XTEST_CASE(test_bit_greater_than) {
+XTEST_CASE(assert_case_bit_greater_than) {
     unsigned expected = 0x33;   // Binary 00110011
     unsigned actual = 0x0F; // Binary 00001111
 
@@ -973,7 +973,7 @@ XTEST_CASE(test_bit_greater_than) {
 }
 
 // Test case for bitwise less than or equal
-XTEST_CASE(test_bit_less_than_or_equal) {
+XTEST_CASE(assert_case_bit_less_than_or_equal) {
     unsigned expected = 0x0F; // Binary 00001111
     unsigned actual = 0x0F;   // Binary 00001111
 
@@ -981,7 +981,7 @@ XTEST_CASE(test_bit_less_than_or_equal) {
 }
 
 // Test case for bitwise greater than or equal
-XTEST_CASE(test_bit_greater_than_or_equal) {
+XTEST_CASE(assert_case_bit_greater_than_or_equal) {
     unsigned expected = 0x33;   // Binary 00110011
     unsigned actual = 0x0F; // Binary 00001111
 
@@ -989,7 +989,7 @@ XTEST_CASE(test_bit_greater_than_or_equal) {
 }
 
 // Test case for checking that a bit is not high
-XTEST_CASE(test_bit_not_high) {
+XTEST_CASE(assert_case_bit_not_high) {
     unsigned value = 0x0F; // Binary 00001111
     int bitIndex = 3;
 
@@ -997,7 +997,7 @@ XTEST_CASE(test_bit_not_high) {
 }
 
 // Test case for checking that a bit is high
-XTEST_CASE(test_bit_high) {
+XTEST_CASE(assert_case_bit_high) {
     unsigned value = 0x0F; // Binary 00001111
     int bitIndex = 3;
 
@@ -1005,7 +1005,7 @@ XTEST_CASE(test_bit_high) {
 }
 
 // Test case for checking that a bit is not low
-XTEST_CASE(test_bit_not_low) {
+XTEST_CASE(assert_case_bit_not_low) {
     unsigned value = 0x0F; // Binary 00001111
     int bitIndex = 3;
 
@@ -1013,7 +1013,7 @@ XTEST_CASE(test_bit_not_low) {
 }
 
 // Test case for checking that a bit is low
-XTEST_CASE(test_bit_low) {
+XTEST_CASE(assert_case_bit_low) {
     unsigned value = 0x0F; // Binary 00001111
     int bitIndex = 4;
 
@@ -1021,7 +1021,7 @@ XTEST_CASE(test_bit_low) {
 }
 
 // Test case for checking that no bits are high
-XTEST_CASE(test_bits_not_high) {
+XTEST_CASE(assert_case_bits_not_high) {
     unsigned value = 0x0F; // Binary 00001111
     unsigned mask = 0x80;  // Binary 10000000
 
@@ -1029,7 +1029,7 @@ XTEST_CASE(test_bits_not_high) {
 }
 
 // Test case for checking that all bits are high
-XTEST_CASE(test_bits_high) {
+XTEST_CASE(assert_case_bits_high) {
     unsigned value = 0xFF; // Binary 11111111
     unsigned mask = 0xF0;  // Binary 11110000
 
@@ -1037,7 +1037,7 @@ XTEST_CASE(test_bits_high) {
 }
 
 // Test case for checking that no bits are low
-XTEST_CASE(test_bits_not_low) {
+XTEST_CASE(assert_case_bits_not_low) {
     unsigned value = 0xFF; // Binary 11111111
     unsigned mask = 0xF0;  // Binary 11110000
 
@@ -1045,7 +1045,7 @@ XTEST_CASE(test_bits_not_low) {
 }
 
 // Test case for checking that all bits are low
-XTEST_CASE(test_bits_low) {
+XTEST_CASE(assert_case_bits_low) {
     unsigned value = 0x0F; // Binary 00001111
     unsigned mask = 0x80;  // Binary 10000000
 
@@ -1053,7 +1053,7 @@ XTEST_CASE(test_bits_low) {
 }
 
 // Test case for checking bitwise equality using a mask
-XTEST_CASE(test_bits_equal) {
+XTEST_CASE(assert_case_bits_equal) {
     unsigned expected = 0x0F; // Binary 00001111
     unsigned actual = 0x33;   // Binary 00110011
     unsigned mask = 0x0F;     // Binary 00001111
@@ -1062,7 +1062,7 @@ XTEST_CASE(test_bits_equal) {
 }
 
 // Test case for checking bitwise inequality using a mask
-XTEST_CASE(test_bits_not_equal) {
+XTEST_CASE(assert_case_bits_not_equal) {
     unsigned expected = 0x0F; // Binary 00001111
     unsigned actual = 0x33;   // Binary 00110011
     unsigned mask = 0x0F;     // Binary 00001111
@@ -1071,7 +1071,7 @@ XTEST_CASE(test_bits_not_equal) {
 }
 
 // Test case for checking bitwise less than using a mask
-XTEST_CASE(test_bits_less_than) {
+XTEST_CASE(assert_case_bits_less_than) {
     unsigned expected = 0x0F; // Binary 00001111
     unsigned actual = 0x33;   // Binary 00110011
     unsigned mask = 0x0F;     // Binary 00001111
@@ -1080,7 +1080,7 @@ XTEST_CASE(test_bits_less_than) {
 }
 
 // Test case for checking bitwise greater than using a mask
-XTEST_CASE(test_bits_greater_than) {
+XTEST_CASE(assert_case_bits_greater_than) {
     unsigned expected = 0x0F; // Binary 00001111
     unsigned actual = 0x33;   // Binary 00110011
     unsigned mask = 0x0F;     // Binary 00001111
@@ -1089,7 +1089,7 @@ XTEST_CASE(test_bits_greater_than) {
 }
 
 // Test case for checking bitwise less than or equal using a mask
-XTEST_CASE(test_bits_less_than_or_equal) {
+XTEST_CASE(assert_case_bits_less_than_or_equal) {
     unsigned expected = 0x0F; // Binary 00001111
     unsigned actual = 0x33;   // Binary 00110011
     unsigned mask = 0x0F;     // Binary 00001111
@@ -1098,7 +1098,7 @@ XTEST_CASE(test_bits_less_than_or_equal) {
 }
 
 // Test case for checking bitwise greater than or equal using a mask
-XTEST_CASE(test_bits_greater_than_or_equal) {
+XTEST_CASE(assert_case_bits_greater_than_or_equal) {
     unsigned expected = 0x0F; // Binary 00001111
     unsigned actual = 0x33;   // Binary 00110011
     unsigned mask = 0x0F;     // Binary 00001111
@@ -1110,7 +1110,7 @@ XTEST_CASE(test_bits_greater_than_or_equal) {
 
 
 // Test case for checking an integer value within tolerance
-XTEST_CASE(test_int_within_tolerance) {
+XTEST_CASE(assert_case_int_within_tolerance) {
     int actual = 10;
     int expected = 12;
     int tolerance = 2;
@@ -1119,7 +1119,7 @@ XTEST_CASE(test_int_within_tolerance) {
 }
 
 // Test case for checking an integer value not within tolerance
-XTEST_CASE(test_int_not_within_tolerance) {
+XTEST_CASE(assert_case_int_not_within_tolerance) {
     int actual = 10;
     int expected = 12;
     int tolerance = 1;
@@ -1128,7 +1128,7 @@ XTEST_CASE(test_int_not_within_tolerance) {
 }
 
 // Test case for checking an 8-bit integer value within tolerance
-XTEST_CASE(test_int8_within_tolerance) {
+XTEST_CASE(assert_case_int8_within_tolerance) {
     int8_t actual = 10;
     int8_t expected = 12;
     int8_t tolerance = 2;
@@ -1137,7 +1137,7 @@ XTEST_CASE(test_int8_within_tolerance) {
 }
 
 // Test case for checking an 8-bit integer value not within tolerance
-XTEST_CASE(test_int8_not_within_tolerance) {
+XTEST_CASE(assert_case_int8_not_within_tolerance) {
     int8_t actual = 10;
     int8_t expected = 12;
     int8_t tolerance = 1;
@@ -1146,7 +1146,7 @@ XTEST_CASE(test_int8_not_within_tolerance) {
 }
 
 // Test case for checking a 16-bit integer value within tolerance
-XTEST_CASE(test_int16_within_tolerance) {
+XTEST_CASE(assert_case_int16_within_tolerance) {
     int16_t actual = 1000;
     int16_t expected = 1010;
     int16_t tolerance = 20;
@@ -1155,7 +1155,7 @@ XTEST_CASE(test_int16_within_tolerance) {
 }
 
 // Test case for checking a 16-bit integer value not within tolerance
-XTEST_CASE(test_int16_not_within_tolerance) {
+XTEST_CASE(assert_case_int16_not_within_tolerance) {
     int16_t actual = 1000;
     int16_t expected = 1010;
     int16_t tolerance = 5;
@@ -1164,7 +1164,7 @@ XTEST_CASE(test_int16_not_within_tolerance) {
 }
 
 // Test case for checking a 32-bit integer value within tolerance
-XTEST_CASE(test_int32_within_tolerance) {
+XTEST_CASE(assert_case_int32_within_tolerance) {
     int32_t actual = 10000;
     int32_t expected = 10020;
     int32_t tolerance = 30;
@@ -1173,7 +1173,7 @@ XTEST_CASE(test_int32_within_tolerance) {
 }
 
 // Test case for checking a 32-bit integer value not within tolerance
-XTEST_CASE(test_int32_not_within_tolerance) {
+XTEST_CASE(assert_case_int32_not_within_tolerance) {
     int32_t actual = 10000;
     int32_t expected = 10020;
     int32_t tolerance = 5;
@@ -1182,7 +1182,7 @@ XTEST_CASE(test_int32_not_within_tolerance) {
 }
 
 // Test case for checking a 64-bit integer value within tolerance
-XTEST_CASE(test_int64_within_tolerance) {
+XTEST_CASE(assert_case_int64_within_tolerance) {
     int64_t actual = 1000000;
     int64_t expected = 1000020;
     int64_t tolerance = 30;
@@ -1191,7 +1191,7 @@ XTEST_CASE(test_int64_within_tolerance) {
 }
 
 // Test case for checking a 64-bit integer value not within tolerance
-XTEST_CASE(test_int64_not_within_tolerance) {
+XTEST_CASE(assert_case_int64_not_within_tolerance) {
     int64_t actual = 1000000;
     int64_t expected = 1000020;
     int64_t tolerance = 5;
@@ -1200,7 +1200,7 @@ XTEST_CASE(test_int64_not_within_tolerance) {
 }
 
 // Test case for checking an unsigned integer value within tolerance
-XTEST_CASE(test_uint_within_tolerance) {
+XTEST_CASE(assert_case_uint_within_tolerance) {
     unsigned actual = 10;
     unsigned expected = 12;
     unsigned tolerance = 2;
@@ -1209,7 +1209,7 @@ XTEST_CASE(test_uint_within_tolerance) {
 }
 
 // Test case for checking an unsigned integer value not within tolerance
-XTEST_CASE(test_uint_not_within_tolerance) {
+XTEST_CASE(assert_case_uint_not_within_tolerance) {
     unsigned actual = 10;
     unsigned expected = 12;
     unsigned tolerance = 1;
@@ -1218,7 +1218,7 @@ XTEST_CASE(test_uint_not_within_tolerance) {
 }
 
 // Test case for checking an 8-bit unsigned integer value within tolerance
-XTEST_CASE(test_uint8_within_tolerance) {
+XTEST_CASE(assert_case_uint8_within_tolerance) {
     uint8_t actual = 10;
     uint8_t expected = 12;
     uint8_t tolerance = 2;
@@ -1227,7 +1227,7 @@ XTEST_CASE(test_uint8_within_tolerance) {
 }
 
 // Test case for checking an 8-bit unsigned integer value not within tolerance
-XTEST_CASE(test_uint8_not_within_tolerance) {
+XTEST_CASE(assert_case_uint8_not_within_tolerance) {
     uint8_t actual = 10;
     uint8_t expected = 12;
     uint8_t tolerance = 1;
@@ -1236,7 +1236,7 @@ XTEST_CASE(test_uint8_not_within_tolerance) {
 }
 
 // Test case for checking a 16-bit unsigned integer value within tolerance
-XTEST_CASE(test_uint16_within_tolerance) {
+XTEST_CASE(assert_case_uint16_within_tolerance) {
     uint16_t actual = 1000;
     uint16_t expected = 1010;
     uint16_t tolerance = 20;
@@ -1245,7 +1245,7 @@ XTEST_CASE(test_uint16_within_tolerance) {
 }
 
 // Test case for checking a 16-bit unsigned integer value not within tolerance
-XTEST_CASE(test_uint16_not_within_tolerance) {
+XTEST_CASE(assert_case_uint16_not_within_tolerance) {
     uint16_t actual = 1000;
     uint16_t expected = 1010;
     uint16_t tolerance = 5;
@@ -1254,7 +1254,7 @@ XTEST_CASE(test_uint16_not_within_tolerance) {
 }
 
 // Test case for checking a 32-bit unsigned integer value within tolerance
-XTEST_CASE(test_uint32_within_tolerance) {
+XTEST_CASE(assert_case_uint32_within_tolerance) {
     uint32_t actual = 10000;
     uint32_t expected = 10020;
     uint32_t tolerance = 30;
@@ -1263,7 +1263,7 @@ XTEST_CASE(test_uint32_within_tolerance) {
 }
 
 // Test case for checking a 32-bit unsigned integer value not within tolerance
-XTEST_CASE(test_uint32_not_within_tolerance) {
+XTEST_CASE(assert_case_uint32_not_within_tolerance) {
     uint32_t actual = 10000;
     uint32_t expected = 10020;
     uint32_t tolerance = 5;
@@ -1272,7 +1272,7 @@ XTEST_CASE(test_uint32_not_within_tolerance) {
 }
 
 // Test case for checking a 64-bit unsigned integer value within tolerance
-XTEST_CASE(test_uint64_within_tolerance) {
+XTEST_CASE(assert_case_uint64_within_tolerance) {
     uint64_t actual = 1000000;
     uint64_t expected = 1000020;
     uint64_t tolerance = 30;
@@ -1281,7 +1281,7 @@ XTEST_CASE(test_uint64_within_tolerance) {
 }
 
 // Test case for checking a 64-bit unsigned integer value not within tolerance
-XTEST_CASE(test_uint64_not_within_tolerance) {
+XTEST_CASE(assert_case_uint64_not_within_tolerance) {
     uint64_t actual = 1000000;
     uint64_t expected = 1000020;
     uint64_t tolerance = 5;
@@ -1290,7 +1290,7 @@ XTEST_CASE(test_uint64_not_within_tolerance) {
 }
 
 // Test case for checking a hexadecimal value within tolerance
-XTEST_CASE(test_hex_within_tolerance) {
+XTEST_CASE(assert_case_hex_within_tolerance) {
     int actual = 0x1234;
     int expected = 0x1236;
     int tolerance = 2;
@@ -1299,7 +1299,7 @@ XTEST_CASE(test_hex_within_tolerance) {
 }
 
 // Test case for checking a hexadecimal value not within tolerance
-XTEST_CASE(test_hex_not_within_tolerance) {
+XTEST_CASE(assert_case_hex_not_within_tolerance) {
     int actual = 0x1234;
     int expected = 0x1236;
     int tolerance = 1;
@@ -1308,7 +1308,7 @@ XTEST_CASE(test_hex_not_within_tolerance) {
 }
 
 // Test case for checking an 8-bit hexadecimal value within tolerance
-XTEST_CASE(test_hex8_within_tolerance) {
+XTEST_CASE(assert_case_hex8_within_tolerance) {
     uint8_t actual = 0x12;
     uint8_t expected = 0x14;
     uint8_t tolerance = 2;
@@ -1317,7 +1317,7 @@ XTEST_CASE(test_hex8_within_tolerance) {
 }
 
 // Test case for checking an 8-bit hexadecimal value not within tolerance
-XTEST_CASE(test_hex8_not_within_tolerance) {
+XTEST_CASE(assert_case_hex8_not_within_tolerance) {
     uint8_t actual = 0x12;
     uint8_t expected = 0x14;
     uint8_t tolerance = 1;
@@ -1326,7 +1326,7 @@ XTEST_CASE(test_hex8_not_within_tolerance) {
 }
 
 // Test case for checking a 16-bit hexadecimal value within tolerance
-XTEST_CASE(test_hex16_within_tolerance) {
+XTEST_CASE(assert_case_hex16_within_tolerance) {
     uint16_t actual = 0x1234;
     uint16_t expected = 0x1236;
     uint16_t tolerance = 2;
@@ -1335,7 +1335,7 @@ XTEST_CASE(test_hex16_within_tolerance) {
 }
 
 // Test case for checking a 16-bit hexadecimal value not within tolerance
-XTEST_CASE(test_hex16_not_within_tolerance) {
+XTEST_CASE(assert_case_hex16_not_within_tolerance) {
     uint16_t actual = 0x1234;
     uint16_t expected = 0x1236;
     uint16_t tolerance = 1;
@@ -1344,7 +1344,7 @@ XTEST_CASE(test_hex16_not_within_tolerance) {
 }
 
 // Test case for checking a 32-bit hexadecimal value within tolerance
-XTEST_CASE(test_hex32_within_tolerance) {
+XTEST_CASE(assert_case_hex32_within_tolerance) {
     uint32_t actual = 0x12345678;
     uint32_t expected = 0x1234567A;
     uint32_t tolerance = 2;
@@ -1353,7 +1353,7 @@ XTEST_CASE(test_hex32_within_tolerance) {
 }
 
 // Test case for checking a 32-bit hexadecimal value not within tolerance
-XTEST_CASE(test_hex32_not_within_tolerance) {
+XTEST_CASE(assert_case_hex32_not_within_tolerance) {
     uint32_t actual = 0x12345678;
     uint32_t expected = 0x1234567A;
     uint32_t tolerance = 1;
@@ -1362,7 +1362,7 @@ XTEST_CASE(test_hex32_not_within_tolerance) {
 }
 
 // Test case for checking a 64-bit hexadecimal value within tolerance
-XTEST_CASE(test_hex64_within_tolerance) {
+XTEST_CASE(assert_case_hex64_within_tolerance) {
     uint64_t actual = 0x123456789ABCDEF0;
     uint64_t expected = 0x123456789ABCDEF2;
     uint64_t tolerance = 2;
@@ -1371,7 +1371,7 @@ XTEST_CASE(test_hex64_within_tolerance) {
 }
 
 // Test case for checking a 64-bit hexadecimal value not within tolerance
-XTEST_CASE(test_hex64_not_within_tolerance) {
+XTEST_CASE(assert_case_hex64_not_within_tolerance) {
     uint64_t actual = 0x123456789ABCDEF0;
     uint64_t expected = 0x123456789ABCDEF2;
     uint64_t tolerance = 1;
@@ -1380,7 +1380,7 @@ XTEST_CASE(test_hex64_not_within_tolerance) {
 }
 
 // Test case for checking a binary value within tolerance
-XTEST_CASE(test_bin_within_tolerance) {
+XTEST_CASE(assert_case_bin_within_tolerance) {
     int actual = 0b1100;
     int expected = 0b1101;
     int tolerance = 1;
@@ -1389,7 +1389,7 @@ XTEST_CASE(test_bin_within_tolerance) {
 }
 
 // Test case for checking a binary value not within tolerance
-XTEST_CASE(test_bin_not_within_tolerance) {
+XTEST_CASE(assert_case_bin_not_within_tolerance) {
     int actual = 0b1100;
     int expected = 0b1101;
     int tolerance = 0;
@@ -1398,7 +1398,7 @@ XTEST_CASE(test_bin_not_within_tolerance) {
 }
 
 // Test case for checking an octal value within tolerance
-XTEST_CASE(test_oct_within_tolerance) {
+XTEST_CASE(assert_case_oct_within_tolerance) {
     int actual = 012;
     int expected = 013;
     int tolerance = 1;
@@ -1407,7 +1407,7 @@ XTEST_CASE(test_oct_within_tolerance) {
 }
 
 // Test case for checking an octal value not within tolerance
-XTEST_CASE(test_oct_not_within_tolerance) {
+XTEST_CASE(assert_case_oct_not_within_tolerance) {
     int actual = 012;
     int expected = 013;
     int tolerance = 0;
@@ -1416,7 +1416,7 @@ XTEST_CASE(test_oct_not_within_tolerance) {
 }
 
 // Test case for checking a float value within epsilon
-XTEST_CASE(test_float_within_epsilon) {
+XTEST_CASE(assert_case_float_within_epsilon) {
     float actual = 3.14;
     float expected = 3.14159;
     float epsilon = 0.01;
@@ -1425,7 +1425,7 @@ XTEST_CASE(test_float_within_epsilon) {
 }
 
 // Test case for checking a float value not within epsilon
-XTEST_CASE(test_float_not_within_epsilon) {
+XTEST_CASE(assert_case_float_not_within_epsilon) {
     float actual = 3.14;
     float expected = 3.14159;
     float epsilon = 0.001;
@@ -1434,7 +1434,7 @@ XTEST_CASE(test_float_not_within_epsilon) {
 }
 
 // Test case for checking a double value within epsilon
-XTEST_CASE(test_double_within_epsilon) {
+XTEST_CASE(assert_case_double_within_epsilon) {
     double actual = 3.14;
     double expected = 3.14159;
     double epsilon = 0.01;
@@ -1443,7 +1443,7 @@ XTEST_CASE(test_double_within_epsilon) {
 }
 
 // Test case for checking a double value not within epsilon
-XTEST_CASE(test_double_not_within_epsilon) {
+XTEST_CASE(assert_case_double_not_within_epsilon) {
     double actual = 3.14;
     double expected = 3.14159;
     double epsilon = 0.001;
@@ -1452,7 +1452,7 @@ XTEST_CASE(test_double_not_within_epsilon) {
 }
 
 // Test case for checking a character value within a range
-XTEST_CASE(test_char_within_range) {
+XTEST_CASE(assert_case_char_within_range) {
     char actual = 'A';
     char min = 'A';
     char max = 'Z';
@@ -1461,7 +1461,7 @@ XTEST_CASE(test_char_within_range) {
 }
 
 // Test case for checking a character value not within a range
-XTEST_CASE(test_char_not_within_range) {
+XTEST_CASE(assert_case_char_not_within_range) {
     char actual = 'a';
     char min = 'A';
     char max = 'Z';
@@ -1470,7 +1470,7 @@ XTEST_CASE(test_char_not_within_range) {
 }
 
 // Test case for checking a wide character value within a range
-XTEST_CASE(test_wchar_within_range) {
+XTEST_CASE(assert_case_wchar_within_range) {
     wchar_t actual = L'Ω';
     wchar_t min = L'Α';
     wchar_t max = L'Ω';
@@ -1479,7 +1479,7 @@ XTEST_CASE(test_wchar_within_range) {
 }
 
 // Test case for checking a wide character value not within a range
-XTEST_CASE(test_wchar_not_within_range) {
+XTEST_CASE(assert_case_wchar_not_within_range) {
     wchar_t actual = L'ß';
     wchar_t min = L'Α';
     wchar_t max = L'Ω';
@@ -1488,7 +1488,7 @@ XTEST_CASE(test_wchar_not_within_range) {
 }
 
 // Test case for checking if two floating-point values are equal within epsilon
-XTEST_CASE(test_float_equal) {
+XTEST_CASE(assert_case_float_equal) {
     float actual = 3.14159f;
     float expected = 3.1415926f;
 
@@ -1496,7 +1496,7 @@ XTEST_CASE(test_float_equal) {
 }
 
 // Test case for checking if two floating-point values are not equal within epsilon
-XTEST_CASE(test_float_not_equal) {
+XTEST_CASE(assert_case_float_not_equal) {
     float actual = 3.14159f;
     float expected = 3.1415926f;
 
@@ -1504,7 +1504,7 @@ XTEST_CASE(test_float_not_equal) {
 }
 
 // Test case for checking if a floating-point value is less than another
-XTEST_CASE(test_float_less) {
+XTEST_CASE(assert_case_float_less) {
     float actual = 3.0f;
     float expected = 3.14159f;
 
@@ -1512,7 +1512,7 @@ XTEST_CASE(test_float_less) {
 }
 
 // Test case for checking if a floating-point value is not less than another
-XTEST_CASE(test_float_not_less) {
+XTEST_CASE(assert_case_float_not_less) {
     float actual = 3.14159f;
     float expected = 3.0f;
 
@@ -1520,7 +1520,7 @@ XTEST_CASE(test_float_not_less) {
 }
 
 // Test case for checking if a floating-point value is greater than another
-XTEST_CASE(test_float_greater) {
+XTEST_CASE(assert_case_float_greater) {
     float actual = 3.14159f;
     float expected = 3.0f;
 
@@ -1528,7 +1528,7 @@ XTEST_CASE(test_float_greater) {
 }
 
 // Test case for checking if a floating-point value is not greater than another
-XTEST_CASE(test_float_not_greater) {
+XTEST_CASE(assert_case_float_not_greater) {
     float actual = 3.0f;
     float expected = 3.14159f;
 
@@ -1536,7 +1536,7 @@ XTEST_CASE(test_float_not_greater) {
 }
 
 // Test case for checking if a floating-point value is greater than or equal to another
-XTEST_CASE(test_float_greater_equal) {
+XTEST_CASE(assert_case_float_greater_equal) {
     float actual = 3.14159f;
     float expected = 3.0f;
 
@@ -1544,7 +1544,7 @@ XTEST_CASE(test_float_greater_equal) {
 }
 
 // Test case for checking if a floating-point value is not greater than or equal to another
-XTEST_CASE(test_float_not_greater_equal) {
+XTEST_CASE(assert_case_float_not_greater_equal) {
     float actual = 2.0f;
     float expected = 3.14159f;
 
@@ -1552,7 +1552,7 @@ XTEST_CASE(test_float_not_greater_equal) {
 }
 
 // Test case for checking if a floating-point value is less than or equal to another
-XTEST_CASE(test_float_less_equal) {
+XTEST_CASE(assert_case_float_less_equal) {
     float actual = 3.0f;
     float expected = 3.14159f;
 
@@ -1560,7 +1560,7 @@ XTEST_CASE(test_float_less_equal) {
 }
 
 // Test case for checking if a floating-point value is not less than or equal to another
-XTEST_CASE(test_float_not_less_equal) {
+XTEST_CASE(assert_case_float_not_less_equal) {
     float actual = 3.14159f;
     float expected = 2.0f;
 
@@ -1568,77 +1568,77 @@ XTEST_CASE(test_float_not_less_equal) {
 }
 
 // Test case for checking if a floating-point value is not infinity
-XTEST_CASE(test_float_not_inf) {
+XTEST_CASE(assert_case_float_not_inf) {
     float value = 3.14159f;
 
     TEST_ASSERT_FLOAT_IS_NOT_INF(value); // Should pass
 }
 
 // Test case for checking if a floating-point value is infinity
-XTEST_CASE(test_float_inf) {
+XTEST_CASE(assert_case_float_inf) {
     float value = INFINITY;
 
     TEST_ASSERT_FLOAT_IS_INF(value); // Should pass
 }
 
 // Test case for checking if a floating-point value is not negative infinity
-XTEST_CASE(test_float_not_neg_inf) {
+XTEST_CASE(assert_case_float_not_neg_inf) {
     float value = 3.14159f;
 
     TEST_ASSERT_FLOAT_IS_NOT_NEG_INF(value); // Should pass
 }
 
 // Test case for checking if a floating-point value is negative infinity
-XTEST_CASE(test_float_neg_inf) {
+XTEST_CASE(assert_case_float_neg_inf) {
     float value = -INFINITY;
 
     TEST_ASSERT_FLOAT_IS_NEG_INF(value); // Should pass
 }
 
 // Test case for checking if a floating-point value is finite
-XTEST_CASE(test_float_finite) {
+XTEST_CASE(assert_case_float_finite) {
     float value = 3.14159f;
 
     TEST_ASSERT_FLOAT_IS_FINITE(value); // Should pass
 }
 
 // Test case for checking if a floating-point value is not finite
-XTEST_CASE(test_float_not_finite) {
+XTEST_CASE(assert_case_float_not_finite) {
     float value = INFINITY;
 
     TEST_ASSERT_FLOAT_IS_NOT_FINITE(value); // Should fail
 }
 
 // Test case for checking if a floating-point value is not NaN
-XTEST_CASE(test_float_not_nan) {
+XTEST_CASE(assert_case_float_not_nan) {
     float value = 3.14159f;
 
     TEST_ASSERT_FLOAT_IS_NOT_NAN(value); // Should pass
 }
 
 // Test case for checking if a floating-point value is NaN
-XTEST_CASE(test_float_nan) {
+XTEST_CASE(assert_case_float_nan) {
     float value = NAN;
 
     TEST_ASSERT_FLOAT_IS_NAN(value); // Should pass
 }
 
 // Test case for checking if a floating-point value is deterministic (not NaN or inf)
-XTEST_CASE(test_float_is_determinate) {
+XTEST_CASE(assert_case_float_is_determinate) {
     float actual = 3.14159f;
 
     TEST_ASSERT_FLOAT_IS_DETERMINATE(actual); // Should pass
 }
 
 // Test case for checking if a floating-point value is not deterministic (NaN or inf)
-XTEST_CASE(test_float_is_not_determinate) {
+XTEST_CASE(assert_case_float_is_not_determinate) {
     float value = INFINITY;
 
     TEST_ASSERT_FLOAT_IS_NOT_DETERMINATE(value); // Should fail
 }
 
 // Test case for checking if two double-precision floating-point values are equal within epsilon
-XTEST_CASE(test_double_equal) {
+XTEST_CASE(assert_case_double_equal) {
     double actual = 3.14159;
     double expected = 3.1415926;
 
@@ -1646,7 +1646,7 @@ XTEST_CASE(test_double_equal) {
 }
 
 // Test case for checking if two double-precision floating-point values are not equal within epsilon
-XTEST_CASE(test_double_not_equal) {
+XTEST_CASE(assert_case_double_not_equal) {
     double actual = 3.14159;
     double expected = 3.1415926;
 
@@ -1654,7 +1654,7 @@ XTEST_CASE(test_double_not_equal) {
 }
 
 // Test case for checking if a double-precision floating-point value is less than another
-XTEST_CASE(test_double_less) {
+XTEST_CASE(assert_case_double_less) {
     double actual = 3.0;
     double expected = 3.14159;
 
@@ -1662,7 +1662,7 @@ XTEST_CASE(test_double_less) {
 }
 
 // Test case for checking if a double-precision floating-point value is not less than another
-XTEST_CASE(test_double_not_less) {
+XTEST_CASE(assert_case_double_not_less) {
     double actual = 3.14159;
     double expected = 3.0;
 
@@ -1670,7 +1670,7 @@ XTEST_CASE(test_double_not_less) {
 }
 
 // Test case for checking if a double-precision floating-point value is greater than another
-XTEST_CASE(test_double_greater) {
+XTEST_CASE(assert_case_double_greater) {
     double actual = 3.14159;
     double expected = 3.0;
 
@@ -1678,7 +1678,7 @@ XTEST_CASE(test_double_greater) {
 }
 
 // Test case for checking if a double-precision floating-point value is not greater than another
-XTEST_CASE(test_double_not_greater) {
+XTEST_CASE(assert_case_double_not_greater) {
     double actual = 3.0;
     double expected = 3.14159;
 
@@ -1686,7 +1686,7 @@ XTEST_CASE(test_double_not_greater) {
 }
 
 // Test case for checking if a double-precision floating-point value is greater than or equal to another
-XTEST_CASE(test_double_greater_equal) {
+XTEST_CASE(assert_case_double_greater_equal) {
     double actual = 3.14159;
     double expected = 3.0;
 
@@ -1694,7 +1694,7 @@ XTEST_CASE(test_double_greater_equal) {
 }
 
 // Test case for checking if a double-precision floating-point value is not greater than or equal to another
-XTEST_CASE(test_double_not_greater_equal) {
+XTEST_CASE(assert_case_double_not_greater_equal) {
     double actual = 2.0;
     double expected = 3.14159;
 
@@ -1702,7 +1702,7 @@ XTEST_CASE(test_double_not_greater_equal) {
 }
 
 // Test case for checking if a double-precision floating-point value is less than or equal to another
-XTEST_CASE(test_double_less_equal) {
+XTEST_CASE(assert_case_double_less_equal) {
     double actual = 3.0;
     double expected = 3.14159;
 
@@ -1710,7 +1710,7 @@ XTEST_CASE(test_double_less_equal) {
 }
 
 // Test case for checking if a double-precision floating-point value is not less than or equal to another
-XTEST_CASE(test_double_not_less_equal) {
+XTEST_CASE(assert_case_double_not_less_equal) {
     double actual = 3.14159;
     double expected = 2.0;
 
@@ -1718,119 +1718,119 @@ XTEST_CASE(test_double_not_less_equal) {
 }
 
 // Test case for checking if a double-precision floating-point value is not infinity
-XTEST_CASE(test_double_not_inf) {
+XTEST_CASE(assert_case_double_not_inf) {
     double value = 3.14159;
 
     TEST_ASSERT_DOUBLE_IS_NOT_INF(value); // Should pass
 }
 
 // Test case for checking if a double-precision floating-point value is infinity
-XTEST_CASE(test_double_inf) {
+XTEST_CASE(assert_case_double_inf) {
     double value = INFINITY;
 
     TEST_ASSERT_DOUBLE_IS_INF(value); // Should pass
 }
 
 // Test case for checking if a double-precision floating-point value is not negative infinity
-XTEST_CASE(test_double_not_neg_inf) {
+XTEST_CASE(assert_case_double_not_neg_inf) {
     double value = 3.14159;
 
     TEST_ASSERT_DOUBLE_IS_NOT_NEG_INF(value); // Should pass
 }
 
 // Test case for checking if a double-precision floating-point value is negative infinity
-XTEST_CASE(test_double_neg_inf) {
+XTEST_CASE(assert_case_double_neg_inf) {
     double value = -INFINITY;
 
     TEST_ASSERT_DOUBLE_IS_NEG_INF(value); // Should pass
 }
 
 // Test case for checking if a double-precision floating-point value is finite
-XTEST_CASE(test_double_finite) {
+XTEST_CASE(assert_case_double_finite) {
     double value = 3.14159;
 
     TEST_ASSERT_DOUBLE_IS_FINITE(value); // Should pass
 }
 
 // Test case for checking if a double-precision floating-point value is not finite
-XTEST_CASE(test_double_not_finite) {
+XTEST_CASE(assert_case_double_not_finite) {
     double value = INFINITY;
 
     TEST_ASSERT_DOUBLE_IS_NOT_FINITE(value); // Should fail
 }
 
 // Test case for checking if a double-precision floating-point value is not NaN
-XTEST_CASE(test_double_not_nan) {
+XTEST_CASE(assert_case_double_not_nan) {
     double value = 3.14159;
 
     TEST_ASSERT_DOUBLE_IS_NOT_NAN(value); // Should pass
 }
 
 // Test case for checking if a double-precision floating-point value is NaN
-XTEST_CASE(test_double_nan) {
+XTEST_CASE(assert_case_double_nan) {
     double value = NAN;
 
     TEST_ASSERT_DOUBLE_IS_NAN(value); // Should pass
 }
 
 // Test case for checking if a double-precision floating-point value is deterministic (not NaN or inf)
-XTEST_CASE(test_double_is_determinate) {
+XTEST_CASE(assert_case_double_is_determinate) {
     double actual = 3.14159;
 
     TEST_ASSERT_DOUBLE_IS_DETERMINATE(actual); // Should pass
 }
 
 // Test case for checking if a double-precision floating-point value is not deterministic (NaN or inf)
-XTEST_CASE(test_double_is_not_determinate) {
+XTEST_CASE(assert_case_double_is_not_determinate) {
     double value = INFINITY;
 
     TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(value); // Should fail
 }
 
 // Test case for checking if a pointer is NULL
-XTEST_CASE(test_null_ptr) {
+XTEST_CASE(assert_case_null_ptr) {
     void* pointer = NULL;
 
     TEST_ASSERT_NULL_PTR(pointer); // Should pass
 }
 
 // Test case for checking if a pointer is not NULL
-XTEST_CASE(test_not_null_ptr) {
+XTEST_CASE(assert_case_not_null_ptr) {
     void* pointer = (void*)12345;
 
     TEST_ASSERT_NOT_NULL_PTR(pointer); // Should pass
 }
 
 // Test case for checking if a pointer is invalid (not NULL)
-XTEST_CASE(test_invalid_ptr) {
+XTEST_CASE(assert_case_invalid_ptr) {
     void* pointer = (void*)12345;
 
     TEST_ASSERT_INVALID_PTR(pointer); // Should fail
 }
 
 // Test case for checking if a pointer is empty (NULL)
-XTEST_CASE(test_empty_ptr) {
+XTEST_CASE(assert_case_empty_ptr) {
     void* pointer = NULL;
 
     TEST_ASSERT_EMPTY_PTR(pointer); // Should pass
 }
 
 // Test case for checking if a pointer is not empty (not NULL)
-XTEST_CASE(test_not_empty_ptr) {
+XTEST_CASE(assert_case_not_empty_ptr) {
     void* pointer = (void*)12345;
 
     TEST_ASSERT_NOT_EMPTY_PTR(pointer); // Should fail
 }
 
 // Test case for checking if a pointer is a valid memory access
-XTEST_CASE(test_valid_memory_access_ptr) {
+XTEST_CASE(assert_case_valid_memory_access_ptr) {
     void* pointer = (void*)12345;
 
     TEST_ASSERT_INVALID_MEMORY_ACCESS_PTR(pointer); // Should fail
 }
 
 // Test case for checking if an array index is within bounds
-XTEST_CASE(test_array_bounds_ptr) {
+XTEST_CASE(assert_case_array_bounds_ptr) {
     int arr[] = {1, 2, 3, 4, 5};
     int index = 3;
     int size = 5;
@@ -1839,7 +1839,7 @@ XTEST_CASE(test_array_bounds_ptr) {
 }
 
 // Test case for checking if two pointers are equal
-XTEST_CASE(test_equal_ptr) {
+XTEST_CASE(assert_case_equal_ptr) {
     void* pointer1 = (void*)12345;
     void* pointer2 = pointer1;
 
@@ -1847,7 +1847,7 @@ XTEST_CASE(test_equal_ptr) {
 }
 
 // Test case for checking if two pointers are not equal
-XTEST_CASE(test_not_equal_ptr) {
+XTEST_CASE(assert_case_not_equal_ptr) {
     void* pointer1 = (void*)12345;
     void* pointer2 = (void*)54321;
 
@@ -1855,7 +1855,7 @@ XTEST_CASE(test_not_equal_ptr) {
 }
 
 // Test case for checking if one pointer is less than another
-XTEST_CASE(test_less_ptr) {
+XTEST_CASE(assert_case_less_ptr) {
     void* pointer1 = (void*)12345;
     void* pointer2 = (void*)54321;
 
@@ -1863,7 +1863,7 @@ XTEST_CASE(test_less_ptr) {
 }
 
 // Test case for checking if one pointer is greater than another
-XTEST_CASE(test_greater_ptr) {
+XTEST_CASE(assert_case_greater_ptr) {
     void* pointer1 = (void*)54321;
     void* pointer2 = (void*)12345;
 
@@ -1871,7 +1871,7 @@ XTEST_CASE(test_greater_ptr) {
 }
 
 // Test case for checking if one pointer is less than or equal to another
-XTEST_CASE(test_less_equal_ptr) {
+XTEST_CASE(assert_case_less_equal_ptr) {
     void* pointer1 = (void*)12345;
     void* pointer2 = (void*)54321;
 
@@ -1879,7 +1879,7 @@ XTEST_CASE(test_less_equal_ptr) {
 }
 
 // Test case for checking if one pointer is greater than or equal to another
-XTEST_CASE(test_greater_equal_ptr) {
+XTEST_CASE(assert_case_greater_equal_ptr) {
     void* pointer1 = (void*)54321;
     void* pointer2 = (void*)12345;
 
@@ -1887,7 +1887,7 @@ XTEST_CASE(test_greater_equal_ptr) {
 }
 
 // Test case for checking if two strings are equal
-XTEST_CASE(test_equal_string) {
+XTEST_CASE(assert_case_equal_string) {
     const char* actual = "Hello, World!";
     const char* expected = "Hello, World!";
 
@@ -1895,7 +1895,7 @@ XTEST_CASE(test_equal_string) {
 }
 
 // Test case for checking if two strings are not equal
-XTEST_CASE(test_not_equal_string) {
+XTEST_CASE(assert_case_not_equal_string) {
     const char* actual = "Hello, World!";
     const char* expected = "Hello, OpenAI!";
 
@@ -1903,7 +1903,7 @@ XTEST_CASE(test_not_equal_string) {
 }
 
 // Test case for checking the length of a string
-XTEST_CASE(test_length_string) {
+XTEST_CASE(assert_case_length_string) {
     const char* actual = "Hello, World!";
     size_t expected = 13;
 
@@ -1911,7 +1911,7 @@ XTEST_CASE(test_length_string) {
 }
 
 // Test case for checking if a string contains a substring
-XTEST_CASE(test_contains_substring_string) {
+XTEST_CASE(assert_case_contains_substring_string) {
     const char* string = "Hello, World!";
     const char* substring = "World";
 
@@ -1919,7 +1919,7 @@ XTEST_CASE(test_contains_substring_string) {
 }
 
 // Test case for checking if a string does not contain a substring
-XTEST_CASE(test_not_contains_substring_string) {
+XTEST_CASE(assert_case_not_contains_substring_string) {
     const char* string = "Hello, World!";
     const char* substring = "OpenAI";
 
@@ -1927,7 +1927,7 @@ XTEST_CASE(test_not_contains_substring_string) {
 }
 
 // Test case for checking if a string starts with a prefix
-XTEST_CASE(test_starts_with_string) {
+XTEST_CASE(assert_case_starts_with_string) {
     const char* string = "Hello, World!";
     const char* prefix = "Hello";
 
@@ -1935,7 +1935,7 @@ XTEST_CASE(test_starts_with_string) {
 }
 
 // Test case for checking if a string ends with a suffix
-XTEST_CASE(test_ends_with_string) {
+XTEST_CASE(assert_case_ends_with_string) {
     const char* string = "Hello, World!";
     const char* suffix = "World!";
 
@@ -1943,7 +1943,7 @@ XTEST_CASE(test_ends_with_string) {
 }
 
 // Test case for checking if two strings are equal in a case-insensitive manner
-XTEST_CASE(test_equal_case_insensitive_string) {
+XTEST_CASE(assert_case_equal_case_insensitive_string) {
     const char* actual = "Hello, World!";
     const char* expected = "hello, World!";
 
@@ -1951,7 +1951,7 @@ XTEST_CASE(test_equal_case_insensitive_string) {
 }
 
 // Test case for checking if two strings are not equal in a case-insensitive manner
-XTEST_CASE(test_not_equal_case_insensitive_string) {
+XTEST_CASE(assert_case_not_equal_case_insensitive_string) {
     const char* actual = "Hello, World!";
     const char* expected = "OpenAI, World!";
 
@@ -1959,7 +1959,7 @@ XTEST_CASE(test_not_equal_case_insensitive_string) {
 }
 
 // Test case for checking if two characters are equal
-XTEST_CASE(test_equal_char) {
+XTEST_CASE(assert_case_equal_char) {
     char actual = 'A';
     char expected = 'A';
 
@@ -1967,7 +1967,7 @@ XTEST_CASE(test_equal_char) {
 }
 
 // Test case for checking if two characters are not equal
-XTEST_CASE(test_not_equal_char) {
+XTEST_CASE(assert_case_not_equal_char) {
     char actual = 'A';
     char expected = 'B';
 
@@ -1975,7 +1975,7 @@ XTEST_CASE(test_not_equal_char) {
 }
 
 // Test case for checking if a character is less than another character
-XTEST_CASE(test_less_char) {
+XTEST_CASE(assert_case_less_char) {
     char actual = 'A';
     char expected = 'B';
 
@@ -1983,7 +1983,7 @@ XTEST_CASE(test_less_char) {
 }
 
 // Test case for checking if a character is greater than another character
-XTEST_CASE(test_greater_char) {
+XTEST_CASE(assert_case_greater_char) {
     char actual = 'B';
     char expected = 'A';
 
@@ -1991,7 +1991,7 @@ XTEST_CASE(test_greater_char) {
 }
 
 // Test case for checking if a character is less than or equal to another character
-XTEST_CASE(test_less_equal_char) {
+XTEST_CASE(assert_case_less_equal_char) {
     char actual = 'A';
     char expected = 'A';
 
@@ -1999,7 +1999,7 @@ XTEST_CASE(test_less_equal_char) {
 }
 
 // Test case for checking if a character is greater than or equal to another character
-XTEST_CASE(test_greater_equal_char) {
+XTEST_CASE(assert_case_greater_equal_char) {
     char actual = 'B';
     char expected = 'A';
 
@@ -2007,7 +2007,7 @@ XTEST_CASE(test_greater_equal_char) {
 }
 
 // Test case for checking if a character is in a specified range
-XTEST_CASE(test_in_range_char) {
+XTEST_CASE(assert_case_in_range_char) {
     char character = 'C';
     char min = 'A';
     char max = 'Z';
@@ -2016,21 +2016,21 @@ XTEST_CASE(test_in_range_char) {
 }
 
 // Test case for checking if a character is uppercase
-XTEST_CASE(test_is_uppercase_char) {
+XTEST_CASE(assert_case_is_uppercase_char) {
     char character = 'A';
 
     TEST_ASSERT_IS_UPPERCASE_CHAR(character); // Should pass
 }
 
 // Test case for checking if a character is lowercase
-XTEST_CASE(test_is_lowercase_char) {
+XTEST_CASE(assert_case_is_lowercase_char) {
     char character = 'a';
 
     TEST_ASSERT_IS_LOWERCASE_CHAR(character); // Should pass
 }
 
 // Test case for converting a character to uppercase
-XTEST_CASE(test_to_upper_char) {
+XTEST_CASE(assert_case_to_upper_char) {
     char character = 'a';
     char expected = 'A';
 
@@ -2038,7 +2038,7 @@ XTEST_CASE(test_to_upper_char) {
 }
 
 // Test case for converting a character to lowercase
-XTEST_CASE(test_to_lower_char) {
+XTEST_CASE(assert_case_to_lower_char) {
     char character = 'A';
     char expected = 'a';
 
@@ -2046,7 +2046,7 @@ XTEST_CASE(test_to_lower_char) {
 }
 
 // Test case for checking if two wide characters are equal
-XTEST_CASE(test_equal_wchar) {
+XTEST_CASE(assert_case_equal_wchar) {
     wchar_t actual = L'A';
     wchar_t expected = L'A';
 
@@ -2054,7 +2054,7 @@ XTEST_CASE(test_equal_wchar) {
 }
 
 // Test case for checking if two wide characters are not equal
-XTEST_CASE(test_not_equal_wchar) {
+XTEST_CASE(assert_case_not_equal_wchar) {
     wchar_t actual = L'A';
     wchar_t expected = L'B';
 
@@ -2062,7 +2062,7 @@ XTEST_CASE(test_not_equal_wchar) {
 }
 
 // Test case for checking if a wide character is less than another wide character
-XTEST_CASE(test_less_wchar) {
+XTEST_CASE(assert_case_less_wchar) {
     wchar_t actual = L'A';
     wchar_t expected = L'B';
 
@@ -2070,7 +2070,7 @@ XTEST_CASE(test_less_wchar) {
 }
 
 // Test case for checking if a wide character is greater than another wide character
-XTEST_CASE(test_greater_wchar) {
+XTEST_CASE(assert_case_greater_wchar) {
     wchar_t actual = L'B';
     wchar_t expected = L'A';
 
@@ -2078,7 +2078,7 @@ XTEST_CASE(test_greater_wchar) {
 }
 
 // Test case for checking if a wide character is less than or equal to another wide character
-XTEST_CASE(test_less_equal_wchar) {
+XTEST_CASE(assert_case_less_equal_wchar) {
     wchar_t actual = L'A';
     wchar_t expected = L'A';
 
@@ -2086,7 +2086,7 @@ XTEST_CASE(test_less_equal_wchar) {
 }
 
 // Test case for checking if a wide character is greater than or equal to another wide character
-XTEST_CASE(test_greater_equal_wchar) {
+XTEST_CASE(assert_case_greater_equal_wchar) {
     wchar_t actual = L'B';
     wchar_t expected = L'A';
 
@@ -2094,7 +2094,7 @@ XTEST_CASE(test_greater_equal_wchar) {
 }
 
 // Test case for checking if a wide character is in a specified range
-XTEST_CASE(test_in_range_wchar) {
+XTEST_CASE(assert_case_in_range_wchar) {
     wchar_t character = L'C';
     wchar_t min = L'A';
     wchar_t max = L'Z';
@@ -2103,21 +2103,21 @@ XTEST_CASE(test_in_range_wchar) {
 }
 
 // Test case for checking if a wide character is uppercase
-XTEST_CASE(test_is_uppercase_wchar) {
+XTEST_CASE(assert_case_is_uppercase_wchar) {
     wchar_t character = L'A';
 
     TEST_ASSERT_IS_UPPERCASE_WCHAR(character); // Should pass
 }
 
 // Test case for checking if a wide character is lowercase
-XTEST_CASE(test_is_lowercase_wchar) {
+XTEST_CASE(assert_case_is_lowercase_wchar) {
     wchar_t character = L'a';
 
     TEST_ASSERT_IS_LOWERCASE_WCHAR(character); // Should pass
 }
 
 // Test case for converting a wide character to uppercase
-XTEST_CASE(test_to_upper_wchar) {
+XTEST_CASE(assert_case_to_upper_wchar) {
     wchar_t character = L'a';
     wchar_t expected = L'A';
 
@@ -2125,279 +2125,438 @@ XTEST_CASE(test_to_upper_wchar) {
 }
 
 // Test case for converting a wide character to lowercase
-XTEST_CASE(test_to_lower_wchar) {
+XTEST_CASE(assert_case_to_lower_wchar) {
     wchar_t character = L'A';
     wchar_t expected = L'a';
 
     TEST_ASSERT_TO_LOWER_WCHAR(character, expected); // Should pass
 }
 
+// Test case for checking if the size of a wide character array is invalid
+XTEST_CASE(assert_case_invalid_size_wchar_array) {
+    size_t size = 10;
+
+    TEST_ASSERT_INVALID_SIZE_WCHAR_ARRAY(size); // Should pass
+}
+
+// Test case for checking if the index is out of bounds for a wide character array
+XTEST_CASE(assert_case_index_out_of_bounds_wchar_array) {
+    size_t index = 15;
+    size_t size = 10;
+
+    TEST_ASSERT_INDEX_OUT_OF_BOUNDS_WCHAR_ARRAY(index, size); // Should fail
+}
+
+// Test case for checking if a pointer to a wide character array is null
+XTEST_CASE(assert_case_null_pointer_wchar_array) {
+    wchar_t* array = NULL;
+
+    TEST_ASSERT_NULL_POINTER_WCHAR_ARRAY(array); // Should pass
+}
+
+// Test case for checking an invalid operation on a wide character array
+XTEST_CASE(assert_case_invalid_operation_wchar_array) {
+    int condition = 0;
+
+    TEST_ASSERT_INVALID_OPERATION_WCHAR_ARRAY(condition); // Should fail
+}
+
+// Test case for checking if an index is out of bounds for a specific wide character array
+XTEST_CASE(assert_case_index_wchar_array) {
+    wchar_t array[] = L"Hello";
+    size_t index = 5;
+
+    TEST_ASSERT_INDEX_WCHAR_ARRAY(array, index); // Should fail
+}
+
+// Test case for checking if the size of a character array is invalid
+XTEST_CASE(assert_case_invalid_size_char_array) {
+    size_t size = 10;
+
+    TEST_ASSERT_INVALID_SIZE_CHAR_ARRAY(size); // Should pass
+}
+
+// Test case for checking if the index is out of bounds for a character array
+XTEST_CASE(assert_case_index_out_of_bounds_char_array) {
+    size_t index = 15;
+    size_t size = 10;
+
+    TEST_ASSERT_INDEX_OUT_OF_BOUNDS_CHAR_ARRAY(index, size); // Should fail
+}
+
+// Test case for checking if a pointer to a character array is null
+XTEST_CASE(assert_case_null_pointer_char_array) {
+    char* array = NULL;
+
+    TEST_ASSERT_NULL_POINTER_CHAR_ARRAY(array); // Should pass
+}
+
+// Test case for checking an invalid operation on a character array
+XTEST_CASE(assert_case_invalid_operation_char_array) {
+    int condition = 0;
+
+    TEST_ASSERT_INVALID_OPERATION_CHAR_ARRAY(condition); // Should fail
+}
+
+// Test case for checking if an index is out of bounds for a specific character array
+XTEST_CASE(assert_case_index_char_array) {
+    char array[] = "Hello";
+    size_t index = 5;
+
+    TEST_ASSERT_INDEX_CHAR_ARRAY(array, index); // Should fail
+}
+
+// Test case for opening a file
+XTEST_CASE(assert_case_open_file) {
+    FILE* file = fopen("example.txt", "r");
+    TEST_ASSERT_OPEN_FILE(file); // Should pass
+    TEST_ASSERT_CLOSE_FILE(file); // Close the file
+}
+
+// Test case for reading from a file
+XTEST_CASE(assert_case_read_file) {
+    FILE* file = fopen("example.txt", "r");
+    char buffer[100];
+    size_t size = 10;
+
+    TEST_ASSERT_OPEN_FILE(file); // Open the file
+    TEST_ASSERT_READ_FILE(file, buffer, size); // Should pass
+    TEST_ASSERT_CLOSE_FILE(file); // Close the file
+}
+
+// Test case for writing to a file
+XTEST_CASE(assert_case_write_file) {
+    FILE* file = fopen("output.txt", "w");
+    char data[] = "Hello, World!";
+    size_t size = strlen(data);
+
+    TEST_ASSERT_OPEN_FILE(file); // Open the file
+    TEST_ASSERT_WRITE_FILE(file, data, size); // Should pass
+    TEST_ASSERT_CLOSE_FILE(file); // Close the file
+}
+
+// Test case for seeking within a file
+XTEST_CASE(assert_case_seek_file) {
+    FILE* file = fopen("example.txt", "r");
+    
+    TEST_ASSERT_OPEN_FILE(file); // Open the file
+    TEST_ASSERT_SEEK_FILE(file, 5, SEEK_SET); // Should pass
+    TEST_ASSERT_CLOSE_FILE(file); // Close the file
+}
+
+// Test case for getting the file position
+XTEST_CASE(assert_case_tell_file) {
+    FILE* file = fopen("example.txt", "r");
+    
+    TEST_ASSERT_OPEN_FILE(file); // Open the file
+    TEST_ASSERT_TELL_FILE(file); // Should pass
+    TEST_ASSERT_CLOSE_FILE(file); // Close the file
+}
+
+// Test case for checking the end of a file
+XTEST_CASE(assert_case_eof_file) {
+    FILE* file = fopen("example.txt", "r");
+
+    TEST_ASSERT_OPEN_FILE(file); // Open the file
+    TEST_ASSERT_EOF_FILE(file); // Should pass
+    TEST_ASSERT_CLOSE_FILE(file); // Close the file
+}
+
+// Test case for checking file operations with no errors
+XTEST_CASE(assert_case_file_no_error) {
+    FILE* file = fopen("example.txt", "r");
+
+    TEST_ASSERT_OPEN_FILE(file); // Open the file
+    // Perform some file operations...
+    TEST_ASSERT_FILE_NO_ERROR(file); // Should pass
+    TEST_ASSERT_CLOSE_FILE(file); // Close the file
+}
+
 //
 // LOCAL TEST GROUP
 //
 void xassert_test_group(XUnitRunner *runner) {
-    XTEST_RUN_UNIT(test_boolean_equality, runner);
-    XTEST_RUN_UNIT(test_boolean_false, runner);
-    XTEST_RUN_UNIT(test_boolean_greater_than, runner);
-    XTEST_RUN_UNIT(test_boolean_inequality, runner);
-    XTEST_RUN_UNIT(test_boolean_message, runner);
-    XTEST_RUN_UNIT(test_boolean_true, runner);
-    XTEST_RUN_UNIT(test_boolean_unless, runner);
-    XTEST_RUN_UNIT(test_memory_contains, runner);
-    XTEST_RUN_UNIT(test_memory_copied, runner);
-    XTEST_RUN_UNIT(test_memory_equality, runner);
-    XTEST_RUN_UNIT(test_memory_inequality, runner);
-    XTEST_RUN_UNIT(test_memory_not_contains, runner);
+    XTEST_RUN_UNIT(assert_case_boolean_equality, runner);
+    XTEST_RUN_UNIT(assert_case_boolean_false, runner);
+    XTEST_RUN_UNIT(assert_case_boolean_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_boolean_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_boolean_message, runner);
+    XTEST_RUN_UNIT(assert_case_boolean_true, runner);
+    XTEST_RUN_UNIT(assert_case_boolean_unless, runner);
+    XTEST_RUN_UNIT(assert_case_memory_contains, runner);
+    XTEST_RUN_UNIT(assert_case_memory_copied, runner);
+    XTEST_RUN_UNIT(assert_case_memory_equality, runner);
+    XTEST_RUN_UNIT(assert_case_memory_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_memory_not_contains, runner);
 
-    XTEST_RUN_UNIT(test_enum_equality, runner);
-    XTEST_RUN_UNIT(test_enum_greater_than, runner);
-    XTEST_RUN_UNIT(test_enum_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_enum_inequality, runner);
-    XTEST_RUN_UNIT(test_enum_less_than, runner);
-    XTEST_RUN_UNIT(test_enum_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_enum_equality, runner);
+    XTEST_RUN_UNIT(assert_case_enum_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_enum_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_enum_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_enum_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_enum_less_than_or_equal, runner);
 
-    XTEST_RUN_UNIT(test_int_equality, runner);
-    XTEST_RUN_UNIT(test_int_greater_than, runner);
-    XTEST_RUN_UNIT(test_int_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_int_inequality, runner);
-    XTEST_RUN_UNIT(test_int_less_than, runner);
-    XTEST_RUN_UNIT(test_int_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_int_equality, runner);
+    XTEST_RUN_UNIT(assert_case_int_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_int_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_int_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_int_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_int_less_than_or_equal, runner);
 
-    XTEST_RUN_UNIT(test_int8_equality, runner);
-    XTEST_RUN_UNIT(test_int8_greater_than, runner);
-    XTEST_RUN_UNIT(test_int8_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_int8_inequality, runner);
-    XTEST_RUN_UNIT(test_int8_less_than, runner);
-    XTEST_RUN_UNIT(test_int8_less_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_int16_equality, runner);
-    XTEST_RUN_UNIT(test_int16_greater_than, runner);
-    XTEST_RUN_UNIT(test_int16_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_int16_inequality, runner);
-    XTEST_RUN_UNIT(test_int16_less_than, runner);
-    XTEST_RUN_UNIT(test_int16_less_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_int32_equality, runner);
-    XTEST_RUN_UNIT(test_int32_greater_than, runner);
-    XTEST_RUN_UNIT(test_int32_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_int32_inequality, runner);
-    XTEST_RUN_UNIT(test_int32_less_than, runner);
-    XTEST_RUN_UNIT(test_int32_less_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_int64_equality, runner);
-    XTEST_RUN_UNIT(test_int64_greater_than, runner);
-    XTEST_RUN_UNIT(test_int64_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_int64_inequality, runner);
-    XTEST_RUN_UNIT(test_int64_less_than, runner);
-    XTEST_RUN_UNIT(test_int64_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_int8_equality, runner);
+    XTEST_RUN_UNIT(assert_case_int8_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_int8_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_int8_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_int8_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_int8_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_int16_equality, runner);
+    XTEST_RUN_UNIT(assert_case_int16_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_int16_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_int16_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_int16_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_int16_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_int32_equality, runner);
+    XTEST_RUN_UNIT(assert_case_int32_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_int32_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_int32_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_int32_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_int32_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_int64_equality, runner);
+    XTEST_RUN_UNIT(assert_case_int64_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_int64_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_int64_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_int64_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_int64_less_than_or_equal, runner);
 
-    XTEST_RUN_UNIT(test_uint8_equality, runner);
-    XTEST_RUN_UNIT(test_uint8_greater_than, runner);
-    XTEST_RUN_UNIT(test_uint8_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_uint8_inequality, runner);
-    XTEST_RUN_UNIT(test_uint8_less_than, runner);
-    XTEST_RUN_UNIT(test_uint8_less_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_uint16_equality, runner);
-    XTEST_RUN_UNIT(test_uint16_greater_than, runner);
-    XTEST_RUN_UNIT(test_uint16_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_uint16_inequality, runner);
-    XTEST_RUN_UNIT(test_uint16_less_than, runner);
-    XTEST_RUN_UNIT(test_uint16_less_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_uint32_equality, runner);
-    XTEST_RUN_UNIT(test_uint32_greater_than, runner);
-    XTEST_RUN_UNIT(test_uint32_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_uint32_inequality, runner);
-    XTEST_RUN_UNIT(test_uint32_less_than, runner);
-    XTEST_RUN_UNIT(test_uint32_less_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_uint64_equality, runner);
-    XTEST_RUN_UNIT(test_uint64_greater_than, runner);
-    XTEST_RUN_UNIT(test_uint64_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_uint64_inequality, runner);
-    XTEST_RUN_UNIT(test_uint64_less_than, runner);
-    XTEST_RUN_UNIT(test_uint64_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_uint8_equality, runner);
+    XTEST_RUN_UNIT(assert_case_uint8_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_uint8_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_uint8_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_uint8_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_uint8_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_uint16_equality, runner);
+    XTEST_RUN_UNIT(assert_case_uint16_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_uint16_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_uint16_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_uint16_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_uint16_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_uint32_equality, runner);
+    XTEST_RUN_UNIT(assert_case_uint32_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_uint32_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_uint32_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_uint32_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_uint32_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_uint64_equality, runner);
+    XTEST_RUN_UNIT(assert_case_uint64_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_uint64_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_uint64_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_uint64_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_uint64_less_than_or_equal, runner);
 
-    XTEST_RUN_UNIT(test_hex8_equality, runner);
-    XTEST_RUN_UNIT(test_hex8_greater_than, runner);
-    XTEST_RUN_UNIT(test_hex8_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_hex8_inequality, runner);
-    XTEST_RUN_UNIT(test_hex8_less_than, runner);
-    XTEST_RUN_UNIT(test_hex8_less_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_hex16_equality, runner);
-    XTEST_RUN_UNIT(test_hex16_greater_than, runner);
-    XTEST_RUN_UNIT(test_hex16_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_hex16_inequality, runner);
-    XTEST_RUN_UNIT(test_hex16_less_than, runner);
-    XTEST_RUN_UNIT(test_hex16_less_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_hex32_equality, runner);
-    XTEST_RUN_UNIT(test_hex32_greater_than, runner);
-    XTEST_RUN_UNIT(test_hex32_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_hex32_inequality, runner);
-    XTEST_RUN_UNIT(test_hex32_less_than, runner);
-    XTEST_RUN_UNIT(test_hex32_less_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_hex64_equality, runner);
-    XTEST_RUN_UNIT(test_hex64_greater_than, runner);
-    XTEST_RUN_UNIT(test_hex64_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_hex64_inequality, runner);
-    XTEST_RUN_UNIT(test_hex64_less_than, runner);
-    XTEST_RUN_UNIT(test_hex64_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_hex8_equality, runner);
+    XTEST_RUN_UNIT(assert_case_hex8_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_hex8_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_hex8_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_hex8_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_hex8_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_hex16_equality, runner);
+    XTEST_RUN_UNIT(assert_case_hex16_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_hex16_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_hex16_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_hex16_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_hex16_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_hex32_equality, runner);
+    XTEST_RUN_UNIT(assert_case_hex32_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_hex32_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_hex32_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_hex32_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_hex32_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_hex64_equality, runner);
+    XTEST_RUN_UNIT(assert_case_hex64_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_hex64_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_hex64_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_hex64_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_hex64_less_than_or_equal, runner);
 
-    XTEST_RUN_UNIT(test_oct_equality, runner);
-    XTEST_RUN_UNIT(test_oct_greater_than, runner);
-    XTEST_RUN_UNIT(test_oct_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_oct_inequality, runner);
-    XTEST_RUN_UNIT(test_oct_less_than, runner);
-    XTEST_RUN_UNIT(test_oct_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_oct_equality, runner);
+    XTEST_RUN_UNIT(assert_case_oct_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_oct_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_oct_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_oct_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_oct_less_than_or_equal, runner);
 
-    XTEST_RUN_UNIT(test_bit_equality, runner);
-    XTEST_RUN_UNIT(test_bit_greater_than, runner);
-    XTEST_RUN_UNIT(test_bit_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_bit_high, runner);
-    XTEST_RUN_UNIT(test_bit_inequality, runner);
-    XTEST_RUN_UNIT(test_bit_less_than, runner);
-    XTEST_RUN_UNIT(test_bit_less_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_bit_low, runner);
-    XTEST_RUN_UNIT(test_bit_not_high, runner);
-    XTEST_RUN_UNIT(test_bit_not_low, runner);
-    XTEST_RUN_UNIT(test_bits_equal, runner);
-    XTEST_RUN_UNIT(test_bits_greater_than, runner);
-    XTEST_RUN_UNIT(test_bits_greater_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_bits_high, runner);
-    XTEST_RUN_UNIT(test_bits_less_than, runner);
-    XTEST_RUN_UNIT(test_bits_less_than_or_equal, runner);
-    XTEST_RUN_UNIT(test_bits_low, runner);
-    XTEST_RUN_UNIT(test_bits_not_equal, runner);
-    XTEST_RUN_UNIT(test_bits_not_high, runner);
-    XTEST_RUN_UNIT(test_bits_not_low, runner);
+    XTEST_RUN_UNIT(assert_case_bit_equality, runner);
+    XTEST_RUN_UNIT(assert_case_bit_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_bit_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_bit_high, runner);
+    XTEST_RUN_UNIT(assert_case_bit_inequality, runner);
+    XTEST_RUN_UNIT(assert_case_bit_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_bit_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_bit_low, runner);
+    XTEST_RUN_UNIT(assert_case_bit_not_high, runner);
+    XTEST_RUN_UNIT(assert_case_bit_not_low, runner);
+    XTEST_RUN_UNIT(assert_case_bits_equal, runner);
+    XTEST_RUN_UNIT(assert_case_bits_greater_than, runner);
+    XTEST_RUN_UNIT(assert_case_bits_greater_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_bits_high, runner);
+    XTEST_RUN_UNIT(assert_case_bits_less_than, runner);
+    XTEST_RUN_UNIT(assert_case_bits_less_than_or_equal, runner);
+    XTEST_RUN_UNIT(assert_case_bits_low, runner);
+    XTEST_RUN_UNIT(assert_case_bits_not_equal, runner);
+    XTEST_RUN_UNIT(assert_case_bits_not_high, runner);
+    XTEST_RUN_UNIT(assert_case_bits_not_low, runner);
 
-    XTEST_RUN_UNIT(test_int_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_int_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_int8_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_int8_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_int16_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_int16_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_int32_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_int32_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_int64_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_int64_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_int_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_int_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_int8_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_int8_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_int16_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_int16_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_int32_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_int32_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_int64_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_int64_not_within_tolerance, runner);
 
-    XTEST_RUN_UNIT(test_uint_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_uint_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_uint8_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_uint8_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_uint16_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_uint16_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_uint32_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_uint32_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_uint64_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_uint64_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_uint_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_uint_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_uint8_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_uint8_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_uint16_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_uint16_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_uint32_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_uint32_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_uint64_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_uint64_not_within_tolerance, runner);
 
-    XTEST_RUN_UNIT(test_hex_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_hex_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_hex8_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_hex8_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_hex16_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_hex16_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_hex32_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_hex32_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_hex64_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_hex64_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_hex_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_hex_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_hex8_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_hex8_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_hex16_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_hex16_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_hex32_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_hex32_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_hex64_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_hex64_not_within_tolerance, runner);
 
-    XTEST_RUN_UNIT(test_bin_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_bin_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_oct_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_oct_not_within_tolerance, runner);
-    XTEST_RUN_UNIT(test_float_within_epsilon, runner);
-    XTEST_RUN_UNIT(test_float_not_within_epsilon, runner);
-    XTEST_RUN_UNIT(test_double_within_epsilon, runner);
-    XTEST_RUN_UNIT(test_double_not_within_epsilon, runner);
-    XTEST_RUN_UNIT(test_char_within_range, runner);
-    XTEST_RUN_UNIT(test_char_not_within_range, runner);
-    XTEST_RUN_UNIT(test_wchar_within_range, runner);
-    XTEST_RUN_UNIT(test_wchar_not_within_range, runner);
+    XTEST_RUN_UNIT(assert_case_bin_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_bin_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_oct_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_oct_not_within_tolerance, runner);
+    XTEST_RUN_UNIT(assert_case_float_within_epsilon, runner);
+    XTEST_RUN_UNIT(assert_case_float_not_within_epsilon, runner);
+    XTEST_RUN_UNIT(assert_case_double_within_epsilon, runner);
+    XTEST_RUN_UNIT(assert_case_double_not_within_epsilon, runner);
+    XTEST_RUN_UNIT(assert_case_char_within_range, runner);
+    XTEST_RUN_UNIT(assert_case_char_not_within_range, runner);
+    XTEST_RUN_UNIT(assert_case_wchar_within_range, runner);
+    XTEST_RUN_UNIT(assert_case_wchar_not_within_range, runner);
 
-    XTEST_RUN_UNIT(test_float_equal, runner);
-    XTEST_RUN_UNIT(test_float_finite, runner);
-    XTEST_RUN_UNIT(test_float_greater, runner);
-    XTEST_RUN_UNIT(test_float_greater_equal, runner);
-    XTEST_RUN_UNIT(test_float_inf, runner);
-    XTEST_RUN_UNIT(test_float_is_determinate, runner);
-    XTEST_RUN_UNIT(test_float_is_not_determinate, runner);
-    XTEST_RUN_UNIT(test_float_less, runner);
-    XTEST_RUN_UNIT(test_float_less_equal, runner);
-    XTEST_RUN_UNIT(test_float_nan, runner);
-    XTEST_RUN_UNIT(test_float_neg_inf, runner);
-    XTEST_RUN_UNIT(test_float_not_equal, runner);
-    XTEST_RUN_UNIT(test_float_not_greater, runner);
-    XTEST_RUN_UNIT(test_float_not_finite, runner);
-    XTEST_RUN_UNIT(test_float_not_greater_equal, runner);
-    XTEST_RUN_UNIT(test_float_not_inf, runner);
-    XTEST_RUN_UNIT(test_float_not_less, runner);
-    XTEST_RUN_UNIT(test_float_not_less_equal, runner);
-    XTEST_RUN_UNIT(test_float_not_nan, runner);
-    XTEST_RUN_UNIT(test_float_not_neg_inf, runner);
+    XTEST_RUN_UNIT(assert_case_float_equal, runner);
+    XTEST_RUN_UNIT(assert_case_float_finite, runner);
+    XTEST_RUN_UNIT(assert_case_float_greater, runner);
+    XTEST_RUN_UNIT(assert_case_float_greater_equal, runner);
+    XTEST_RUN_UNIT(assert_case_float_inf, runner);
+    XTEST_RUN_UNIT(assert_case_float_is_determinate, runner);
+    XTEST_RUN_UNIT(assert_case_float_is_not_determinate, runner);
+    XTEST_RUN_UNIT(assert_case_float_less, runner);
+    XTEST_RUN_UNIT(assert_case_float_less_equal, runner);
+    XTEST_RUN_UNIT(assert_case_float_nan, runner);
+    XTEST_RUN_UNIT(assert_case_float_neg_inf, runner);
+    XTEST_RUN_UNIT(assert_case_float_not_equal, runner);
+    XTEST_RUN_UNIT(assert_case_float_not_greater, runner);
+    XTEST_RUN_UNIT(assert_case_float_not_finite, runner);
+    XTEST_RUN_UNIT(assert_case_float_not_greater_equal, runner);
+    XTEST_RUN_UNIT(assert_case_float_not_inf, runner);
+    XTEST_RUN_UNIT(assert_case_float_not_less, runner);
+    XTEST_RUN_UNIT(assert_case_float_not_less_equal, runner);
+    XTEST_RUN_UNIT(assert_case_float_not_nan, runner);
+    XTEST_RUN_UNIT(assert_case_float_not_neg_inf, runner);
 
-    XTEST_RUN_UNIT(test_double_equal, runner);
-    XTEST_RUN_UNIT(test_double_finite, runner);
-    XTEST_RUN_UNIT(test_double_greater, runner);
-    XTEST_RUN_UNIT(test_double_greater_equal, runner);
-    XTEST_RUN_UNIT(test_double_inf, runner);
-    XTEST_RUN_UNIT(test_double_is_determinate, runner);
-    XTEST_RUN_UNIT(test_double_is_not_determinate, runner);
-    XTEST_RUN_UNIT(test_double_less, runner);
-    XTEST_RUN_UNIT(test_double_less_equal, runner);
-    XTEST_RUN_UNIT(test_double_nan, runner);
-    XTEST_RUN_UNIT(test_double_neg_inf, runner);
-    XTEST_RUN_UNIT(test_double_not_equal, runner);
-    XTEST_RUN_UNIT(test_double_not_greater, runner);
-    XTEST_RUN_UNIT(test_double_not_finite, runner);
-    XTEST_RUN_UNIT(test_double_not_greater_equal, runner);
-    XTEST_RUN_UNIT(test_double_not_inf, runner);
-    XTEST_RUN_UNIT(test_double_not_less, runner);
-    XTEST_RUN_UNIT(test_double_not_less_equal, runner);
-    XTEST_RUN_UNIT(test_double_not_nan, runner);
-    XTEST_RUN_UNIT(test_double_not_neg_inf, runner);
+    XTEST_RUN_UNIT(assert_case_double_equal, runner);
+    XTEST_RUN_UNIT(assert_case_double_finite, runner);
+    XTEST_RUN_UNIT(assert_case_double_greater, runner);
+    XTEST_RUN_UNIT(assert_case_double_greater_equal, runner);
+    XTEST_RUN_UNIT(assert_case_double_inf, runner);
+    XTEST_RUN_UNIT(assert_case_double_is_determinate, runner);
+    XTEST_RUN_UNIT(assert_case_double_is_not_determinate, runner);
+    XTEST_RUN_UNIT(assert_case_double_less, runner);
+    XTEST_RUN_UNIT(assert_case_double_less_equal, runner);
+    XTEST_RUN_UNIT(assert_case_double_nan, runner);
+    XTEST_RUN_UNIT(assert_case_double_neg_inf, runner);
+    XTEST_RUN_UNIT(assert_case_double_not_equal, runner);
+    XTEST_RUN_UNIT(assert_case_double_not_greater, runner);
+    XTEST_RUN_UNIT(assert_case_double_not_finite, runner);
+    XTEST_RUN_UNIT(assert_case_double_not_greater_equal, runner);
+    XTEST_RUN_UNIT(assert_case_double_not_inf, runner);
+    XTEST_RUN_UNIT(assert_case_double_not_less, runner);
+    XTEST_RUN_UNIT(assert_case_double_not_less_equal, runner);
+    XTEST_RUN_UNIT(assert_case_double_not_nan, runner);
+    XTEST_RUN_UNIT(assert_case_double_not_neg_inf, runner);
 
-    XTEST_RUN_UNIT(test_null_ptr, runner);
-    XTEST_RUN_UNIT(test_not_null_ptr, runner);
-    XTEST_RUN_UNIT(test_invalid_ptr, runner);
-    XTEST_RUN_UNIT(test_empty_ptr, runner);
-    XTEST_RUN_UNIT(test_not_empty_ptr, runner);
-    XTEST_RUN_UNIT(test_valid_memory_access_ptr, runner);
-    XTEST_RUN_UNIT(test_array_bounds_ptr, runner);
-    XTEST_RUN_UNIT(test_equal_ptr, runner);
-    XTEST_RUN_UNIT(test_not_equal_ptr, runner);
-    XTEST_RUN_UNIT(test_less_equal_ptr, runner);
-    XTEST_RUN_UNIT(test_less_ptr, runner);
-    XTEST_RUN_UNIT(test_greater_ptr, runner);
-    XTEST_RUN_UNIT(test_greater_equal_ptr, runner);
+    XTEST_RUN_UNIT(assert_case_null_ptr, runner);
+    XTEST_RUN_UNIT(assert_case_not_null_ptr, runner);
+    XTEST_RUN_UNIT(assert_case_invalid_ptr, runner);
+    XTEST_RUN_UNIT(assert_case_empty_ptr, runner);
+    XTEST_RUN_UNIT(assert_case_not_empty_ptr, runner);
+    XTEST_RUN_UNIT(assert_case_valid_memory_access_ptr, runner);
+    XTEST_RUN_UNIT(assert_case_array_bounds_ptr, runner);
+    XTEST_RUN_UNIT(assert_case_equal_ptr, runner);
+    XTEST_RUN_UNIT(assert_case_not_equal_ptr, runner);
+    XTEST_RUN_UNIT(assert_case_less_equal_ptr, runner);
+    XTEST_RUN_UNIT(assert_case_less_ptr, runner);
+    XTEST_RUN_UNIT(assert_case_greater_ptr, runner);
+    XTEST_RUN_UNIT(assert_case_greater_equal_ptr, runner);
 
-    XTEST_RUN_UNIT(test_equal_string, runner);
-    XTEST_RUN_UNIT(test_not_equal_string, runner);
-    XTEST_RUN_UNIT(test_length_string, runner);
-    XTEST_RUN_UNIT(test_contains_substring_string, runner);
-    XTEST_RUN_UNIT(test_not_contains_substring_string, runner);
-    XTEST_RUN_UNIT(test_starts_with_string, runner);
-    XTEST_RUN_UNIT(test_ends_with_string, runner);
-    XTEST_RUN_UNIT(test_equal_case_insensitive_string, runner);
-    XTEST_RUN_UNIT(test_not_equal_case_insensitive_string, runner);
+    XTEST_RUN_UNIT(assert_case_equal_string, runner);
+    XTEST_RUN_UNIT(assert_case_not_equal_string, runner);
+    XTEST_RUN_UNIT(assert_case_length_string, runner);
+    XTEST_RUN_UNIT(assert_case_contains_substring_string, runner);
+    XTEST_RUN_UNIT(assert_case_not_contains_substring_string, runner);
+    XTEST_RUN_UNIT(assert_case_starts_with_string, runner);
+    XTEST_RUN_UNIT(assert_case_ends_with_string, runner);
+    XTEST_RUN_UNIT(assert_case_equal_case_insensitive_string, runner);
+    XTEST_RUN_UNIT(assert_case_not_equal_case_insensitive_string, runner);
 
-    XTEST_RUN_UNIT(test_equal_char, runner);
-    XTEST_RUN_UNIT(test_not_equal_char, runner);
-    XTEST_RUN_UNIT(test_less_char, runner);
-    XTEST_RUN_UNIT(test_greater_char, runner);
-    XTEST_RUN_UNIT(test_less_equal_char, runner);
-    XTEST_RUN_UNIT(test_greater_equal_char, runner);
-    XTEST_RUN_UNIT(test_in_range_char, runner);
-    XTEST_RUN_UNIT(test_is_uppercase_char, runner);
-    XTEST_RUN_UNIT(test_is_lowercase_char, runner);
-    XTEST_RUN_UNIT(test_to_upper_char, runner);
-    XTEST_RUN_UNIT(test_to_lower_char, runner);
-    XTEST_RUN_UNIT(test_equal_wchar, runner);
-    XTEST_RUN_UNIT(test_not_equal_wchar, runner);
-    XTEST_RUN_UNIT(test_less_wchar, runner);
-    XTEST_RUN_UNIT(test_greater_wchar, runner);
-    XTEST_RUN_UNIT(test_less_equal_wchar, runner);
-    XTEST_RUN_UNIT(test_greater_equal_wchar, runner);
-    XTEST_RUN_UNIT(test_in_range_wchar, runner);
-    XTEST_RUN_UNIT(test_is_uppercase_wchar, runner);
-    XTEST_RUN_UNIT(test_is_lowercase_wchar, runner);
-    XTEST_RUN_UNIT(test_to_upper_wchar, runner);
-    XTEST_RUN_UNIT(test_to_lower_wchar, runner);
+    XTEST_RUN_UNIT(assert_case_equal_char, runner);
+    XTEST_RUN_UNIT(assert_case_not_equal_char, runner);
+    XTEST_RUN_UNIT(assert_case_less_char, runner);
+    XTEST_RUN_UNIT(assert_case_greater_char, runner);
+    XTEST_RUN_UNIT(assert_case_less_equal_char, runner);
+    XTEST_RUN_UNIT(assert_case_greater_equal_char, runner);
+    XTEST_RUN_UNIT(assert_case_in_range_char, runner);
+    XTEST_RUN_UNIT(assert_case_is_uppercase_char, runner);
+    XTEST_RUN_UNIT(assert_case_is_lowercase_char, runner);
+    XTEST_RUN_UNIT(assert_case_to_upper_char, runner);
+    XTEST_RUN_UNIT(assert_case_to_lower_char, runner);
+    XTEST_RUN_UNIT(assert_case_equal_wchar, runner);
+    XTEST_RUN_UNIT(assert_case_not_equal_wchar, runner);
+    XTEST_RUN_UNIT(assert_case_less_wchar, runner);
+    XTEST_RUN_UNIT(assert_case_greater_wchar, runner);
+    XTEST_RUN_UNIT(assert_case_less_equal_wchar, runner);
+    XTEST_RUN_UNIT(assert_case_greater_equal_wchar, runner);
+    XTEST_RUN_UNIT(assert_case_in_range_wchar, runner);
+    XTEST_RUN_UNIT(assert_case_is_uppercase_wchar, runner);
+    XTEST_RUN_UNIT(assert_case_is_lowercase_wchar, runner);
+    XTEST_RUN_UNIT(assert_case_to_upper_wchar, runner);
+    XTEST_RUN_UNIT(assert_case_to_lower_wchar, runner);
+
+    XTEST_RUN_UNIT(assert_case_invalid_size_char_array, runner);
+    XTEST_RUN_UNIT(assert_case_index_out_of_bounds_char_array, runner);
+    XTEST_RUN_UNIT(assert_case_null_pointer_char_array, runner);
+    XTEST_RUN_UNIT(assert_case_invalid_operation_char_array, runner);
+    XTEST_RUN_UNIT(assert_case_index_char_array, runner);
+    XTEST_RUN_UNIT(assert_case_invalid_size_wchar_array, runner);
+    XTEST_RUN_UNIT(assert_case_index_out_of_bounds_wchar_array, runner);
+    XTEST_RUN_UNIT(assert_case_null_pointer_wchar_array, runner);
+    XTEST_RUN_UNIT(assert_case_invalid_operation_wchar_array, runner);
+    XTEST_RUN_UNIT(assert_case_index_wchar_array, runner);
+
+    XTEST_RUN_UNIT(assert_case_open_file, runner);
+    XTEST_RUN_UNIT(assert_case_read_file, runner);
+    XTEST_RUN_UNIT(assert_case_write_file, runner);
+    XTEST_RUN_UNIT(assert_case_seek_file, runner);
+    XTEST_RUN_UNIT(assert_case_tell_file, runner);
+    XTEST_RUN_UNIT(assert_case_eof_file, runner);
+    XTEST_RUN_UNIT(assert_case_file_no_error, runner);
 } // end of group
