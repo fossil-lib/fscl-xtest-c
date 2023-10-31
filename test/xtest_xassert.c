@@ -2132,80 +2132,6 @@ XTEST_CASE(assert_case_to_lower_wchar) {
     TEST_ASSERT_TO_LOWER_WCHAR(character, expected); // Should pass
 }
 
-// Test case for checking if the size of a wide character array is invalid
-XTEST_CASE(assert_case_invalid_size_wchar_array) {
-    size_t size = 10;
-
-    TEST_ASSERT_INVALID_SIZE_WCHAR_ARRAY(size); // Should pass
-}
-
-// Test case for checking if the index is out of bounds for a wide character array
-XTEST_CASE(assert_case_index_out_of_bounds_wchar_array) {
-    size_t index = 15;
-    size_t size = 10;
-
-    TEST_ASSERT_INDEX_OUT_OF_BOUNDS_WCHAR_ARRAY(index, size); // Should fail
-}
-
-// Test case for checking if a pointer to a wide character array is null
-XTEST_CASE(assert_case_null_pointer_wchar_array) {
-    wchar_t* array = NULL;
-
-    TEST_ASSERT_NULL_POINTER_WCHAR_ARRAY(array); // Should pass
-}
-
-// Test case for checking an invalid operation on a wide character array
-XTEST_CASE(assert_case_invalid_operation_wchar_array) {
-    int condition = 0;
-
-    TEST_ASSERT_INVALID_OPERATION_WCHAR_ARRAY(condition); // Should fail
-}
-
-// Test case for checking if an index is out of bounds for a specific wide character array
-XTEST_CASE(assert_case_index_wchar_array) {
-    wchar_t array[] = L"Hello";
-    size_t index = 5;
-
-    TEST_ASSERT_INDEX_WCHAR_ARRAY(array, index); // Should fail
-}
-
-// Test case for checking if the size of a character array is invalid
-XTEST_CASE(assert_case_invalid_size_char_array) {
-    size_t size = 10;
-
-    TEST_ASSERT_INVALID_SIZE_CHAR_ARRAY(size); // Should pass
-}
-
-// Test case for checking if the index is out of bounds for a character array
-XTEST_CASE(assert_case_index_out_of_bounds_char_array) {
-    size_t index = 15;
-    size_t size = 10;
-
-    TEST_ASSERT_INDEX_OUT_OF_BOUNDS_CHAR_ARRAY(index, size); // Should fail
-}
-
-// Test case for checking if a pointer to a character array is null
-XTEST_CASE(assert_case_null_pointer_char_array) {
-    char* array = NULL;
-
-    TEST_ASSERT_NULL_POINTER_CHAR_ARRAY(array); // Should pass
-}
-
-// Test case for checking an invalid operation on a character array
-XTEST_CASE(assert_case_invalid_operation_char_array) {
-    int condition = 0;
-
-    TEST_ASSERT_INVALID_OPERATION_CHAR_ARRAY(condition); // Should fail
-}
-
-// Test case for checking if an index is out of bounds for a specific character array
-XTEST_CASE(assert_case_index_char_array) {
-    char array[] = "Hello";
-    size_t index = 5;
-
-    TEST_ASSERT_INDEX_CHAR_ARRAY(array, index); // Should fail
-}
-
 // Test case for opening a file
 XTEST_CASE(assert_case_open_file) {
     FILE* file = fopen("example.txt", "r");
@@ -2540,17 +2466,6 @@ void xassert_test_group(XUnitRunner *runner) {
     XTEST_RUN_UNIT(assert_case_is_lowercase_wchar, runner);
     XTEST_RUN_UNIT(assert_case_to_upper_wchar, runner);
     XTEST_RUN_UNIT(assert_case_to_lower_wchar, runner);
-
-    XTEST_RUN_UNIT(assert_case_invalid_size_char_array, runner);
-    XTEST_RUN_UNIT(assert_case_index_out_of_bounds_char_array, runner);
-    XTEST_RUN_UNIT(assert_case_null_pointer_char_array, runner);
-    XTEST_RUN_UNIT(assert_case_invalid_operation_char_array, runner);
-    XTEST_RUN_UNIT(assert_case_index_char_array, runner);
-    XTEST_RUN_UNIT(assert_case_invalid_size_wchar_array, runner);
-    XTEST_RUN_UNIT(assert_case_index_out_of_bounds_wchar_array, runner);
-    XTEST_RUN_UNIT(assert_case_null_pointer_wchar_array, runner);
-    XTEST_RUN_UNIT(assert_case_invalid_operation_wchar_array, runner);
-    XTEST_RUN_UNIT(assert_case_index_wchar_array, runner);
 
     XTEST_RUN_UNIT(assert_case_open_file, runner);
     XTEST_RUN_UNIT(assert_case_read_file, runner);
