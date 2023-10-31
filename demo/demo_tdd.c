@@ -40,12 +40,12 @@ XTEST_CASE(xassert_run_of_int) {
     int y = 20;
 
     // Test cases
-    XASSERT_INT_EQUAL(x, 42);                // Should pass
-    XASSERT_INT_EQUAL(y, 20);                // Should pass
-    XASSERT_INT_NOT_EQUAL(x, y);            // Should pass
-    XASSERT_INT_LESS(y, x);                 // Should pass
-    XASSERT_INT_LESS_EQUAL(y, x);           // Should pass
-    XASSERT_INT_GREATER(x, y);              // Should pass
+    TEST_ASSERT_INT_EQUAL(x, 42);                // Should pass
+    TEST_ASSERT_INT_EQUAL(y, 20);                // Should pass
+    TEST_ASSERT_INT_NOT_EQUAL(x, y);            // Should pass
+    TEST_ASSERT_INT_LESS(y, x);                 // Should pass
+    TEST_ASSERT_INT_LESS_EQUAL(y, x);           // Should pass
+    TEST_ASSERT_INT_GREATER(x, y);              // Should pass
 } // end case
 
 XTEST_CASE(xassert_run_of_int8) {
@@ -53,12 +53,12 @@ XTEST_CASE(xassert_run_of_int8) {
     int8_t y = 20;
 
     // Test cases
-    XASSERT_INT8_EQUAL(x, 42);                // Should pass
-    XASSERT_INT8_EQUAL(y, 20);                // Should pass
-    XASSERT_INT8_NOT_EQUAL(x, y);            // Should pass
-    XASSERT_INT8_LESS(y, x);                 // Should pass
-    XASSERT_INT8_LESS_EQUAL(y, x);           // Should pass
-    XASSERT_INT8_GREATER(x, y);              // Should pass
+    TEST_ASSERT_INT8_EQUAL(x, 42);                // Should pass
+    TEST_ASSERT_INT8_EQUAL(y, 20);                // Should pass
+    TEST_ASSERT_INT8_NOT_EQUAL(x, y);            // Should pass
+    TEST_ASSERT_INT8_LESS(y, x);                 // Should pass
+    TEST_ASSERT_INT8_LESS_EQUAL(y, x);           // Should pass
+    TEST_ASSERT_INT8_GREATER(x, y);              // Should pass
 } // end case
 
 XTEST_CASE(xassert_run_of_int16) {
@@ -66,12 +66,12 @@ XTEST_CASE(xassert_run_of_int16) {
     int16_t y = 20;
 
     // Test cases
-    XASSERT_INT16_EQUAL(x, 42);                // Should pass
-    XASSERT_INT16_EQUAL(y, 20);                // Should pass
-    XASSERT_INT16_NOT_EQUAL(x, y);            // Should pass
-    XASSERT_INT16_LESS(y, x);                 // Should pass
-    XASSERT_INT16_LESS_EQUAL(y, x);           // Should pass
-    XASSERT_INT16_GREATER(x, y);              // Should pass
+    TEST_ASSERT_INT16_EQUAL(x, 42);                // Should pass
+    TEST_ASSERT_INT16_EQUAL(y, 20);                // Should pass
+    TEST_ASSERT_INT16_NOT_EQUAL(x, y);            // Should pass
+    TEST_ASSERT_INT16_LESS(y, x);                 // Should pass
+    TEST_ASSERT_INT16_LESS_EQUAL(y, x);           // Should pass
+    TEST_ASSERT_INT16_GREATER(x, y);              // Should pass
 } // end case
 
 XTEST_CASE(xassert_run_of_int32) {
@@ -79,12 +79,12 @@ XTEST_CASE(xassert_run_of_int32) {
     int32_t y = 20;
 
     // Test cases
-    XASSERT_INT32_EQUAL(x, 42);                // Should pass
-    XASSERT_INT32_EQUAL(y, 20);                // Should pass
-    XASSERT_INT32_NOT_EQUAL(x, y);            // Should pass
-    XASSERT_INT32_LESS(y, x);                 // Should pass
-    XASSERT_INT32_LESS_EQUAL(y, x);           // Should pass
-    XASSERT_INT32_GREATER(x, y);              // Should pass
+    TEST_ASSERT_INT32_EQUAL(x, 42);                // Should pass
+    TEST_ASSERT_INT32_EQUAL(y, 20);                // Should pass
+    TEST_ASSERT_INT32_NOT_EQUAL(x, y);            // Should pass
+    TEST_ASSERT_INT32_LESS(y, x);                 // Should pass
+    TEST_ASSERT_INT32_LESS_EQUAL(y, x);           // Should pass
+    TEST_ASSERT_INT32_GREATER(x, y);              // Should pass
 } // end case
 
 XTEST_CASE(xassert_run_of_int64) {
@@ -92,12 +92,12 @@ XTEST_CASE(xassert_run_of_int64) {
     int64_t y = 20;
 
     // Test cases
-    XASSERT_INT64_EQUAL(x, 42);                // Should pass
-    XASSERT_INT64_EQUAL(y, 20);                // Should pass
-    XASSERT_INT64_NOT_EQUAL(x, y);            // Should pass
-    XASSERT_INT64_LESS(y, x);                 // Should pass
-    XASSERT_INT64_LESS_EQUAL(y, x);           // Should pass
-    XASSERT_INT64_GREATER(x, y);              // Should pass
+    TEST_ASSERT_INT64_EQUAL(x, 42);                // Should pass
+    TEST_ASSERT_INT64_EQUAL(y, 20);                // Should pass
+    TEST_ASSERT_INT64_NOT_EQUAL(x, y);            // Should pass
+    TEST_ASSERT_INT64_LESS(y, x);                 // Should pass
+    TEST_ASSERT_INT64_LESS_EQUAL(y, x);           // Should pass
+    TEST_ASSERT_INT64_GREATER(x, y);              // Should pass
 } // end case
 
 //

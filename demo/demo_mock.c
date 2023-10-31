@@ -30,7 +30,7 @@
     ----------------------------------------------------------------------------
 */
 #include <trilobite/xtest.h>
-#include <trilobite/xtest.h>
+#include <trilobite/xassert.h>
 #include <trilobite/xmock.h>
 
 
@@ -61,38 +61,38 @@ XMOCK_FUNC(int, max_int, int a, int b) {
 //
 XTEST_CASE(xmock_func_get_value) {
     int result = xmock_get_value();
-    XASSERT_INT_EQUAL(42, result);
+    TEST_ASSERT_EQUAL_INT(42, result);
 } // end case
 
 XTEST_CASE(xmock_func_calculate_average) {
     float result = xmock_calculate_average(10, 20);
-    XASSERT_FLOAT_WITHIN(0.01f, 15.0f, result);
+    TEST_ASSERT_FLOAT_WITHIN(0.01f, 15.0f, result);
 } // end case
 
 XTEST_CASE(xmock_func_get_value_negative) {
     int result = xmock_get_value();
-    XASSERT_INT_NOT_EQUAL(0, result);
+    TEST_ASSERT_EQUAL_INT(0, result);
 } // end case
 
 XTEST_CASE(xmock_func_calculate_average_large_numbers) {
     float result = xmock_calculate_average(1000, 2000);
-    XASSERT_FLOAT_WITHIN(0.01f, 1500.0f, result);
+    TEST_ASSERT_EQUAL_FLOAT(0.01f, result);
 } // end case
 
 XTEST_CASE(xmock_func_min_int) {
     int result = xmock_min_int(5, 10);
-    XASSERT_INT_EQUAL(5, result); // Expected minimum is 5
+    TEST_ASSERT_EQUAL_INT(5, result); // Expected minimum is 5
 
     result = xmock_min_int(10, 5);
-    XASSERT_INT_EQUAL(5, result); // Expected minimum is 5
+    TEST_ASSERT_EQUAL_INT(5, result); // Expected minimum is 5
 } // end case
 
 XTEST_CASE_FIXTURE(xmockup_func_fixture, xmock_func_max_int) {
     int result = xmock_max_int(5, 10);
-    XASSERT_INT_EQUAL(10, result); // Expected maximum is 10
+    TEST_ASSERT_EQUAL_INT(10, result); // Expected maximum is 10
 
     result = xmock_max_int(10, 5);
-    XASSERT_INT_EQUAL(10, result); // Expected maximum is 10
+    TEST_ASSERT_EQUAL_INT(10, result); // Expected maximum is 10
 } // end case
 
 //

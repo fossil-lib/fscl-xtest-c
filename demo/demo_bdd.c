@@ -48,9 +48,9 @@ XTEST_CASE(xbdd_logic_test) {
                 // Check the expected outcome
                 bool thenExecuted = true;
 
-                XEXPECT_BOOL_TRUE(givenExecuted);
-                XEXPECT_BOOL_TRUE(whenExecuted);
-                XEXPECT_BOOL_TRUE(thenExecuted);
+                TEST_EXPECT_TRUE(givenExecuted);
+                TEST_EXPECT_TRUE(whenExecuted);
+                TEST_EXPECT_TRUE(thenExecuted);
             }
         }
     }
@@ -72,7 +72,7 @@ XTEST_CASE(xbdd_user_account) {
 
                 // Simulate the scenario
                 float compareBalance = 500.0;
-                XEXPECT_FLOAT_LESS(accountBalance, compareBalance);
+                TEST_EXPECT_FLOAT_LESS(accountBalance, compareBalance);
             }
         }
     }
@@ -90,7 +90,7 @@ XTEST_CASE(xbdd_empty_cart) {
                 // Check the expected outcome
                 cartItemCount++;
 
-                XEXPECT_INT_EQUAL(cartItemCount, 1);
+                TEST_EXPECT_EQUAL_INT(cartItemCount, 1);
             }
         }
     }
@@ -110,8 +110,8 @@ XTEST_CASE(xbdd_valid_login) {
             THEN("the login should be successful") {
                 // Check the expected outcome
                 // Simulate login validation
-                XEXPECT_STRING_EQUAL(inputUsername, validUsername);
-                XEXPECT_STRING_EQUAL(inputPassword, validPassword);
+                TEST_EXPECT_EQUAL_STRING(inputUsername, validUsername);
+                TEST_EXPECT_EQUAL_STRING(inputPassword, validPassword);
             }
         }
 
@@ -123,8 +123,8 @@ XTEST_CASE(xbdd_valid_login) {
             THEN("the login should fail with an error message") {
                 // Check the expected outcome
                 // Simulate login validation
-                XEXPECT_STRING_EQUAL(inputUsername, validUsername);
-                XEXPECT_STRING_NOT_EQUAL(inputPassword, validPassword);
+                TEST_EXPECT_EQUAL_STRING(inputUsername, validUsername);
+                TEST_EXPECT_NOT_EQUAL_STRING(inputPassword, validPassword);
             }
         }
     }
