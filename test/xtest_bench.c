@@ -30,6 +30,7 @@
     ----------------------------------------------------------------------------
 */
 #include <trilobite/xtest.h>   // basic test tools
+#include <trilobite/xassert.h> // assert functions
 
 /**
     @brief This is an example function for the benchmark cases
@@ -68,7 +69,7 @@ XTEST_BENCH(comput_bubble_sort_small_dataset) {
 
     // Add assertions to check if data is sorted in ascending order
     for (size_t i = 0; i < size - 1; i++) {
-        XTEST_ASSERT(data[i] <= data[i + 1], "Data is not sorted");
+        TEST_ASSERT_MSG(data[i] <= data[i + 1], "Data is not sorted");
     }
 } // end benchmark
 
@@ -81,7 +82,7 @@ XTEST_BENCH(comput_bubble_sort_large_dataset) {
 
     // Add assertions to check if data is sorted in ascending order
     for (size_t i = 0; i < size - 1; i++) {
-        XTEST_ASSERT(data[i] <= data[i + 1], "Data is not sorted");
+        TEST_ASSERT_MSG(data[i] <= data[i + 1], "Data is not sorted");
     }
 } // end benchmark
 
@@ -94,7 +95,7 @@ XTEST_BENCH(comput_bubble_sort_medium_dataset) {
 
     // Add assertions to check if data is sorted in ascending order
     for (size_t i = 0; i < size - 1; i++) {
-        XTEST_ASSERT(data[i] <= data[i + 1], "Data is not sorted");
+        TEST_ASSERT_MSG(data[i] <= data[i + 1], "Data is not sorted");
     }
 } // end benchmark
 
@@ -117,7 +118,7 @@ XTEST_BENCH(comput_bubble_sort_sorted_dataset) {
 
     // Add assertions to check if data is sorted in ascending order
     for (size_t i = 0; i < size - 1; i++) {
-        XTEST_ASSERT(data[i] <= data[i + 1], "Data is not sorted");
+        TEST_ASSERT_MSG(data[i] <= data[i + 1], "Data is not sorted");
     }
 } // end benchmark
 
@@ -130,7 +131,7 @@ XTEST_BENCH(comput_bubble_sort_reverse_sorted_dataset) {
 
     // Add assertions to check if data is sorted in ascending order
     for (size_t i = 0; i < size - 1; i++) {
-        XTEST_ASSERT(data[i] <= data[i + 1], "Data is not sorted");
+        TEST_ASSERT_MSG(data[i] <= data[i + 1], "Data is not sorted");
     }
 } // end benchmark
 
