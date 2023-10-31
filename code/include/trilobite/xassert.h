@@ -362,7 +362,6 @@ TEST_ASSERT(found, "Memory not contains assertion failed");
  * @return None
  */
 
-
 #define TEST_ASSERT_EQUAL_OCT(actual, expected)         TEST_ASSERT((signed)(actual) == (signed)(expected), "Octal equality check failed")
 #define TEST_ASSERT_NOT_EQUAL_OCT(actual, expected)     TEST_ASSERT((signed)(actual) != (signed)(expected), "Octal inequality check failed")
 #define TEST_ASSERT_LESS_OCT(actual, expected)          TEST_ASSERT((signed)(actual) <  (signed)(expected), "Octal less-than check failed")
@@ -482,10 +481,8 @@ TEST_ASSERT(found, "Memory not contains assertion failed");
 #define TEST_ASSERT_HEX64_WITHIN(actual, expected, tolerance)   TEST_ASSERT(((uint64_t)(actual) >= ((uint64_t)(expected) - (uint64_t)(tolerance))) && ((uint64_t)(actual) <= ((uint64_t)(expected) + (uint64_t)(tolerance))), "64-bit Hexadecimal value not within tolerance")
 #define TEST_ASSERT_BIN_WITHIN(actual, expected, tolerance)     TEST_ASSERT(((signed)(actual) >= ((signed)(expected) - (signed)(tolerance))) && ((signed)(actual) <= ((signed)(expected) + (signed)(tolerance))), "Binary value not within tolerance")
 #define TEST_ASSERT_OCT_WITHIN(actual, expected, tolerance)     TEST_ASSERT(((signed)(actual) >= ((signed)(expected) - (signed)(tolerance))) && ((signed)(actual) <= ((signed)(expected) + (signed)(tolerance))), "Octal value not within tolerance")
-
 #define TEST_ASSERT_FLOAT_WITHIN(actual, expected, epsilon)     TEST_ASSERT(fabs((float)(actual) - (float)(expected)) <= (float)(epsilon), "Float value not within epsilon")
 #define TEST_ASSERT_DOUBLE_WITHIN(actual, expected, epsilon)    TEST_ASSERT(fabs((double)(actual) - (double)(expected)) <= (double)(epsilon), "Double value not within epsilon")
-
 #define TEST_ASSERT_CHAR_WITHIN(actual, min, max)               TEST_ASSERT((actual) > (min) || (actual) < (max), "Character value not within range")
 #define TEST_ASSERT_WCHAR_WITHIN(actual, min, max)              TEST_ASSERT((actual) > (min) || (actual) < (max), "W-Character value not within range")
 
@@ -751,8 +748,8 @@ TEST_ASSERT(found, "Memory not contains assertion failed");
 #define TEST_ASSERT_IN_RANGE_CHAR(character, min, max)    TEST_ASSERT((character >= (min) && character <= (max)), "Character not in the specified range")
 #define TEST_ASSERT_IS_UPPERCASE_CHAR(character)          TEST_ASSERT(isupper(character), "Character is not uppercase")
 #define TEST_ASSERT_IS_LOWERCASE_CHAR(character)          TEST_ASSERT(islower(character), "Character is not lowercase")
-#define TEST_ASSERT_TO_UPPER_CHAR(character)              TEST_ASSERT(toupper(character) == expected, "Character not converted to uppercase as expected")
-#define TEST_ASSERT_TO_LOWER_CHAR(character)              TEST_ASSERT(tolower(character) == expected, "Character not converted to lowercase as expected")
+#define TEST_ASSERT_TO_UPPER_CHAR(character, expected)    TEST_ASSERT(toupper(character) == expected, "Character not converted to uppercase as expected")
+#define TEST_ASSERT_TO_LOWER_CHAR(character, expected)    TEST_ASSERT(tolower(character) == expected, "Character not converted to lowercase as expected")
 
 #define TEST_ASSERT_EQUAL_WCHAR(actual, expected)         TEST_ASSERT((actual) == (expected), "Wide character equality expectation not met")
 #define TEST_ASSERT_NOT_EQUAL_WCHAR(actual, expected)     TEST_ASSERT((actual) != (expected), "Wide character inequality expectation not met")

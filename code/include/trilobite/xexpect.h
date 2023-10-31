@@ -751,8 +751,8 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 #define TEST_EXPECT_IN_RANGE_CHAR(character, min, max)    TEST_EXPECT((character >= (min) && character <= (max)), "Character not in the specified range")
 #define TEST_EXPECT_IS_UPPERCASE_CHAR(character)          TEST_EXPECT(isupper(character), "Character is not uppercase")
 #define TEST_EXPECT_IS_LOWERCASE_CHAR(character)          TEST_EXPECT(islower(character), "Character is not lowercase")
-#define TEST_EXPECT_TO_UPPER_CHAR(character)              TEST_EXPECT(toupper(character) == expected, "Character not converted to uppercase as expected")
-#define TEST_EXPECT_TO_LOWER_CHAR(character)              TEST_EXPECT(tolower(character) == expected, "Character not converted to lowercase as expected")
+#define TEST_EXPECT_TO_UPPER_CHAR(character, expected)    TEST_EXPECT(toupper(character) == expected, "Character not converted to uppercase as expected")
+#define TEST_EXPECT_TO_LOWER_CHAR(character, expected)    TEST_EXPECT(tolower(character) == expected, "Character not converted to lowercase as expected")
 
 #define TEST_EXPECT_EQUAL_WCHAR(actual, expected)         TEST_EXPECT((actual) == (expected), "Wide character equality expectation not met")
 #define TEST_EXPECT_NOT_EQUAL_WCHAR(actual, expected)     TEST_EXPECT((actual) != (expected), "Wide character inequality expectation not met")
