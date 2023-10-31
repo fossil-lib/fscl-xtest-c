@@ -336,7 +336,7 @@ XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixtur
  *
  * @return            None.
  */
-#define XTEST_RUN_UNIT(test_case, runner) xtest_run_test_unit(&test_case, runner->stats)
+#define XTEST_RUN_UNIT(test_case, runner) xtest_run_test_unit(&test_case, &runner->stats)
 
 /**
  * @brief Runs a test case within a test fixture and updates test statistics.
@@ -350,7 +350,7 @@ XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixtur
  *
  * @return            None.
  */
-#define XTEST_RUN_FIXTURE(test_case, fixture, runner) xtest_run_test_fixture(&test_case, &fixture, runner->stats)
+#define XTEST_RUN_FIXTURE(test_case, fixture, runner) xtest_run_test_fixture(&test_case, &fixture, &runner->stats)
 
 //
 // ------------------------------------------------------------------------
