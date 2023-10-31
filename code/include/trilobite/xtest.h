@@ -69,7 +69,6 @@ extern "C"
 #include <cstring>
 #include <cstdlib>
 #include <cstdint>
-#include <cstddef>
 #include <cstdio>
 #include <cmath>
 #include <ctime>
@@ -78,7 +77,6 @@ extern "C"
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <stddef.h>
 #include <stdio.h>
 #include <math.h>
 #include <time.h>

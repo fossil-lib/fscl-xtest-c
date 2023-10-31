@@ -47,8 +47,35 @@ extern "C"
 
 #include "xtest.h"
 
-#define ASSERT_FLOAT_EPSILON 1e-6 // Define your desired epsilon value
-#define ASSERT_DOUBLE_EPSILON 1e-9 // Define your desired epsilon value
+#ifdef __cplusplus
+// If compiled as C++, include the C++ version of the libraries
+#include <cstdbool>
+#include <cstring>
+#include <cstdlib>
+#include <cstddef>
+#include <cwctype>
+#include <cwchar>
+#include <cctype>
+#include <cstdio>
+#include <cmath>
+#include <ctime>
+#else
+// If compiled as C, include the C version of the libraries
+#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stddef.h>
+#include <wctype.h>
+#include <wchar.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <math.h>
+#include <time.h>
+#endif
+
+#define EXPECT_FLOAT_EPSILON 1e-6 // Define your desired epsilon value
+#define EXPECT_DOUBLE_EPSILON 1e-9 // Define your desired epsilon value
 
 /**
  * @brief Memory Assertion Macros
@@ -524,8 +551,8 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
  * @return None
  */
 
-#define TEST_EXPECT_FLOAT_EQUAL(actual, expected)         TEST_EXPECT(fabs((float)(actual) -  (float)(expected)) < ASSERT_FLOAT_EPSILON, "Floating-point value not equal within epsilon")
-#define TEST_EXPECT_FLOAT_NOT_EQUAL(actual, expected)     TEST_EXPECT(fabs((float)(actual) -  (float)(expected)) <= ASSERT_FLOAT_EPSILON, "Floating-point value equal within epsilon")
+#define TEST_EXPECT_FLOAT_EQUAL(actual, expected)         TEST_EXPECT(fabs((float)(actual) -  (float)(expected)) < EXPECT_FLOAT_EPSILON, "Floating-point value not equal within epsilon")
+#define TEST_EXPECT_FLOAT_NOT_EQUAL(actual, expected)     TEST_EXPECT(fabs((float)(actual) -  (float)(expected)) <= EXPECT_FLOAT_EPSILON, "Floating-point value equal within epsilon")
 #define TEST_EXPECT_FLOAT_LESS(actual, expected)          TEST_EXPECT((float)(actual)      <  (float)(expected),   "Floating-point value not less")
 #define TEST_EXPECT_FLOAT_GREATER(actual, expected)       TEST_EXPECT((float)(actual)      >  (float)(expected),   "Floating-point value not greater")
 #define TEST_EXPECT_FLOAT_GREATER_EQUAL(actual, expected) TEST_EXPECT((float)(actual)      >= (float)(expected),   "Floating-point value not greater or equal")
@@ -577,8 +604,8 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
  * @return None
  */
 
-#define TEST_EXPECT_DOUBLE_EQUAL(actual, expected)         TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <  ASSERT_DOUBLE_EPSILON, "Double-precision value not equal within epsilon")
-#define TEST_EXPECT_DOUBLE_NOT_EQUAL(actual, expected)     TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <= ASSERT_DOUBLE_EPSILON, "Double-precision value equal within epsilon")
+#define TEST_EXPECT_DOUBLE_EQUAL(actual, expected)         TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <  EXPECT_DOUBLE_EPSILON, "Double-precision value not equal within epsilon")
+#define TEST_EXPECT_DOUBLE_NOT_EQUAL(actual, expected)     TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <= EXPECT_DOUBLE_EPSILON, "Double-precision value equal within epsilon")
 #define TEST_EXPECT_DOUBLE_LESS(actual, expected)          TEST_EXPECT((double)(actual) <  (double)(expected), "Double-precision value not less")
 #define TEST_EXPECT_DOUBLE_GREATER(actual, expected)       TEST_EXPECT((double)(actual) >  (double)(expected), "Double-precision value not greater")
 #define TEST_EXPECT_DOUBLE_GREATER_EQUAL(actual, expected) TEST_EXPECT((double)(actual) >= (double)(expected), "Double-precision value not greater or equal")
@@ -963,7 +990,7 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 #define TEST_EXPECT_EQUAL_FLOAT_ARRAY(actual, expected, elem)             \
     bool success = true;                                                  \
     for (size_t i = 0; i < elem; i++) {                                   \
-        if (fabs((actual)[i] - (expected)[i]) >= ASSERT_FLOAT_EPSILON) {  \
+        if (fabs((actual)[i] - (expected)[i]) >= EXPECT_FLOAT_EPSILON) {  \
             success = false; break;                                       \
         }                                                                 \
     } TEST_EXPECT(success, "Array equality expectation not met")
@@ -971,7 +998,7 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 #define TEST_EXPECT_EQUAL_DOUBLE_ARRAY(actual, expected, elem)            \
     bool success = true;                                                  \
     for (size_t i = 0; i < elem; i++) {                                   \
-        if (fabs((actual)[i] - (expected)[i]) >= ASSERT_DOUBLE_EPSILON) { \
+        if (fabs((actual)[i] - (expected)[i]) >= EXPECT_DOUBLE_EPSILON) { \
             success = false; break;                                       \
         }                                                                 \
     } TEST_EXPECT(success, "Array equality expectation not met")

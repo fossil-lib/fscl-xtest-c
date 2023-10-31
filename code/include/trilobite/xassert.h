@@ -47,6 +47,33 @@ extern "C"
 
 #include "xtest.h"
 
+#ifdef __cplusplus
+// If compiled as C++, include the C++ version of the libraries
+#include <cstdbool>
+#include <cstring>
+#include <cstdlib>
+#include <cstddef>
+#include <cwctype>
+#include <cwchar>
+#include <cctype>
+#include <cstdio>
+#include <cmath>
+#include <ctime>
+#else
+// If compiled as C, include the C version of the libraries
+#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stddef.h>
+#include <wctype.h>
+#include <wchar.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <math.h>
+#include <time.h>
+#endif
+
 #define ASSERT_FLOAT_EPSILON 1e-6 // Define your desired epsilon value
 #define ASSERT_DOUBLE_EPSILON 1e-9 // Define your desired epsilon value
 
