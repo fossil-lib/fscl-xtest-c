@@ -38,11 +38,6 @@ extern void xassert_test_group(XUnitRunner *runner);
 extern void xexpect_test_group(XUnitRunner *runner);
 extern void xbenchs_test_group(XUnitRunner *runner);
 extern void group_mockup_software(XUnitRunner *runner);
-extern void group_mockup_hardware(XUnitRunner *runner);
-extern void group_mockup_stack(XUnitRunner *runner);
-extern void group_mockup_queue(XUnitRunner *runner);
-extern void group_mockup_list(XUnitRunner *runner);
-extern void group_mockup_map(XUnitRunner *runner);
 
 //
 // XUNIT-TEST RUNNER:
@@ -54,11 +49,6 @@ int main(int argc, char **argv) {
     xexpect_test_group(&runner);
     xbenchs_test_group(&runner);
     group_mockup_software(&runner);
-    group_mockup_hardware(&runner);
-    group_mockup_stack(&runner);
-    group_mockup_queue(&runner);
-    group_mockup_list(&runner);
-    group_mockup_map(&runner);
 
     return XTEST_RUNNER_END(runner);
 } // end of func

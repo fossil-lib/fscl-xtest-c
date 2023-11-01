@@ -37,8 +37,8 @@
 
    (Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0)
 */
-#ifndef TRILOBITE_XASSERT_H
-#define TRILOBITE_XASSERT_H
+#ifndef TRILOBITE_TEST_ASSERT_H
+#define TRILOBITE_TEST_ASSERT_H
 
 #ifdef __cplusplus
 extern "C"
@@ -47,799 +47,1002 @@ extern "C"
 
 #include "xtest.h"
 
+#ifdef __cplusplus
+// If compiled as C++, include the C++ version of the libraries
+#include <cstdbool>
+#include <cstring>
+#include <cstdlib>
+#include <cstddef>
+#include <cwctype>
+#include <cwchar>
+#include <cctype>
+#include <cstdio>
+#include <cmath>
+#include <ctime>
+#else
+// If compiled as C, include the C version of the libraries
+#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stddef.h>
+#include <wctype.h>
+#include <wchar.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <math.h>
+#include <time.h>
+#endif
+
+#define ASSERT_FLOAT_EPSILON 1e-6 // Define your desired epsilon value
+#define ASSERT_DOUBLE_EPSILON 1e-9 // Define your desired epsilon value
+
 /**
- * @brief Macros for Expecting Various Boolean Comparisons
+ * @brief Memory Assertion Macros
  *
- * These macros provide a convenient way to perform boolean comparisons within
- * test cases using the XUnit testing framework. They cover boolean equality,
- * inequality, less-than, greater-than, and simple boolean checks.
+ * These macros are designed for asserting memory-related operations, such as memory equality, inequality,
+ * memory copy, memory containing, and memory not containing. They use the `memcmp` function to compare memory
+ * blocks and check if they meet the specified expectations.
  *
- * Common macros for all boolean types:
- * - `XASSERT_BOOL_EQUAL(actual, expected)` expects boolean equality.
- * - `XASSERT_BOOL_NOT_EQUAL(actual, expected)` expects boolean inequality.
- * - `XASSERT_BOOL_LESS(actual, expected)` expects boolean less-than.
- * - `XASSERT_BOOL_GREATER(actual, expected)` expects boolean greater-than.
- * - `XASSERT_BOOL_UNLESS(expression)` expects the given expression to be false.
- * - `XASSERT_BOOL_TRUE(expression)` expects the given expression to be true.
- * - `XASSERT_BOOL_FALSE(expression)` expects the given expression to be false.
- * - `XASSERT_BOOL_MSG(expression, message)` expects the given expression to be false with a custom message.
+ * Usage Example:
+ *   - Use TEST_ASSERT_EQUAL_MEMORY to check if two memory blocks are equal.
+ *   - Use TEST_ASSERT_NOT_EQUAL_MEMORY to assert that two memory blocks are not equal.
+ *   - Use TEST_ASSERT_CONTAINS_MEMORY to check if a larger memory block contains a smaller one.
+ *   - Use TEST_ASSERT_NOT_CONTAINS_MEMORY to check that a memory block does not contain another.
+ *   - Use TEST_ASSERT_COPIED_MEMORY to check if one memory block has been copied to another.
+ *   - Use TEST_ASSERT_NOT_COPIED_MEMORY to verify that a memory block has not been copied to another.
  *
- * Example usage:
+ * @param actual      A pointer to the actual memory block.
+ * @param expected    A pointer to the expected memory block for comparison.
+ * @param size        The size of the memory block in bytes.
+ * @param haystack    A pointer to the larger memory block.
+ * @param needle      A pointer to the smaller memory block to search for.
+ * @param haystackSize The size of the larger memory block in bytes.
+ * @param needleSize  The size of the smaller memory block in bytes.
  *
- * ```c
- * bool actual = true;
- * bool expected = true;
- *
- * XASSERT_BOOL_EQUAL(actual, expected); // Expect booleans to be equal.
- * XASSERT_BOOL_TRUE(actual); // Expect actual to be true.
- * XASSERT_BOOL_UNLESS(actual == false); // Expect actual to be false.
- * ```
+ * @return None
  */
 
-#define XASSERT_BOOL_EQUAL(actual, expected)              XASSERT((actual) == (expected), "Expectation for equality not met")
-#define XASSERT_BOOL_NOT_EQUAL(actual, expected)          XASSERT((actual) != (expected), "Expectation for inequality not met")
-#define XASSERT_BOOL_LESS(actual, expected)               XASSERT((actual) < (expected), "Expectation for less than not met")
-#define XASSERT_BOOL_GREATER(actual, expected)            XASSERT((actual) > (expected), "Expectation for greater than not met")
-#define XASSERT_BOOL_UNLESS(expression)         XASSERT((expression), "Expectation not met")
-#define XASSERT_BOOL_TRUE(expression)           XASSERT((expression), "Expectation for true not met")
-#define XASSERT_BOOL_FALSE(expression)          XASSERT(!(expression), "Expectation for false not met")
-#define XASSERT_BOOL_MSG(expression, message)   XASSERT(!(expression), message)
+#define TEST_ASSERT_EQUAL_MEMORY(actual, expected, size)     TEST_ASSERT(memcmp(actual, expected, size) != 0, "Expectation for memory equality not met")
+#define TEST_ASSERT_NOT_EQUAL_MEMORY(actual, expected, size) TEST_ASSERT(memcmp(actual, expected, size) == 0, "Expectation for memory inequality not met")
+#define TEST_ASSERT_CONTAINS_MEMORY(haystack, needle, haystackSize, needleSize) \
+bool found = false; \
+for (size_t i = 0; i <= (haystackSize - needleSize); i++) { \
+    if (memcmp(haystack + i, needle, needleSize) == 0) { \
+        found = true; \
+        break; \
+    } \
+} \
+TEST_ASSERT(!found, "Memory contains assertion failed");
+
+#define TEST_ASSERT_NOT_CONTAINS_MEMORY(haystack, needle, haystackSize, needleSize) \
+bool found = false; \
+for (size_t i = 0; i <= (haystackSize - needleSize); i++) { \
+    if (memcmp(haystack + i, needle, needleSize) == 0) { \
+        found = true; \
+        break; \
+    } \
+} \
+TEST_ASSERT(found, "Memory not contains assertion failed");
+
+#define TEST_ASSERT_COPIED_MEMORY(dest, source, size)     TEST_ASSERT((memcmp(dest, source, size) == 0), "Memory copy check failed");
+#define TEST_ASSERT_NOT_COPIED_MEMORY(dest, source, size) TEST_ASSERT((memcmp(dest, source, size) != 0), "Memory not copied check failed");
 
 /**
- * @brief Macros for Expecting Various Integer Comparisons
+ * @brief Boolean Assertion Macros
  *
- * These macros provide a convenient way to perform integer comparisons within
- * test cases using the XUnit testing framework. They cover integer equality,
- * inequality, less-than, greater-than, less-than-or-equal, and greater-than-or-equal checks.
+ * These macros are designed for asserting boolean values using various comparison operations.
+ * They provide a way to verify boolean equality, inequality, and order (less than, greater than, etc.)
+ * between boolean values. These macros work with standard boolean values (0 for false, 1 for true).
  *
- * Common macros for all types:
- * - `XASSERT_INT_EQUAL(actual, expected)` expects integer equality.
- * - `XASSERT_INT_NOT_EQUAL(actual, expected)` expects integer inequality.
- * - `XASSERT_INT_LESS(actual, expected)` expects integer less-than.
- * - `XASSERT_INT_GREATER(actual, expected)` expects integer greater-than.
- * - `XASSERT_INT_LESS_EQUAL(actual, expected)` expects integer less-than-or-equal.
- * - `XASSERT_INT_GREATER_EQUAL(actual, expected)` expects integer greater-than-or-equal.
+ * Usage Example:
+ *   - Use TEST_ASSERT_EQUAL to check if two boolean values are equal.
+ *   - Use TEST_ASSERT_NOT_EQUAL to assert that two boolean values are not equal.
+ *   - Use TEST_ASSERT_LESS to check if one boolean value is less than another (0 < 1).
+ *   - Use TEST_ASSERT_GREATER to verify that one boolean value is greater than another (1 > 0).
+ *   - Use TEST_ASSERT_TRUE to assert that an expression is true (1).
+ *   - Use TEST_ASSERT_FALSE to assert that an expression is false (0).
+ *   - Use TEST_ASSERT_MSG to provide a custom message with a boolean assertion.
  *
- * Macros for specific integer sizes:
- * - `XASSERT_INT8_EQUAL(actual, expected)` for 8-bit integer equality check.
- * - `XASSERT_INT16_EQUAL(actual, expected)` for 16-bit integer equality check.
- * - `XASSERT_INT32_EQUAL(actual, expected)` for 32-bit integer equality check.
- * - `XASSERT_INT64_EQUAL(actual, expected)` for 64-bit integer equality check.
+ * @param actual     The actual boolean value for the assertion.
+ * @param expected   The expected boolean value for comparison.
  *
- * Example usage:
- *
- * ```c
- * int actual = 42;
- * int expected = 42;
- *
- * XASSERT_INT_EQUAL(actual, expected); // Expect integers to be equal.
- * XASSERT_INT_LESS(actual, expected); // Expect actual to be less than expected.
- * ```
+ * @return None
  */
 
-#define XASSERT_INT_EQUAL(actual, expected)         XASSERT((actual) == (expected), "Integer equality check failed")
-#define XASSERT_INT_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "Integer inequality check failed")
-#define XASSERT_INT_LESS(actual, expected)          XASSERT((actual) < (expected), "Integer less-than check failed")
-#define XASSERT_INT_GREATER(actual, expected)       XASSERT((actual) > (expected), "Integer greater-than check failed")
-#define XASSERT_INT_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "Integer less-than-or-equal check failed")
-#define XASSERT_INT_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "Integer greater-than-or-equal check failed")
+#define TEST_ASSERT_EQUAL(actual, expected)     TEST_ASSERT((bool)(actual) == (bool)(expected), "Expectation for equality not met")
+#define TEST_ASSERT_NOT_EQUAL(actual, expected) TEST_ASSERT((bool)(actual) != (bool)(expected), "Expectation for inequality not met")
+#define TEST_ASSERT_LESS(actual, expected)      TEST_ASSERT((bool)(actual) <  (bool)(expected), "Expectation for less than not met")
+#define TEST_ASSERT_GREATER(actual, expected)   TEST_ASSERT((bool)(actual) >  (bool)(expected), "Expectation for greater than not met")
+#define TEST_ASSERT_UNLESS(expression)          TEST_ASSERT((expression), "Expectation not met")
+#define TEST_ASSERT_TRUE(expression)            TEST_ASSERT((expression), "Expectation for true not met")
+#define TEST_ASSERT_FALSE(expression)           TEST_ASSERT(!(expression), "Expectation for false not met")
+#define TEST_ASSERT_MSG(expression, message)    TEST_ASSERT(!(expression), message)
 
-#define XASSERT_INT8_EQUAL(actual, expected)         XASSERT((actual) == (expected), "8-bit Integer equality check failed")
-#define XASSERT_INT8_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "8-bit Integer inequality check failed")
-#define XASSERT_INT8_LESS(actual, expected)          XASSERT((actual) < (expected), "8-bit Integer less-than check failed")
-#define XASSERT_INT8_GREATER(actual, expected)       XASSERT((actual) > (expected), "8-bit Integer greater-than check failed")
-#define XASSERT_INT8_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "8-bit Integer less-than-or-equal check failed")
-#define XASSERT_INT8_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "8-bit Integer greater-than-or-equal check failed")
-
-#define XASSERT_INT16_EQUAL(actual, expected)         XASSERT((actual) == (expected), "16-bit Integer equality check failed")
-#define XASSERT_INT16_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "16-bit Integer inequality check failed")
-#define XASSERT_INT16_LESS(actual, expected)          XASSERT((actual) < (expected), "16-bit Integer less-than check failed")
-#define XASSERT_INT16_GREATER(actual, expected)       XASSERT((actual) > (expected), "16-bit Integer greater-than check failed")
-#define XASSERT_INT16_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "16-bit Integer less-than-or-equal check failed")
-#define XASSERT_INT16_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "16-bit Integer greater-than-or-equal check failed")
-
-#define XASSERT_INT32_EQUAL(actual, expected)         XASSERT((actual) == (expected), "32-bit Integer equality check failed")
-#define XASSERT_INT32_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "32-bit Integer inequality check failed")
-#define XASSERT_INT32_LESS(actual, expected)          XASSERT((actual) < (expected), "32-bit Integer less-than check failed")
-#define XASSERT_INT32_GREATER(actual, expected)       XASSERT((actual) > (expected), "32-bit Integer greater-than check failed")
-#define XASSERT_INT32_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "32-bit Integer less-than-or-equal check failed")
-#define XASSERT_INT32_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "32-bit Integer greater-than-or-equal check failed")
-
-#define XASSERT_INT64_EQUAL(actual, expected)         XASSERT((actual) == (expected), "64-bit Integer equality check failed")
-#define XASSERT_INT64_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "64-bit Integer inequality check failed")
-#define XASSERT_INT64_LESS(actual, expected)          XASSERT((actual) < (expected), "64-bit Integer less-than check failed")
-#define XASSERT_INT64_GREATER(actual, expected)       XASSERT((actual) > (expected), "64-bit Integer greater-than check failed")
-#define XASSERT_INT64_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "64-bit Integer less-than-or-equal check failed")
-#define XASSERT_INT64_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "64-bit Integer greater-than-or-equal check failed")
+#define TEST_ASSERT_EQUAL_BOOL(actual, expected)     TEST_ASSERT((bool)(actual) == (bool)(expected), "Expectation for equality not met")
+#define TEST_ASSERT_NOT_EQUAL_BOOL(actual, expected) TEST_ASSERT((bool)(actual) != (bool)(expected), "Expectation for inequality not met")
+#define TEST_ASSERT_LESS_BOOL(actual, expected)      TEST_ASSERT((bool)(actual) <  (bool)(expected), "Expectation for less than not met")
+#define TEST_ASSERT_GREATER_BOOL(actual, expected)   TEST_ASSERT((bool)(actual) >  (bool)(expected), "Expectation for greater than not met")
+#define TEST_ASSERT_UNLESS_BOOL(expression)          TEST_ASSERT((expression), "Expectation not met")
+#define TEST_ASSERT_TRUE_BOOL(expression)            TEST_ASSERT((expression), "Expectation for true not met")
+#define TEST_ASSERT_FALSE_BOOL(expression)           TEST_ASSERT(!(expression), "Expectation for false not met")
+#define TEST_ASSERT_MSG_BOOL(expression, message)    TEST_ASSERT(!(expression), message)
 
 /**
- * @brief Macros for Expecting Various Unsigned Integer Comparisons
+ * @brief Enum Assertion Macros
  *
- * These macros provide a convenient way to perform unsigned integer comparisons within
- * test cases using the XUnit testing framework. They cover unsigned integer equality,
- * inequality, less-than, greater-than, less-than-or-equal, and greater-than-or-equal checks.
+ * These macros are used for asserting equality, inequality, and order comparisons between enumeration values.
  *
- * Common macros for all types:
- * - `XASSERT_UINT_EQUAL(actual, expected)` expects unsigned integer equality.
- * - `XASSERT_UINT_NOT_EQUAL(actual, expected)` expects unsigned integer inequality.
- * - `XASSERT_UINT_LESS(actual, expected)` expects unsigned integer less-than.
- * - `XASSERT_UINT_GREATER(actual, expected)` expects unsigned integer greater-than.
- * - `XASSERT_UINT_LESS_EQUAL(actual, expected)` expects unsigned integer less-than-or-equal.
- * - `XASSERT_UINT_GREATER_EQUAL(actual, expected)` expects unsigned integer greater-than-or-equal.
+ * Usage Example:
+ *   - Use TEST_ASSERT_EQUAL_ENUM to check if two enum values are equal.
+ *   - Use TEST_ASSERT_NOT_EQUAL_ENUM to assert that two enum values are not equal.
+ *   - Use TEST_ASSERT_LESS_ENUM to check if one enum value is less than another (ordering defined in the enum).
+ *   - Use TEST_ASSERT_GREATER_ENUM to verify that one enum value is greater than another.
+ *   - Use TEST_ASSERT_LESS_EQUAL_ENUM to check if one enum value is less than or equal to another.
+ *   - Use TEST_ASSERT_GREATER_EQUAL_ENUM to verify that one enum value is greater than or equal to another.
  *
- * Macros for specific integer sizes:
- * - `XASSERT_UINT8_EQUAL(actual, expected)` for 8-bit unsigned integer equality check.
- * - `XASSERT_UINT16_EQUAL(actual, expected)` for 16-bit unsigned integer equality check.
- * - `XASSERT_UINT32_EQUAL(actual, expected)` for 32-bit unsigned integer equality check.
- * - `XASSERT_UINT64_EQUAL(actual, expected)` for 64-bit unsigned integer equality check.
+ * @param actual     The actual enumeration value for the assertion.
+ * @param expected   The expected enumeration value for comparison.
  *
- * Example usage:
- *
- * ```c
- * unsigned int actual = 42;
- * unsigned int expected = 42;
- *
- * XASSERT_UINT_EQUAL(actual, expected); // Expect unsigned integers to be equal.
- * XASSERT_UINT_LESS(actual, expected); // Expect actual to be less than expected.
- * ```
+ * @return None
  */
 
-#define XASSERT_UINT_EQUAL(actual, expected)         XASSERT((actual) == (expected), "Unsigned integer equality check failed")
-#define XASSERT_UINT_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "Unsigned integer inequality check failed")
-#define XASSERT_UINT_LESS(actual, expected)          XASSERT((actual) < (expected), "Unsigned integer less-than check failed")
-#define XASSERT_UINT_GREATER(actual, expected)       XASSERT((actual) > (expected), "Unsigned integer greater-than check failed")
-#define XASSERT_UINT_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "Unsigned integer less-than-or-equal check failed")
-#define XASSERT_UINT_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "Unsigned integer greater-than-or-equal check failed")
-
-#define XASSERT_UINT8_EQUAL(actual, expected)         XASSERT((actual) == (expected), "8-bit Unsigned integer equality check failed")
-#define XASSERT_UINT8_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "8-bit Unsigned integer inequality check failed")
-#define XASSERT_UINT8_LESS(actual, expected)          XASSERT((actual) < (expected), "8-bit Unsigned integer less-than check failed")
-#define XASSERT_UINT8_GREATER(actual, expected)       XASSERT((actual) > (expected), "8-bit Unsigned integer greater-than check failed")
-#define XASSERT_UINT8_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "8-bit Unsigned integer less-than-or-equal check failed")
-#define XASSERT_UINT8_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "8-bit Unsigned integer greater-than-or-equal check failed")
-
-#define XASSERT_UINT16_EQUAL(actual, expected)         XASSERT((actual) == (expected), "16-bit Unsigned integer equality check failed")
-#define XASSERT_UINT16_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "16-bit Unsigned integer inequality check failed")
-#define XASSERT_UINT16_LESS(actual, expected)          XASSERT((actual) < (expected), "16-bit Unsigned integer less-than check failed")
-#define XASSERT_UINT16_GREATER(actual, expected)       XASSERT((actual) > (expected), "16-bit Unsigned integer greater-than check failed")
-#define XASSERT_UINT16_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "16-bit Unsigned integer less-than-or-equal check failed")
-#define XASSERT_UINT16_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "16-bit Unsigned integer greater-than-or-equal check failed")
-
-#define XASSERT_UINT32_EQUAL(actual, expected)         XASSERT((actual) == (expected), "32-bit Unsigned integer equality check failed")
-#define XASSERT_UINT32_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "32-bit Unsigned integer inequality check failed")
-#define XASSERT_UINT32_LESS(actual, expected)          XASSERT((actual) < (expected), "32-bit Unsigned integer less-than check failed")
-#define XASSERT_UINT32_GREATER(actual, expected)       XASSERT((actual) > (expected), "32-bit Unsigned integer greater-than check failed")
-#define XASSERT_UINT32_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "32-bit Unsigned integer less-than-or-equal check failed")
-#define XASSERT_UINT32_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "32-bit Unsigned integer greater-than-or-equal check failed")
-
-#define XASSERT_UINT64_EQUAL(actual, expected)         XASSERT((actual) == (expected), "64-bit Unsigned integer equality check failed")
-#define XASSERT_UINT64_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "64-bit Unsigned integer inequality check failed")
-#define XASSERT_UINT64_LESS(actual, expected)          XASSERT((actual) < (expected), "64-bit Unsigned integer less-than check failed")
-#define XASSERT_UINT64_GREATER(actual, expected)       XASSERT((actual) > (expected), "64-bit Unsigned integer greater-than check failed")
-#define XASSERT_UINT64_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "64-bit Unsigned integer less-than-or-equal check failed")
-#define XASSERT_UINT64_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "64-bit Unsigned integer greater-than-or-equal check failed")
+#define TEST_ASSERT_EQUAL_ENUM(actual, expected)         TEST_ASSERT((actual) == (expected), "Enum equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_ENUM(actual, expected)     TEST_ASSERT((actual) != (expected), "Enum inequality check failed")
+#define TEST_ASSERT_LESS_ENUM(actual, expected)          TEST_ASSERT((actual) <  (expected), "Enum less-than check failed")
+#define TEST_ASSERT_GREATER_ENUM(actual, expected)       TEST_ASSERT((actual) >  (expected), "Enum greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_ENUM(actual, expected)    TEST_ASSERT((actual) <= (expected), "Enum less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_ENUM(actual, expected) TEST_ASSERT((actual) >= (expected), "Enum greater-than-or-equal check failed")
 
 /**
- * @brief Macros for Expecting Various Hexadecimal Number Comparisons
+ * @brief Integer Assertion Macros
  *
- * These macros provide a convenient way to perform hexadecimal number comparisons within
- * test cases using the XUnit testing framework. They cover hexadecimal number equality,
- * inequality, less-than, greater-than, less-than-or-equal, and greater-than-or-equal checks.
+ * These macros are designed for asserting integer values using various comparison operations.
+ * They provide a way to verify integer equality, inequality, and order (less than, greater than, etc.)
+ * between integer values.
  *
- * Common macros for all types:
- * - `XASSERT_HEX_EQUAL(actual, expected)` expects hexadecimal number equality.
- * - `XASSERT_HEX_NOT_EQUAL(actual, expected)` expects hexadecimal number inequality.
- * - `XASSERT_HEX_LESS(actual, expected)` expects hexadecimal number less-than.
- * - `XASSERT_HEX_GREATER(actual, expected)` expects hexadecimal number greater-than.
- * - `XASSERT_HEX_LESS_EQUAL(actual, expected)` expects hexadecimal number less-than-or-equal.
- * - `XASSERT_HEX_GREATER_EQUAL(actual, expected)` expects hexadecimal number greater-than-or-equal.
+ * Usage Example:
+ *   - Use TEST_ASSERT_EQUAL_INT to check if two integer values are equal.
+ *   - Use TEST_ASSERT_NOT_EQUAL_INT to assert that two integer values are not equal.
+ *   - Use TEST_ASSERT_LESS_INT to check if one integer value is less than another.
+ *   - Use TEST_ASSERT_GREATER_INT to verify that one integer value is greater than another.
+ *   - Use TEST_ASSERT_LESS_EQUAL_INT to assert that one integer value is less than or equal to another.
+ *   - Use TEST_ASSERT_GREATER_EQUAL_INT to verify that one integer value is greater than or equal to another.
  *
- * Macros for specific integer sizes:
- * - `XASSERT_HEX8_EQUAL(actual, expected)` for 8-bit hexadecimal equality check.
- * - `XASSERT_HEX16_EQUAL(actual, expected)` for 16-bit hexadecimal equality check.
- * - `XASSERT_HEX32_EQUAL(actual, expected)` for 32-bit hexadecimal equality check.
- * - `XASSERT_HEX64_EQUAL(actual, expected)` for 64-bit hexadecimal equality check.
+ * Additionally, there are 8/16/32/64-bit versions of these macros available for different integer widths.
  *
- * Example usage:
+ * @param actual     The actual integer value for the assertion.
+ * @param expected   The expected integer value for comparison.
  *
- * ```c
- * int actual = 0x12; // Hexadecimal: 0x12
- * int expected = 0x15; // Hexadecimal: 0x15
- *
- * XASSERT_HEX_EQUAL(actual, expected); // Expect hexadecimal numbers to be equal.
- * XASSERT_HEX_LESS(actual, expected); // Expect actual to be less than expected.
- * ```
+ * @return None
  */
 
-#define XASSERT_HEX_EQUAL(actual, expected)         XASSERT((actual) == (expected), "Hexadecimal equality check failed")
-#define XASSERT_HEX_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "Hexadecimal inequality check failed")
-#define XASSERT_HEX_LESS(actual, expected)          XASSERT((actual) < (expected), "Hexadecimal less-than check failed")
-#define XASSERT_HEX_GREATER(actual, expected)       XASSERT((actual) > (expected), "Hexadecimal greater-than check failed")
-#define XASSERT_HEX_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "Hexadecimal less-than-or-equal check failed")
-#define XASSERT_HEX_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "Hexadecimal greater-than-or-equal check failed")
+#define TEST_ASSERT_EQUAL_INT(actual, expected)         TEST_ASSERT((signed)(actual) == (signed)(expected), "Integer equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_INT(actual, expected)     TEST_ASSERT((signed)(actual) != (signed)(expected), "Integer inequality check failed")
+#define TEST_ASSERT_LESS_INT(actual, expected)          TEST_ASSERT((signed)(actual) <  (signed)(expected), "Integer less-than check failed")
+#define TEST_ASSERT_GREATER_INT(actual, expected)       TEST_ASSERT((signed)(actual) >  (signed)(expected), "Integer greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_INT(actual, expected)    TEST_ASSERT((signed)(actual) <= (signed)(expected), "Integer less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_INT(actual, expected) TEST_ASSERT((signed)(actual) >= (signed)(expected), "Integer greater-than-or-equal check failed")
 
-#define XASSERT_HEX8_EQUAL(actual, expected)         XASSERT((actual) == (expected), "8-bit Hexadecimal equality check failed")
-#define XASSERT_HEX8_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "8-bit Hexadecimal inequality check failed")
-#define XASSERT_HEX8_LESS(actual, expected)          XASSERT((actual) < (expected), "8-bit Hexadecimal less-than check failed")
-#define XASSERT_HEX8_GREATER(actual, expected)       XASSERT((actual) > (expected), "8-bit Hexadecimal greater-than check failed")
-#define XASSERT_HEX8_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "8-bit Hexadecimal less-than-or-equal check failed")
-#define XASSERT_HEX8_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "8-bit Hexadecimal greater-than-or-equal check failed")
+#define TEST_ASSERT_EQUAL_INT8(actual, expected)         TEST_ASSERT((int8_t)(actual) == (int8_t)(expected), "8-bit Integer equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_INT8(actual, expected)     TEST_ASSERT((int8_t)(actual) != (int8_t)(expected), "8-bit Integer inequality check failed")
+#define TEST_ASSERT_LESS_INT8(actual, expected)          TEST_ASSERT((int8_t)(actual) <  (int8_t)(expected), "8-bit Integer less-than check failed")
+#define TEST_ASSERT_GREATER_INT8(actual, expected)       TEST_ASSERT((int8_t)(actual) >  (int8_t)(expected), "8-bit Integer greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_INT8(actual, expected)    TEST_ASSERT((int8_t)(actual) <= (int8_t)(expected), "8-bit Integer less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_INT8(actual, expected) TEST_ASSERT((int8_t)(actual) >= (int8_t)(expected), "8-bit Integer greater-than-or-equal check failed")
 
-#define XASSERT_HEX16_EQUAL(actual, expected)         XASSERT((actual) == (expected), "16-bit Hexadecimal equality check failed")
-#define XASSERT_HEX16_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "16-bit Hexadecimal inequality check failed")
-#define XASSERT_HEX16_LESS(actual, expected)          XASSERT((actual) < (expected), "16-bit Hexadecimal less-than check failed")
-#define XASSERT_HEX16_GREATER(actual, expected)       XASSERT((actual) > (expected), "16-bit Hexadecimal greater-than check failed")
-#define XASSERT_HEX16_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "16-bit Hexadecimal less-than-or-equal check failed")
-#define XASSERT_HEX16_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "16-bit Hexadecimal greater-than-or-equal check failed")
+#define TEST_ASSERT_EQUAL_INT16(actual, expected)         TEST_ASSERT((int16_t)(actual) == (int16_t)(expected), "16-bit Integer equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_INT16(actual, expected)     TEST_ASSERT((int16_t)(actual) != (int16_t)(expected), "16-bit Integer inequality check failed")
+#define TEST_ASSERT_LESS_INT16(actual, expected)          TEST_ASSERT((int16_t)(actual) <  (int16_t)(expected), "16-bit Integer less-than check failed")
+#define TEST_ASSERT_GREATER_INT16(actual, expected)       TEST_ASSERT((int16_t)(actual) >  (int16_t)(expected), "16-bit Integer greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_INT16(actual, expected)    TEST_ASSERT((int16_t)(actual) <= (int16_t)(expected), "16-bit Integer less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_INT16(actual, expected) TEST_ASSERT((int16_t)(actual) >= (int16_t)(expected), "16-bit Integer greater-than-or-equal check failed")
 
-#define XASSERT_HEX32_EQUAL(actual, expected)         XASSERT((actual) == (expected), "32-bit Hexadecimal equality check failed")
-#define XASSERT_HEX32_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "32-bit Hexadecimal inequality check failed")
-#define XASSERT_HEX32_LESS(actual, expected)          XASSERT((actual) < (expected), "32-bit Hexadecimal less-than check failed")
-#define XASSERT_HEX32_GREATER(actual, expected)       XASSERT((actual) > (expected), "32-bit Hexadecimal greater-than check failed")
-#define XASSERT_HEX32_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "32-bit Hexadecimal less-than-or-equal check failed")
-#define XASSERT_HEX32_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "32-bit Hexadecimal greater-than-or-equal check failed")
+#define TEST_ASSERT_EQUAL_INT32(actual, expected)         TEST_ASSERT((int32_t)(actual) == (int32_t)(expected), "32-bit Integer equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_INT32(actual, expected)     TEST_ASSERT((int32_t)(actual) != (int32_t)(expected), "32-bit Integer inequality check failed")
+#define TEST_ASSERT_LESS_INT32(actual, expected)          TEST_ASSERT((int32_t)(actual) <  (int32_t)(expected), "32-bit Integer less-than check failed")
+#define TEST_ASSERT_GREATER_INT32(actual, expected)       TEST_ASSERT((int32_t)(actual) >  (int32_t)(expected), "32-bit Integer greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_INT32(actual, expected)    TEST_ASSERT((int32_t)(actual) <= (int32_t)(expected), "32-bit Integer less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_INT32(actual, expected) TEST_ASSERT((int32_t)(actual) >= (int32_t)(expected), "32-bit Integer greater-than-or-equal check failed")
 
-#define XASSERT_HEX64_EQUAL(actual, expected)         XASSERT((actual) == (expected), "64-bit Hexadecimal equality check failed")
-#define XASSERT_HEX64_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "64-bit Hexadecimal inequality check failed")
-#define XASSERT_HEX64_LESS(actual, expected)          XASSERT((actual) < (expected), "64-bit Hexadecimal less-than check failed")
-#define XASSERT_HEX64_GREATER(actual, expected)       XASSERT((actual) > (expected), "64-bit Hexadecimal greater-than check failed")
-#define XASSERT_HEX64_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "64-bit Hexadecimal less-than-or-equal check failed")
-#define XASSERT_HEX64_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "64-bit Hexadecimal greater-than-or-equal check failed")
+#define TEST_ASSERT_EQUAL_INT64(actual, expected)         TEST_ASSERT((int64_t)(actual) == (int64_t)(expected), "64-bit Integer equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_INT64(actual, expected)     TEST_ASSERT((int64_t)(actual) != (int64_t)(expected), "64-bit Integer inequality check failed")
+#define TEST_ASSERT_LESS_INT64(actual, expected)          TEST_ASSERT((int64_t)(actual) <  (int64_t)(expected), "64-bit Integer less-than check failed")
+#define TEST_ASSERT_GREATER_INT64(actual, expected)       TEST_ASSERT((int64_t)(actual) >  (int64_t)(expected), "64-bit Integer greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_INT64(actual, expected)    TEST_ASSERT((int64_t)(actual) <= (int64_t)(expected), "64-bit Integer less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_INT64(actual, expected) TEST_ASSERT((int64_t)(actual) >= (int64_t)(expected), "64-bit Integer greater-than-or-equal check failed")
 
 /**
- * @brief Macros for Expecting Various Octal Number Comparisons
+ * @brief Unsigned Integer Assertion Macros
  *
- * These macros provide a convenient way to perform octal number comparisons within
- * test cases using the XUnit testing framework. They cover octal number equality,
- * inequality, less-than, greater-than, less-than-or-equal, and greater-than-or-equal checks.
+ * These macros are designed for asserting unsigned integer values using various comparison operations.
+ * They provide a way to verify unsigned integer equality, inequality, and order (less than, greater than, etc.)
+ * between unsigned integer values.
  *
- * Common macros for all types:
- * - `XASSERT_OCT_EQUAL(actual, expected)` expects octal number equality.
- * - `XASSERT_OCT_NOT_EQUAL(actual, expected)` expects octal number inequality.
- * - `XASSERT_OCT_LESS(actual, expected)` expects octal number less-than.
- * - `XASSERT_OCT_GREATER(actual, expected)` expects octal number greater-than.
- * - `XASSERT_OCT_LESS_EQUAL(actual, expected)` expects octal number less-than-or-equal.
- * - `XASSERT_OCT_GREATER_EQUAL(actual, expected)` expects octal number greater-than-or-equal.
+ * Usage Example:
+ *   - Use TEST_ASSERT_EQUAL_UINT to check if two unsigned integer values are equal.
+ *   - Use TEST_ASSERT_NOT_EQUAL_UINT to assert that two unsigned integer values are not equal.
+ *   - Use TEST_ASSERT_LESS_UINT to check if one unsigned integer value is less than another.
+ *   - Use TEST_ASSERT_GREATER_UINT to verify that one unsigned integer value is greater than another.
+ *   - Use TEST_ASSERT_LESS_EQUAL_UINT to assert that one unsigned integer value is less than or equal to another.
+ *   - Use TEST_ASSERT_GREATER_EQUAL_UINT to verify that one unsigned integer value is greater than or equal to another.
  *
- * Example usage:
+ * Additionally, there are 8/16/32/64-bit versions of these macros available for different integer widths.
  *
- * ```c
- * int actual = 012; // Octal: 12
- * int expected = 015; // Octal: 15
+ * @param actual     The actual unsigned integer value for the assertion.
+ * @param expected   The expected unsigned integer value for comparison.
  *
- * XASSERT_OCT_EQUAL(actual, expected); // Expect octal numbers to be equal.
- * XASSERT_OCT_LESS(actual, expected); // Expect actual to be less than expected.
- * ```
+ * @return None
  */
 
-#define XASSERT_OCT_EQUAL(actual, expected)         XASSERT((actual) == (expected), "Octal equality check failed")
-#define XASSERT_OCT_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "Octal inequality check failed")
-#define XASSERT_OCT_LESS(actual, expected)          XASSERT((actual) < (expected), "Octal less-than check failed")
-#define XASSERT_OCT_GREATER(actual, expected)       XASSERT((actual) > (expected), "Octal greater-than check failed")
-#define XASSERT_OCT_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "Octal less-than-or-equal check failed")
-#define XASSERT_OCT_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "Octal greater-than-or-equal check failed")
+#define TEST_ASSERT_EQUAL_UINT(actual, expected)         TEST_ASSERT((unsigned)(actual) == (unsigned)(expected), "Unsigned integer equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_UINT(actual, expected)     TEST_ASSERT((unsigned)(actual) != (unsigned)(expected), "Unsigned integer inequality check failed")
+#define TEST_ASSERT_LESS_UINT(actual, expected)          TEST_ASSERT((unsigned)(actual) <  (unsigned)(expected), "Unsigned integer less-than check failed")
+#define TEST_ASSERT_GREATER_UINT(actual, expected)       TEST_ASSERT((unsigned)(actual) >  (unsigned)(expected), "Unsigned integer greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_UINT(actual, expected)    TEST_ASSERT((unsigned)(actual) <= (unsigned)(expected), "Unsigned integer less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_UINT(actual, expected) TEST_ASSERT((unsigned)(actual) >= (unsigned)(expected), "Unsigned integer greater-than-or-equal check failed")
+
+#define TEST_ASSERT_EQUAL_UINT8(actual, expected)         TEST_ASSERT((uint8_t)(actual) == (uint8_t)(expected), "8-bit Unsigned integer equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_UINT8(actual, expected)     TEST_ASSERT((uint8_t)(actual) != (uint8_t)(expected), "8-bit Unsigned integer inequality check failed")
+#define TEST_ASSERT_LESS_UINT8(actual, expected)          TEST_ASSERT((uint8_t)(actual) <  (uint8_t)(expected), "8-bit Unsigned integer less-than check failed")
+#define TEST_ASSERT_GREATER_UINT8(actual, expected)       TEST_ASSERT((uint8_t)(actual) >  (uint8_t)(expected), "8-bit Unsigned integer greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_UINT8(actual, expected)    TEST_ASSERT((uint8_t)(actual) <= (uint8_t)(expected), "8-bit Unsigned integer less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_UINT8(actual, expected) TEST_ASSERT((uint8_t)(actual) >= (uint8_t)(expected), "8-bit Unsigned integer greater-than-or-equal check failed")
+
+#define TEST_ASSERT_EQUAL_UINT16(actual, expected)         TEST_ASSERT((uint16_t)(actual) == (uint16_t)(expected), "16-bit Unsigned integer equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_UINT16(actual, expected)     TEST_ASSERT((uint16_t)(actual) != (uint16_t)(expected), "16-bit Unsigned integer inequality check failed")
+#define TEST_ASSERT_LESS_UINT16(actual, expected)          TEST_ASSERT((uint16_t)(actual) <  (uint16_t)(expected), "16-bit Unsigned integer less-than check failed")
+#define TEST_ASSERT_GREATER_UINT16(actual, expected)       TEST_ASSERT((uint16_t)(actual) >  (uint16_t)(expected), "16-bit Unsigned integer greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_UINT16(actual, expected)    TEST_ASSERT((uint16_t)(actual) <= (uint16_t)(expected), "16-bit Unsigned integer less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_UINT16(actual, expected) TEST_ASSERT((uint16_t)(actual) >= (uint16_t)(expected), "16-bit Unsigned integer greater-than-or-equal check failed")
+
+#define TEST_ASSERT_EQUAL_UINT32(actual, expected)         TEST_ASSERT((uint32_t)(actual) == (uint32_t)(expected), "32-bit Unsigned integer equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_UINT32(actual, expected)     TEST_ASSERT((uint32_t)(actual) != (uint32_t)(expected), "32-bit Unsigned integer inequality check failed")
+#define TEST_ASSERT_LESS_UINT32(actual, expected)          TEST_ASSERT((uint32_t)(actual) <  (uint32_t)(expected), "32-bit Unsigned integer less-than check failed")
+#define TEST_ASSERT_GREATER_UINT32(actual, expected)       TEST_ASSERT((uint32_t)(actual) >  (uint32_t)(expected), "32-bit Unsigned integer greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_UINT32(actual, expected)    TEST_ASSERT((uint32_t)(actual) <= (uint32_t)(expected), "32-bit Unsigned integer less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_UINT32(actual, expected) TEST_ASSERT((uint32_t)(actual) >= (uint32_t)(expected), "32-bit Unsigned integer greater-than-or-equal check failed")
+
+#define TEST_ASSERT_EQUAL_UINT64(actual, expected)         TEST_ASSERT((uint64_t)(actual) == (uint64_t)(expected), "64-bit Unsigned integer equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_UINT64(actual, expected)     TEST_ASSERT((uint64_t)(actual) != (uint64_t)(expected), "64-bit Unsigned integer inequality check failed")
+#define TEST_ASSERT_LESS_UINT64(actual, expected)          TEST_ASSERT((uint64_t)(actual) <  (uint64_t)(expected), "64-bit Unsigned integer less-than check failed")
+#define TEST_ASSERT_GREATER_UINT64(actual, expected)       TEST_ASSERT((uint64_t)(actual) >  (uint64_t)(expected), "64-bit Unsigned integer greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_UINT64(actual, expected)    TEST_ASSERT((uint64_t)(actual) <= (uint64_t)(expected), "64-bit Unsigned integer less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_UINT64(actual, expected) TEST_ASSERT((uint64_t)(actual) >= (uint64_t)(expected), "64-bit Unsigned integer greater-than-or-equal check failed")
 
 /**
- * @brief Macros for Expecting Various Bitwise Comparisons
+ * @brief Hexadecimal Assertion Macros
  *
- * These macros provide a convenient way to perform bitwise comparisons and checks on
- * integer values within test cases using the XUnit testing framework. They cover
- * bitwise equality, inequality, less-than, greater-than, high/low bit checks, and more.
+ * These macros are designed for asserting hexadecimal integer values using various comparison operations.
+ * They provide a way to verify hexadecimal equality, inequality, and order (less than, greater than, etc.)
+ * between hexadecimal integer values.
  *
- * Common macros for all types:
- * - `XASSERT_BIT_EQUAL(actual, expected)` expects bitwise equality.
- * - `XASSERT_BIT_NOT_EQUAL(actual, expected)` expects bitwise inequality.
- * - `XASSERT_BIT_LESS(actual, expected)` expects bitwise less-than.
- * - `XASSERT_BIT_GREATER(actual, expected)` expects bitwise greater-than.
- * - `XASSERT_BIT_LESS_EQUAL(actual, expected)` expects bitwise less-than-or-equal.
- * - `XASSERT_BIT_GREATER_EQUAL(actual, expected)` expects bitwise greater-than-or-equal.
+ * Usage Example:
+ *   - Use TEST_ASSERT_EQUAL_HEX to check if two hexadecimal values are equal.
+ *   - Use TEST_ASSERT_NOT_EQUAL_HEX to assert that two hexadecimal values are not equal.
+ *   - Use TEST_ASSERT_LESS_HEX to check if one hexadecimal value is less than another.
+ *   - Use TEST_ASSERT_GREATER_HEX to verify that one hexadecimal value is greater than another.
+ *   - Use TEST_ASSERT_LESS_EQUAL_HEX to assert that one hexadecimal value is less than or equal to another.
+ *   - Use TEST_ASSERT_GREATER_EQUAL_HEX to verify that one hexadecimal value is greater than or equal to another.
  *
- * Bit position-specific macros:
- * - `XASSERT_BIT_NOT_HIGH(value, bitIndex)` expects that a specific bit is not high (1).
- * - `XASSERT_BIT_HIGH(value, bitIndex)` expects that a specific bit is high (1).
- * - `XASSERT_BIT_NOT_LOW(value, bitIndex)` expects that a specific bit is not low (0).
- * - `XASSERT_BIT_LOW(value, bitIndex)` expects that a specific bit is low (0).
+ * Additionally, there are 8/16/32/64-bit versions of these macros available.
  *
- * Bit mask-specific macros:
- * - `XASSERT_BITS_NOT_HIGH(value, mask)` expects that all bits specified by a mask are not high (1).
- * - `XASSERT_BITS_HIGH(value, mask)` expects that all bits specified by a mask are high (1).
- * - `XASSERT_BITS_NOT_LOW(value, mask)` expects that at least one bit specified by a mask is not low (0).
- * - `XASSERT_BITS_LOW(value, mask)` expects that all bits specified by a mask are low (0).
- * - `XASSERT_BITS_NOT_EQUAL(actual, expected, mask)` expects bitwise equality within a specified mask.
- * - `XASSERT_BITS_EQUAL(actual, expected, mask)` expects bitwise inequality within a specified mask.
- * - `XASSERT_BITS_NOT_LESS(actual, expected, mask)` expects bitwise less-than within a specified mask.
- * - `XASSERT_BITS_LESS(actual, expected, mask)` expects bitwise greater-than within a specified mask.
- * - `XASSERT_BITS_NOT_GREATER(actual, expected, mask)` expects bitwise less-than-or-equal within a specified mask.
- * - `XASSERT_BITS_GREATER(actual, expected, mask)` expects bitwise greater-than-or-equal within a specified mask.
+ * @param actual     The actual hexadecimal integer value for the assertion.
+ * @param expected   The expected hexadecimal integer value for comparison.
  *
- * Example usage:
- *
- * ```c
- * int actual = 0b1010; // Binary: 1010
- * int expected = 0b1100; // Binary: 1100
- *
- * XASSERT_BIT_NOT_HIGH(actual, 2); // Expect that bit 2 is not high (0)
- * XASSERT_BIT_HIGH(expected, 2); // Expect that bit 2 is high (1)
- *
- * XASSERT_BITS_NOT_LOW(actual, 0b1000); // Expect that at least one bit specified by the mask is not low (1)
- * XASSERT_BITS_LOW(expected, 0b0011); // Expect that all bits specified by the mask are low (0)
- * ```
- */
-#define XASSERT_BIT_EQUAL(actual, expected)            XASSERT((actual) == (expected), "Bitwise equality check failed")
-#define XASSERT_BIT_NOT_EQUAL(actual, expected)        XASSERT((actual) != (expected), "Bitwise inequality check failed")
-#define XASSERT_BIT_LESS(actual, expected)             XASSERT((actual) < (expected), "Bitwise less-than check failed")
-#define XASSERT_BIT_GREATER(actual, expected)          XASSERT((actual) > (expected), "Bitwise greater-than check failed")
-#define XASSERT_BIT_LESS_EQUAL(actual, expected)       XASSERT((actual) <= (expected), "Bitwise less-than-or-equal check failed")
-#define XASSERT_BIT_GREATER_EQUAL(actual, expected)    XASSERT((actual) >= (expected), "Bitwise greater-than-or-equal check failed")
-#define XASSERT_BIT_NOT_HIGH(value, bitIndex)          XASSERT(!((value) & (1 << (bitIndex))), "Bit is high check failed")
-#define XASSERT_BIT_HIGH(value, bitIndex)              XASSERT((value) & (1 << (bitIndex)), "Bit is not high check failed")
-#define XASSERT_BIT_NOT_LOW(value, bitIndex)           XASSERT((value) & (1 << (bitIndex)), "Bit is low check failed")
-#define XASSERT_BIT_LOW(value, bitIndex)               XASSERT(!((value) & (1 << (bitIndex))), "Bit is not low check failed")
-
-#define XASSERT_BITS_NOT_HIGH(value, mask)             XASSERT(((value) & (mask)) != (mask), "Bits are all high check failed")
-#define XASSERT_BITS_HIGH(value, mask)                 XASSERT(((value) & (mask)) == (mask), "Bits are not all high check failed")
-#define XASSERT_BITS_NOT_LOW(value, mask)              XASSERT(((value) & (mask)) != 0, "Bits are not all low check failed")
-#define XASSERT_BITS_LOW(value, mask)                  XASSERT(((value) & (mask)) == 0, "Bits are not all low check failed")
-#define XASSERT_BITS_NOT_EQUAL(actual, expected, mask) XASSERT(((actual) & (mask)) != ((expected) & (mask)), "Bitwise equality check failed")
-#define XASSERT_BITS_EQUAL(actual, expected, mask)     XASSERT(((actual) & (mask)) == ((expected) & (mask)), "Bitwise inequality check failed")
-#define XASSERT_BITS_NOT_LESS(actual, expected, mask)  XASSERT(((actual) & (mask)) >= ((expected) & (mask)), "Bitwise less-than check failed")
-#define XASSERT_BITS_LESS(actual, expected, mask)      XASSERT(((actual) & (mask)) < ((expected) & (mask)), "Bitwise greater-than check failed")
-#define XASSERT_BITS_NOT_GREATER(actual, expected, mask)            XASSERT(((actual) & (mask)) <= ((expected) & (mask)), "Bitwise less-than-or-equal check failed")
-#define XASSERT_BITS_GREATER(actual, expected, mask)                XASSERT(((actual) & (mask)) > ((expected) & (mask)), "Bitwise greater-than-or-equal check failed")
-#define XASSERT_BITS_NOT_LESS_EQUAL(actual, expected, mask)         XASSERT(((actual) & (mask)) > ((expected) & (mask)), "Bitwise less-than-or-equal check failed")
-#define XASSERT_BITS_LESS_EQUAL(actual, expected, mask)             XASSERT(((actual) & (mask)) <= ((expected) & (mask)), "Bitwise greater-than-or-equal check failed")
-#define XASSERT_BITS_NOT_GREATER_EQUAL(actual, expected, mask)      XASSERT(((actual) & (mask)) < ((expected) & (mask)), "Bitwise less-than-or-equal check failed")
-#define XASSERT_BITS_GREATER_EQUAL(actual, expected, mask)          XASSERT(((actual) & (mask)) >= ((expected) & (mask)), "Bitwise greater-than-or-equal check failed")
-
-/**
- * @brief Macros for Expecting Various Value Comparisons
- *
- * These macros provide a convenient way to perform comparisons and checks on various
- * types of values within test cases using the XUnit testing framework. They cover
- * integer types, hexadecimal values, binary values, octal values, floating-point
- * values, and character values.
- *
- * Common macros for all types:
- * - `XASSERT_INT_WITHIN(actual, expected, tolerance)` expects that the difference
- *   between two integers is within a specified tolerance.
- * - Similar macros exist for 8-bit, 16-bit, 32-bit, and 64-bit integer types.
- * - `XASSERT_HEX_WITHIN(actual, expected, tolerance)` expects that the difference
- *   between two hexadecimal values is within a specified tolerance.
- * - Similar macros exist for 8-bit, 16-bit, 32-bit, and 64-bit hexadecimal values.
- * - `XASSERT_UINT_WITHIN(actual, expected, tolerance)` expects that the difference
- *   between two unsigned integers is within a specified tolerance.
- * - Similar macros exist for 8-bit, 16-bit, 32-bit, and 64-bit unsigned integer types.
- * - `XASSERT_BIN_WITHIN(actual, expected, tolerance)` expects that the difference
- *   between two binary values is within a specified tolerance.
- * - `XASSERT_OCT_WITHIN(actual, expected, tolerance)` expects that the difference
- *   between two octal values is within a specified tolerance.
- * - `XASSERT_FLOAT_WITHIN(actual, expected, epsilon)` expects that the difference
- *   between two float values is within a specified epsilon.
- * - `XASSERT_DOUBLE_WITHIN(actual, expected, epsilon)` expects that the difference
- *   between two double values is within a specified epsilon.
- * - `XASSERT_CHAR_WITHIN(actual, min, max)` expects that a character value is within
- *   a specified range.
- * - `XASSERT_WCHAR_WITHIN(actual, min, max)` expects that a wide character value is
- *   within a specified range.
- *
- * Example usage:
- *
- * ```c
- * int actual = 10;
- * int expected = 15;
- * int tolerance = 2;
- * XASSERT_INT_WITHIN(actual, expected, tolerance); // Expect actual and expected within a tolerance of 2
- *
- * float fActual = 3.14f;
- * float fExpected = 3.14159f;
- * float epsilon = 0.01f;
- * XASSERT_FLOAT_WITHIN(fActual, fExpected, epsilon); // Expect nearly equal float values within epsilon
- *
- * char cValue = 'A';
- * char min = 'A';
- * char max = 'Z';
- * XASSERT_CHAR_WITHIN(cValue, min, max); // Expect character 'A' within the range 'A' to 'Z'
- * ```
+ * @return None
  */
 
-#define XASSERT_INT_WITHIN(actual, expected, tolerance)     XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "Integer value not within tolerance")
-#define XASSERT_INT8_WITHIN(actual, expected, tolerance)    XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "8-bit Integer value not within tolerance")
-#define XASSERT_INT16_WITHIN(actual, expected, tolerance)   XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "16-bit Integer value not within tolerance")
-#define XASSERT_INT32_WITHIN(actual, expected, tolerance)   XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "32-bit Integer value not within tolerance")
-#define XASSERT_INT64_WITHIN(actual, expected, tolerance)   XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "64-bit Integer value not within tolerance")
-#define XASSERT_UINT_WITHIN(actual, expected, tolerance)    XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "Unsigned integer value not within tolerance")
-#define XASSERT_UINT8_WITHIN(actual, expected, tolerance)    XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "8-bit Unsigned Integer value not within tolerance")
-#define XASSERT_UINT16_WITHIN(actual, expected, tolerance)   XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "16-bit Unsigned Integer value not within tolerance")
-#define XASSERT_UINT32_WITHIN(actual, expected, tolerance)   XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "32-bit Unsigned Integer value not within tolerance")
-#define XASSERT_UINT64_WITHIN(actual, expected, tolerance)  XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "64-bit Unsigned Integer value not within tolerance")
-#define XASSERT_HEX_WITHIN(actual, expected, tolerance)     XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "Hexadecimal value not within tolerance")
-#define XASSERT_HEX8_WITHIN(actual, expected, tolerance)    XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "8-bit Hexadecimal value not within tolerance")
-#define XASSERT_HEX16_WITHIN(actual, expected, tolerance)   XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "16-bit Hexadecimal value not within tolerance")
-#define XASSERT_HEX32_WITHIN(actual, expected, tolerance)   XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "32-bit Hexadecimal value not within tolerance")
-#define XASSERT_HEX64_WITHIN(actual, expected, tolerance)   XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "64-bit Hexadecimal value not within tolerance")
-#define XASSERT_BIN_WITHIN(actual, expected, tolerance)     XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "Binary value not within tolerance")
-#define XASSERT_OCT_WITHIN(actual, expected, tolerance)     XASSERT(((actual) >= ((expected) - (tolerance))) && ((actual) <= ((expected) + (tolerance))), "Octal value not within tolerance")
+#define TEST_ASSERT_EQUAL_HEX(actual, expected)         TEST_ASSERT((signed)(actual) == (signed)(expected), "Hexadecimal equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_HEX(actual, expected)     TEST_ASSERT((signed)(actual) != (signed)(expected), "Hexadecimal inequality check failed")
+#define TEST_ASSERT_LESS_HEX(actual, expected)          TEST_ASSERT((signed)(actual) <  (signed)(expected), "Hexadecimal less-than check failed")
+#define TEST_ASSERT_GREATER_HEX(actual, expected)       TEST_ASSERT((signed)(actual) >  (signed)(expected), "Hexadecimal greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_HEX(actual, expected)    TEST_ASSERT((signed)(actual) <= (signed)(expected), "Hexadecimal less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_HEX(actual, expected) TEST_ASSERT((signed)(actual) >= (signed)(expected), "Hexadecimal greater-than-or-equal check failed")
 
-#define XASSERT_FLOAT_WITHIN(actual, expected, epsilon)     XASSERT(fabs((actual) - (expected)) <= (epsilon), "Float value not within epsilon")
-#define XASSERT_DOUBLE_WITHIN(actual, expected, epsilon)    XASSERT(fabs((actual) - (expected)) <= (epsilon), "Double value not within epsilon")
+#define TEST_ASSERT_EQUAL_HEX8(actual, expected)         TEST_ASSERT((uint8_t)(actual) == (uint8_t)(expected), "8-bit Hexadecimal equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_HEX8(actual, expected)     TEST_ASSERT((uint8_t)(actual) != (uint8_t)(expected), "8-bit Hexadecimal inequality check failed")
+#define TEST_ASSERT_LESS_HEX8(actual, expected)          TEST_ASSERT((uint8_t)(actual) <  (uint8_t)(expected), "8-bit Hexadecimal less-than check failed")
+#define TEST_ASSERT_GREATER_HEX8(actual, expected)       TEST_ASSERT((uint8_t)(actual) >  (uint8_t)(expected), "8-bit Hexadecimal greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_HEX8(actual, expected)    TEST_ASSERT((uint8_t)(actual) <= (uint8_t)(expected), "8-bit Hexadecimal less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_HEX8(actual, expected) TEST_ASSERT((uint8_t)(actual) >= (uint8_t)(expected), "8-bit Hexadecimal greater-than-or-equal check failed")
 
-#define XASSERT_CHAR_WITHIN(actual, min, max)               XASSERT((actual) > (min) || (actual) < (max), "Character value not within range")
-#define XASSERT_WCHAR_WITHIN(actual, min, max)              XASSERT((actual) > (min) || (actual) < (max), "W-Character value not within range")
+#define TEST_ASSERT_EQUAL_HEX16(actual, expected)         TEST_ASSERT((uint16_t)(actual) == (uint16_t)(expected), "16-bit Hexadecimal equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_HEX16(actual, expected)     TEST_ASSERT((uint16_t)(actual) != (uint16_t)(expected), "16-bit Hexadecimal inequality check failed")
+#define TEST_ASSERT_LESS_HEX16(actual, expected)          TEST_ASSERT((uint16_t)(actual) <  (uint16_t)(expected), "16-bit Hexadecimal less-than check failed")
+#define TEST_ASSERT_GREATER_HEX16(actual, expected)       TEST_ASSERT((uint16_t)(actual) >  (uint16_t)(expected), "16-bit Hexadecimal greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_HEX16(actual, expected)    TEST_ASSERT((uint16_t)(actual) <= (uint16_t)(expected), "16-bit Hexadecimal less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_HEX16(actual, expected) TEST_ASSERT((uint16_t)(actual) >= (uint16_t)(expected), "16-bit Hexadecimal greater-than-or-equal check failed")
+
+#define TEST_ASSERT_EQUAL_HEX32(actual, expected)         TEST_ASSERT((uint32_t)(actual) == (uint32_t)(expected), "32-bit Hexadecimal equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_HEX32(actual, expected)     TEST_ASSERT((uint32_t)(actual) != (uint32_t)(expected), "32-bit Hexadecimal inequality check failed")
+#define TEST_ASSERT_LESS_HEX32(actual, expected)          TEST_ASSERT((uint32_t)(actual) <  (uint32_t)(expected), "32-bit Hexadecimal less-than check failed")
+#define TEST_ASSERT_GREATER_HEX32(actual, expected)       TEST_ASSERT((uint32_t)(actual) >  (uint32_t)(expected), "32-bit Hexadecimal greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_HEX32(actual, expected)    TEST_ASSERT((uint32_t)(actual) <= (uint32_t)(expected), "32-bit Hexadecimal less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_HEX32(actual, expected) TEST_ASSERT((uint32_t)(actual) >= (uint32_t)(expected), "32-bit Hexadecimal greater-than-or-equal check failed")
+
+#define TEST_ASSERT_EQUAL_HEX64(actual, expected)         TEST_ASSERT((uint64_t)(actual) == (uint64_t)(expected), "64-bit Hexadecimal equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_HEX64(actual, expected)     TEST_ASSERT((uint64_t)(actual) != (uint64_t)(expected), "64-bit Hexadecimal inequality check failed")
+#define TEST_ASSERT_LESS_HEX64(actual, expected)          TEST_ASSERT((uint64_t)(actual) <  (uint64_t)(expected), "64-bit Hexadecimal less-than check failed")
+#define TEST_ASSERT_GREATER_HEX64(actual, expected)       TEST_ASSERT((uint64_t)(actual) >  (uint64_t)(expected), "64-bit Hexadecimal greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_HEX64(actual, expected)    TEST_ASSERT((uint64_t)(actual) <= (uint64_t)(expected), "64-bit Hexadecimal less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_HEX64(actual, expected) TEST_ASSERT((uint64_t)(actual) >= (uint64_t)(expected), "64-bit Hexadecimal greater-than-or-equal check failed")
 
 /**
- * @brief Macros for Expecting Float Value Comparisons
+ * @brief Octal Assertion Macros
  *
- * These macros provide a convenient way to perform comparisons and checks on
- * single-precision floating-point (float) values within test cases using the XUnit
- * testing framework. They cover equality, inequality, less-than, greater-than,
- * infinity, finite, and NaN checks.
+ * These macros are designed for asserting octal integer values using various comparison operations.
+ * They provide a way to verify octal equality, inequality, and order (less than, greater than, etc.)
+ * between octal integer values.
  *
- * Common macros for both C and C++:
- * - `XASSERT_FLOAT_EQUAL(actual, expected, epsilon)` expects that the difference
- *   between `actual` and `expected` is within a specified `epsilon`.
- * - `XASSERT_FLOAT_NOT_EQUAL(actual, expected, epsilon)` expects that the
- *   difference between `actual` and `expected` is outside the specified `epsilon`.
- * - `XASSERT_FLOAT_LESS(actual, expected)` expects that `actual` is less than `expected`.
- * - `XASSERT_FLOAT_GREATER(actual, expected)` expects that `actual` is greater than `expected`.
- * - `XASSERT_FLOAT_GREATER_EQUAL(actual, expected)` expects that `actual` is greater
- *   than or equal to `expected`.
- * - `XASSERT_FLOAT_LESS_EQUAL(actual, expected)` expects that `actual` is less than
- *   or equal to `expected`.
- * - `XASSERT_FLOAT_IS_NOT_INF(value)` expects that `value` is not positive infinity.
- * - `XASSERT_FLOAT_IS_INF(value)` expects that `value` is positive infinity.
- * - `XASSERT_FLOAT_IS_NOT_NEG_INF(value)` expects that `value` is not negative infinity.
- * - `XASSERT_FLOAT_IS_NEG_INF(value)` expects that `value` is negative infinity.
- * - `XASSERT_FLOAT_IS_NOT_FINITE(value)` expects that `value` is not finite.
- * - `XASSERT_FLOAT_IS_FINITE(value)` expects that `value` is finite.
- * - `XASSERT_FLOAT_IS_NOT_NAN(value)` expects that `value` is not NaN.
- * - `XASSERT_FLOAT_IS_NAN(value)` expects that `value` is NaN.
+ * Usage Example:
+ *   - Use TEST_ASSERT_EQUAL_OCT to check if two octal values are equal.
+ *   - Use TEST_ASSERT_NOT_EQUAL_OCT to assert that two octal values are not equal.
+ *   - Use TEST_ASSERT_LESS_OCT to check if one octal value is less than another.
+ *   - Use TEST_ASSERT_GREATER_OCT to verify that one octal value is greater than another.
+ *   - Use TEST_ASSERT_LESS_EQUAL_OCT to assert that one octal value is less than or equal to another.
+ *   - Use TEST_ASSERT_GREATER_EQUAL_OCT to verify that one octal value is greater than or equal to another.
  *
- * Example usage (C++):
+ * @param actual     The actual octal integer value for the assertion.
+ * @param expected   The expected octal integer value for comparison.
  *
- * ```cpp
- * float actual = 3.141592653589793f;
- * float expected = 3.14159f;
- * XASSERT_FLOAT_EQUAL(actual, expected, 0.0001f); // Expect nearly equal values within 0.0001 epsilon
- * XASSERT_FLOAT_LESS(actual, 4.0f);             // Expect actual to be less than 4.0
- * XASSERT_FLOAT_IS_INF(INFINITY);              // Expect positive infinity
- * ```
- *
- * Example usage (C):
- *
- * ```c
- * float actual = 3.141592653589793f;
- * float expected = 3.14159f;
- * XASSERT_FLOAT_EQUAL(actual, expected, 0.0001f); // Expect nearly equal values within 0.0001 epsilon
- * XASSERT_FLOAT_LESS(actual, 4.0f);             // Expect actual to be less than 4.0
- * XASSERT_FLOAT_IS_INF(INFINITY);              // Expect positive infinity
- * ```
+ * @return None
  */
 
-#define XASSERT_FLOAT_EQUAL(actual, expected, epsilon)     XASSERT(fabs((actual) - (expected)) <= (epsilon), "Floating-point value not equal within epsilon")
-#define XASSERT_FLOAT_NOT_EQUAL(actual, expected, epsilon) XASSERT(fabs((actual) - (expected)) < (epsilon), "Floating-point value equal within epsilon")
-#define XASSERT_FLOAT_LESS(actual, expected)               XASSERT((actual) < (expected), "Floating-point value not less")
-#define XASSERT_FLOAT_GREATER(actual, expected)            XASSERT((actual) > (expected), "Floating-point value not greater")
-#define XASSERT_FLOAT_GREATER_EQUAL(actual, expected)      XASSERT((actual) >= (expected), "Floating-point value not greater or equal")
-#define XASSERT_FLOAT_LESS_EQUAL(actual, expected)         XASSERT((actual) <= (expected), "Floating-point value not less or equal")
-#define XASSERT_FLOAT_IS_NOT_INF(value)                    XASSERT(!isinf(value) || (value) <= 0, "Floating-point value is infinite")
-#define XASSERT_FLOAT_IS_INF(value)                        XASSERT(isinf(value) && (value) > 0, "Floating-point value is not positive infinity")
-#define XASSERT_FLOAT_IS_NOT_NEG_INF(value)                XASSERT(!isinf(value) || (value) >= 0, "Floating-point value is negative infinity")
-#define XASSERT_FLOAT_IS_NEG_INF(value)                    XASSERT(isinf(value) && (value) < 0, "Floating-point value is not negative infinity")
-#define XASSERT_FLOAT_IS_NOT_FINITE(value)                 XASSERT(!isfinite(value), "Floating-point value is finite")
-#define XASSERT_FLOAT_IS_FINITE(value)                     XASSERT(isfinite(value), "Floating-point value is not finite")
-#define XASSERT_FLOAT_IS_NOT_NAN(value)                    XASSERT(!isnan(value), "Floating-point value is NaN")
-#define XASSERT_FLOAT_IS_NAN(value)                        XASSERT(isnan(value), "Floating-point value is not NaN")
+#define TEST_ASSERT_EQUAL_OCT(actual, expected)         TEST_ASSERT((signed)(actual) == (signed)(expected), "Octal equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_OCT(actual, expected)     TEST_ASSERT((signed)(actual) != (signed)(expected), "Octal inequality check failed")
+#define TEST_ASSERT_LESS_OCT(actual, expected)          TEST_ASSERT((signed)(actual) <  (signed)(expected), "Octal less-than check failed")
+#define TEST_ASSERT_GREATER_OCT(actual, expected)       TEST_ASSERT((signed)(actual) >  (signed)(expected), "Octal greater-than check failed")
+#define TEST_ASSERT_LESS_EQUAL_OCT(actual, expected)    TEST_ASSERT((signed)(actual) <= (signed)(expected), "Octal less-than-or-equal check failed")
+#define TEST_ASSERT_GREATER_EQUAL_OCT(actual, expected) TEST_ASSERT((signed)(actual) >= (signed)(expected), "Octal greater-than-or-equal check failed")
 
 /**
- * @brief Macros for Expecting Double-Precision Value Comparisons
+ * @brief Bitwise Assertion Macros
  *
- * These macros provide a convenient way to perform comparisons and checks on
- * double-precision floating-point values within test cases using the XUnit
- * testing framework. They cover equality, inequality, less-than, greater-than,
- * infinity, finite, and NaN checks.
+ * These macros are designed for asserting bitwise conditions and operations on integer values.
+ * They provide a way to verify whether specific bits are set or unset in integer values, compare
+ * integer values using bitwise operations, and check if specific bits meet the expected criteria.
  *
- * Common macros for both C and C++:
- * - `XASSERT_DOUBLE_EQUAL(actual, expected, epsilon)` expects that the difference
- *   between `actual` and `expected` is within a specified `epsilon`.
- * - `XASSERT_DOUBLE_NOT_EQUAL(actual, expected, epsilon)` expects that the
- *   difference between `actual` and `expected` is outside the specified `epsilon`.
- * - `XASSERT_DOUBLE_LESS(actual, expected)` expects that `actual` is less than `expected`.
- * - `XASSERT_DOUBLE_GREATER(actual, expected)` expects that `actual` is greater than `expected`.
- * - `XASSERT_DOUBLE_GREATER_EQUAL(actual, expected)` expects that `actual` is greater
- *   than or equal to `expected`.
- * - `XASSERT_DOUBLE_LESS_EQUAL(actual, expected)` expects that `actual` is less than
- *   or equal to `expected`.
- * - `XASSERT_DOUBLE_IS_NOT_INF(value)` expects that `value` is not positive infinity.
- * - `XASSERT_DOUBLE_IS_INF(value)` expects that `value` is positive infinity.
- * - `XASSERT_DOUBLE_IS_NOT_NEG_INF(value)` expects that `value` is not negative infinity.
- * - `XASSERT_DOUBLE_IS_NEG_INF(value)` expects that `value` is negative infinity.
- * - `XASSERT_DOUBLE_IS_NOT_FINITE(value)` expects that `value` is not finite.
- * - `XASSERT_DOUBLE_IS_FINITE(value)` expects that `value` is finite.
- * - `XASSERT_DOUBLE_IS_NOT_NAN(value)` expects that `value` is not NaN.
- * - `XASSERT_DOUBLE_IS_NAN(value)` expects that `value` is NaN.
+ * Usage Example:
+ *   - Use TEST_ASSERT_BIT_EQUAL to check if two values are equal using bitwise comparison.
+ *   - Use TEST_ASSERT_BIT_NOT_EQUAL to assert that two values are not equal using bitwise comparison.
+ *   - Use TEST_ASSERT_BIT_LESS to check if one value is less than another using bitwise comparison.
+ *   - Use TEST_ASSERT_BIT_GREATER to verify that one value is greater than another using bitwise comparison.
+ *   - Use TEST_ASSERT_BIT_NOT_HIGH to assert that a specific bit is not set (high) in an integer value.
+ *   - Use TEST_ASSERT_BIT_HIGH to verify that a specific bit is set (high) in an integer value.
+ *   - Use TEST_ASSERT_BIT_NOT_LOW to assert that a specific bit is not unset (low) in an integer value.
+ *   - Use TEST_ASSERT_BIT_LOW to verify that a specific bit is unset (low) in an integer value.
+ *   - Use TEST_ASSERT_BITS_NOT_HIGH to check that specific bits are not all set (high) in an integer value.
+ *   - Use TEST_ASSERT_BITS_HIGH to assert that specific bits are all set (high) in an integer value.
+ *   - Use TEST_ASSERT_BITS_NOT_LOW to check that specific bits are not all unset (low) in an integer value.
+ *   - Use TEST_ASSERT_BITS_LOW to verify that specific bits are all unset (low) in an integer value.
+ *   - Use TEST_ASSERT_BITS_NOT_EQUAL to check bitwise equality within a specific mask.
+ *   - Use TEST_ASSERT_BITS_EQUAL to verify bitwise inequality within a specific mask.
+ *   - Use TEST_ASSERT_BITS_NOT_LESS to assert that one value is not less than another within a mask.
+ *   - Use TEST_ASSERT_BITS_LESS to check if one value is less than another within a mask.
+ *   - Use TEST_ASSERT_BITS_NOT_GREATER to assert that one value is not greater than another within a mask.
+ *   - Use TEST_ASSERT_BITS_GREATER to verify if one value is greater than another within a mask.
+ *   - Use TEST_ASSERT_BITS_NOT_LESS_EQUAL to assert that one value is not less than or equal to another within a mask.
+ *   - Use TEST_ASSERT_BITS_LESS_EQUAL to check if one value is less than or equal to another within a mask.
+ *   - Use TEST_ASSERT_BITS_NOT_GREATER_EQUAL to assert that one value is not greater than or equal to another within a mask.
+ *   - Use TEST_ASSERT_BITS_GREATER_EQUAL to verify if one value is greater than or equal to another within a mask.
  *
- * Example usage (C++):
+ * @param actual     The actual integer value or bit mask for the assertion.
+ * @param expected   The expected integer value for comparison.
+ * @param bitIndex   The bit index to check for high or low conditions.
+ * @param mask       The bit mask to apply to the bitwise operations.
  *
- * ```cpp
- * double actual = 3.141592653589793;
- * double expected = 3.14159;
- * XASSERT_DOUBLE_EQUAL(actual, expected, 0.0001); // Expect nearly equal values within 0.0001 epsilon
- * XASSERT_DOUBLE_LESS(actual, 4.0);             // Expect actual to be less than 4.0
- * XASSERT_DOUBLE_IS_INF(INFINITY);              // Expect positive infinity
- * ```
- *
- * Example usage (C):
- *
- * ```c
- * double actual = 3.141592653589793;
- * double expected = 3.14159;
- * XASSERT_DOUBLE_EQUAL(actual, expected, 0.0001); // Expect nearly equal values within 0.0001 epsilon
- * XASSERT_DOUBLE_LESS(actual, 4.0);             // Expect actual to be less than 4.0
- * XASSERT_DOUBLE_IS_INF(INFINITY);              // Expect positive infinity
- * ```
+ * @return None
  */
 
-#define XASSERT_DOUBLE_EQUAL(actual, expected, epsilon)     XASSERT(fabs((actual) - (expected)) <= (epsilon), "Double-precision value not equal within epsilon")
-#define XASSERT_DOUBLE_NOT_EQUAL(actual, expected, epsilon) XASSERT(fabs((actual) - (expected)) < (epsilon), "Double-precision value equal within epsilon")
-#define XASSERT_DOUBLE_LESS(actual, expected)               XASSERT((actual) < (expected), "Double-precision value not less")
-#define XASSERT_DOUBLE_GREATER(actual, expected)            XASSERT((actual) > (expected), "Double-precision value not greater")
-#define XASSERT_DOUBLE_GREATER_EQUAL(actual, expected)      XASSERT((actual) >= (expected), "Double-precision value not greater or equal")
-#define XASSERT_DOUBLE_LESS_EQUAL(actual, expected)         XASSERT((actual) <= (expected), "Double-precision value not less or equal")
-#define XASSERT_DOUBLE_IS_NOT_INF(value)                    XASSERT(!isinf(value) || (value) <= 0, "Double-precision value is infinite")
-#define XASSERT_DOUBLE_IS_INF(value)                        XASSERT(isinf(value) && (value) > 0, "Double-precision value is not positive infinity")
-#define XASSERT_DOUBLE_IS_NOT_NEG_INF(value)                XASSERT(!isinf(value) || (value) >= 0, "Double-precision value is negative infinity")
-#define XASSERT_DOUBLE_IS_NEG_INF(value)                    XASSERT(isinf(value) && (value) < 0, "Double-precision value is not negative infinity")
-#define XASSERT_DOUBLE_IS_NOT_FINITE(value)                 XASSERT(!isfinite(value), "Double-precision value is finite")
-#define XASSERT_DOUBLE_IS_FINITE(value)                     XASSERT(isfinite(value), "Double-precision value is not finite")
-#define XASSERT_DOUBLE_IS_NOT_NAN(value)                    XASSERT(!isnan(value), "Double-precision value is NaN")
-#define XASSERT_DOUBLE_IS_NAN(value)                        XASSERT(isnan(value), "Double-precision value is not NaN")
+#define TEST_ASSERT_BIT_EQUAL(actual, expected)            TEST_ASSERT((signed)(actual) == (signed)(expected), "Bitwise equality check failed")
+#define TEST_ASSERT_BIT_NOT_EQUAL(actual, expected)        TEST_ASSERT((signed)(actual) != (signed)(expected), "Bitwise inequality check failed")
+#define TEST_ASSERT_BIT_LESS(actual, expected)             TEST_ASSERT((signed)(actual) <  (signed)(expected), "Bitwise less-than check failed")
+#define TEST_ASSERT_BIT_GREATER(actual, expected)          TEST_ASSERT((signed)(actual) >  (signed)(expected), "Bitwise greater-than check failed")
+#define TEST_ASSERT_BIT_LESS_EQUAL(actual, expected)       TEST_ASSERT((signed)(actual) <= (signed)(expected), "Bitwise less-than-or-equal check failed")
+#define TEST_ASSERT_BIT_GREATER_EQUAL(actual, expected)    TEST_ASSERT((signed)(actual) >= (signed)(expected), "Bitwise greater-than-or-equal check failed")
+#define TEST_ASSERT_BIT_NOT_HIGH(value, bitIndex)          TEST_ASSERT(!((signed)(value) & (1 << (signed)(bitIndex))), "Bit is high check failed")
+#define TEST_ASSERT_BIT_HIGH(value, bitIndex)              TEST_ASSERT((signed)(value) &   (1 << (signed)(bitIndex)), "Bit is not high check failed")
+#define TEST_ASSERT_BIT_NOT_LOW(value, bitIndex)           TEST_ASSERT((signed)(value) &   (1 << (signed)(bitIndex)), "Bit is low check failed")
+#define TEST_ASSERT_BIT_LOW(value, bitIndex)               TEST_ASSERT(!((signed)(value) & (1 << (signed)(bitIndex))), "Bit is not low check failed")
+
+#define TEST_ASSERT_BITS_NOT_HIGH(value, mask)             TEST_ASSERT(((signed)(value) & (signed)(mask)) != (signed)(mask), "Bits are all high check failed")
+#define TEST_ASSERT_BITS_HIGH(value, mask)                 TEST_ASSERT(((signed)(value) & (signed)(mask)) == (signed)(mask), "Bits are not all high check failed")
+#define TEST_ASSERT_BITS_NOT_LOW(value, mask)              TEST_ASSERT(((signed)(value) & (signed)(mask)) != 0, "Bits are not all low check failed")
+#define TEST_ASSERT_BITS_LOW(value, mask)                  TEST_ASSERT(((signed)(value) & (signed)(mask)) == 0, "Bits are not all low check failed")
+#define TEST_ASSERT_BITS_NOT_EQUAL(actual, expected, mask) TEST_ASSERT(((signed)(actual) & (signed)(mask)) != ((signed)(expected) & (signed)(mask)), "Bitwise equality check failed")
+#define TEST_ASSERT_BITS_EQUAL(actual, expected, mask)     TEST_ASSERT(((signed)(actual) & (signed)(mask)) == ((signed)(expected) & (signed)(mask)), "Bitwise inequality check failed")
+#define TEST_ASSERT_BITS_NOT_LESS(actual, expected, mask)  TEST_ASSERT(((signed)(actual) & (signed)(mask)) >= ((signed)(expected) & (signed)(mask)), "Bitwise less-than check failed")
+#define TEST_ASSERT_BITS_LESS(actual, expected, mask)      TEST_ASSERT(((signed)(actual) & (signed)(mask)) < ((signed)(expected) & (signed)(mask)), "Bitwise greater-than check failed")
+#define TEST_ASSERT_BITS_NOT_GREATER(actual, expected, mask)            TEST_ASSERT(((signed)(actual) & (signed)(mask)) <= ((signed)(expected) & (signed)(mask)), "Bitwise less-than-or-equal check failed")
+#define TEST_ASSERT_BITS_GREATER(actual, expected, mask)                TEST_ASSERT(((signed)(actual) & (signed)(mask)) > ((signed)(expected) & (signed)(mask)), "Bitwise greater-than-or-equal check failed")
+#define TEST_ASSERT_BITS_NOT_LESS_EQUAL(actual, expected, mask)         TEST_ASSERT(((signed)(actual) & (signed)(mask)) > ((signed)(expected) & (signed)(mask)), "Bitwise less-than-or-equal check failed")
+#define TEST_ASSERT_BITS_LESS_EQUAL(actual, expected, mask)             TEST_ASSERT(((signed)(actual) & (signed)(mask)) <= ((signed)(expected) & (signed)(mask)), "Bitwise greater-than-or-equal check failed")
+#define TEST_ASSERT_BITS_NOT_GREATER_EQUAL(actual, expected, mask)      TEST_ASSERT(((signed)(actual) & (signed)(mask)) < ((signed)(expected) & (signed)(mask)), "Bitwise less-than-or-equal check failed")
+#define TEST_ASSERT_BITS_GREATER_EQUAL(actual, expected, mask)          TEST_ASSERT(((signed)(actual) & (signed)(mask)) >= ((signed)(expected) & (signed)(mask)), "Bitwise greater-than-or-equal check failed")
 
 /**
- * @brief Macros for Expecting Pointer Equality, Inequality, Validity, and Bounds
+ * @brief Within Tolerance Assertion Macros
  *
- * These macros provide a convenient way to perform pointer comparisons and validity checks
- * within test cases using the XUnit testing framework. They differ depending on whether
- * the code is being compiled in a C++ or C environment.
+ * These macros are designed for asserting that a value is within a specified tolerance range.
+ * They are provided for various data types and use cases. You can use these macros to check if
+ * an integer, floating-point, hexadecimal, binary, or octal value is within a defined tolerance
+ * range. For integer types, you can specify a tolerance value, and for floating-point values,
+ * you can specify an epsilon value for tolerance.
  *
- * For C++:
- * - `XASSERT_PTR_NULL(pointer)` expects that `pointer` is nullptr.
- * - `XASSERT_PTR_NOT_NULL(pointer)` expects that `pointer` is not nullptr.
- * - `XASSERT_PTR_INVALID(pointer)` expects that `pointer` is not nullptr (invalid pointer error).
- * - `XASSERT_PTR_EMPTY(pointer)` expects that `pointer` is nullptr (empty pointer).
- * - `XASSERT_PTR_NOT_EMPTY(pointer)` expects that `pointer` is not nullptr (not empty pointer).
- * - `XASSERT_PTR_INVALID_MEMORY_ACCESS(pointer)` expects that `pointer` is not nullptr (invalid memory access).
+ * Usage Example:
+ *   - Use TEST_ASSERT_INT_WITHIN to check if an integer is within a tolerance range.
+ *   - Use TEST_ASSERT_UINT_WITHIN to validate an unsigned integer within a tolerance range.
+ *   - Use TEST_ASSERT_HEX_WITHIN to assert that a hexadecimal value is within a tolerance range.
+ *   - Use TEST_ASSERT_BIN_WITHIN to confirm that a binary value is within a tolerance range.
+ *   - Use TEST_ASSERT_OCT_WITHIN to check if an octal value is within a tolerance range.
+ *   - Use TEST_ASSERT_FLOAT_WITHIN to verify that a float value is within a specified epsilon.
+ *   - Use TEST_ASSERT_DOUBLE_WITHIN to check if a double value is within a specified epsilon.
+ *   - Use TEST_ASSERT_CHAR_WITHIN to assert that a character value is within a specified range.
+ *   - Use TEST_ASSERT_WCHAR_WITHIN to validate a wide character value within a specified range.
  *
- * For C:
- * - `XASSERT_PTR_NULL(pointer)` expects that `pointer` is NULL.
- * - `XASSERT_PTR_NOT_NULL(pointer)` expects that `pointer` is not NULL.
- * - `XASSERT_PTR_INVALID(pointer)` expects that `pointer` is not NULL (invalid pointer error).
- * - `XASSERT_PTR_EMPTY(pointer)` expects that `pointer` is NULL (empty pointer).
- * - `XASSERT_PTR_NOT_EMPTY(pointer)` expects that `pointer` is not NULL (not empty pointer).
- * - `XASSERT_PTR_INVALID_MEMORY_ACCESS(pointer)` expects that `pointer` is not NULL (invalid memory access).
+ * @param actual    The actual value to check for tolerance.
+ * @param expected  The expected value to compare with.
+ * @param tolerance The tolerance range for integer values.
+ * @param epsilon   The epsilon value for floating-point values.
+ * @param min       The minimum range boundary for character types.
+ * @param max       The maximum range boundary for character types.
  *
- * Common macros for both C and C++:
- * - `XASSERT_PTR_ARRAY_BOUNDS(pointer, index, size)` expects that the array index `index` is within bounds `[0, size)`.
- * - `XASSERT_PTR_EQUAL(actual, expected)` expects that `actual` and `expected` pointers are equal.
- * - `XASSERT_PTR_NOT_EQUAL(actual, expected)` expects that `actual` and `expected` pointers are not equal.
- * - `XASSERT_PTR_LESS(actual, expected)` expects that `actual` is less than `expected`.
- * - `XASSERT_PTR_GREATER(actual, expected)` expects that `actual` is greater than `expected`.
- * - `XASSERT_PTR_LESS_EQUAL(actual, expected)` expects that `actual` is less than or equal to `expected`.
- * - `XASSERT_PTR_GREATER_EQUAL(actual, expected)` expects that `actual` is greater than or equal to `expected`.
+ * @return None
+ */
+
+#define TEST_ASSERT_INT_WITHIN(actual, expected, tolerance)     TEST_ASSERT(((signed)(actual)  >= ((signed)(expected)  - (signed)(tolerance)))  && ((signed)(actual)  <= ((signed)(expected)  + (signed)(tolerance))),  "Integer value not within tolerance")
+#define TEST_ASSERT_INT8_WITHIN(actual, expected, tolerance)    TEST_ASSERT(((int8_t)(actual)  >= ((int8_t)(expected)  - (int8_t)(tolerance)))  && ((int8_t)(actual)  <= ((int8_t)(expected)  + (int8_t)(tolerance))),  "8-bit Integer value not within tolerance")
+#define TEST_ASSERT_INT16_WITHIN(actual, expected, tolerance)   TEST_ASSERT(((int16_t)(actual) >= ((int16_t)(expected) - (int16_t)(tolerance))) && ((int16_t)(actual) <= ((int16_t)(expected) + (int16_t)(tolerance))), "16-bit Integer value not within tolerance")
+#define TEST_ASSERT_INT32_WITHIN(actual, expected, tolerance)   TEST_ASSERT(((int32_t)(actual) >= ((int32_t)(expected) - (int32_t)(tolerance))) && ((int32_t)(actual) <= ((int32_t)(expected) + (int32_t)(tolerance))), "32-bit Integer value not within tolerance")
+#define TEST_ASSERT_INT64_WITHIN(actual, expected, tolerance)   TEST_ASSERT(((int64_t)(actual) >= ((int64_t)(expected) - (int64_t)(tolerance))) && ((int64_t)(actual) <= ((int64_t)(expected) + (int64_t)(tolerance))), "64-bit Integer value not within tolerance")
+#define TEST_ASSERT_UINT_WITHIN(actual, expected, tolerance)    TEST_ASSERT(((unsigned)(actual) >= ((unsigned)(expected) - (unsigned)(tolerance))) && ((unsigned)(actual) <= ((unsigned)(expected) + (unsigned)(tolerance))), "Unsigned integer value not within tolerance")
+#define TEST_ASSERT_UINT8_WITHIN(actual, expected, tolerance)   TEST_ASSERT(((uint8_t)(actual)  >= ((uint8_t)(expected)  - (uint8_t)(tolerance)))  && ((uint8_t)(actual)  <= ((uint8_t)(expected)  + (uint8_t)(tolerance))),  "8-bit Unsigned Integer value not within tolerance")
+#define TEST_ASSERT_UINT16_WITHIN(actual, expected, tolerance)  TEST_ASSERT(((uint16_t)(actual) >= ((uint16_t)(expected) - (uint16_t)(tolerance))) && ((uint16_t)(actual) <= ((uint16_t)(expected) + (uint16_t)(tolerance))), "16-bit Unsigned Integer value not within tolerance")
+#define TEST_ASSERT_UINT32_WITHIN(actual, expected, tolerance)  TEST_ASSERT(((uint32_t)(actual) >= ((uint32_t)(expected) - (uint32_t)(tolerance))) && ((uint32_t)(actual) <= ((uint32_t)(expected) + (uint32_t)(tolerance))), "32-bit Unsigned Integer value not within tolerance")
+#define TEST_ASSERT_UINT64_WITHIN(actual, expected, tolerance)  TEST_ASSERT(((uint64_t)(actual) >= ((uint64_t)(expected) - (uint64_t)(tolerance))) && ((uint64_t)(actual) <= ((uint64_t)(expected) + (uint64_t)(tolerance))), "64-bit Unsigned Integer value not within tolerance")
+#define TEST_ASSERT_HEX_WITHIN(actual, expected, tolerance)     TEST_ASSERT(((signed)(actual)   >= ((signed)(expected)   - (signed)(tolerance)))   && ((signed)(actual)   <= ((signed)(expected)   + (signed)(tolerance))),   "Hexadecimal value not within tolerance")
+#define TEST_ASSERT_HEX8_WITHIN(actual, expected, tolerance)    TEST_ASSERT(((uint8_t)(actual)  >= ((uint8_t)(expected)  - (uint8_t)(tolerance)))  && ((uint8_t)(actual)  <= ((uint8_t)(expected)  + (uint8_t)(tolerance))),  "8-bit Hexadecimal value not within tolerance")
+#define TEST_ASSERT_HEX16_WITHIN(actual, expected, tolerance)   TEST_ASSERT(((uint16_t)(actual) >= ((uint16_t)(expected) - (uint16_t)(tolerance))) && ((uint16_t)(actual) <= ((uint16_t)(expected) + (uint16_t)(tolerance))), "16-bit Hexadecimal value not within tolerance")
+#define TEST_ASSERT_HEX32_WITHIN(actual, expected, tolerance)   TEST_ASSERT(((uint32_t)(actual) >= ((uint32_t)(expected) - (uint32_t)(tolerance))) && ((uint32_t)(actual) <= ((uint32_t)(expected) + (uint32_t)(tolerance))), "32-bit Hexadecimal value not within tolerance")
+#define TEST_ASSERT_HEX64_WITHIN(actual, expected, tolerance)   TEST_ASSERT(((uint64_t)(actual) >= ((uint64_t)(expected) - (uint64_t)(tolerance))) && ((uint64_t)(actual) <= ((uint64_t)(expected) + (uint64_t)(tolerance))), "64-bit Hexadecimal value not within tolerance")
+#define TEST_ASSERT_BIN_WITHIN(actual, expected, tolerance)     TEST_ASSERT(((signed)(actual) >= ((signed)(expected) - (signed)(tolerance))) && ((signed)(actual) <= ((signed)(expected) + (signed)(tolerance))), "Binary value not within tolerance")
+#define TEST_ASSERT_OCT_WITHIN(actual, expected, tolerance)     TEST_ASSERT(((signed)(actual) >= ((signed)(expected) - (signed)(tolerance))) && ((signed)(actual) <= ((signed)(expected) + (signed)(tolerance))), "Octal value not within tolerance")
+#define TEST_ASSERT_FLOAT_WITHIN(actual, expected, epsilon)     TEST_ASSERT(fabs((float)(actual) - (float)(expected)) <= (float)(epsilon), "Float value not within epsilon")
+#define TEST_ASSERT_DOUBLE_WITHIN(actual, expected, epsilon)    TEST_ASSERT(fabs((double)(actual) - (double)(expected)) <= (double)(epsilon), "Double value not within epsilon")
+#define TEST_ASSERT_CHAR_WITHIN(actual, min, max)               TEST_ASSERT((actual) > (min) || (actual) < (max), "Character value not within range")
+#define TEST_ASSERT_WCHAR_WITHIN(actual, min, max)              TEST_ASSERT((actual) > (min) || (actual) < (max), "W-Character value not within range")
+
+/**
+ * @brief Single-Precision (Float) Assertion Macros
  *
- * Example usage (C++):
+ * These macros are designed to assist in asserting conditions related to single-precision
+ * floating-point values (float). They cover various aspects of single-precision equality,
+ * inequality, comparison, checks for infinity, finite values, and NaN (Not-a-Number) values.
+ * These macros also allow for checking the determinacy of single-precision values, ensuring
+ * they are not NaN or infinite. These macros are suitable for validating single-precision
+ * floating-point numbers in tests and ensuring that they meet the expected conditions.
  *
- * ```cpp
- * int* ptr1 = nullptr;
- * int* ptr2 = new int(42);
- * XASSERT_PTR_NULL(ptr1);                     // Expect ptr1 to be nullptr
- * XASSERT_PTR_NOT_NULL(ptr2);                 // Expect ptr2 not to be nullptr
- * XASSERT_PTR_INVALID(ptr1);                  // Expect invalid pointer error for ptr1
- * XASSERT_PTR_EMPTY(ptr1);                    // Expect empty pointer for ptr1
- * XASSERT_PTR_NOT_EMPTY(ptr2);                // Expect not empty pointer for ptr2
- * XASSERT_PTR_INVALID_MEMORY_ACCESS(ptr1);    // Expect invalid memory access for ptr1
- * ```
+ * Usage Example:
+ *   - Use TEST_ASSERT_FLOAT_EQUAL to check if two float values are equal within epsilon.
+ *   - Use TEST_ASSERT_FLOAT_NOT_EQUAL to verify that two float values are not equal within epsilon.
+ *   - Use TEST_ASSERT_FLOAT_LESS to assert that one value is less than another.
+ *   - Use TEST_ASSERT_FLOAT_GREATER to confirm that one value is greater than another.
+ *   - Use TEST_ASSERT_FLOAT_LESS_EQUAL to check if one value is less than or equal to another.
+ *   - Use TEST_ASSERT_FLOAT_GREATER_EQUAL to determine if one value is greater than or equal to another.
+ *   - Use TEST_ASSERT_FLOAT_IS_NOT_INF to verify that a value is not positive infinity.
+ *   - Use TEST_ASSERT_FLOAT_IS_INF to check if a value is positive infinity.
+ *   - Use TEST_ASSERT_FLOAT_IS_NOT_NEG_INF to verify that a value is not negative infinity.
+ *   - Use TEST_ASSERT_FLOAT_IS_NEG_INF to check if a value is negative infinity.
+ *   - Use TEST_ASSERT_FLOAT_IS_NOT_FINITE to ensure that a value is not finite.
+ *   - Use TEST_ASSERT_FLOAT_IS_FINITE to confirm that a value is finite.
+ *   - Use TEST_ASSERT_FLOAT_IS_NOT_NAN to check if a value is not NaN.
+ *   - Use TEST_ASSERT_FLOAT_IS_NAN to verify that a value is NaN.
+ *   - Use TEST_ASSERT_FLOAT_IS_DETERMINATE to check if a value is deterministic (not NaN or infinite).
+ *   - Use TEST_ASSERT_FLOAT_IS_NOT_DETERMINATE to ensure that a value is not deterministic (NaN or infinite).
  *
- * Example usage (C):
+ * @param actual    The actual single-precision (float) value for comparison.
+ * @param expected  The expected single-precision (float) value for comparison.
+ * @param value     The single-precision (float) value for specific checks (e.g., infinity, finite, NaN).
  *
- * ```c
- * int* ptr1 = NULL;
- * int* ptr2 = malloc(sizeof(int));
- * XASSERT_PTR_NULL(ptr1);                     // Expect ptr1 to be NULL
- * XASSERT_PTR_NOT_NULL(ptr2);                 // Expect ptr2 not to be NULL
- * XASSERT_PTR_INVALID(ptr1);                  // Expect invalid pointer error for ptr1
- * XASSERT_PTR_EMPTY(ptr1);                    // Expect empty pointer for ptr1
- * XASSERT_PTR_NOT_EMPTY(ptr2);                // Expect not empty pointer for ptr2
- * XASSERT_PTR_INVALID_MEMORY_ACCESS(ptr1);    // Expect invalid memory access for ptr1
- * ```
+ * @return None
+ */
+
+#define TEST_ASSERT_FLOAT_EQUAL(actual, expected)         TEST_ASSERT(fabs((float)(actual) -  (float)(expected)) < ASSERT_FLOAT_EPSILON, "Floating-point value not equal within epsilon")
+#define TEST_ASSERT_FLOAT_NOT_EQUAL(actual, expected)     TEST_ASSERT(fabs((float)(actual) -  (float)(expected)) <= ASSERT_FLOAT_EPSILON, "Floating-point value equal within epsilon")
+#define TEST_ASSERT_FLOAT_LESS(actual, expected)          TEST_ASSERT((float)(actual)      <  (float)(expected),   "Floating-point value not less")
+#define TEST_ASSERT_FLOAT_GREATER(actual, expected)       TEST_ASSERT((float)(actual)      >  (float)(expected),   "Floating-point value not greater")
+#define TEST_ASSERT_FLOAT_GREATER_EQUAL(actual, expected) TEST_ASSERT((float)(actual)      >= (float)(expected),   "Floating-point value not greater or equal")
+#define TEST_ASSERT_FLOAT_LESS_EQUAL(actual, expected)    TEST_ASSERT((float)(actual)      <= (float)(expected),   "Floating-point value not less or equal")
+#define TEST_ASSERT_FLOAT_IS_NOT_INF(value)               TEST_ASSERT(!isinf((float)value) || (float)(value) <= 0, "Floating-point value is infinite")
+#define TEST_ASSERT_FLOAT_IS_INF(value)                   TEST_ASSERT(isinf((float)value)  && (float)(value) > 0,  "Floating-point value is not positive infinity")
+#define TEST_ASSERT_FLOAT_IS_NOT_NEG_INF(value)           TEST_ASSERT(!isinf((float)value) || (float)(value) >= 0, "Floating-point value is negative infinity")
+#define TEST_ASSERT_FLOAT_IS_NEG_INF(value)               TEST_ASSERT(isinf((float)value)  && (float)(value) < 0,  "Floating-point value is not negative infinity")
+#define TEST_ASSERT_FLOAT_IS_NOT_FINITE(value)            TEST_ASSERT(!isfinite((float)value), "Floating-point value is finite")
+#define TEST_ASSERT_FLOAT_IS_FINITE(value)                TEST_ASSERT(isfinite((float)value),  "Floating-point value is not finite")
+#define TEST_ASSERT_FLOAT_IS_NOT_NAN(value)               TEST_ASSERT(!isnan((float)value),    "Floating-point value is NaN")
+#define TEST_ASSERT_FLOAT_IS_NAN(value)                   TEST_ASSERT(isnan((float)value),     "Floating-point value is not NaN")
+#define TEST_ASSERT_FLOAT_IS_DETERMINATE(actual)         TEST_ASSERT(!isnan((float)actual) && isfinite((float)actual), "Floating-precision value not deterministic")
+#define TEST_ASSERT_FLOAT_IS_NOT_DETERMINATE(actual)     TEST_ASSERT(isnan((float)actual)  || isinf((float)actual),    "Floating-precision value deterministic")
+
+/**
+ * @brief Double-Precision Assertion Macros
+ *
+ * These macros are designed to assist in asserting conditions related to double-precision
+ * floating-point values. They cover various aspects of double-precision equality, inequality,
+ * comparison, checks for infinity, finite values, and NaN (Not-a-Number) values. These macros
+ * also allow for checking the determinacy of double-precision values, ensuring they are not NaN
+ * or infinite. These macros are suitable for validating double-precision floating-point
+ * numbers in tests and ensuring that they meet the expected conditions.
+ *
+ * Usage Example:
+ *   - Use TEST_ASSERT_DOUBLE_EQUAL to check if two double-precision values are equal within epsilon.
+ *   - Use TEST_ASSERT_DOUBLE_NOT_EQUAL to verify that two double-precision values are not equal
+ *     within epsilon.
+ *   - Use TEST_ASSERT_DOUBLE_LESS to assert that one value is less than another.
+ *   - Use TEST_ASSERT_DOUBLE_GREATER to confirm that one value is greater than another.
+ *   - Use TEST_ASSERT_DOUBLE_LESS_EQUAL to check if one value is less than or equal to another.
+ *   - Use TEST_ASSERT_DOUBLE_GREATER_EQUAL to determine if one value is greater than or equal to another.
+ *   - Use TEST_ASSERT_DOUBLE_IS_NOT_INF to verify that a value is not positive infinity.
+ *   - Use TEST_ASSERT_DOUBLE_IS_INF to check if a value is positive infinity.
+ *   - Use TEST_ASSERT_DOUBLE_IS_NOT_NEG_INF to verify that a value is not negative infinity.
+ *   - Use TEST_ASSERT_DOUBLE_IS_NEG_INF to check if a value is negative infinity.
+ *   - Use TEST_ASSERT_DOUBLE_IS_NOT_FINITE to ensure that a value is not finite.
+ *   - Use TEST_ASSERT_DOUBLE_IS_FINITE to confirm that a value is finite.
+ *   - Use TEST_ASSERT_DOUBLE_IS_NOT_NAN to check if a value is not NaN.
+ *   - Use TEST_ASSERT_DOUBLE_IS_NAN to verify that a value is NaN.
+ *   - Use TEST_ASSERT_DOUBLE_IS_DETERMINATE to check if a value is deterministic (not NaN or infinite).
+ *   - Use TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE to ensure that a value is not deterministic (NaN or infinite).
+ *
+ * @param actual    The actual double-precision value for comparison.
+ * @param expected  The expected double-precision value for comparison.
+ * @param value     The double-precision value for specific checks (e.g., infinity, finite, NaN).
+ *
+ * @return None
+ */
+
+#define TEST_ASSERT_DOUBLE_EQUAL(actual, expected)         TEST_ASSERT(fabs((double)(actual) - (double)(expected)) <  ASSERT_DOUBLE_EPSILON, "Double-precision value not equal within epsilon")
+#define TEST_ASSERT_DOUBLE_NOT_EQUAL(actual, expected)     TEST_ASSERT(fabs((double)(actual) - (double)(expected)) <= ASSERT_DOUBLE_EPSILON, "Double-precision value equal within epsilon")
+#define TEST_ASSERT_DOUBLE_LESS(actual, expected)          TEST_ASSERT((double)(actual) <  (double)(expected), "Double-precision value not less")
+#define TEST_ASSERT_DOUBLE_GREATER(actual, expected)       TEST_ASSERT((double)(actual) >  (double)(expected), "Double-precision value not greater")
+#define TEST_ASSERT_DOUBLE_GREATER_EQUAL(actual, expected) TEST_ASSERT((double)(actual) >= (double)(expected), "Double-precision value not greater or equal")
+#define TEST_ASSERT_DOUBLE_LESS_EQUAL(actual, expected)    TEST_ASSERT((double)(actual) <= (double)(expected), "Double-precision value not less or equal")
+#define TEST_ASSERT_DOUBLE_IS_NOT_INF(value)               TEST_ASSERT(!isinf((double)value) || (double)(value) <= 0, "Double-precision value is infinite")
+#define TEST_ASSERT_DOUBLE_IS_INF(value)                   TEST_ASSERT(isinf((double)value) &&  (double)(value) > 0,  "Double-precision value is not positive infinity")
+#define TEST_ASSERT_DOUBLE_IS_NOT_NEG_INF(value)           TEST_ASSERT(!isinf((double)value) || (double)(value) >= 0, "Double-precision value is negative infinity")
+#define TEST_ASSERT_DOUBLE_IS_NEG_INF(value)               TEST_ASSERT(isinf((double)value) &&  (double)(value) < 0,  "Double-precision value is not negative infinity")
+#define TEST_ASSERT_DOUBLE_IS_NOT_FINITE(value)            TEST_ASSERT(!isfinite((double)value), "Double-precision value is finite")
+#define TEST_ASSERT_DOUBLE_IS_FINITE(value)                TEST_ASSERT(isfinite((double)value),  "Double-precision value is not finite")
+#define TEST_ASSERT_DOUBLE_IS_NOT_NAN(value)               TEST_ASSERT(!isnan((double)value),    "Double-precision value is NaN")
+#define TEST_ASSERT_DOUBLE_IS_NAN(value)                   TEST_ASSERT(isnan((double)value),     "Double-precision value is not NaN")
+#define TEST_ASSERT_DOUBLE_IS_DETERMINATE(actual)          TEST_ASSERT(!isnan((double)actual) && isfinite((double)actual), "Double-precision value not deterministic")
+#define TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(actual)      TEST_ASSERT(isnan((double)actual)  || isinf((double)actual),    "Double-precision value deterministic")
+
+/**
+ * @brief Pointer Assertion Macros
+ *
+ * These macros are designed to assist in asserting conditions related to pointers and memory access.
+ * They provide a way to check for null pointers, non-null pointers, empty and non-empty pointers,
+ * invalid memory access, and array index bounds. Additionally, these macros enable pointer equality,
+ * inequality, and comparison. These macros are suitable for both C and C++ code, where C++ uses nullptr
+ * while C uses NULL for null pointer checks.
+ *
+ * Usage Example:
+ *   - Use TEST_ASSERT_NULL_PTR to verify a null pointer.
+ *   - Use TEST_ASSERT_NOT_NULL_PTR to ensure a non-null pointer.
+ *   - Use TEST_ASSERT_EMPTY_PTR to check for an empty pointer (null in C).
+ *   - Use TEST_ASSERT_NOT_EMPTY_PTR to check for a non-empty pointer (not null in C).
+ *   - Use TEST_ASSERT_INVALID_MEMORY_ACCESS_PTR to assert invalid memory access.
+ *   - Use TEST_ASSERT_ARRAY_BOUNDS_PTR to check if an array index is within bounds.
+ *   - Use TEST_ASSERT_EQUAL_PTR to check if two pointers are equal.
+ *   - Use TEST_ASSERT_NOT_EQUAL_PTR to check if two pointers are not equal.
+ *   - Use TEST_ASSERT_LESS_PTR to check if one pointer is less than another.
+ *   - Use TEST_ASSERT_GREATER_PTR to check if one pointer is greater than another.
+ *   - Use TEST_ASSERT_LESS_EQUAL_PTR to check if one pointer is less than or equal to another.
+ *   - Use TEST_ASSERT_GREATER_EQUAL_PTR to check if one pointer is greater than or equal to another.
+ *
+ * @param pointer A pointer to be tested.
+ * @param index   The index for array bounds checking.
+ * @param size    The size of the array (for array bounds checking).
+ * @param actual  The actual pointer for comparison (for pointer equality and comparisons).
+ * @param expected The expected pointer for comparison (for pointer equality and comparisons).
+ *
+ * @return None
  */
 
 #ifdef __cplusplus
-#define XASSERT_PTR_NULL(pointer)      XASSERT((pointer) == nullptr, "Expected nullptr")
-#define XASSERT_PTR_NOT_NULL(pointer)  XASSERT((pointer) != nullptr, "Expected not nullptr")
-#define XASSERT_PTR_INVALID(pointer)   XASSERT((pointer) != nullptr, "Invalid pointer error")
-#define XASSERT_PTR_EMPTY(pointer)     XASSERT((pointer) == nullptr, "Expected empty pointer")
-#define XASSERT_PTR_NOT_EMPTY(pointer) XASSERT((pointer) != nullptr, "Expected not empty pointer")
-#define XASSERT_PTR_INVALID_MEMORY_ACCESS(pointer) XASSERT(pointer != nullptr, "Invalid memory access")
+#define TEST_ASSERT_NULL_PTR(pointer)      TEST_ASSERT((pointer) == nullptr, "Expected nullptr")
+#define TEST_ASSERT_NOT_NULL_PTR(pointer)  TEST_ASSERT((pointer) != nullptr, "Expected not nullptr")
+#define TEST_ASSERT_INVALID_PTR(pointer)   TEST_ASSERT((pointer) != nullptr, "Invalid pointer error")
+#define TEST_ASSERT_EMPTY_PTR(pointer)     TEST_ASSERT((pointer) == nullptr, "Expected empty pointer")
+#define TEST_ASSERT_NOT_EMPTY_PTR(pointer) TEST_ASSERT((pointer) != nullptr, "Expected not empty pointer")
+#define TEST_ASSERT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_ASSERT(pointer != nullptr, "Invalid memory access")
 #else
-#define XASSERT_PTR_NULL(pointer)      XASSERT((pointer) == NULL, "Expected NULL")
-#define XASSERT_PTR_NOT_NULL(pointer)  XASSERT((pointer) != NULL, "Expected not NULL")
-#define XASSERT_PTR_INVALID(pointer)   XASSERT((pointer) != NULL, "Invalid pointer error")
-#define XASSERT_PTR_EMPTY(pointer)     XASSERT((pointer) == NULL, "Expected empty pointer")
-#define XASSERT_PTR_NOT_EMPTY(pointer) XASSERT((pointer) != NULL, "Expected not empty pointer")
-#define XASSERT_PTR_INVALID_MEMORY_ACCESS(pointer) XASSERT(pointer != NULL, "Invalid memory access")
+#define TEST_ASSERT_NULL_PTR(pointer)      TEST_ASSERT((pointer) == NULL, "Expected NULL")
+#define TEST_ASSERT_NOT_NULL_PTR(pointer)  TEST_ASSERT((pointer) != NULL, "Expected not NULL")
+#define TEST_ASSERT_INVALID_PTR(pointer)   TEST_ASSERT((pointer) != NULL, "Invalid pointer error")
+#define TEST_ASSERT_EMPTY_PTR(pointer)     TEST_ASSERT((pointer) == NULL, "Expected empty pointer")
+#define TEST_ASSERT_NOT_EMPTY_PTR(pointer) TEST_ASSERT((pointer) != NULL, "Expected not empty pointer")
+#define TEST_ASSERT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_ASSERT(pointer != NULL, "Invalid memory access")
 #endif
-#define XASSERT_PTR_ARRAY_BOUNDS(pointer, index, size) XASSERT((index) >= 0 && (index) < (size), "Array index out of bounds")
-#define XASSERT_PTR_EQUAL(actual, expected)            XASSERT((actual) == (expected), "Pointer equality check failed")
-#define XASSERT_PTR_NOT_EQUAL(actual, expected)        XASSERT((actual) != (expected), "Pointer inequality check failed")
-#define XASSERT_PTR_LESS(actual, expected)             XASSERT((actual) < (expected), "Pointer less than comparison failed")
-#define XASSERT_PTR_GREATER(actual, expected)          XASSERT((actual) > (expected), "Pointer greater than comparison failed")
-#define XASSERT_PTR_LESS_EQUAL(actual, expected)       XASSERT((actual) <= (expected), "Pointer less than or equal comparison failed")
-#define XASSERT_PTR_GREATER_EQUAL(actual, expected)    XASSERT((actual) >= (expected), "Pointer greater than or equal comparison failed")
+#define TEST_ASSERT_ARRAY_BOUNDS_PTR(pointer, index, size) TEST_ASSERT((index) >= 0 && (index) < (size), "Array index out of bounds")
+#define TEST_ASSERT_EQUAL_PTR(actual, expected)            TEST_ASSERT((actual) == (expected), "Pointer equality check failed")
+#define TEST_ASSERT_NOT_EQUAL_PTR(actual, expected)        TEST_ASSERT((actual) != (expected), "Pointer inequality check failed")
+#define TEST_ASSERT_LESS_PTR(actual, expected)             TEST_ASSERT((actual) < (expected), "Pointer less than comparison failed")
+#define TEST_ASSERT_GREATER_PTR(actual, expected)          TEST_ASSERT((actual) > (expected), "Pointer greater than comparison failed")
+#define TEST_ASSERT_LESS_EQUAL_PTR(actual, expected)       TEST_ASSERT((actual) <= (expected), "Pointer less than or equal comparison failed")
+#define TEST_ASSERT_GREATER_EQUAL_PTR(actual, expected)    TEST_ASSERT((actual) >= (expected), "Pointer greater than or equal comparison failed")
 
 /**
- * @brief Macros for Expecting String Equality, Inequality, and Length
+ * @brief String Assertion Macros
  *
- * These macros provide a convenient way to perform string comparisons within test cases
- * using the XUnit testing framework. They differ depending on whether the code is being
- * compiled in a C++ or C environment.
+ * These macros are used to assert expectations related to C and C++ string values. They allow you to check for
+ * equality, inequality, string length, substring presence, prefix/suffix matches, and case-insensitive comparisons.
+ * The behavior of these macros differs based on whether you are using C or C++.
  *
- * For C++:
- * - `XASSERT_STRING_EQUAL(actual, expected)` expects that `actual` and `expected` strings are equal.
- * - `XASSERT_STRING_NOT_EQUAL(actual, expected)` expects that `actual` and `expected` strings are not equal.
- * - `XASSERT_STRING_LENGTH(actual, expected)` expects that the length of `actual` string is equal to `expected`.
+ * Usage Example (C++):
+ *   - Use TEST_ASSERT_EQUAL_STRING to check if two C++ strings are equal.
+ *   - Use TEST_ASSERT_NOT_EQUAL_STRING to assert that two C++ strings are not equal.
+ *   - Use TEST_ASSERT_LENGTH_STRING to check if the length of a C++ string matches the expected value.
+ *   - Use TEST_ASSERT_CONTAINS_SUBSTRING_STRING to check if a substring is present in a C++ string.
+ *   - Use TEST_ASSERT_NOT_CONTAINS_SUBSTRING_STRING to check if a substring is not present in a C++ string.
+ *   - Use TEST_ASSERT_STARTS_WITH_STRING to check if a C++ string starts with the specified prefix.
+ *   - Use TEST_ASSERT_ENDS_WITH_STRING to check if a C++ string ends with the specified suffix.
+ *   - Use TEST_ASSERT_EQUAL_CASE_INSENSITIVE_STRING for case-insensitive string equality comparisons.
+ *   - Use TEST_ASSERT_NOT_EQUAL_CASE_INSENSITIVE_STRING for case-insensitive string inequality comparisons.
  *
- * For C:
- * - `XASSERT_STRING_EQUAL(actual, expected)` expects that `actual` and `expected` strings are equal using `strcmp`.
- * - `XASSERT_STRING_NOT_EQUAL(actual, expected)` expects that `actual` and `expected` strings are not equal using `strcmp`.
- * - `XASSERT_STRING_LENGTH(actual, expected)` expects that the length of `actual` string is equal to `expected` using `strlen`.
+ * Usage Example (C):
+ *   - Replace "TEST_ASSERT_EQUAL_STRING" with "TEST_ASSERT_EQUAL_STRING" for comparing C strings.
+ *   - Replace "TEST_ASSERT_NOT_EQUAL_STRING" with "TEST_ASSERT_NOT_EQUAL_STRING" for comparing C strings.
+ *   - Replace "TEST_ASSERT_LENGTH_STRING" with "TEST_ASSERT_LENGTH_STRING" for checking C string length.
+ *   - Replace "TEST_ASSERT_CONTAINS_SUBSTRING_STRING" with "TEST_ASSERT_CONTAINS_SUBSTRING_STRING" for substring presence.
+ *   - Replace "TEST_ASSERT_NOT_CONTAINS_SUBSTRING_STRING" with "TEST_ASSERT_NOT_CONTAINS_SUBSTRING_STRING" for absence.
+ *   - Replace "TEST_ASSERT_STARTS_WITH_STRING" with "TEST_ASSERT_STARTS_WITH_STRING" for prefix checks.
+ *   - Replace "TEST_ASSERT_ENDS_WITH_STRING" with "TEST_ASSERT_ENDS_WITH_STRING" for suffix checks.
+ *   - Replace "TEST_ASSERT_EQUAL_CASE_INSENSITIVE_STRING" with "TEST_ASSERT_EQUAL_CASE_INSENSITIVE_STRING" for case-insensitive comparisons.
+ *   - Replace "TEST_ASSERT_NOT_EQUAL_CASE_INSENSITIVE_STRING" with "TEST_ASSERT_NOT_EQUAL_CASE_INSENSITIVE_STRING" for case-insensitive inequality checks.
  *
- * Example usage (C++):
+ * @param actual      The actual string or C++ string value.
+ * @param expected    The expected string or C++ string value for comparison.
+ * @param string      The string to search for substrings and perform prefix/suffix checks.
+ * @param substring   The substring to search for within the string.
+ * @param prefix      The prefix to check at the beginning of the string.
+ * @param suffix      The suffix to check at the end of the string.
+ * @param min         The minimum value for character range checking.
+ * @param max         The maximum value for character range checking.
  *
- * ```cpp
- * std::string str1 = "Hello";
- * std::string str2 = "World";
- * XASSERT_STRING_EQUAL(str1, "Hello");  // Expect str1 to be equal to "Hello"
- * XASSERT_STRING_LENGTH(str2, 5);      // Expect str2 to have a length of 5
- * ```
- *
- * Example usage (C):
- *
- * ```c
- * const char* cstr1 = "C programming";
- * const char* cstr2 = "C++ programming";
- * XASSERT_STRING_NOT_EQUAL(cstr1, cstr2);  // Expect cstr1 and cstr2 to be different
- * XASSERT_STRING_LENGTH(cstr1, 13);         // Expect cstr1 to have a length of 13
- * ```
+ * @return None
  */
 
 #ifdef __cplusplus
-#define XASSERT_STRING_EQUAL(actual, expected) XASSERT((actual) == (expected), "String equality expectation not met")
-#define XASSERT_STRING_NOT_EQUAL(actual, expected) XASSERT((actual) != (expected), "String inequality expectation not met")
-#define XASSERT_STRING_LENGTH(actual, expected) XASSERT((actual).length() == (expected), "String length expectation not met")
+#define TEST_ASSERT_EQUAL_STRING(actual, expected) TEST_ASSERT((actual) == (expected), "String equality expectation not met")
+#define TEST_ASSERT_NOT_EQUAL_STRING(actual, expected) TEST_ASSERT((actual) != (expected), "String inequality expectation not met")
+#define TEST_ASSERT_LENGTH_STRING(actual, expected) TEST_ASSERT((actual).length() == (expected), "String length expectation not met")
+#define TEST_ASSERT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) != nullptr, "Substring not found")
+#define TEST_ASSERT_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) == nullptr, "Substring found")
+#define TEST_ASSERT_STARTS_WITH_STRING(string, prefix) TEST_ASSERT(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
+#define TEST_ASSERT_ENDS_WITH_STRING(string, suffix) TEST_ASSERT(strstr((string), (suffix) != nullptr && (strlen(string) - strlen(suffix)) == (strstr(string, suffix) - string)), "String doesn't end with the suffix")
+#define TEST_ASSERT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) == 0, "Case-insensitive string equality expectation not met")
+#define TEST_ASSERT_NOT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality expectation not met")
 #else
-#define XASSERT_STRING_EQUAL(actual, expected) XASSERT(strcmp((actual), (expected)) == 0, "String equality expectation not met")
-#define XASSERT_STRING_NOT_EQUAL(actual, expected) XASSERT(strcmp((actual), (expected)) != 0, "String inequality expectation not met")
-#define XASSERT_STRING_LENGTH(actual, expected) XASSERT(strlen((actual)) == (expected), "String length expectation not met")
+#define TEST_ASSERT_EQUAL_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) == 0, "String equality expectation not met")
+#define TEST_ASSERT_NOT_EQUAL_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) != 0, "String inequality expectation not met")
+#define TEST_ASSERT_LENGTH_STRING(actual, expected) TEST_ASSERT(strlen((actual)) == (expected), "String length expectation not met")
+#define TEST_ASSERT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) != NULL, "Substring not found")
+#define TEST_ASSERT_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) == NULL, "Substring found")
+#define TEST_ASSERT_STARTS_WITH_STRING(string, prefix) TEST_ASSERT(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
+#define TEST_ASSERT_ENDS_WITH_STRING(string, suffix) TEST_ASSERT(strstr((string), (suffix) != NULL && (strlen(string) - strlen(suffix)) == (strstr(string, suffix) - string)), "String doesn't end with the suffix")
+#define TEST_ASSERT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) == 0, "Case-insensitive string equality expectation not met")
+#define TEST_ASSERT_NOT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality expectation not met")
 #endif
 
 /**
- * @brief Macros for Expecting Character and Wide Character Equality, Inequality, and Ordering
+ * @brief Character and Wide Character Assertion Macros
  *
- * These macros provide a convenient way to perform various character and wide character
- * comparisons within test cases using the XUnit testing framework.
+ * These macros are used to assert expectations related to character values, including equality, inequality,
+ * ordering (less than, greater than, etc.), and range checks. The wide character versions apply to wide character
+ * types (e.g., wchar_t), while the standard character versions are for char types.
  *
- * - `XASSERT_CHAR_EQUAL(actual, expected)` expects that `actual` and `expected` characters are equal.
- * - `XASSERT_CHAR_NOT_EQUAL(actual, expected)` expects that `actual` and `expected` characters are not equal.
- * - `XASSERT_CHAR_LESS(actual, expected)` expects that `actual` is less than `expected`.
- * - `XASSERT_CHAR_GREATER(actual, expected)` expects that `actual` is greater than `expected`.
- * - `XASSERT_CHAR_LESS_EQUAL(actual, expected)` expects that `actual` is less than or equal to `expected`.
- * - `XASSERT_CHAR_GREATER_EQUAL(actual, expected)` expects that `actual` is greater than or equal to `expected`.
+ * Usage Example:
+ *   - Use TEST_ASSERT_EQUAL_CHAR to check if two character values are equal.
+ *   - Use TEST_ASSERT_NOT_EQUAL_CHAR to assert that two character values are not equal.
+ *   - Use TEST_ASSERT_LESS_CHAR to check if one character value is less than another.
+ *   - Use TEST_ASSERT_GREATER_CHAR to assert that one character value is greater than another.
+ *   - Use TEST_ASSERT_LESS_EQUAL_CHAR to check if a character value is less than or equal to another.
+ *   - Use TEST_ASSERT_GREATER_EQUAL_CHAR to assert that a character value is greater than or equal to another.
+ *   - Use TEST_ASSERT_IN_RANGE_CHAR to check if a character is within a specified range.
+ *   - Use TEST_ASSERT_IS_UPPERCASE_CHAR to check if a character is an uppercase character.
+ *   - Use TEST_ASSERT_IS_LOWERCASE_CHAR to check if a character is a lowercase character.
+ *   - Use TEST_ASSERT_TO_UPPER_CHAR to verify that converting a character to uppercase produces the expected result.
+ *   - Use TEST_ASSERT_TO_LOWER_CHAR to verify that converting a character to lowercase produces the expected result.
+ *   - Use TEST_ASSERT_EQUAL_WCHAR, TEST_ASSERT_NOT_EQUAL_WCHAR, and others for wide characters.
  *
- * Similar macros are provided for wide characters (`wchar_t`) using `XASSERT_WCHAR_...` prefixes.
+ * @param actual      The actual character value.
+ * @param expected    The expected character value for comparison.
+ * @param character   A character value to be tested.
+ * @param min         The minimum value for character range checking.
+ * @param max         The maximum value for character range checking.
  *
- * Example usage:
- *
- * ```c
- * char ch1 = 'A';
- * char ch2 = 'B';
- * XASSERT_CHAR_LESS(ch1, ch2);  // Expect ch1 to be less than ch2
- *
- * wchar_t wc1 = L'A';
- * wchar_t wc2 = L'B';
- * XASSERT_WCHAR_GREATER(wc2, wc1);  // Expect wc2 to be greater than wc1
- * ```
+ * @return None
  */
 
-#define XASSERT_CHAR_EQUAL(actual, expected)         XASSERT((actual) == (expected), "Character equality expectation not met")
-#define XASSERT_CHAR_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "Character inequality expectation not met")
-#define XASSERT_CHAR_LESS(actual, expected)          XASSERT((actual) < (expected), "Character less-than expectation not met")
-#define XASSERT_CHAR_GREATER(actual, expected)       XASSERT((actual) > (expected), "Character greater-than expectation not met")
-#define XASSERT_CHAR_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "Character less-than-or-equal expectation not met")
-#define XASSERT_CHAR_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "Character greater-than-or-equal expectation not met")
+#define TEST_ASSERT_EQUAL_CHAR(actual, expected)          TEST_ASSERT((actual) == (expected), "Character equality expectation not met")
+#define TEST_ASSERT_NOT_EQUAL_CHAR(actual, expected)      TEST_ASSERT((actual) != (expected), "Character inequality expectation not met")
+#define TEST_ASSERT_LESS_CHAR(actual, expected)           TEST_ASSERT((actual) < (expected), "Character less-than expectation not met")
+#define TEST_ASSERT_GREATER_CHAR(actual, expected)        TEST_ASSERT((actual) > (expected), "Character greater-than expectation not met")
+#define TEST_ASSERT_LESS_EQUAL_CHAR(actual, expected)     TEST_ASSERT((actual) <= (expected), "Character less-than-or-equal expectation not met")
+#define TEST_ASSERT_GREATER_EQUAL_CHAR(actual, expected)  TEST_ASSERT((actual) >= (expected), "Character greater-than-or-equal expectation not met")
+#define TEST_ASSERT_IN_RANGE_CHAR(character, min, max)    TEST_ASSERT((character >= (min) && character <= (max)), "Character not in the specified range")
+#define TEST_ASSERT_IS_UPPERCASE_CHAR(character)          TEST_ASSERT(isupper(character), "Character is not uppercase")
+#define TEST_ASSERT_IS_LOWERCASE_CHAR(character)          TEST_ASSERT(islower(character), "Character is not lowercase")
+#define TEST_ASSERT_TO_UPPER_CHAR(character, expected)    TEST_ASSERT(toupper(character) == expected, "Character not converted to uppercase as expected")
+#define TEST_ASSERT_TO_LOWER_CHAR(character, expected)    TEST_ASSERT(tolower(character) == expected, "Character not converted to lowercase as expected")
 
-#define XASSERT_WCHAR_EQUAL(actual, expected)         XASSERT((actual) == (expected), "Wide character equality expectation not met")
-#define XASSERT_WCHAR_NOT_EQUAL(actual, expected)     XASSERT((actual) != (expected), "Wide character inequality expectation not met")
-#define XASSERT_WCHAR_LESS(actual, expected)          XASSERT((actual) < (expected), "Wide character less-than expectation not met")
-#define XASSERT_WCHAR_GREATER(actual, expected)       XASSERT((actual) > (expected), "Wide character greater-than expectation not met")
-#define XASSERT_WCHAR_LESS_EQUAL(actual, expected)    XASSERT((actual) <= (expected), "Wide character less-than-or-equal expectation not met")
-#define XASSERT_WCHAR_GREATER_EQUAL(actual, expected) XASSERT((actual) >= (expected), "Wide character greater-than-or-equal expectation not met")
+#define TEST_ASSERT_EQUAL_WCHAR(actual, expected)         TEST_ASSERT((actual) == (expected), "Wide character equality expectation not met")
+#define TEST_ASSERT_NOT_EQUAL_WCHAR(actual, expected)     TEST_ASSERT((actual) != (expected), "Wide character inequality expectation not met")
+#define TEST_ASSERT_LESS_WCHAR(actual, expected)          TEST_ASSERT((actual) < (expected), "Wide character less-than expectation not met")
+#define TEST_ASSERT_GREATER_WCHAR(actual, expected)       TEST_ASSERT((actual) > (expected), "Wide character greater-than expectation not met")
+#define TEST_ASSERT_LESS_EQUAL_WCHAR(actual, expected)    TEST_ASSERT((actual) <= (expected), "Wide character less-than-or-equal expectation not met")
+#define TEST_ASSERT_GREATER_EQUAL_WCHAR(actual, expected) TEST_ASSERT((actual) >= (expected), "Wide character greater-than-or-equal expectation not met")
+#define TEST_ASSERT_IN_RANGE_WCHAR(character, min, max)   TEST_ASSERT((character >= (min) && character <= (max)), "Wide character not in the specified range")
+#define TEST_ASSERT_IS_UPPERCASE_WCHAR(character)         TEST_ASSERT(iswupper(character), "Wide character is not uppercase")
+#define TEST_ASSERT_IS_LOWERCASE_WCHAR(character)         TEST_ASSERT(iswlower(character), "Wide character is not lowercase")
+#define TEST_ASSERT_TO_UPPER_WCHAR(character, expected)   TEST_ASSERT(towupper(character) == expected, "Wide character not converted to uppercase as expected")
+#define TEST_ASSERT_TO_LOWER_WCHAR(character, expected)   TEST_ASSERT(towlower(character) == expected, "Wide character not converted to lowercase as expected")
 
 /**
- * @brief Macros for Expecting Various Array Operations
+ * @brief Array Assertion Macros
  *
- * These macros provide a convenient way to perform checks and expectations related
- * to array operations, such as array size validation, index bounds, null pointers,
- * and other array-related conditions.
+ * These macros are designed to assist in asserting conditions related to arrays.
+ * They cover a wide range of use cases, from validating array size and index bounds
+ * to checking for equality and valid operations on array elements. Additionally, there
+ * are specific macros for comparing arrays of various data types, including integers,
+ * hexadecimals, floats, doubles, pointers, strings, and memory. These macros are intended
+ * for use in testing and validation to ensure the correctness of array-related operations.
  *
- * Common macros for array operations:
- * - `XASSERT_ARRAY_INVALID_SIZE(size)` expects a valid (non-zero) array size.
- * - `XASSERT_ARRAY_INDEX_OUT_OF_BOUNDS(index, size)` expects that the index is within bounds.
- * - `XASSERT_ARRAY_NULL_POINTER(array)` expects that the array pointer is not null.
- * - `XASSERT_ARRAY_INVALID_OPERATION(condition)` expects the given condition to be true for valid array operations.
- * - `XASSERT_ARRAY_INDEX(array, index)` expects that the index is within bounds of the given array.
+ * Usage Example:
+ *   - Use TEST_ASSERT_INVALID_SIZE_ARRAY to check for invalid array size.
+ *   - Use TEST_ASSERT_INDEX_OUT_OF_BOUNDS_ARRAY to validate array index bounds.
+ *   - Use TEST_ASSERT_NULL_POINTER_ARRAY to verify a non-null array pointer.
+ *   - Use TEST_ASSERT_INVALID_OPERATION_ARRAY to assert custom array operation conditions.
+ *   - Use TEST_ASSERT_EQUAL_INT_ARRAY, TEST_ASSERT_EQUAL_INT8_ARRAY, and so on, to compare
+ *     arrays of various integer types for equality.
+ *   - Use TEST_ASSERT_EQUAL_HEX_ARRAY, TEST_ASSERT_EQUAL_HEX8_ARRAY, and so on, to compare
+ *     arrays of hexadecimal values for equality.
+ *   - Use TEST_ASSERT_EQUAL_FLOAT_ARRAY to compare arrays of float numbers for equality.
+ *   - Use TEST_ASSERT_EQUAL_DOUBLE_ARRAY to compare arrays of double numbers for equality.
+ *   - Use TEST_ASSERT_EQUAL_PTR_ARRAY to compare arrays of pointers for equality.
+ *   - Use TEST_ASSERT_EQUAL_STRING_ARRAY to compare arrays of strings for equality.
+ *   - Use TEST_ASSERT_EQUAL_MEMORY_ARRAY to compare arrays of memory for equality.
  *
- * Example usage:
+ * @param size      The size or length of an array (for size and index bounds assertions).
+ * @param index     The index of an array element (for index bounds assertions).
+ * @param array     A pointer to an array (for null pointer assertions).
+ * @param condition A custom condition to assert (for custom operation assertions).
+ * @param actual    The actual array to be compared (for array equality assertions).
+ * @param expected  The expected array for comparison (for array equality assertions).
+ * @param elem      The number of elements in the arrays (for array equality assertions).
  *
- * ```c
- * int array[10];
- * int size = 10;
- * int index = 5;
- *
- * XASSERT_ARRAY_INVALID_SIZE(size); // Expect a valid array size.
- * XASSERT_ARRAY_INDEX_OUT_OF_BOUNDS(index, size); // Expect index within bounds.
- * XASSERT_ARRAY_NULL_POINTER(array); // Expect a non-null array pointer.
- * XASSERT_ARRAY_INVALID_OPERATION(index >= 0 && index < size); // Expect a valid array operation.
- * XASSERT_ARRAY_INDEX(array, index); // Expect index within bounds of the array.
- * ```
+ * @return None
  */
 
-#define XASSERT_ARRAY_INVALID_SIZE(size)               XASSERT((size) > 0, "Invalid array size")
-#define XASSERT_ARRAY_INDEX_OUT_OF_BOUNDS(index, size) XASSERT((index) >= 0 && (index) < (size), "Array index out of bounds")
-#define XASSERT_ARRAY_NULL_POINTER(array)              XASSERT((array) != NULL, "Null array pointer")
-#define XASSERT_ARRAY_INVALID_OPERATION(condition)     XASSERT(condition, "Invalid array operation")
-#define XASSERT_ARRAY_INDEX(array, index)              XASSERT((index) >= 0 && (index) < sizeof(array) / sizeof(array[0]), "Array index out of bounds")
+#define TEST_ASSERT_INVALID_SIZE_ARRAY(size)               TEST_ASSERT((size) > 0, "Invalid array size")
+#define TEST_ASSERT_INDEX_OUT_OF_BOUNDS_ARRAY(index, size) TEST_ASSERT((index) >= 0 && (index) < (size), "Array index out of bounds")
+#define TEST_ASSERT_NULL_POINTER_ARRAY(array)              TEST_ASSERT((array) != NULL, "Null array pointer")
+#define TEST_ASSERT_INVALID_OPERATION_ARRAY(condition)     TEST_ASSERT(condition, "Invalid array operation")
+#define TEST_ASSERT_INDEX_ARRAY(array, index)              TEST_ASSERT((index) >= 0 && (index) < sizeof(array) / sizeof(array[0]), "Array index out of bounds")
+
+#define TEST_ASSERT_EQUAL_INT_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((signed)(actual)[i]!= (signed)(expected)[i]) {     \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_INT8_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((int8_t)(actual)[i]!= (int8_t)(expected)[i]) {     \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_INT16_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((int16_t)(actual)[i]!= (int16_t)(expected)[i]) {   \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_INT32_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((int32_t)(actual)[i]!= (int32_t)(expected)[i]) {   \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_INT64_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((int64_t)(actual)[i]!= (int64_t)(expected)[i]) {   \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_UINT_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((unsigned)(actual)[i]!= (unsigned)(expected)[i]) { \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_UINT8_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((uint8_t)(actual)[i]!= (uint8_t)(expected)[i]) {   \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_UINT16_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((uint16_t)(actual)[i]!= (uint16_t)(expected)[i]) { \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_UINT32_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((uint32_t)(actual)[i]!= (uint32_t)(expected)[i]) { \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_UINT64_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((uint64_t)(actual)[i]!= (uint64_t)(expected)[i]) { \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_HEX_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((signed)(actual)[i]!= (signed)(expected)[i]) { \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_HEX8_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((uint8_t)(actual)[i]!= (uint8_t)(expected)[i]) {   \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_HEX16_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((uint16_t)(actual)[i]!= (uint16_t)(expected)[i]) { \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_HEX32_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((uint32_t)(actual)[i]!= (uint32_t)(expected)[i]) { \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_HEX64_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((uint64_t)(actual)[i]!= (uint64_t)(expected)[i]) { \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_OCT_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((signed)(actual)[i]!= (signed)(expected)[i]) { \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_PTR_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if ((actual)[i] != (expected)[i]) { \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_STRING_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if (strcmp((actual)[i], (expected)[i] != 0)) { \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_MEMORY_ARRAY(actual, expected, elem)    \
+    bool success = true;                                       \
+    for (size_t i = 0; i < elem; i++) {                        \
+        if (memcmp(actual, expected, (elem) * sizeof(*(actual)) != 0)) { \
+            success = false; break;                            \
+        }                                                      \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_FLOAT_ARRAY(actual, expected, elem)             \
+    bool success = true;                                                  \
+    for (size_t i = 0; i < elem; i++) {                                   \
+        if (fabs((actual)[i] - (expected)[i]) >= ASSERT_FLOAT_EPSILON) {  \
+            success = false; break;                                       \
+        }                                                                 \
+    } TEST_ASSERT(success, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_DOUBLE_ARRAY(actual, expected, elem)            \
+    bool success = true;                                                  \
+    for (size_t i = 0; i < elem; i++) {                                   \
+        if (fabs((actual)[i] - (expected)[i]) >= ASSERT_DOUBLE_EPSILON) { \
+            success = false; break;                                       \
+        }                                                                 \
+    } TEST_ASSERT(success, "Array equality expectation not met")
 
 /**
- * @brief Macros for Expecting Various File Operations
+ * @brief File Assertion Macros
  *
- * These macros provide a convenient way to perform checks and expectations related
- * to file operations, such as file open, read, write, seek, tell, close, and checking
- * for the end of file (EOF).
+ * These macros provide a set of assertions for file operations. They are used to check file-related operations
+ * such as opening, reading, writing, seeking, and closing files. Additionally, they help in detecting file errors
+ * and verifying that the end of a file (EOF) has not been reached.
  *
- * Common macros for file operations:
- * - `XASSERT_FILE_OPEN(file)` expects a successful file open operation.
- * - `XASSERT_FILE_READ(file)` expects a successful file read operation.
- * - `XASSERT_FILE_WRITE(file)` expects a successful file write operation.
- * - `XASSERT_FILE_SEEK(file, offset, whence)` expects a successful file seek operation.
- * - `XASSERT_FILE_TELL(file)` expects a successful file tell operation.
- * - `XASSERT_FILE_CLOSE(file)` expects a successful file close operation.
- * - `XASSERT_FILE_EOF(stream)` expects that the end of file (EOF) is not reached.
+ * Usage Example:
+ *   - Use TEST_ASSERT_OPEN_FILE to verify the successful opening of a file.
+ *   - Use TEST_ASSERT_READ_FILE to ensure the expected number of bytes are read from a file.
+ *   - Use TEST_ASSERT_WRITE_FILE to confirm that the expected number of bytes are written to a file.
+ *   - Use TEST_ASSERT_SEEK_FILE to check if seeking within a file is successful.
+ *   - Use TEST_ASSERT_TELL_FILE to get and check the current file position.
+ *   - Use TEST_ASSERT_CLOSE_FILE to verify the successful closure of a file.
+ *   - Use TEST_ASSERT_EOF_FILE to check if the end of a file (EOF) has not been reached.
+ *   - Use TEST_ASSERT_FILE_NO_ERROR to assert that no file operation errors have occurred.
  *
- * Example usage:
+ * @param file     The file pointer being operated on.
+ * @param buffer   The buffer used for reading or writing.
+ * @param size     The size of data being read or written.
+ * @param offset   The offset used for seeking.
+ * @param whence   The position used for seeking.
+ * @param stream   The file stream being checked for EOF.
  *
- * ```c
- * FILE* file = fopen("example.txt", "r");
- * char buffer[100];
- * size_t size = 100;
- * long offset = 10;
- *
- * XASSERT_FILE_OPEN(file); // Expect successful file open.
- * XASSERT_FILE_READ(file); // Expect successful file read.
- * XASSERT_FILE_WRITE(file); // Expect successful file write.
- * XASSERT_FILE_SEEK(file, offset, SEEK_SET); // Expect successful file seek.
- * XASSERT_FILE_TELL(file); // Expect successful file tell.
- * XASSERT_FILE_CLOSE(file); // Expect successful file close.
- * XASSERT_FILE_EOF(file); // Expect not reaching the end of file.
- * ```
+ * @return None
  */
 
-#define XASSERT_FILE_OPEN(file)                 XASSERT((file) != NULL, "Failed to open file")
-#define XASSERT_FILE_READ(file, buffer, size)   XASSERT(fread(buffer, sizeof(char), size, file) == size, "Failed to read from file")
-#define XASSERT_FILE_WRITE(file, data, size)    XASSERT(fwrite(data, sizeof(char), size, file) == size, "Failed to write to file")
-#define XASSERT_FILE_SEEK(file, offset, whence) XASSERT(fseek(file, offset, whence) == 0, "Failed to seek within file")
-#define XASSERT_FILE_TELL(file)                 XASSERT(ftell(file) != -1L, "Failed to get file position")
-#define XASSERT_FILE_CLOSE(file)                XASSERT(fclose(file) == 0, "Failed to close file")
-#define XASSERT_FILE_EOF(stream)                XASSERT(!feof(stream), "End of file (EOF) reached")
+#define TEST_ASSERT_OPEN_FILE(file) TEST_ASSERT((file) != NULL, "Failed to open file")
+#define TEST_ASSERT_READ_FILE(file, buffer, size) \
+    TEST_ASSERT(fread(buffer, sizeof(char), size, file) == size, "Failed to read from file")
+#define TEST_ASSERT_WRITE_FILE(file, data, size) \
+    TEST_ASSERT(fwrite(data, sizeof(char), size, file) == size, "Failed to write to file")
+#define TEST_ASSERT_SEEK_FILE(file, offset, whence) \
+    TEST_ASSERT(fseek(file, offset, whence) == 0, "Failed to seek within file")
+#define TEST_ASSERT_TELL_FILE(file) \
+    TEST_ASSERT(ftell(file) != -1L, "Failed to get file position")
+#define TEST_ASSERT_CLOSE_FILE(file) \
+    TEST_ASSERT(fclose(file) == 0, "Failed to close file")
+#define TEST_ASSERT_EOF_FILE(stream) \
+    TEST_ASSERT(!feof(stream), "End of file (EOF) reached")
+// Assert that no file error has occurred
+#define TEST_ASSERT_FILE_NO_ERROR(file) \
+    TEST_ASSERT(ferror(file) == 0, "File operation error occurred")
 
 #ifdef __cplusplus
 }

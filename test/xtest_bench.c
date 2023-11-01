@@ -30,7 +30,7 @@
     ----------------------------------------------------------------------------
 */
 #include <trilobite/xtest.h>   // basic test tools
-#include <trilobite/xassert.h> // extra asserts
+#include <trilobite/xassert.h> // assert functions
 
 /**
     @brief This is an example function for the benchmark cases
@@ -66,6 +66,11 @@ XTEST_BENCH(comput_bubble_sort_small_dataset) {
     size_t size = sizeof(data) / sizeof(data[0]);
 
     bubble_sort(data, size);
+
+    // Add assertions to check if data is sorted in ascending order
+    for (size_t i = 0; i < size - 1; i++) {
+        TEST_ASSERT_MSG(data[i] <= data[i + 1], "Data is not sorted");
+    }
 } // end benchmark
 
 XTEST_BENCH(comput_bubble_sort_large_dataset) {
@@ -74,6 +79,11 @@ XTEST_BENCH(comput_bubble_sort_large_dataset) {
     size_t size = sizeof(data) / sizeof(data[0]);
 
     bubble_sort(data, size);
+
+    // Add assertions to check if data is sorted in ascending order
+    for (size_t i = 0; i < size - 1; i++) {
+        TEST_ASSERT_MSG(data[i] <= data[i + 1], "Data is not sorted");
+    }
 } // end benchmark
 
 XTEST_BENCH(comput_bubble_sort_medium_dataset) {
@@ -82,6 +92,11 @@ XTEST_BENCH(comput_bubble_sort_medium_dataset) {
     size_t size = sizeof(data) / sizeof(data[0]);
 
     bubble_sort(data, size);
+
+    // Add assertions to check if data is sorted in ascending order
+    for (size_t i = 0; i < size - 1; i++) {
+        TEST_ASSERT_MSG(data[i] <= data[i + 1], "Data is not sorted");
+    }
 } // end benchmark
 
 XTEST_BENCH(comput_bubble_sort_empty_dataset) {
@@ -90,6 +105,8 @@ XTEST_BENCH(comput_bubble_sort_empty_dataset) {
     size_t size = 0;
 
     bubble_sort(data, size);
+
+    // Nothing to assert for an empty dataset
 } // end benchmark
 
 XTEST_BENCH(comput_bubble_sort_sorted_dataset) {
@@ -98,6 +115,11 @@ XTEST_BENCH(comput_bubble_sort_sorted_dataset) {
     size_t size = sizeof(data) / sizeof(data[0]);
 
     bubble_sort(data, size);
+
+    // Add assertions to check if data is sorted in ascending order
+    for (size_t i = 0; i < size - 1; i++) {
+        TEST_ASSERT_MSG(data[i] <= data[i + 1], "Data is not sorted");
+    }
 } // end benchmark
 
 XTEST_BENCH(comput_bubble_sort_reverse_sorted_dataset) {
@@ -106,7 +128,13 @@ XTEST_BENCH(comput_bubble_sort_reverse_sorted_dataset) {
     size_t size = sizeof(data) / sizeof(data[0]);
 
     bubble_sort(data, size);
+
+    // Add assertions to check if data is sorted in ascending order
+    for (size_t i = 0; i < size - 1; i++) {
+        TEST_ASSERT_MSG(data[i] <= data[i + 1], "Data is not sorted");
+    }
 } // end benchmark
+
 
 //
 // XUNIT-GROUP:

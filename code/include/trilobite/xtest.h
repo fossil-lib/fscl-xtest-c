@@ -69,7 +69,6 @@ extern "C"
 #include <cstring>
 #include <cstdlib>
 #include <cstdint>
-#include <cstddef>
 #include <cstdio>
 #include <cmath>
 #include <ctime>
@@ -78,7 +77,6 @@ extern "C"
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <stddef.h>
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
@@ -336,7 +334,7 @@ XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixtur
  *
  * @return            None.
  */
-#define XTEST_RUN_UNIT(test_case, runner) xtest_run_test_unit(&test_case, runner)
+#define XTEST_RUN_UNIT(test_case, runner) xtest_run_test_unit(&test_case, &runner->stats)
 
 /**
  * @brief Runs a test case within a test fixture and updates test statistics.
@@ -350,7 +348,7 @@ XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixtur
  *
  * @return            None.
  */
-#define XTEST_RUN_FIXTURE(test_case, fixture, runner) xtest_run_test_fixture(&test_case, &fixture, runner)
+#define XTEST_RUN_FIXTURE(test_case, fixture, runner) xtest_run_test_fixture(&test_case, &fixture, &runner->stats)
 
 //
 // ------------------------------------------------------------------------
@@ -359,9 +357,9 @@ XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixtur
 //
 // ------------------------------------------------------------------------
 //
-// XEXPECT: expectation function with optional message.
-// XASSERT: assertion function with optional message.
-// XIGNORE: ignored with a specified reason and prints it to stderr
+// TEST_EXPECT: expectation function with optional message.
+// TEST_ASSERT: assertion function with optional message.
+// TEST_IGNORE: ignored with a specified reason and prints it to stderr
 //
 // ------------------------------------------------------------------------
 //
@@ -411,7 +409,7 @@ XTEST_API void xexpect(bool expression, const char *message, const char* file, i
  * @return            If the expression evaluates to false, the assertion fails, and the message is displayed.
  *                    Otherwise, the assertion passes, and nothing happens.
  */
-#define XASSERT(expression, message) xassert(expression, message, __FILE__, __LINE__, __func__)
+#define TEST_ASSERT(expression, message) xassert(expression, message, __FILE__, __LINE__, __func__)
 
 /**
  * @brief Adds an expectation to the current test case.
@@ -422,28 +420,28 @@ XTEST_API void xexpect(bool expression, const char *message, const char* file, i
  * @return            If the expression evaluates to false, the expectation fails, and the message is displayed.
  *                    Otherwise, the expectation passes, and nothing happens.
  */
-#define XEXPECT(expression, message) xexpect(expression, message, __FILE__, __LINE__, __func__)
+#define TEST_EXPECT(expression, message) xexpect(expression, message, __FILE__, __LINE__, __func__)
 
 /**
  * @brief Asserts whether a test passes or fails.
  *
  * @param message  A message to be displayed if the test fails.
  *
- * @return         This macro calls XASSERT(false, message), indicating a test failure with the provided message.
+ * @return         This macro calls TEST_ASSERT(false, message), indicating a test failure with the provided message.
  */
 #define XTEST_FAIL(message) \
     do { \
-        XASSERT(false, message); \
+        TEST_ASSERT(false, message); \
     } while (false)
 
 /**
  * @brief Defines a test that passes.
  *
- * @return  This macro calls XASSERT(true, "Test passed"), indicating a successful test.
+ * @return  This macro calls TEST_ASSERT(true, "Test passed"), indicating a successful test.
  */
 #define XTEST_PASS() \
     do { \
-        XASSERT(true, "Test passed"); \
+        TEST_ASSERT(true, "Test passed"); \
     } while (false)
 
 /**
@@ -465,12 +463,12 @@ XTEST_API void xexpect(bool expression, const char *message, const char* file, i
 /**
  * @brief Indicates that a test is not yet implemented.
  *
- * @return  This macro calls XASSERT(false, "Test not implemented yet"), indicating that the test is incomplete.
+ * @return  This macro calls TEST_ASSERT(false, "Test not implemented yet"), indicating that the test is incomplete.
  *          A message is printed to stderr to indicate that the test is not yet implemented.
  */
 #define XTEST_NOT_IMPLEMENTED() \
     do { \
-        XASSERT(false, "Test not implemented yet") \
+        TEST_ASSERT(false, "Test not implemented yet") \
     } while (false)
 
 /**
