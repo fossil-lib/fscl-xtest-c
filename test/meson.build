@@ -1,7 +1,7 @@
 if get_option('with_test').enabled()
     test_source = files(
         'xtest_xexpect.c',  'xtest_xassert.c',
-        'xtest_software.c', 'xtest_bench.c',   'xunit_runner.c')
+        'xtest_bench.c',   'xunit_runner.c')
 
     configure_file(input: 'example.txt', output: 'example.txt', copy: true)
 
