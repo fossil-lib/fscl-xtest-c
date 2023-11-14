@@ -7,5 +7,5 @@ if get_option('with_test').enabled()
 
     test('Execute project Xunit tests', 
         executable('xrunner', test_source,
-        dependencies : [trilo_xtest_c_dep, trilo_xmock_c_dep]))
+        dependencies : [trilo_xtest_c_dep]))
 endif
