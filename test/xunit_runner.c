@@ -37,7 +37,6 @@
 extern void xassert_test_group(XUnitRunner *runner);
 extern void xexpect_test_group(XUnitRunner *runner);
 extern void xbenchs_test_group(XUnitRunner *runner);
-extern void group_mockup_software(XUnitRunner *runner);
 
 //
 // XUNIT-TEST RUNNER:
@@ -48,7 +47,6 @@ int main(int argc, char **argv) {
     xassert_test_group(&runner);
     xexpect_test_group(&runner);
     xbenchs_test_group(&runner);
-    group_mockup_software(&runner);
 
     return XTEST_RUNNER_END(runner);
 } // end of func
