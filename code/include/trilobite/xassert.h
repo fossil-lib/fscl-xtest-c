@@ -731,7 +731,7 @@ TEST_ASSERT(found, "Memory not contains assertion failed");
 #define TEST_ASSERT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) != NULL, "Substring not found")
 #define TEST_ASSERT_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) == NULL, "Substring found")
 #define TEST_ASSERT_STARTS_WITH_STRING(string, prefix) TEST_ASSERT(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
-#define TEST_ASSERT_ENDS_WITH_STRING(string, suffix) TEST_ASSERT(strstr((string), (suffix) != NULL && (strlen(string) - strlen(suffix)) == (strstr(string, suffix) - string)), "String doesn't end with the suffix")
+#define TEST_ASSERT_ENDS_WITH_STRING(string, suffix) TEST_ASSERT((strstr(string, suffix) != NULL && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
 #define TEST_ASSERT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) == 0, "Case-insensitive string equality expectation not met")
 #define TEST_ASSERT_NOT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality expectation not met")
 #endif

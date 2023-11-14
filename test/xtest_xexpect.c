@@ -1836,6 +1836,7 @@ XTEST_CASE(expect_case_array_bounds_ptr) {
     int size = 5;
 
     TEST_EXPECT_ARRAY_BOUNDS_PTR(arr, index, size); // Should pass
+    (void)arr;
 }
 
 // Test case for checking if two pointers are equal
