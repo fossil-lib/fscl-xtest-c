@@ -1,4 +1,4 @@
-lib = library('trilo-xtest-c',
+lib = static_library('trilo-xtest-c',
     'xtest.c',
     install : true,
     include_directories: dir)
