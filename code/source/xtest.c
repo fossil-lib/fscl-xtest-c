@@ -236,7 +236,7 @@ static void xtest_output_xunittest_report(XUnitRunner *runner) {
  *
  * @return              None.
  */
-void xtest_cli_print_usage(const char* program_name, const XTestCliOption* options, unsigned int num_options) {
+static void xtest_cli_print_usage(const char* program_name, const XTestCliOption* options, unsigned int num_options) {
     puts("########################################");
     printf("Usage: %s [options]\n", program_name);
     puts("Options:");
@@ -261,7 +261,7 @@ void xtest_cli_print_usage(const char* program_name, const XTestCliOption* optio
  *
  * @return              0 if the parsing is successful.
  */
-int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int argc, char** argv) {
+static int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int argc, char** argv) {
     uint32_t repeat = -1; // Default value in case "--repeat" is not provided
 
     for (ssize_t i = 1; i < argc; ++i) {
