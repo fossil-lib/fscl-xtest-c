@@ -264,7 +264,7 @@ static void xtest_cli_print_usage(const char* program_name, const XTestCliOption
 int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int argc, char** argv) {
     uint32_t repeat = -1; // Default value in case "--repeat" is not provided
 
-    for (ssize_t i = 1; i < argc; ++i) {
+    for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "--repeat") == 0 && i + 1 < argc) {
             // Attempt to convert the next argument to an integer
             char* endPtr; // To check for conversion errors
