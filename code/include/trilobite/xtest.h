@@ -114,10 +114,10 @@ typedef struct {
  * passed, failed, ignored tests, the number of expected outcomes, and the number of assertions.
  */
 typedef struct {
-    uint32_t passed_count;     // Number of passed tests
-    uint32_t failed_count;     // Number of failed tests
-    uint32_t ignored_count;    // Number of ignored tests
-    uint32_t total_count;      // Total number of tests
+    uint16_t passed_count;     // Number of passed tests
+    uint16_t failed_count;     // Number of failed tests
+    uint16_t ignored_count;    // Number of ignored tests
+    uint16_t total_count;      // Total number of tests
 } XTestStats;
 
 /**

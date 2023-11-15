@@ -54,7 +54,7 @@ static bool XTEST_FLAG_VERSION    = false;
 static bool XTEST_FLAG_COLORED    = false;
 static bool XTEST_FLAG_HELP       = false;
 static bool XTEST_FLAG_REPEAT     = false;
-static uint32_t XTEST_ITER_REAPET      = 1;
+static int XTEST_ITER_REAPET      = 1;
 
 // XUnit options for the tester to switch on-off
 XTestCliOption options[] = {
@@ -241,7 +241,7 @@ void xtest_cli_print_usage(const char* program_name, const XTestCliOption* optio
     printf("Usage: %s [options]\n", program_name);
     puts("Options:");
 
-    for (size_t i = 0; i < num_options; ++i) {
+    for (int i = 0; i < num_options; ++i) {
         printf("  %s %s\t%s\n", options[i].option_long_name, options[i].option_short_name, options[i].description);
     } // end for
     puts("########################################");
@@ -262,13 +262,13 @@ void xtest_cli_print_usage(const char* program_name, const XTestCliOption* optio
  * @return              0 if the parsing is successful.
  */
 int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int argc, char** argv) {
-    uint32_t repeatCount = -1; // Default value in case "--repeat" is not provided
+    uint32_t repeat = -1; // Default value in case "--repeat" is not provided
 
-    for (size_t i = 1; i < argc; ++i) {
+    for (ssize_t i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "--repeat") == 0 && i + 1 < argc) {
             // Attempt to convert the next argument to an integer
             char* endPtr; // To check for conversion errors
-            repeatCount = strtol(argv[i + 1], &endPtr, 10);
+            repeat = strtol(argv[i + 1], &endPtr, 10);
 
             if (*endPtr != '\0') {
                 fprintf(stderr, "Error: Invalid number after --repeat\n");
@@ -290,13 +290,13 @@ int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int 
         }
     }
 
-    // Now you have the repeatCount value and can use it as needed
-    if (repeatCount != -1) {
-        printf("Repeat count: %d\n", repeatCount);
+    // Now you have the repeat value and can use it as needed
+    if (repeat != -1) {
+        printf("Repeat count: %d\n", repeat);
     } else {
         printf("Repeat count not provided. Using default value or -1 if not specified.\n");
     }
-    XTEST_ITER_REAPET = repeatCount;
+    XTEST_ITER_REAPET = repeat;
 
     return 0;
 } // end of func
@@ -316,7 +316,7 @@ int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int 
  */
 XUnitRunner xtest_start(int argc, char **argv) {
     XUnitRunner runner;
-    size_t num_options = sizeof(options) / sizeof(options[0]);
+    unsigned int num_options = sizeof(options) / sizeof(options[0]);
     xtest_cli_parse_args(options, num_options, argc, (char**)argv);
 
     if (XTEST_FLAG_VERSION) {
@@ -376,7 +376,7 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
     // Execute the test function
     if (!XIGNORE_TEST_CASE) {
         clock_t start_time = clock(); // Record start time
-        for (size_t iter = 0; iter < XTEST_ITER_REAPET; iter++) {
+        for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
             test_case->test_function();
         } // end for
 
@@ -431,7 +431,7 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
     if (!XIGNORE_TEST_CASE) {
         clock_t start_time = clock(); // Record start time
 
-        for (size_t iter = 0; iter < XTEST_ITER_REAPET; iter++) {
+        for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
             if (fixture->setup) {
                 fixture->setup();
             } // end if
