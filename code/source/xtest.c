@@ -54,7 +54,7 @@ static bool XTEST_FLAG_VERSION    = false;
 static bool XTEST_FLAG_COLORED    = false;
 static bool XTEST_FLAG_HELP       = false;
 static bool XTEST_FLAG_REPEAT     = false;
-static int XTEST_ITER_REAPET      = 1;
+static uint16_t XTEST_ITER_REAPET      = 1;
 
 // XUnit options for the tester to switch on-off
 XTestCliOption options[] = {
@@ -262,9 +262,9 @@ void xtest_cli_print_usage(const char* program_name, const XTestCliOption* optio
  * @return              0 if the parsing is successful.
  */
 int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int argc, char** argv) {
-    int repeatCount = -1; // Default value in case "--repeat" is not provided
+    uint16_t repeatCount = -1; // Default value in case "--repeat" is not provided
 
-    for (int i = 1; i < argc; ++i) {
+    for (size_t i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "--repeat") == 0 && i + 1 < argc) {
             // Attempt to convert the next argument to an integer
             char* endPtr; // To check for conversion errors
@@ -316,7 +316,7 @@ int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int 
  */
 XUnitRunner xtest_start(int argc, char **argv) {
     XUnitRunner runner;
-    unsigned int num_options = sizeof(options) / sizeof(options[0]);
+    uint16_t num_options = sizeof(options) / sizeof(options[0]);
     xtest_cli_parse_args(options, num_options, argc, (char**)argv);
 
     if (XTEST_FLAG_VERSION) {
@@ -376,7 +376,7 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
     // Execute the test function
     if (!XIGNORE_TEST_CASE) {
         clock_t start_time = clock(); // Record start time
-        for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
+        for (size_t iter = 0; iter < XTEST_ITER_REAPET; iter++) {
             test_case->test_function();
         } // end for
 
@@ -431,7 +431,7 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
     if (!XIGNORE_TEST_CASE) {
         clock_t start_time = clock(); // Record start time
 
-        for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
+        for (size_t iter = 0; iter < XTEST_ITER_REAPET; iter++) {
             if (fixture->setup) {
                 fixture->setup();
             } // end if
