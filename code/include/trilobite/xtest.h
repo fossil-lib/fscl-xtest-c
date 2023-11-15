@@ -299,6 +299,39 @@ XTEST_API void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats);
 XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats);
 
 /**
+ * @brief Define a test group function.
+ *
+ * This macro is used to define a test group function.
+ *
+ * @param group_name The name of the test group function.
+ * @param runner The XUnitRunner instance for the test group function is available in each unique test group function.
+ */
+#define XTEST_GROUP_DEFINE(group_name) \
+    void group_name(XUnitRunner *runner) \
+
+/**
+ * @brief Declare a test group function as extern.
+ *
+ * This macro is used to declare a test group function as extern,
+ * allowing it to be used in other files without including a header.
+ *
+ * @param group_name The name of the test group function.
+ */
+#define XTEST_GROUP_EXTERN(group_name) \
+    extern void group_name(XUnitRunner *runner) \
+
+/**
+ * @brief Register a test group function with a specific runner.
+ *
+ * This macro is used to register a test group function with a specific runner.
+ *
+ * @param group_name The name of the test group function.
+ * @param runner The XUnitRunner instance for the test group function.
+ */
+#define XTEST_GROUP_REGISTER(group_name, runner) \
+    group_name(&runner) \
+
+/**
  * @brief Initializes an XUnitRunner and processes command-line arguments.
  *
  * This function initializes an XUnitRunner, processes command-line arguments to handle custom options,
