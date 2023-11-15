@@ -377,19 +377,7 @@ int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int 
     return 0;
 } // end of func
 
-
-
-/**
- * @brief Initializes an XUnitRunner and processes command-line arguments.
- *
- * This function initializes an XUnitRunner, processes command-line arguments to handle custom options,
- * and displays version information or usage instructions if requested.
- *
- * @param argc  Number of command-line arguments.
- * @param argv  Array of command-line argument strings.
- *
- * @return      An initialized XUnitRunner structure.
- */
+// Initializes an XUnitRunner and processes command-line arguments.
 XUnitRunner xtest_start(int argc, char **argv) {
     XUnitRunner runner;
     unsigned int num_options = sizeof(options) / sizeof(options[0]);
@@ -420,32 +408,13 @@ XUnitRunner xtest_start(int argc, char **argv) {
     return runner;
 } // end of func
 
-/**
- * @brief Finalizes the execution of a Trilobite XUnit runner and displays test results.
- *
- * This function prints the test results, including the number of tests passed, failed, ignored,
- * and the total count. It also returns the count of failed tests.
- *
- * @param runner    Pointer to the Trilobite XUnit runner containing test statistics.
- *
- * @return          The count of failed tests.
- */
+// Finalizes the execution of a Trilobite XUnit runner and displays test results.
 int xtest_end(XUnitRunner *runner) {
     xtest_output_xunittest_report(runner);
     return runner->stats.failed_count;
 } // end of func
 
-/**
- * @brief Runs a unit test case and updates test statistics.
- *
- * This function executes a unit test case, records the execution time, and updates the
- * test statistics based on the test result.
- *
- * @param test_case   Pointer to the unit test case to be executed.
- * @param stats       Pointer to the structure containing test statistics.
- *
- * @return            None.
- */
+// Runs a unit test case and updates test statistics.
 void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
     xtest_output_xunittest_format_start(test_case, stats);
 
@@ -488,18 +457,7 @@ void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
     stats->total_count++;
 } // end of func
 
-/**
- * @brief Runs a test case within a test fixture and updates test statistics.
- *
- * This function executes a test case within a given test fixture, records the execution time,
- * and updates the test statistics based on the test result.
- *
- * @param test_case   Pointer to the test case to be executed.
- * @param fixture     Pointer to the test fixture containing setup and teardown functions.
- * @param stats       Pointer to the structure containing test statistics.
- *
- * @return            None.
- */
+// Runs a test case within a test fixture and updates test statistics.
 void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats)  {
     xtest_output_xunittest_format_start(test_case, stats);
 
@@ -552,30 +510,13 @@ void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestSt
     stats->total_count++;
 } // end of func
 
-/**
- * @brief Marks a test case as ignored with a specified reason and prints it to stderr.
- *
- * This function is used to indicate that a test case should be ignored and provides a reason
- * for the omission. It prints the specified reason to the standard error stream (stderr).
- *
- * @param reason  The reason for ignoring the test case.
- */
+// Marks a test case as ignored with a specified reason and prints it to stderr.
 void xignore(const char* reason, const char* file, int line, const char* func) {
     XIGNORE_TEST_CASE = true;
     xtest_output_xignore(reason, file, line, func);
 } // end of func
 
-/**
- * @brief Custom assertion function with optional message.
- *
- * This function allows custom assertions and displays a message if the assertion fails.
- * It also provides an option to disable further assertion scanning after the first failure.
- *
- * @param expression  The expression to be asserted (should evaluate to true for success).
- * @param message     An optional message to be displayed when the assertion fails.
- *
- * @return            None.
- */
+// Custom assertion function with optional message.
 void xassert(bool expression, const char *message, const char* file, int line, const char* func) {
     if (!XASSERT_PASS_SCAN) {
         return;
@@ -585,17 +526,7 @@ void xassert(bool expression, const char *message, const char* file, int line, c
     xtest_output_xassert(expression, message, file, line, func);
 } // end of func
 
-/**
- * @brief Custom expectation function with optional message.
- *
- * This function allows custom expectations and displays a message if the expectation fails.
- * It also provides an option to disable further expectation scanning after the first failure.
- *
- * @param expression  The expression to be expected (should evaluate to true for success).
- * @param message     An optional message to be displayed when the expectation fails.
- *
- * @return            None.
- */
+// Custom expectation function with optional message.
 void xexpect(bool expression, const char *message, const char* file, int line, const char* func) {
     XEXPECT_PASS_SCAN = true;
 
