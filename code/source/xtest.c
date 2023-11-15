@@ -54,7 +54,7 @@ static bool XTEST_FLAG_VERSION    = false;
 static bool XTEST_FLAG_COLORED    = false;
 static bool XTEST_FLAG_HELP       = false;
 static bool XTEST_FLAG_REPEAT     = false;
-static uint16_t XTEST_ITER_REAPET      = 1;
+static uint32_t XTEST_ITER_REAPET      = 1;
 
 // XUnit options for the tester to switch on-off
 XTestCliOption options[] = {
@@ -262,7 +262,7 @@ void xtest_cli_print_usage(const char* program_name, const XTestCliOption* optio
  * @return              0 if the parsing is successful.
  */
 int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int argc, char** argv) {
-    uint16_t repeatCount = -1; // Default value in case "--repeat" is not provided
+    uint32_t repeatCount = -1; // Default value in case "--repeat" is not provided
 
     for (size_t i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "--repeat") == 0 && i + 1 < argc) {
@@ -316,7 +316,7 @@ int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int 
  */
 XUnitRunner xtest_start(int argc, char **argv) {
     XUnitRunner runner;
-    uint32_t num_options = sizeof(options) / sizeof(options[0]);
+    size_t num_options = sizeof(options) / sizeof(options[0]);
     xtest_cli_parse_args(options, num_options, argc, (char**)argv);
 
     if (XTEST_FLAG_VERSION) {
