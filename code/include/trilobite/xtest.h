@@ -45,26 +45,6 @@ extern "C"
 {
 #endif
 
- // Define platform-specific macros
-#ifdef _WIN32
-    #define TRILOBITE_XTEST_EXPORT __declspec(dllexport)
-    #define TRILOBITE_XTEST_IMPORT __declspec(dllimport)
-#else
-    #define TRILOBITE_XTEST_EXPORT __attribute__((visibility("default")))
-    #define TRILOBITE_XTEST_IMPORT
-#endif
-
-// Define the MY_TEST_FRAMEWORK_API macro
-#ifdef TRILOBITE_XTEST_SHARED
-    #ifdef TRILOBITE_XTEST_BUILD
-        #define XTEST_API TRILOBITE_XTEST_EXPORT
-    #else
-        #define XTEST_API TRILOBITE_XTEST_IMPORT
-    #endif
-#else
-    #define XTEST_API
-#endif
-
 #ifdef __cplusplus
 #include <cstring>
 #include <cstdlib>
@@ -114,10 +94,10 @@ typedef struct {
  * passed, failed, ignored tests, the number of expected outcomes, and the number of assertions.
  */
 typedef struct {
-    int passed_count;     // Number of passed tests
-    int failed_count;     // Number of failed tests
-    int ignored_count;    // Number of ignored tests
-    int total_count;      // Total number of tests
+    uint16_t passed_count;     // Number of passed tests
+    uint16_t failed_count;     // Number of failed tests
+    uint16_t ignored_count;    // Number of ignored tests
+    uint16_t total_count;      // Total number of tests
 } XTestStats;
 
 /**
@@ -257,7 +237,7 @@ typedef struct {
  *
  * @return      An initialized XUnitRunner structure.
  */
-XTEST_API XUnitRunner xtest_start(int argc, char **argv);
+XUnitRunner xtest_start(int argc, char **argv);
 
 /**
  * @brief Finalizes the execution of a Trilobite XUnit runner and displays test results.
@@ -269,7 +249,7 @@ XTEST_API XUnitRunner xtest_start(int argc, char **argv);
  *
  * @return          The count of failed tests.
  */
-XTEST_API int xtest_end(XUnitRunner *runner);
+int xtest_end(XUnitRunner *runner);
 
 /**
  * @brief Runs a unit test case and updates test statistics.
@@ -282,7 +262,7 @@ XTEST_API int xtest_end(XUnitRunner *runner);
  *
  * @return            None.
  */
-XTEST_API void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats);
+void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats);
 
 /**
  * @brief Runs a test case within a test fixture and updates test statistics.
@@ -296,7 +276,7 @@ XTEST_API void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats);
  *
  * @return            None.
  */
-XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats);
+void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats);
 
 /**
  * @brief Define a test group function.
@@ -405,7 +385,7 @@ XTEST_API void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixtur
  *
  * @param reason  The reason for ignoring the test case.
  */
-XTEST_API void xignore(const char* reason, const char* file, int line, const char* func);
+void xignore(const char* reason, const char* file, int line, const char* func);
 
 /**
  * @brief Custom assertion function with optional message.
@@ -418,7 +398,7 @@ XTEST_API void xignore(const char* reason, const char* file, int line, const cha
  *
  * @return            None.
  */
-XTEST_API void xassert(bool expression, const char *message, const char* file, int line, const char* func);
+void xassert(bool expression, const char *message, const char* file, int line, const char* func);
 
 /**
  * @brief Custom expectation function with optional message.
@@ -431,7 +411,7 @@ XTEST_API void xassert(bool expression, const char *message, const char* file, i
  *
  * @return            None.
  */
-XTEST_API void xexpect(bool expression, const char *message, const char* file, int line, const char* func);
+void xexpect(bool expression, const char *message, const char* file, int line, const char* func);
 
 /**
  * @brief Adds an assertion to the current test case.
