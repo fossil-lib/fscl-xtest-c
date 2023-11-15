@@ -34,9 +34,9 @@
 //
 // XUNIT-GROUP: list of test groups for the runner
 //
-extern void xassert_test_group(XUnitRunner *runner);
-extern void xexpect_test_group(XUnitRunner *runner);
-extern void xbenchs_test_group(XUnitRunner *runner);
+XTEST_GROUP_EXTERN(xassert_test_group);
+XTEST_GROUP_EXTERN(xexpect_test_group);
+XTEST_GROUP_EXTERN(xbenchs_test_group);
 
 //
 // XUNIT-TEST RUNNER:
@@ -44,9 +44,9 @@ extern void xbenchs_test_group(XUnitRunner *runner);
 int main(int argc, char **argv) {
     XUnitRunner runner = XTEST_RUNNER_START(argc, argv);
 
-    xassert_test_group(&runner);
-    xexpect_test_group(&runner);
-    xbenchs_test_group(&runner);
+    XTEST_GROUP_REGISTER(xassert_test_group, runner);
+    XTEST_GROUP_REGISTER(xexpect_test_group, runner);
+    XTEST_GROUP_REGISTER(xbenchs_test_group, runner);
 
     return XTEST_RUNNER_END(runner);
 } // end of func

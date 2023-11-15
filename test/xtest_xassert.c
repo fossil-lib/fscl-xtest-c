@@ -2202,7 +2202,7 @@ XTEST_CASE(assert_case_file_no_error) {
 //
 // LOCAL TEST GROUP
 //
-void xassert_test_group(XUnitRunner *runner) {
+XTEST_GROUP_DEFINE(xassert_test_group) {
     XTEST_RUN_UNIT(assert_case_boolean_equality, runner);
     XTEST_RUN_UNIT(assert_case_boolean_false, runner);
     XTEST_RUN_UNIT(assert_case_boolean_greater_than, runner);

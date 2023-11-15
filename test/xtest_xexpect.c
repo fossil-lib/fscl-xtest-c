@@ -2202,7 +2202,7 @@ XTEST_CASE(expect_case_file_no_error) {
 //
 // LOCAL TEST GROUP
 //
-void xexpect_test_group(XUnitRunner *runner) {
+XTEST_GROUP_DEFINE(xexpect_test_group) {
     XTEST_RUN_UNIT(expect_case_boolean_equality, runner);
     XTEST_RUN_UNIT(expect_case_boolean_false, runner);
     XTEST_RUN_UNIT(expect_case_boolean_greater_than, runner);
