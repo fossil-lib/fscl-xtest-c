@@ -87,7 +87,7 @@ static void xtest_output_xassert(bool expression, const char *message, const cha
             printf("[Asserted case failed]" ANSI_COLOR_RESET "\n%sline: %.4i\nfile: %s\nfunc: %s\n", color_red, line, file, func);
             printf("%smessage: %s\nresult: %s\n", color_red, message, expression ? "PASS" : "FAIL");
         } else if (XTEST_FLAG_CUTBACK) {
-            printf("%s", (XASSERT_PASS_SCAN ? color_green "[O]" : color_red "[X]") ANSI_COLOR_RESET);
+            printf("%s[O]", (XEXPECT_PASS_SCAN ? color_green : color_red));
         }
         printf("%s", color_reset);
     }
@@ -114,7 +114,7 @@ static void xtest_output_xexpect(bool expression, const char *message, const cha
             printf("[Expect assert failed]" ANSI_COLOR_RESET "\n%sline: %.4i\nfile: %s\nfunc: %s\n", color_red, line, file, func);
             printf("%smessage: %s\nresult: %s\n", color_red, message, expression ? "PASS" : "FAIL");
         } else if (XTEST_FLAG_CUTBACK) {
-            printf("%s", (XEXPECT_PASS_SCAN ? color_green "[O]" : color_red "[X]") ANSI_COLOR_RESET);
+            printf("%s[O]", (XEXPECT_PASS_SCAN ? color_green : color_red));
         }
         printf("%s", color_reset);
     }
