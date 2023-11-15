@@ -261,7 +261,7 @@ static void xtest_cli_print_usage(const char* program_name, const XTestCliOption
  *
  * @return              0 if the parsing is successful.
  */
-static int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int argc, char** argv) {
+int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int argc, char** argv) {
     uint32_t repeat = -1; // Default value in case "--repeat" is not provided
 
     for (ssize_t i = 1; i < argc; ++i) {
