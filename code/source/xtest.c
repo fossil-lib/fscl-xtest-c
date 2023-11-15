@@ -241,7 +241,7 @@ void xtest_cli_print_usage(const char* program_name, const XTestCliOption* optio
     printf("Usage: %s [options]\n", program_name);
     puts("Options:");
 
-    for (unsigned int i = 0; i < num_options; ++i) {
+    for (size_t i = 0; i < num_options; ++i) {
         printf("  %s %s\t%s\n", options[i].option_long_name, options[i].option_short_name, options[i].description);
     } // end for
     puts("########################################");
@@ -316,7 +316,7 @@ int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int 
  */
 XUnitRunner xtest_start(int argc, char **argv) {
     XUnitRunner runner;
-    uint16_t num_options = sizeof(options) / sizeof(options[0]);
+    uint32_t num_options = sizeof(options) / sizeof(options[0]);
     xtest_cli_parse_args(options, num_options, argc, (char**)argv);
 
     if (XTEST_FLAG_VERSION) {
