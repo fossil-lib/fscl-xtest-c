@@ -40,7 +40,7 @@
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 // Extra
-const char *XTEST_VERSION = "0.4.0";
+const char *XTEST_VERSION = "0.4.2";
 
 // Static control panel for assert/expect and marks
 static bool XEXPECT_PASS_SCAN = true;
