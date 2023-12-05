@@ -58,7 +58,6 @@ XParser xcli;
 
 // Extra
 const char *XTEST_VERSION = "0.4.2";
-const int DEFAULT_REPEAT_VALUE = -1;
 
 // Static control panel for assert/expect and marks
 static bool XEXPECT_PASS_SCAN = true;
@@ -179,11 +178,11 @@ static void xparser_parse_args(XParser *parser, int argc, char *argv[]) {
         } else if (strcmp(argv[i], "--verbose") == 0) {
             parser->verbose = true;
         } else if (strcmp(argv[i], "--version") == 0) {
-            parser->version = true;
+            puts(XTEST_VERSION);
+            exit(EXIT_SUCCESS);
         } else if (strcmp(argv[i], "--colored") == 0) {
             parser->colored = true;
         } else if (strcmp(argv[i], "--help") == 0) {
-            parser->help = true;
             xparser_print_usage();
             exit(EXIT_SUCCESS);
         } else if (strcmp(argv[i], "--repeat") == 0) {
@@ -214,9 +213,8 @@ XUnitRunner xtest_start(int argc, char **argv) {
     xparser_parse_args(&xcli, argc, argv);
 
     runner.stats = (XTestStats){0, 0, 0, 0};
-    runner.dry_run = xcli.dry_run;
 
-    if (runner.dry_run) { // Check if it's a dry run
+    if (xcli.dry_run) { // Check if it's a dry run
         printf("Simulating a test run to ensure Xcli can run...\n");
         xtest_end(&runner);  // Call xtest_end before exiting
         exit(0); // Exit the program
