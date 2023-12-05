@@ -338,100 +338,82 @@ int xtest_end(XUnitRunner *runner) {
     return runner->stats.failed_count;
 } // end of func
 
-// Runs a unit test case and updates test statistics.
-void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats)  {
-    xtest_output_xunittest_format_start(test_case, stats);
+#include <time.h>
 
-    // Execute the test function
-    if (!XIGNORE_TEST_CASE) {
-        clock_t start_time = clock(); // Record start time
-        for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
-            test_case->test_function();
-        } // end for
+// Runs a test case and updates test statistics.
+void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats) {
+    // Initialize the test as not ignored
+    test_case->ignored = false;
 
-        clock_t end_time = clock(); // Record end time
-
-        // Calculate elapsed time and store it in the test_case
-        test_case->elapsed_time = end_time - start_time;
-
-        // Determine whether the test passed or failed based on your logic
-        bool test_passed = true; // Assume the test passes by default
-
-        // Check whether expectation scanning is enabled
-        if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN) {
-            // If any expectations fail, consider the test as failed
-            test_passed = false;
-        } // end if
-
-        // Update the appropriate count based on the test result
-        if (test_passed) {
-            stats->passed_count++;
-        } else {
-            stats->failed_count++;
-        } // end if else
-    } else {
-        // Update the ignored count
-        stats->ignored_count++;
-        XIGNORE_TEST_CASE = false;
-    } // end if else
-    test_case->ignored = XIGNORE_TEST_CASE;
-    xtest_output_xunittest_format_end(test_case);
-
-    // Update the total count
-    stats->total_count++;
+    // Run the test
+    xtest_run_test(test_case, stats, NULL);
 } // end of func
 
 // Runs a test case within a test fixture and updates test statistics.
-void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats)  {
-    xtest_output_xunittest_format_start(test_case, stats);
+void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats) {
+    // Initialize the test as not ignored
+    test_case->ignored = false;
 
-    // Execute the test function within the fixture
-    if (!XIGNORE_TEST_CASE) {
-        clock_t start_time = clock(); // Record start time
+    // Run the test with the specified fixture
+    xtest_run_test(test_case, stats, fixture);
+}  // end of func
 
-        for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
-            if (fixture->setup) {
-                fixture->setup();
-            } // end if
-
-            test_case->test_function();
-   
-            if (fixture->teardown) {
-                fixture->teardown();
-            } // end if
-
-        } // end for
-
-        clock_t end_time = clock(); // Record end time
-
-        // Calculate elapsed time and store it in the test_case
-        test_case->elapsed_time = end_time - start_time;
-
-        // Determine whether the test passed or failed based on your logic
-        bool test_passed = true; // Assume the test passes by default
-
-        // Check whether expectation scanning is enabled
-        if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN) {
-            // If any expectations fail, consider the test as failed
-            test_passed = false;
-        } // end if
-
-        // Update the appropriate count based on the test result
-        if (test_passed) {
-            stats->passed_count++;
-        } else {
-            stats->failed_count++;
-        } // end if else
-    } else {
-        // Update the ignored count
+// Common functionality for running a test case and updating test statistics.
+void xtest_run_test(XTestCase* test_case, XTestStats* stats, XTestFixture* fixture) {
+    // Check if the test should be ignored
+    if (XIGNORE_TEST_CASE) {
         stats->ignored_count++;
         XIGNORE_TEST_CASE = false;
-    } // end if else
-    test_case->ignored = XIGNORE_TEST_CASE;
-    xtest_output_xunittest_format_end(test_case);
+        test_case->ignored = true;
+        return;
+    }
+
+    // Record start time
+    clock_t start_time = clock();
+
+    // Run the test iteration(s)
+    for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
+        // Execute setup function if provided
+        if (fixture && fixture->setup) {
+            fixture->setup();
+        }
+
+        // Run the actual test function
+        test_case->test_function();
+
+        // Execute teardown function if provided
+        if (fixture && fixture->teardown) {
+            fixture->teardown();
+        }
+    }
+
+    // Record end time
+    clock_t end_time = clock();
+
+    // Calculate elapsed time and store it in the test case
+    test_case->elapsed_time = end_time - start_time;
+
+    // Determine whether the test passed or failed based on expectations
+    bool test_passed = true;
+
+    if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN) {
+        // If any expectations fail, consider the test as failed
+        test_passed = false;
+    }
+
+    // Update the appropriate count based on the test result
+    if (test_passed) {
+        stats->passed_count++;
+    } else {
+        stats->failed_count++;
+    }
 
     // Update the total count
     stats->total_count++;
+
+    // Output test format information
+    xtest_output_xunittest_format_start(test_case, stats);
+    xtest_output_xunittest_format_end(test_case);
 } // end of func
 
 // Marks a test case as ignored with a specified reason and prints it to stderr.
