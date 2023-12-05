@@ -104,71 +104,31 @@ void xthread_join(xthread thread) {
 #endif
 } // end of func
 
-/**
- * @brief Output for XUnit Test Case Assert.
- *
- * Outputs information related to an assertion in a test case, including the assertion status (PASS/FAIL)
- * and an optional error message.
- *
- * @param expression  The result of the assertion (true for pass, false for fail).
- * @param message     An optional message associated with the assertion.
- */
-static void xtest_output_xassert(bool expression, const char *message, const char* file, int line, const char* func) {
-    const char* color_start = XTEST_FLAG_COLORED ? ANSI_COLOR_BLUE : "";
-    const char* color_reset = XTEST_FLAG_COLORED ? ANSI_COLOR_RESET : "";
-    const char* color_red = XTEST_FLAG_COLORED ? ANSI_COLOR_RED : "";
-    const char* color_green = XTEST_FLAG_COLORED ? ANSI_COLOR_GREEN : "";
+// Output for XUnit Test Case Assert/Expect.
+static void xtest_output_xassert_expect(bool expression, const char *message, const char *assert_type,
+                                        const char *file, int line, const char *func) {
+    const char *color_start = XTEST_FLAG_COLORED ? ANSI_COLOR_BLUE : "";
+    const char *color_reset = XTEST_FLAG_COLORED ? ANSI_COLOR_RESET : "";
+    const char *color_fail = XTEST_FLAG_COLORED ? ANSI_COLOR_RED : "";
+    const char *color_pass = XTEST_FLAG_COLORED ? ANSI_COLOR_GREEN : "";
 
     if (!expression && (XTEST_FLAG_VERBOSE || XTEST_FLAG_CUTBACK)) {
         printf("%s", color_start);
         if (XTEST_FLAG_VERBOSE) {
-            printf("[Asserted case failed]" ANSI_COLOR_RESET "\n%sline: %.4i\nfile: %s\nfunc: %s\n", color_red, line, file, func);
-            printf("%smessage: %s\nresult: %s\n", color_red, message, expression ? "PASS" : "FAIL");
+            printf("[%s case failed]" ANSI_COLOR_RESET "\n%sline: %.4i\nfile: %s\nfunc: %s\n", assert_type, color_fail, line, file, func);
+            printf("%smessage: %s\nresult: %s\n", color_fail, message, expression ? "PASS" : "FAIL");
         } else if (XTEST_FLAG_CUTBACK) {
-            printf("%s[O]", (XEXPECT_PASS_SCAN ? color_green : color_red));
+            printf("%s[O]", (XEXPECT_PASS_SCAN ? color_pass : color_fail));
         }
         printf("%s", color_reset);
     }
 } // end of func
 
-/**
- * @brief Output for XUnit Test Case Expect.
- *
- * Outputs information related to an expectation in a test case, including the expectation status (PASS/FAIL)
- * and an optional error message.
- *
- * @param expression  The result of the expectation (true for pass, false for fail).
- * @param message     An optional message associated with the expectation.
- */
-static void xtest_output_xexpect(bool expression, const char *message, const char* file, int line, const char* func) {
-    const char* color_start = XTEST_FLAG_COLORED ? ANSI_COLOR_BLUE : "";
-    const char* color_reset = XTEST_FLAG_COLORED ? ANSI_COLOR_RESET : "";
-    const char* color_red = XTEST_FLAG_COLORED ? ANSI_COLOR_RED : "";
-    const char* color_green = XTEST_FLAG_COLORED ? ANSI_COLOR_GREEN : "";
-
-    if (!expression && (XTEST_FLAG_VERBOSE || XTEST_FLAG_CUTBACK)) {
-        printf("%s", color_start);
-        if (XTEST_FLAG_VERBOSE) {
-            printf("[Expect assert failed]" ANSI_COLOR_RESET "\n%sline: %.4i\nfile: %s\nfunc: %s\n", color_red, line, file, func);
-            printf("%smessage: %s\nresult: %s\n", color_red, message, expression ? "PASS" : "FAIL");
-        } else if (XTEST_FLAG_CUTBACK) {
-            printf("%s[O]", (XEXPECT_PASS_SCAN ? color_green : color_red));
-        }
-        printf("%s", color_reset);
-    }
-} // end of func
-
-/**
- * @brief Output for XUnit Test Case Ignored.
- *
- * Outputs information indicating that a test case has been ignored along with an optional reason.
- *
- * @param reason  The reason for ignoring the test case.
- */
-static void xtest_output_xignore(const char* reason, const char* file, int line, const char* func) {
-    const char* color_start = XTEST_FLAG_COLORED ? ANSI_COLOR_BLUE : "";
-    const char* color_reset = XTEST_FLAG_COLORED ? ANSI_COLOR_RESET : "";
-    const char* color_yellow = XTEST_FLAG_COLORED ? ANSI_COLOR_YELLOW : "";
+// Output for XUnit Test Case Ignored.
+static void xtest_output_xignore(const char *reason, const char *file, int line, const char *func) {
+    const char *color_start = XTEST_FLAG_COLORED ? ANSI_COLOR_BLUE : "";
+    const char *color_reset = XTEST_FLAG_COLORED ? ANSI_COLOR_RESET : "";
+    const char *color_yellow = XTEST_FLAG_COLORED ? ANSI_COLOR_YELLOW : "";
 
     if (XTEST_FLAG_VERBOSE || XTEST_FLAG_CUTBACK) {
         printf("%s", color_start);
@@ -183,45 +143,21 @@ static void xtest_output_xignore(const char* reason, const char* file, int line,
     }
 } // end of func
 
-/**
- * @brief Formats and displays information about the start of a test case.
- *
- * This function formats and displays information about the start of a test case,
- * including its description, type (benchmark or unit test), and the total number of test cases.
- *
- * @param test_case The test case for which the information is displayed.
- * @param stats     The statistics containing the total count of test cases.
- */
-static void xtest_output_xunittest_format_start(XTestCase* test_case, XTestStats *stats) {
-    const char* color_start = XTEST_FLAG_COLORED ? ANSI_COLOR_BLUE : "";
-    const char* color_reset = XTEST_FLAG_COLORED ? ANSI_COLOR_RESET : "";
+// Formats and displays information about the start/end of a test case.
+static void xtest_output_xunittest_format(bool is_start, XTestCase *test_case, XTestStats *stats) {
+    const char *color_start = XTEST_FLAG_COLORED ? ANSI_COLOR_BLUE : "";
+    const char *color_reset = XTEST_FLAG_COLORED ? ANSI_COLOR_RESET : "";
 
-    if (XTEST_FLAG_VERBOSE || XTEST_FLAG_CUTBACK) {
+    if ((XTEST_FLAG_VERBOSE || XTEST_FLAG_CUTBACK) && is_start) {
         printf("%s", color_start);
         if (XTEST_FLAG_VERBOSE) {
             puts("[Running XUnit Test]" ANSI_COLOR_RESET);
-            printf("name  : %s\nnumber: %.4i\ntype: %s\n",
-                test_case->name, stats->total_count + 1, !test_case->is_benchmark ? "Unit test" : "Benchmark");
+            printf("name  : %s\nnumber: %.4i\ntype: %s\n", test_case->name, stats->total_count + 1, !test_case->is_benchmark ? "Unit test" : "Benchmark");
         } else if (XTEST_FLAG_CUTBACK) {
             printf("name: %s, type: %s\n", test_case->name, !test_case->is_benchmark ? "unit" : "mark");
         }
         printf("%s", color_reset);
-    }
-} // end of func
-
-/**
- * @brief Formats and displays information about the end of a test case.
- *
- * This function formats and displays information about the end of a test case,
- * including its description, type (benchmark or unit test), and the elapsed time.
- *
- * @param test_case The test case for which the information is displayed.
- */
-static void xtest_output_xunittest_format_end(XTestCase* test_case) {
-    const char* color_start = XTEST_FLAG_COLORED ? ANSI_COLOR_BLUE : "";
-    const char* color_reset = XTEST_FLAG_COLORED ? ANSI_COLOR_RESET : "";
-
-    if (XTEST_FLAG_VERBOSE || XTEST_FLAG_CUTBACK) {
+    } else if (XTEST_FLAG_VERBOSE || XTEST_FLAG_CUTBACK) {
         printf("%stime: %.6lu", color_start, test_case->elapsed_time);
         if (XTEST_FLAG_VERBOSE) {
             printf("ignore: %s\n", test_case->ignored ? "yes" : "no");
@@ -237,16 +173,10 @@ static void xtest_output_xunittest_format_end(XTestCase* test_case) {
     }
 } // end of func
 
-/**
- * @brief Output for XUnit Test Case Report.
- *
- * Outputs a summary report of test results, including the number of tests passed, failed, ignored, and the total count.
- *
- * @param runner  Pointer to the XUnitRunner structure containing test statistics.
- */
+// Output for XUnit Test Case Report.
 static void xtest_output_xunittest_report(XUnitRunner *runner) {
-    const char* color_start = XTEST_FLAG_COLORED ? ANSI_COLOR_BLUE : "";
-    const char* color_reset = XTEST_FLAG_COLORED ? ANSI_COLOR_RESET : "";
+    const char *color_start = XTEST_FLAG_COLORED ? ANSI_COLOR_BLUE : "";
+    const char *color_reset = XTEST_FLAG_COLORED ? ANSI_COLOR_RESET : "";
 
     if (XTEST_FLAG_VERBOSE || XTEST_FLAG_CUTBACK) {
         printf("%s[XUnit Runner] test results%s", color_start, color_reset);
@@ -261,66 +191,40 @@ static void xtest_output_xunittest_report(XUnitRunner *runner) {
     }
 } // end of func
 
-/**
- * @brief Prints usage instructions, including custom options, for a command-line program.
- *
- * This function prints usage instructions for a command-line program, including custom options.
- * It displays the program name and lists available options along with their short and long names
- * and descriptions.
- *
- * @param program_name  Name of the command-line program.
- * @param options       Array of XTestCliOption structures representing available options.
- * @param num_options   Number of elements in the options array.
- *
- * @return              None.
- */
+// Prints usage instructions, including custom options, for a command-line program.
 static void xtest_cli_print_usage(const char* program_name, const XTestCliOption* options, unsigned int num_options) {
-    puts("########################################");
+    const char* separator = "########################################";
+
+    puts(separator);
     printf("Usage: %s [options]\n", program_name);
     puts("Options:");
 
-    for (int i = 0; i < num_options; ++i) {
+    for (unsigned int i = 0; i < num_options; ++i) {
         printf("  %s %s\t%s\n", options[i].option_long_name, options[i].option_short_name, options[i].description);
-    } // end for
-    puts("########################################");
+    }
+
+    puts(separator);
 } // end of func
 
-/**
- * @brief Parses command-line arguments and sets flags based on specified options.
- *
- * This function parses command-line arguments and sets flags based on the specified options.
- * It iterates through the command-line arguments and compares them with the short and long
- * names of the provided options to set corresponding flags.
- *
- * @param options       Array of XTestCliOption structures representing available options.
- * @param num_options   Number of elements in the options array.
- * @param argc          Number of command-line arguments.
- * @param argv          Array of command-line argument strings.
- *
- * @return              0 if the parsing is successful.
- */
+// Parses command-line arguments and sets corresponding flags
 int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int argc, char** argv) {
-    uint32_t repeat = -1; // Default value in case "--repeat" is not provided
+    int repeat = DEFAULT_REPEAT_VALUE;
 
     for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "--repeat") == 0 && i + 1 < argc) {
-            // Attempt to convert the next argument to an integer
-            char* endPtr; // To check for conversion errors
+            char* endPtr;
             repeat = strtol(argv[i + 1], &endPtr, 10);
 
             if (*endPtr != '\0') {
                 fprintf(stderr, "Error: Invalid number after --repeat\n");
-                return 1; // Exit with an error code
+                return 1;
             }
 
-            i++; // Skip the next argument since we've already processed it
+            i++;
         } else {
-            // Check for other command-line options and set corresponding flags
             for (size_t j = 0; j < num_options; ++j) {
-                if (strcmp(argv[i], options[j].option_short_name) == 0) {
-                    *(options[j].flag) = 1;
-                    break;
-                } else if (strcmp(argv[i], options[j].option_long_name) == 0) {
+                if (strcmp(argv[i], options[j].option_short_name) == 0 ||
+                    strcmp(argv[i], options[j].option_long_name) == 0) {
                     *(options[j].flag) = 1;
                     break;
                 }
@@ -328,8 +232,7 @@ int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int 
         }
     }
 
-    // Now you have the repeat value and can use it as needed
-    if (repeat != -1) {
+    if (repeat != DEFAULT_REPEAT_VALUE) {
         printf("Repeat count: %d\n", repeat);
     } else {
         printf("Repeat count not provided. Using default value or -1 if not specified.\n");
@@ -343,28 +246,27 @@ int xtest_cli_parse_args(XTestCliOption* options, unsigned int num_options, int 
 XUnitRunner xtest_start(int argc, char **argv) {
     XUnitRunner runner;
     unsigned int num_options = sizeof(options) / sizeof(options[0]);
-    xtest_cli_parse_args(options, num_options, argc, (char**)argv);
+    xtest_cli_parse_args(options, num_options, argc, argv);
 
     if (XTEST_FLAG_VERSION) {
         puts(XTEST_VERSION);
         exit(EXIT_SUCCESS);
     } else if (XTEST_FLAG_HELP) {
-        xtest_cli_print_usage("Xrunner", options, num_options);
+        xtest_cli_print_usage("Xcli", options, num_options);
         exit(EXIT_SUCCESS);
-    } // end if, else if
+    }
 
     if (XTEST_FLAG_REPEAT) {
-        if (strcmp(options->option_long_name, "--repeat") == 0 && num_options + 1 < argc) {
-        // Attempt to convert the next argument to an integer
-            char* end_ptr; // To check for conversion errors
-            XTEST_ITER_REAPET = strtol(argv[num_options + 1], &end_ptr, 10);
+        if (num_options + 1 < argc && strcmp(argv[num_options], "--repeat") == 0) {
+            char* endPtr;
+            XTEST_ITER_REAPET = strtol(argv[num_options + 1], &endPtr, 10);
 
-            if (*end_ptr != '\0') {
+            if (*endPtr != '\0') {
                 fprintf(stderr, "Error: Invalid number after --repeat\n");
-                exit(1); // Exit with an error code
-            } // end if
-        } // end if
-    } // end if
+                exit(EXIT_FAILURE);
+            }
+        }
+    }
 
     runner.stats = (XTestStats){0, 0, 0, 0};
     return runner;
@@ -514,8 +416,8 @@ void xassert(bool expression, const char *message, const char* file, int line, c
         return;
     } else if (!expression) {
         XASSERT_PASS_SCAN = false;
-    } // end if, else if
-    xtest_output_xassert(expression, message, file, line, func);
+    }
+    xtest_output_xassert_expect(expression, message, "Assert", file, line, func);
 } // end of func
 
 // Custom expectation function with optional message.
@@ -524,6 +426,6 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 
     if (!expression) {
         XEXPECT_PASS_SCAN = false;
-    } // end if
-    xtest_output_xexpect(expression, message, file, line, func);
+    }
+    xtest_output_xassert_expect(expression, message, "Expect", file, line, func);
 } // end of func
