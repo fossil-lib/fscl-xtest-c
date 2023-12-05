@@ -56,6 +56,7 @@ typedef struct {
 
 // Extra
 const char *XTEST_VERSION = "0.4.2";
+const int DEFAULT_REPEAT_VALUE = -1;
 
 // Static control panel for assert/expect and marks
 static bool XEXPECT_PASS_SCAN = true;
@@ -319,9 +320,8 @@ void* xtest_run_test_threaded(void* arg) {
     // Update the total count
     stats->total_count++;
 
-    // Output test format information
-    xtest_output_xunittest_format_start(test_case, stats);
-    xtest_output_xunittest_format_end(test_case);
+    // Output test format information (end)
+    xtest_output_xunittest_format(false, test_case, stats);
 
 #ifdef _WIN32
     return 0;
@@ -378,12 +378,11 @@ void xtest_run_test(XTestCase* test_case, XTestStats* stats, XTestFixture* fixtu
     // Record end time
     clock_t end_time = clock();
 
-    // Output test format information
-    xtest_output_xunittest_format_start(test_case, stats);
-    xtest_output_xunittest_format_end(test_case);
-
     // Calculate elapsed time and store it in the test case
     test_case->elapsed_time = end_time - start_time;
+
+    // Output test format information
+    xtest_output_xunittest_format(test_case->is_benchmark, test_case, stats);
 } // end of func
 
 // Runs a test case and updates test statistics.
