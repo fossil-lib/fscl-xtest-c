@@ -79,7 +79,7 @@ static void xtest_output_xassert_expect(bool expression, const char *message, co
             printf("[%s case failed]" ANSI_COLOR_RESET "\n%sline: %.4i\nfile: %s\nfunc: %s\n", assert_type, color_fail, line, file, func);
             printf("%smessage: %s\nresult: %s\n", color_fail, message, expression ? "PASS" : "FAIL");
         } else if (xcli.cutback) {
-            printf("%s[O]", (xcli.expect_pass_scan ? color_pass : color_fail));
+            printf("%s[O]", (XEXPECT_PASS_SCAN ? color_pass : color_fail));
         }
         printf("%s", color_reset);
     }
@@ -98,7 +98,7 @@ static void xtest_output_xignore(const char *reason, const char *file, int line,
             printf("%sline: %.4i\nfile: %s\nfunc: %s\n", color_yellow, line, file, func);
             printf("%smessage: %s\n", color_yellow, reason);
         } else if (xcli.cutback) {
-            printf("%s", xcli.ignore_test_case ? ANSI_COLOR_YELLOW "[I]" : ANSI_COLOR_RED "[X]");
+            printf("%s", XIGNORE_TEST_CASE ? ANSI_COLOR_YELLOW "[I]" : ANSI_COLOR_RED "[X]");
         }
         printf("%s", color_reset);
     }
@@ -216,9 +216,10 @@ XUnitRunner xtest_start(int argc, char **argv) {
     runner.stats = (XTestStats){0, 0, 0, 0};
     runner.dry_run = xcli.dry_run;
 
-    // Register xtest_end to be called at program exit if it's not a dry run
-    if (!runner.dry_run) {
-        atexit(xtest_end);
+    if (runner.dry_run) { // Check if it's a dry run
+        printf("Simulating a test run to ensure Xcli can run...\n");
+        xtest_end(&runner);  // Call xtest_end before exiting
+        exit(0); // Exit the program
     }
 
     return runner;
