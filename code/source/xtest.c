@@ -213,7 +213,7 @@ XUnitRunner xtest_start(int argc, char **argv) {
     // Parse command-line arguments
     if (!xparser_parse_args(&xcli, argc, argv)) {
         // Handle parsing error, print usage and exit
-        xparser_print_usage(&xcli);
+        xparser_print_usage();
         exit(EXIT_FAILURE);
     }
 
