@@ -47,6 +47,7 @@ typedef struct {
     bool verbose;
     bool version;
     bool colored;
+    bool dry_run;
     bool help;
     bool repeat;
     int iter_repeat;
@@ -154,6 +155,7 @@ static void xtest_output_xunittest_report(XUnitRunner *runner) {
 static void xparser_init(XParser *parser) {
     memset(parser, 0, sizeof(XParser));
     parser->iter_repeat = 1;
+    parser->dry_run = false;
 } // end of func
 
 // Prints usage instructions, including custom options, for a command-line program.
@@ -170,7 +172,9 @@ static void xparser_print_usage(void) {
 
 static void xparser_parse_args(XParser *parser, int argc, char *argv[]) {
     for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "--cutback") == 0) {
+        if (strcmp(argv[i], "--dry-run") == 0) {
+            parser->dry_run = true;
+        } else if (strcmp(argv[i], "--cutback") == 0) {
             parser->cutback = true;
         } else if (strcmp(argv[i], "--verbose") == 0) {
             parser->verbose = true;
@@ -206,44 +210,34 @@ static void xparser_parse_args(XParser *parser, int argc, char *argv[]) {
 // Initializes an XUnitRunner and processes command-line arguments.
 XUnitRunner xtest_start(int argc, char **argv) {
     XUnitRunner runner;
-
-    // Initialize xcli with default values
     xparser_init(&xcli);
+    xparser_parse_args(&xcli, argc, argv);
 
-    // Parse command-line arguments
-    if (!xparser_parse_args(&xcli, argc, argv)) {
-        // Handle parsing error, print usage and exit
-        xparser_print_usage();
-        exit(EXIT_FAILURE);
+    runner.stats = (XTestStats){0, 0, 0, 0};
+    runner.dry_run = xcli.dry_run;
+
+    // Register xtest_end to be called at program exit if it's not a dry run
+    if (!runner.dry_run) {
+        atexit(xtest_end);
     }
 
-    // Initialize stats with zeros
-    runner.stats = (XTestStats){0, 0, 0, 0};
-    
     return runner;
 } // end of func
 
 // Finalizes the execution of a Trilobite XUnit runner and displays test results.
 int xtest_end(XUnitRunner *runner) {
-    if (runner == NULL) {
-        // Handle the case where the input runner is NULL
-        fprintf(stderr, "Error: Invalid XUnitRunner pointer.\n");
-        return EXIT_FAILURE;
+    if (!runner->dry_run) {
+        xtest_output_xunittest_report(runner);
     }
-
-    // Output XUnit test results
-    xtest_output_xunittest_report(runner);
-
-    // Return the count of failed tests
     return runner->stats.failed_count;
 } // end of func
 
 // Common functionality for running a test case and updating test statistics.
 void xtest_run_test(XTestCase* test_case, XTestStats* stats, XTestFixture* fixture) {
     // Check if the test should be ignored
-    if (xcli.ignore_test_case) {
+    if (XIGNORE_TEST_CASE) {
         stats->ignored_count++;
-        xcli.ignore_test_case = false;
+        XIGNORE_TEST_CASE = false;
         test_case->ignored = true;
         return;
     }
