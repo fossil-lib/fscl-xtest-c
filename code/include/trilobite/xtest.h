@@ -46,6 +46,7 @@ extern "C"
 #endif
 
 #ifdef __cplusplus
+#include <cstdint>
 #include <cstring>
 #include <cstdlib>
 #include <cstdint>
@@ -53,6 +54,7 @@ extern "C"
 #include <cmath>
 #include <ctime>
 #else
+#include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
@@ -108,20 +110,6 @@ typedef struct {
 typedef struct {
     XTestStats stats;  // Test statistics including passed, failed, and ignored counts
 } XUnitRunner;
-
-/**
- * @brief Structure representing a command-line option for a CLI or application.
- *
- * This structure is used to define and organize information about a command-line option,
- * including its long name (e.g., "--verbose"), short name (e.g., "-v"), a description for
- * usage instructions, and a pointer to a flag that stores the option's value or status.
- */
-typedef struct {
-    const char* option_long_name;  // Long name of the option (e.g., "--verbose")
-    const char* option_short_name; // Short name of the option (e.g., "-v")
-    const char* description;       // Description of the option for usage instructions
-    bool* flag;                     // Pointer to a flag storing the option's value/status
-} XTestCliOption;
 
 /**
  * @brief Define a data structure for a group of test data.
