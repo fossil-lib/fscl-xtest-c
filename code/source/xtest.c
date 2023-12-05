@@ -30,21 +30,6 @@
     ----------------------------------------------------------------------------
 */
 #include "trilobite/xtest.h"
-// Define xthread type
-#ifdef _WIN32
-#include <windows.h>
-typedef HANDLE xthread;
-#else
-#include <pthread.h>
-typedef pthread_t xthread;
-#endif
-
-// Structure to pass parameters to threaded function
-typedef struct {
-    XTestCase* test_case;
-    XTestFixture* fixture;
-    XTestStats* stats;
-} xthread_param;
 
 // ANSI escape code macros for text color
 #define ANSI_COLOR_RED     "\x1b[31m"
@@ -67,7 +52,6 @@ static bool XIGNORE_TEST_CASE = false;
 static bool XTEST_FLAG_CUTBACK    = false;
 static bool XTEST_FLAG_VERBOSE    = false;
 static bool XTEST_FLAG_VERSION    = false;
-static bool XTEST_FLAG_THREAD     = false;
 static bool XTEST_FLAG_COLORED    = false;
 static bool XTEST_FLAG_HELP       = false;
 static bool XTEST_FLAG_REPEAT     = false;
@@ -79,31 +63,9 @@ XTestCliOption options[] = {
      { "--verbose",    "-V", "Show more information to standard output", &XTEST_FLAG_VERBOSE },
      { "--version",    "-v", "Get the version of this test framework", &XTEST_FLAG_VERSION },
      { "--color"  ,    "-c", "Enable color text output", &XTEST_FLAG_COLORED },
-     { "--thread",    "-t", "Enable Xtest threaded test runner when running test", &XTEST_FLAG_THREAD },
      { "--help",       "-h", "Print this message you see before you're eyes", &XTEST_FLAG_HELP },
      { "--reapet"  ,   "-r", "Reapet test cases number of times (0-100)", &XTEST_FLAG_REPEAT }
  }; // end of command-line options
-
-// Helper function to create a thread
-xthread xthread_create(void* (*func)(void*), void* arg) {
-#ifdef _WIN32
-    return CreateThread(NULL, 0, func, arg, 0, NULL);
-#else
-    pthread_t thread;
-    pthread_create(&thread, NULL, func, arg);
-    return thread;
-#endif
-} // end of func
-
-// Helper function to join a thread
-void xthread_join(xthread thread) {
-#ifdef _WIN32
-    WaitForSingleObject(thread, INFINITE);
-    CloseHandle(thread);
-#else
-    pthread_join(thread, NULL);
-#endif
-} // end of func
 
 // Output for XUnit Test Case Assert/Expect.
 static void xtest_output_xassert_expect(bool expression, const char *message, const char *assert_type,
@@ -279,57 +241,6 @@ int xtest_end(XUnitRunner *runner) {
     return runner->stats.failed_count;
 } // end of func
 
-// Thread function for running a single test iteration
-#ifdef _WIN32
-DWORD WINAPI xtest_run_test_threaded(LPVOID arg) {
-#else
-void* xtest_run_test_threaded(void* arg) {
-#endif
-    xthread_param* params = (xthread_param*)arg;
-    XTestCase* test_case = params->test_case;
-    XTestFixture* fixture = params->fixture;
-    XTestStats* stats = params->stats;
-
-    // Execute setup function if provided
-    if (fixture && fixture->setup) {
-        fixture->setup();
-    }
-
-    // Run the actual test function
-    test_case->test_function();
-
-    // Execute teardown function if provided
-    if (fixture && fixture->teardown) {
-        fixture->teardown();
-    }
-
-    // Update the appropriate count based on the test result
-    bool test_passed = true;
-
-    if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN) {
-        // If any expectations fail, consider the test as failed
-        test_passed = false;
-    }
-
-    if (test_passed) {
-        stats->passed_count++;
-    } else {
-        stats->failed_count++;
-    }
-
-    // Update the total count
-    stats->total_count++;
-
-    // Output test format information (end)
-    xtest_output_xunittest_format(false, test_case, stats);
-
-#ifdef _WIN32
-    return 0;
-#else
-    return NULL;
-#endif
-} // end of func
-
 // Common functionality for running a test case and updating test statistics.
 void xtest_run_test(XTestCase* test_case, XTestStats* stats, XTestFixture* fixture) {
     // Check if the test should be ignored
@@ -343,35 +254,19 @@ void xtest_run_test(XTestCase* test_case, XTestStats* stats, XTestFixture* fixtu
     // Record start time
     clock_t start_time = clock();
 
-    // Run the test iteration(s)
-    if (XTEST_FLAG_THREAD) {
-        xthread threads[XTEST_ITER_REAPET];
-        xthread_param params = {test_case, fixture, stats};
-
-        for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
-            // Create a thread for each iteration
-            threads[iter] = xthread_create(xtest_run_test_threaded, &params);
+    // Run tests sequentially
+    for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
+        // Execute setup function if provided
+        if (fixture && fixture->setup) {
+            fixture->setup();
         }
 
-        // Wait for all threads to complete
-        for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
-            xthread_join(threads[iter]);
-        }
-    } else {
-        // Run tests sequentially
-        for (int iter = 0; iter < XTEST_ITER_REAPET; iter++) {
-            // Execute setup function if provided
-            if (fixture && fixture->setup) {
-                fixture->setup();
-            }
+        // Run the actual test function
+        test_case->test_function();
 
-            // Run the actual test function
-            test_case->test_function();
-
-            // Execute teardown function if provided
-            if (fixture && fixture->teardown) {
-                fixture->teardown();
-            }
+        // Execute teardown function if provided
+        if (fixture && fixture->teardown) {
+            fixture->teardown();
         }
     }
 
