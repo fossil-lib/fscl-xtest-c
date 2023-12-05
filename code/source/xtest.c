@@ -91,6 +91,7 @@ xthread xthread_create(void* (*func)(void*), void* arg) {
     pthread_t thread;
     pthread_create(&thread, NULL, func, arg);
     return thread;
+#endif
 } // end of func
 
 // Helper function to join a thread
