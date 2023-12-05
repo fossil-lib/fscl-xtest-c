@@ -427,24 +427,6 @@ void* xtest_run_test_threaded(void* arg) {
 #endif
 } // end of func
 
-// Runs a test case and updates test statistics.
-void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats) {
-    // Initialize the test as not ignored
-    test_case->ignored = false;
-
-    // Run the test
-    xtest_run_test(test_case, stats, NULL);
-} // end of func
-
-// Runs a test case within a test fixture and updates test statistics.
-void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats) {
-    // Initialize the test as not ignored
-    test_case->ignored = false;
-
-    // Run the test with the specified fixture
-    xtest_run_test(test_case, stats, fixture);
-}  // end of func
-
 // Common functionality for running a test case and updating test statistics.
 void xtest_run_test(XTestCase* test_case, XTestStats* stats, XTestFixture* fixture) {
     // Check if the test should be ignored
@@ -500,6 +482,24 @@ void xtest_run_test(XTestCase* test_case, XTestStats* stats, XTestFixture* fixtu
     // Calculate elapsed time and store it in the test case
     test_case->elapsed_time = end_time - start_time;
 } // end of func
+
+// Runs a test case and updates test statistics.
+void xtest_run_test_unit(XTestCase* test_case, XTestStats* stats) {
+    // Initialize the test as not ignored
+    test_case->ignored = false;
+
+    // Run the test
+    xtest_run_test(test_case, stats, NULL);
+} // end of func
+
+// Runs a test case within a test fixture and updates test statistics.
+void xtest_run_test_fixture(XTestCase* test_case, XTestFixture* fixture, XTestStats* stats) {
+    // Initialize the test as not ignored
+    test_case->ignored = false;
+
+    // Run the test with the specified fixture
+    xtest_run_test(test_case, stats, fixture);
+}  // end of func
 
 // Marks a test case as ignored with a specified reason and prints it to stderr.
 void xignore(const char* reason, const char* file, int line, const char* func) {
