@@ -109,7 +109,6 @@ typedef struct {
  */
 typedef struct {
     XTestStats stats;  // Test statistics including passed, failed, and ignored counts
-    bool dry_run;
 } XUnitRunner;
 
 /**
