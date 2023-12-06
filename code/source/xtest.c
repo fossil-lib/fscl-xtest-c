@@ -48,6 +48,8 @@ typedef struct {
     bool version;
     bool colored;
     bool dry_run;
+    bool only_test;
+    bool only_bench;
     bool help;
     bool repeat;
     int iter_repeat;
@@ -163,6 +165,8 @@ void xparser_init(void) {
     xcli.dry_run = false;
     xcli.help    = false;
     xcli.repeat  = false;
+    xcli.only_test = false;
+    xcli.only_bench = false;
 } // end of func
 
 // Prints usage instructions, including custom options, for a command-line program.
@@ -172,6 +176,8 @@ static void xparser_print_usage(void) {
     puts("  --help        Display this help message");
     puts("  --version     Display program version");
     puts("  --config FILE Load configuration from FILE");
+    puts("  --only-test   Run only test cases");
+    puts("  --only-mark   Run only benchmark cases");
     puts("  --cutback     Enable cutback mode");
     puts("  --verbose     Enable verbose mode");
     puts("  --colored     Enable colored output");
@@ -204,12 +210,20 @@ void xparser_parse_config_file(const char* filename) {
                 xcli.dry_run     = (strcmp(value, "true") == 0) ? true : false;
             } else if (strcmp(key, "help") == 0) {
                 xcli.help        = (strcmp(value, "true") == 0) ? true : false;
+            } else if (strcmp(key, "only_mark") == 0) {
+                xcli.only_bench  = (strcmp(value, "true") == 0) ? true : false;
+            } else if (strcmp(key, "only_test") == 0) {
+                xcli.only_test   = (strcmp(value, "true") == 0) ? true : false;
             } else if (strcmp(key, "repeat") == 0) {
                 xcli.repeat      = (strcmp(value, "true") == 0) ? true : false;
             } else if (strcmp(key, "iter_repeat") == 0) {
                 xcli.iter_repeat = atoi(value);
             }
             // Add more options as needed
+        }
+        if (xcli.only_bench && xcli.only_test) {
+            // Turn both off and run all test anyway
+            xcli.only_bench = xcli.only_test = false;
         }
     }
 
@@ -224,6 +238,10 @@ void xparser_parse_args(int argc, char *argv[]) {
             xcli.cutback = true;
         } else if (strcmp(argv[i], "--verbose") == 0) {
             xcli.verbose = true;
+        } else if (strcmp(argv[i], "--only-test") == 0) {
+            xcli.only_test = true;
+        } else if (strcmp(argv[i], "--only-mark") == 0) {
+            xcli.only_bench = true;
         } else if (strcmp(argv[i], "--version") == 0) {
             xcli.version = true;
         } else if (strcmp(argv[i], "--colored") == 0) {
@@ -294,7 +312,8 @@ int xtest_end(XUnitRunner *runner) {
 // Common functionality for running a test case and updating test statistics.
 void xtest_run_test(XTestCase* test_case, XTestStats* stats, XTestFixture* fixture) {
     // Check if the test should be ignored
-    if (XIGNORE_TEST_CASE) {
+    if (XIGNORE_TEST_CASE || (xcli.only_test && test_case->is_benchmark) || (xcli.only_bench && !test_case->is_benchmark)) {
+        // Skip the test if it doesn't match the desired type
         stats->ignored_count++;
         XIGNORE_TEST_CASE = false;
         test_case->ignored = true;
