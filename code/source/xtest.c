@@ -118,7 +118,7 @@ static void xtest_output_xunittest_format(bool is_start, XTestCase *test_case, X
         }
         printf("%s", color_reset);
     } else if (xcli.verbose || xcli.cutback) {
-        printf("%stime: %.6lu", color_start, test_case->elapsed_time);
+        printf("%stime: %.6lu ", color_start, test_case->elapsed_time);
         if (xcli.verbose) {
             printf("ignore: %s\n", test_case->ignored ? "yes" : "no");
             if (xcli.colored) {
