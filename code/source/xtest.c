@@ -56,6 +56,9 @@ typedef struct {
 // Global XParser variable
 XParser xcli;
 
+// config file name for XParser config
+static char *CONFIG_FILENAME[555];
+
 // Extra
 const char *XTEST_VERSION = "0.4.2";
 
@@ -166,12 +169,51 @@ void xparser_init(void) {
 static void xparser_print_usage(void) {
     puts("Usage: Xtest.cli [options]");
     puts("Options:");
-    puts("  --cutback    Enable cutback mode");
-    puts("  --verbose    Enable verbose mode");
-    puts("  --version    Display program version");
-    puts("  --colored    Enable colored output");
-    puts("  --help       Display this help message");
-    puts("  --repeat N   Repeat the test N times (requires a numeric argument)");
+    puts("  --help        Display this help message");
+    puts("  --version     Display program version");
+    puts("  --config FILE Load configuration from FILE");
+    puts("  --cutback     Enable cutback mode");
+    puts("  --verbose     Enable verbose mode");
+    puts("  --colored     Enable colored output");
+    puts("  --repeat N    Repeat the test N times (requires a numeric argument)");
+} // end of func
+
+// Add this function to parse the config file
+void xparser_parse_config_file(const char* filename) {
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        fprintf(stderr, "Error: Could not open config file '%s'\n", filename);
+        exit(EXIT_FAILURE);
+    }
+
+    // Read the file line by line and update XParser accordingly
+    char line[1024];
+    while (fgets(line, sizeof(line), file)) {
+        char key[256], value[256];
+        if (sscanf(line, "%255[^=]=%255[^\n]", key, value) == 2) {
+            // Update XParser members based on key-value pairs
+            if (strcmp(key, "cutback") == 0) {
+                xcli.cutback     = (strcmp(value, "true") == 0) ? true : false;
+            } else if (strcmp(key, "verbose") == 0) {
+                xcli.verbose     = (strcmp(value, "true") == 0) ? true : false;
+            } else if (strcmp(key, "version") == 0) {
+                xcli.version     = (strcmp(value, "true") == 0) ? true : false;
+            } else if (strcmp(key, "colored") == 0) {
+                xcli.colored     = (strcmp(value, "true") == 0) ? true : false;
+            } else if (strcmp(key, "dry_run") == 0) {
+                xcli.dry_run     = (strcmp(value, "true") == 0) ? true : false;
+            } else if (strcmp(key, "help") == 0) {
+                xcli.help        = (strcmp(value, "true") == 0) ? true : false;
+            } else if (strcmp(key, "repeat") == 0) {
+                xcli.repeat      = (strcmp(value, "true") == 0) ? true : false;
+            } else if (strcmp(key, "iter_repeat") == 0) {
+                xcli.iter_repeat = atoi(value);
+            }
+            // Add more options as needed
+        }
+    }
+
+    fclose(file);
 } // end of func
 
 void xparser_parse_args(int argc, char *argv[]) {
@@ -183,13 +225,11 @@ void xparser_parse_args(int argc, char *argv[]) {
         } else if (strcmp(argv[i], "--verbose") == 0) {
             xcli.verbose = true;
         } else if (strcmp(argv[i], "--version") == 0) {
-            puts(XTEST_VERSION);
-            exit(EXIT_SUCCESS);
+            xcli.version = true;
         } else if (strcmp(argv[i], "--colored") == 0) {
             xcli.colored = true;
         } else if (strcmp(argv[i], "--help") == 0) {
-            xparser_print_usage();
-            exit(EXIT_SUCCESS);
+            xcli.help = true;
         } else if (strcmp(argv[i], "--repeat") == 0) {
             xcli.repeat = true;
             if (++i < argc) {
@@ -204,7 +244,26 @@ void xparser_parse_args(int argc, char *argv[]) {
                 fprintf(stderr, "Error: --repeat option requires a numeric argument.\n");
                 exit(EXIT_FAILURE);
             }
+        } else if (strcmp(argv[i], "--config") == 0) {
+            // Process the --config option and the next argument should be the filename
+            if (++i < argc) {
+                // Check if the specified file name is "xtest_config.ini"
+                if (strcmp(argv[i], "xtest_config.ini") == 0) {
+                    strncpy(CONFIG_FILENAME, argv[i], sizeof(CONFIG_FILENAME) - 1);
+                    CONFIG_FILENAME[sizeof(CONFIG_FILENAME) - 1] = '\0';
+                } else {
+                    fprintf(stderr, "Error: Configuration file must be named 'xtest_config.ini'.\n");
+                    exit(EXIT_FAILURE);
+                }
+            } else {
+                fprintf(stderr, "Error: --config option requires a file argument.\n");
+                exit(EXIT_FAILURE);
+            }
         }
+    }
+    // If a config file is specified, parse it
+    if (CONFIG_FILENAME[0] != '\0') {
+        xparser_parse_config_file(CONFIG_FILENAME);
     }
 } // end of func
 
