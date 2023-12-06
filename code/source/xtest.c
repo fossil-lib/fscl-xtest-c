@@ -216,8 +216,7 @@ XUnitRunner xtest_start(int argc, char **argv) {
 
     if (xcli.dry_run) { // Check if it's a dry run
         printf("Simulating a test run to ensure Xcli can run...\n");
-        xtest_end(&runner);  // Call xtest_end before exiting
-        exit(0); // Exit the program
+        exit(xtest_end(&runner)); // Exit the program
     }
 
     return runner;
@@ -225,7 +224,7 @@ XUnitRunner xtest_start(int argc, char **argv) {
 
 // Finalizes the execution of a Trilobite XUnit runner and displays test results.
 int xtest_end(XUnitRunner *runner) {
-    if (!runner->dry_run) {
+    if (!xcli.dry_run) {
         xtest_output_xunittest_report(runner);
     }
     return runner->stats.failed_count;
