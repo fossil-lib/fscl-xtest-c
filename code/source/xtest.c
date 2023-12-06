@@ -139,8 +139,8 @@ static void xtest_output_xunittest_report(XUnitRunner *runner) {
     const char *color_reset = xcli.colored ? ANSI_COLOR_RESET : "";
 
     if (xcli.verbose || xcli.cutback) {
-        printf("%s[XUnit Runner] test results%s", color_start, color_reset);
-        if (!xcli.cutback) {
+        printf("%s[XUnit Runner] test results\n%s", color_start, color_reset);
+        if (!xcli.verbose || xcli.cutback) {
             printf("pass: %.3i, fail: %.3i", runner->stats.passed_count, runner->stats.failed_count);
         } else {
             printf("pass: %.3i, fail: %.3i, skip: %.3i, total: %.3i",
@@ -160,7 +160,6 @@ void xparser_init(void) {
     xcli.dry_run = false;
     xcli.help    = false;
     xcli.repeat  = false;
-    xcli.iter_repeat = 1;
 } // end of func
 
 // Prints usage instructions, including custom options, for a command-line program.
