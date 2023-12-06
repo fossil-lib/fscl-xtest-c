@@ -275,6 +275,7 @@ void xtest_run_test(XTestCase* test_case, XTestStats* stats, XTestFixture* fixtu
     } else {
         stats->passed_count++;
     }
+    stats->total_count++;
 
     // Output test format information
     xtest_output_xunittest_format(test_case->is_benchmark, test_case, stats);
