@@ -151,10 +151,16 @@ static void xtest_output_xunittest_report(XUnitRunner *runner) {
     }
 } // end of func
 
-static void xparser_init(XParser *parser) {
-    memset(parser, 0, sizeof(XParser));
-    parser->iter_repeat = 1;
-    parser->dry_run = false;
+void xparser_init(void) {
+    // Initialize members individually
+    xcli.cutback = false;
+    xcli.verbose = false;
+    xcli.version = false;
+    xcli.colored = false;
+    xcli.dry_run = false;
+    xcli.help    = false;
+    xcli.repeat  = false;
+    xcli.iter_repeat = 1;
 } // end of func
 
 // Prints usage instructions, including custom options, for a command-line program.
@@ -169,28 +175,28 @@ static void xparser_print_usage(void) {
     puts("  --repeat N   Repeat the test N times (requires a numeric argument)");
 } // end of func
 
-static void xparser_parse_args(XParser *parser, int argc, char *argv[]) {
+void xparser_parse_args(int argc, char *argv[]) {
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--dry-run") == 0) {
-            parser->dry_run = true;
+            xcli.dry_run = true;
         } else if (strcmp(argv[i], "--cutback") == 0) {
-            parser->cutback = true;
+            xcli.cutback = true;
         } else if (strcmp(argv[i], "--verbose") == 0) {
-            parser->verbose = true;
+            xcli.verbose = true;
         } else if (strcmp(argv[i], "--version") == 0) {
             puts(XTEST_VERSION);
             exit(EXIT_SUCCESS);
         } else if (strcmp(argv[i], "--colored") == 0) {
-            parser->colored = true;
+            xcli.colored = true;
         } else if (strcmp(argv[i], "--help") == 0) {
             xparser_print_usage();
             exit(EXIT_SUCCESS);
         } else if (strcmp(argv[i], "--repeat") == 0) {
-            parser->repeat = true;
+            xcli.repeat = true;
             if (++i < argc) {
                 int iter_repeat = atoi(argv[i]);
                 if (iter_repeat >= 1 && iter_repeat <= 100) {
-                    parser->iter_repeat = iter_repeat;
+                    xcli.iter_repeat = iter_repeat;
                 } else {
                     fprintf(stderr, "Error: --repeat value must be between 1 and 100.\n");
                     exit(EXIT_FAILURE);
@@ -201,16 +207,13 @@ static void xparser_parse_args(XParser *parser, int argc, char *argv[]) {
             }
         }
     }
-
-    // Update global XParser variable
-    memcpy(&xcli, parser, sizeof(XParser));
 } // end of func
 
 // Initializes an XUnitRunner and processes command-line arguments.
 XUnitRunner xtest_start(int argc, char **argv) {
     XUnitRunner runner;
-    xparser_init(&xcli);
-    xparser_parse_args(&xcli, argc, argv);
+    xparser_init();
+    xparser_parse_args(argc, argv);
 
     runner.stats = (XTestStats){0, 0, 0, 0};
 
@@ -264,6 +267,14 @@ void xtest_run_test(XTestCase* test_case, XTestStats* stats, XTestFixture* fixtu
 
     // Calculate elapsed time and store it in the test case
     test_case->elapsed_time = end_time - start_time;
+
+    // Update the appropriate count based on your logic
+    if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN) {
+        // If any expectations fail, consider the test as failed
+        stats->failed_count++;
+    } else {
+        stats->passed_count++;
+    }
 
     // Output test format information
     xtest_output_xunittest_format(test_case->is_benchmark, test_case, stats);
