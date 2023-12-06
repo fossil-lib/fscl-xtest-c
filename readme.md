@@ -1,6 +1,6 @@
 # Trilobite XTest libraries - C
 
-Trilobite XTest is a user-friendly and efficient C test framework designed to facilitate seamless unit testing and benchmarking in software development. Below are key commands and features that make XTest an essential tool for testing C code. Trilobite XTest empowers developers with a range of commands and options to customize their testing experience, streamline workflows, and ensure the reliability of C code through effective testing practices. Explore the power of XTest for robust and maintainable C software development.
+Trilobite XTest is a versatile and lightweight C test framework designed to simplify and enhance the process of software development through effective unit testing and benchmarking. Created with simplicity and flexibility in mind, XTest empowers developers to write, organize, and execute tests effortlessly, ensuring robust and reliable software.
 
 ## Who is This For?
 
