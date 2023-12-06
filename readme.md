@@ -1,6 +1,6 @@
 # Trilobite XTest libraries - C
 
-Trilobite XUnit Test Framework is a powerful and versatile testing framework designed for C and C++ developers. It offers a comprehensive suite of testing tools and features to ensure the quality and reliability of your codebase. Whether you’re developing embedded, desktop apps, or mobile apps, Trilobite Xunit has you covered. Refer to the documentation and examples to quickly get started with Trilobite and begin testing your C and C++ projects effectively.
+Trilobite XTest is a user-friendly and efficient C test framework designed to facilitate seamless unit testing and benchmarking in software development. Below are key commands and features that make XTest an essential tool for testing C code. Trilobite XTest empowers developers with a range of commands and options to customize their testing experience, streamline workflows, and ensure the reliability of C code through effective testing practices. Explore the power of XTest for robust and maintainable C software development.
 
 ## Who is This For?
 
