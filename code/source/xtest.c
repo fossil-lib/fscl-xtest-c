@@ -59,7 +59,7 @@ typedef struct {
 XParser xcli;
 
 // config file name for XParser config
-static char *CONFIG_FILENAME[555];
+static char CONFIG_FILENAME[555];
 
 // Extra
 const char *XTEST_VERSION = "0.5.0";
@@ -170,7 +170,7 @@ void xparser_init(void) {
 } // end of func
 
 // Prints usage instructions, including custom options, for a command-line program.
-static void xparser_print_usage(void) {
+void xparser_print_usage(void) {
     puts("Usage: Xtest.cli [options]");
     puts("Options:");
     puts("  --help        Display this help message");
