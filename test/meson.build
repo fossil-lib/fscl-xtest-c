@@ -1,6 +1,5 @@
 if get_option('with_test').enabled()
-    fs = import('fs')
-    fs.copyfile('example.txt', '.')
+    configure_file(input: 'example.txt', output: 'example.txt', copy: true)
 
     test_src = ['xunit_runner.c']
     test_cubes = ['xexpect', 'xassert', 'bench']
