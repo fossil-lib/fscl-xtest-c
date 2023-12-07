@@ -156,7 +156,7 @@ static void xtest_output_xunittest_report(XUnitRunner *runner) {
     }
 } // end of func
 
-void xparser_init(void) {
+static void xparser_init(void) {
     // Initialize members individually
     xcli.cutback = false;
     xcli.verbose = false;
@@ -170,7 +170,7 @@ void xparser_init(void) {
 } // end of func
 
 // Prints usage instructions, including custom options, for a command-line program.
-void xparser_print_usage(void) {
+static void xparser_print_usage(void) {
     puts("Usage: Xtest.cli [options]");
     puts("Options:");
     puts("  --help        Display this help message");
@@ -185,7 +185,7 @@ void xparser_print_usage(void) {
 } // end of func
 
 // Add this function to parse the config file
-void xparser_parse_config_file(const char* filename) {
+static void xparser_parse_config_file(const char* filename) {
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
         fprintf(stderr, "Error: Could not open config file '%s'\n", filename);
@@ -202,14 +202,10 @@ void xparser_parse_config_file(const char* filename) {
                 xcli.cutback     = (strcmp(value, "true") == 0) ? true : false;
             } else if (strcmp(key, "verbose") == 0) {
                 xcli.verbose     = (strcmp(value, "true") == 0) ? true : false;
-            } else if (strcmp(key, "version") == 0) {
-                xcli.version     = (strcmp(value, "true") == 0) ? true : false;
             } else if (strcmp(key, "colored") == 0) {
                 xcli.colored     = (strcmp(value, "true") == 0) ? true : false;
             } else if (strcmp(key, "dry_run") == 0) {
                 xcli.dry_run     = (strcmp(value, "true") == 0) ? true : false;
-            } else if (strcmp(key, "help") == 0) {
-                xcli.help        = (strcmp(value, "true") == 0) ? true : false;
             } else if (strcmp(key, "only_mark") == 0) {
                 xcli.only_bench  = (strcmp(value, "true") == 0) ? true : false;
             } else if (strcmp(key, "only_test") == 0) {
@@ -230,7 +226,7 @@ void xparser_parse_config_file(const char* filename) {
     fclose(file);
 } // end of func
 
-void xparser_parse_args(int argc, char *argv[]) {
+static void xparser_parse_args(int argc, char *argv[]) {
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--dry-run") == 0) {
             xcli.dry_run = true;
@@ -244,10 +240,14 @@ void xparser_parse_args(int argc, char *argv[]) {
             xcli.only_bench = true;
         } else if (strcmp(argv[i], "--version") == 0) {
             xcli.version = true;
+            puts(XTEST_VERSION);
+            exit(EXIT_SUCCESS);
         } else if (strcmp(argv[i], "--colored") == 0) {
             xcli.colored = true;
         } else if (strcmp(argv[i], "--help") == 0) {
             xcli.help = true;
+            xparser_print_usage();
+            exit(EXIT_SUCCESS);
         } else if (strcmp(argv[i], "--repeat") == 0) {
             xcli.repeat = true;
             if (++i < argc) {
