@@ -77,16 +77,16 @@ static void xtest_output_xassert_expect(bool expression, const char *message, co
     const char *color_fail = xcli.colored ? ANSI_COLOR_RED : "";
     const char *color_pass = xcli.colored ? ANSI_COLOR_GREEN : "";
 
-    if (!expression && (xcli.verbose || xcli.cutback)) {
-        printf("%s", color_start);
-        if (xcli.verbose) {
-            printf("[%s case failed]" ANSI_COLOR_RESET "\n%sline: %.4i\nfile: %s\nfunc: %s\n", assert_type, color_fail, line, file, func);
-            printf("%smessage: %s\nresult: %s\n", color_fail, message, expression ? "PASS" : "FAIL");
-        } else if (xcli.cutback) {
-            printf("%s[O]", (XEXPECT_PASS_SCAN ? color_pass : color_fail));
-        }
-        printf("%s", color_reset);
+    printf("%s", color_start);
+    if (xcli.verbose && !xcli.verbose) {
+        printf("[%s assumtion ]" ANSI_COLOR_RESET "\n%sline: %.4i\nfile: %s\nfunc: %s\n", assert_type, color_fail, line, file, func);
+        printf("%smessage: %s\nresult: %s\n", color_fail, message, expression ? "PASS" : "FAIL");
+    } else if (xcli.cutback && !xcli.verbose) {
+        printf("%s[O]", (expression ? color_pass : color_fail));
+    } else if (xcli.cutback && xcli.verbose) {
+        printf("%smessage: %s\nresult: %s\n", color_fail, message, expression ? "PASS" : "FAIL");
     }
+    printf("%s", color_reset);
 } // end of func
 
 // Output for XUnit Test Case Ignored.
@@ -95,17 +95,17 @@ static void xtest_output_xignore(const char *reason, const char *file, int line,
     const char *color_reset = xcli.colored ? ANSI_COLOR_RESET : "";
     const char *color_yellow = xcli.colored ? ANSI_COLOR_YELLOW : "";
 
-    if (xcli.verbose || xcli.cutback) {
-        printf("%s", color_start);
-        if (xcli.verbose) {
-            puts("[Assert had been skipped]" ANSI_COLOR_RESET);
-            printf("%sline: %.4i\nfile: %s\nfunc: %s\n", color_yellow, line, file, func);
-            printf("%smessage: %s\n", color_yellow, reason);
-        } else if (xcli.cutback) {
-            printf("%s", XIGNORE_TEST_CASE ? ANSI_COLOR_YELLOW "[I]" : ANSI_COLOR_RED "[X]");
-        }
-        printf("%s", color_reset);
+    printf("%s", color_start);
+    if (xcli.verbose && !xcli.cutback) {
+        puts("[ assumtion skipped ]" ANSI_COLOR_RESET);
+        printf("%sline: %.4i\nfile: %s\nfunc: %s\n", color_yellow, line, file, func);
+        printf("%smessage: %s\n", color_yellow, reason);
+    } else if (xcli.cutback && !xcli.verbose) {
+        printf("%s", XIGNORE_TEST_CASE ? ANSI_COLOR_YELLOW "[I]" : ANSI_COLOR_RED "[X]");
+    } else if (xcli.cutback && xcli.verbose) {
+        printf("%smessage: %s\n", color_yellow, reason);
     }
+    printf("%s", color_reset);
 } // end of func
 
 // Formats and displays information about the start/end of a test case.
@@ -113,26 +113,30 @@ static void xtest_output_xunittest_format(bool is_start, XTestCase *test_case, X
     const char *color_start = xcli.colored ? ANSI_COLOR_BLUE : "";
     const char *color_reset = xcli.colored ? ANSI_COLOR_RESET : "";
 
-    if ((xcli.verbose || xcli.cutback) && is_start) {
+    if (is_start) {
         printf("%s", color_start);
-        if (xcli.verbose) {
-            puts("[Running XUnit Test]" ANSI_COLOR_RESET);
+        if (xcli.verbose && !xcli.cutback) {
+            puts("[Running Test Case]" ANSI_COLOR_RESET);
             printf("name  : %s\nnumber: %.4i\ntype: %s\n", test_case->name, stats->total_count + 1, !test_case->is_benchmark ? "Unit test" : "Benchmark");
-        } else if (xcli.cutback) {
+        } else if (xcli.cutback && !xcli.verbose) {
             printf("name: %s, type: %s\n", test_case->name, !test_case->is_benchmark ? "unit" : "mark");
+        } else {
+            printf("name  : %s\nnumber: %.4i\ntype: %s\n", test_case->name, stats->total_count + 1, !test_case->is_benchmark ? "Unit test" : "Benchmark");
         }
         printf("%s", color_reset);
-    } else if (xcli.verbose || xcli.cutback) {
-        printf("%stime: %.6lu ", color_start, test_case->elapsed_time);
-        if (xcli.verbose) {
+    } else if (!is_start) {
+        printf("%stime: %.6lu \n", color_start, test_case->elapsed_time);
+        if (xcli.verbose && !xcli.cutback) {
             printf("ignore: %s\n", test_case->ignored ? "yes" : "no");
             if (xcli.colored) {
                 puts("[Current unit done]\n\n" ANSI_COLOR_RESET);
             } else {
                 puts("[Current unit done]\n\n");
             }
-        } else if (xcli.cutback) {
+        } else if (xcli.cutback && !xcli.verbose) {
             printf("\n");
+        } else {
+            printf("ignore: %s\n", test_case->ignored ? "yes" : "no");
         }
         printf("%s", color_reset);
     }
@@ -143,20 +147,20 @@ static void xtest_output_xunittest_report(XUnitRunner *runner) {
     const char *color_start = xcli.colored ? ANSI_COLOR_BLUE : "";
     const char *color_reset = xcli.colored ? ANSI_COLOR_RESET : "";
 
-    if (xcli.verbose || xcli.cutback) {
-        printf("%s[XUnit Runner] test results\n%s", color_start, color_reset);
-        if (!xcli.verbose || xcli.cutback) {
-            printf("pass: %.3i, fail: %.3i", runner->stats.passed_count, runner->stats.failed_count);
-        } else {
-            printf("pass: %.3i, fail: %.3i, skip: %.3i, total: %.3i",
-                   runner->stats.passed_count, runner->stats.failed_count,
-                   runner->stats.ignored_count, runner->stats.total_count);
-        }
-        printf("%s\n", color_reset);
+    printf("%s[Xtest report system]\n%s", color_start, color_reset);
+    if (!xcli.verbose && xcli.cutback) {
+        printf("result: %s", runner->stats.failed_count? "fail" : "pass");
+    } else if (xcli.verbose && !xcli.cutback) {
+        printf("pass: %.3i, fail: %.3i, skip: %.3i, total: %.3i",
+                runner->stats.passed_count, runner->stats.failed_count,
+                runner->stats.ignored_count, runner->stats.total_count);
+    } else {
+        printf("pass: %.3i, fail: %.3i", runner->stats.passed_count, runner->stats.failed_count);
     }
+    printf("%s\n", color_reset);
 } // end of func
 
-void xparser_init(void) {
+static void xparser_init(void) {
     // Initialize members individually
     xcli.cutback = false;
     xcli.verbose = false;
@@ -170,7 +174,7 @@ void xparser_init(void) {
 } // end of func
 
 // Prints usage instructions, including custom options, for a command-line program.
-void xparser_print_usage(void) {
+static void xparser_print_usage(void) {
     puts("Usage: Xtest.cli [options]");
     puts("Options:");
     puts("  --help        Display this help message");
@@ -185,9 +189,10 @@ void xparser_print_usage(void) {
 } // end of func
 
 // Add this function to parse the config file
-void xparser_parse_config_file(const char* filename) {
+static void xparser_parse_config_file(const char* filename) {
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
+        // TODO: must resolve issue to make load config feature work, fails upon opening almost there
         fprintf(stderr, "Error: Could not open config file '%s'\n", filename);
         exit(EXIT_FAILURE);
     }
@@ -202,14 +207,10 @@ void xparser_parse_config_file(const char* filename) {
                 xcli.cutback     = (strcmp(value, "true") == 0) ? true : false;
             } else if (strcmp(key, "verbose") == 0) {
                 xcli.verbose     = (strcmp(value, "true") == 0) ? true : false;
-            } else if (strcmp(key, "version") == 0) {
-                xcli.version     = (strcmp(value, "true") == 0) ? true : false;
             } else if (strcmp(key, "colored") == 0) {
                 xcli.colored     = (strcmp(value, "true") == 0) ? true : false;
             } else if (strcmp(key, "dry_run") == 0) {
                 xcli.dry_run     = (strcmp(value, "true") == 0) ? true : false;
-            } else if (strcmp(key, "help") == 0) {
-                xcli.help        = (strcmp(value, "true") == 0) ? true : false;
             } else if (strcmp(key, "only_mark") == 0) {
                 xcli.only_bench  = (strcmp(value, "true") == 0) ? true : false;
             } else if (strcmp(key, "only_test") == 0) {
@@ -230,7 +231,7 @@ void xparser_parse_config_file(const char* filename) {
     fclose(file);
 } // end of func
 
-void xparser_parse_args(int argc, char *argv[]) {
+static void xparser_parse_args(int argc, char *argv[]) {
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--dry-run") == 0) {
             xcli.dry_run = true;
@@ -244,10 +245,14 @@ void xparser_parse_args(int argc, char *argv[]) {
             xcli.only_bench = true;
         } else if (strcmp(argv[i], "--version") == 0) {
             xcli.version = true;
+            puts(XTEST_VERSION);
+            exit(EXIT_SUCCESS);
         } else if (strcmp(argv[i], "--colored") == 0) {
             xcli.colored = true;
         } else if (strcmp(argv[i], "--help") == 0) {
             xcli.help = true;
+            xparser_print_usage();
+            exit(EXIT_SUCCESS);
         } else if (strcmp(argv[i], "--repeat") == 0) {
             xcli.repeat = true;
             if (++i < argc) {
@@ -311,6 +316,8 @@ int xtest_end(XUnitRunner *runner) {
 
 // Common functionality for running a test case and updating test statistics.
 void xtest_run_test(XTestCase* test_case, XTestStats* stats, XTestFixture* fixture) {
+    xtest_output_xunittest_format(true, test_case, stats);
+
     // Check if the test should be ignored
     if (XIGNORE_TEST_CASE || (xcli.only_test && test_case->is_benchmark) || (xcli.only_bench && !test_case->is_benchmark)) {
         // Skip the test if it doesn't match the desired type
@@ -355,7 +362,7 @@ void xtest_run_test(XTestCase* test_case, XTestStats* stats, XTestFixture* fixtu
     stats->total_count++;
 
     // Output test format information
-    xtest_output_xunittest_format(test_case->is_benchmark, test_case, stats);
+    xtest_output_xunittest_format(false, test_case, stats);
 } // end of func
 
 // Runs a test case and updates test statistics.
