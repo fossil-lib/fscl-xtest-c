@@ -1,4 +1,5 @@
 if get_option('with_test').enabled()
+    configure_file(input: 'xtest_config.ini', output: 'xtest_config.ini', copy: true)
     configure_file(input: 'example.txt', output: 'example.txt', copy: true)
 
     test_src = ['xunit_runner.c']
