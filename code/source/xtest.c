@@ -188,6 +188,7 @@ static void xparser_print_usage(void) {
 static void xparser_parse_config_file(const char* filename) {
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
+        // TODO: must resolve issue to make load config feature work, fails upon opening almost there
         fprintf(stderr, "Error: Could not open config file '%s'\n", filename);
         exit(EXIT_FAILURE);
     }
