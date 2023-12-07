@@ -1,7 +1,8 @@
 project('Trilobite XUnit', 'c',
-    version: '0.5.0',
     meson_version: '>=1.0.0',
-    default_options: ['c_std=c18'])
+    version: '0.5.0',
+    license: 'apache-2.0',
+    default_options: ['c_std=c18', 'werror=true', 'buildtype=minsize'])
 
 subdir('code')
 subdir('demo')
