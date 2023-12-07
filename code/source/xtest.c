@@ -62,7 +62,7 @@ XParser xcli;
 static char CONFIG_FILENAME[555];
 
 // Extra
-const char *XTEST_VERSION = "0.5.0";
+const char *XTEST_VERSION = "0.5.1";
 
 // Static control panel for assert/expect and marks
 static bool XEXPECT_PASS_SCAN = true;
