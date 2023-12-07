@@ -1,11 +1,18 @@
 if get_option('with_test').enabled()
-    test_source = files(
-        'xtest_xexpect.c',  'xtest_xassert.c',
-        'xtest_bench.c',   'xunit_runner.c')
+    fs = import('fs')
+    dummy = ['example.txt']
 
-    configure_file(input: 'example.txt', output: 'example.txt', copy: true)
+    foreach iter : dummy
+        fs.copyfile(iter, '.')
+    endforeach
 
-    test('Execute project Xunit tests', 
-        executable('xrunner', test_source,
-        dependencies : [trilo_xtest_c_dep]))
+    test_src = ['xunit_runner.c']
+    test_cubes = ['xexpect', 'xassert', 'bench']
+
+    foreach cube : test_cubes
+        test_src += ['xtest_' + cube + '.c']
+    endforeach
+
+    pizza = executable('xcli', test_src, include_directories: dir, dependencies : trilo_xtest_c_dep)
+    test('Execute project Xunit tests', pizza)
 endif
