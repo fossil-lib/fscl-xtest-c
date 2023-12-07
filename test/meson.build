@@ -1,10 +1,6 @@
 if get_option('with_test').enabled()
     fs = import('fs')
-    dummy = ['example.txt']
-
-    foreach iter : dummy
-        fs.copyfile(iter, '.')
-    endforeach
+    fs.copyfile('example.txt', '.')
 
     test_src = ['xunit_runner.c']
     test_cubes = ['xexpect', 'xassert', 'bench']
