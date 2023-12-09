@@ -1,6 +1,21 @@
 # Trilobite XTest libraries - C
 
-Trilobite XTest is a versatile and lightweight C test framework designed to simplify and enhance the process of software development through effective unit testing and benchmarking. Created with simplicity and flexibility in mind, XTest empowers developers to write, organize, and execute tests effortlessly, ensuring robust and reliable software.
+The Trilobite Standard Component Libraries (TSCL) test framework, known as Xtest, is a robust testing tool designed within the laboratory environment with a straightforward goal— to validate your C or C++ source code. This testing framework is a part of the Trilobite Standard Component Libraries, a collection of standardized components for use in software development.
+
+Xtest is tailored to meet the essential needs of developers working with C or C++ codebases, providing a reliable means of ensuring the correctness and reliability of their software. With a focus on simplicity and ease of use, Xtest empowers developers to create and execute tests seamlessly, enabling the identification of potential issues early in the development process.
+
+Key Features of Xtest:
+1. **Ease of Integration:** Xtest is designed for easy integration into your development workflow. It seamlessly integrates with your C or C++ projects, allowing developers to effortlessly incorporate testing into their build and deployment processes.
+
+2. **Straightforward Validation:** The primary objective of Xtest is to validate your source code effectively. It offers a suite of testing capabilities to verify the correctness of your functions, classes, or modules, ensuring that they behave as expected.
+
+3. **Laboratory-Backed Reliability:** Developed within a laboratory environment, Xtest benefits from a foundation built on rigorous testing practices. The framework is crafted to adhere to high standards of reliability and accuracy, providing developers with confidence in their codebase.
+
+4. **Comprehensive Testing Support:** Xtest supports a variety of testing scenarios, including unit testing, integration testing, and more. This flexibility allows developers to tailor their testing approach based on the specific needs of their projects.
+
+5. **Readable Test Output:** Xtest generates clear and readable test output, making it easy for developers to interpret and act upon the results. This ensures that identifying and addressing issues in the codebase is a straightforward process.
+
+By leveraging the Trilobite Standard Component Libraries' Xtest framework, developers can enhance the quality of their C or C++ code through systematic and reliable testing practices. Whether you are developing a small utility or a complex software system, Xtest provides the tools needed to establish a robust testing infrastructure, contributing to the overall stability and maintainability of your projects.
 
 ## Who is This For?
 
