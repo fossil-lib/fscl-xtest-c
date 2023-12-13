@@ -34,26 +34,44 @@ Before getting started, make sure you have the following installed:
 
 ## Setting up, Compiling, Installing, and Running the Project
 
-1. **Clone the Repository**:
+1. **Create a Wrap File**:
+
+Create a directory named subprojects in the root directory, next create a file named `tscl-xtest-c.wrap` in the `subprojects` directory of your project with the following content:
+
    ```bash
-   git clone https://github.com/trilobite-stdlib/trilo-xtest-c.git
-   cd trilo-xtest-c
+   # ================ #
+   #  TSCL Wrap File. #
+   # ================ #
+   [wrap-git]
+   url = https://github.com/trilobite-stdlib/tscl-xtest-c.git
+   revision = main
+   
+   [provide]
+   tscl-xtest-c = tscl_xtest_c_dep
    ```
 
-2. **Configure the Build**:
-   ```bash
-   meson setup builddir
+2. **Integrate Wrap File in Meson Build**:
+   ```meson
+   project('my_project', 'c',
+       version : '0.1',
+       default_options : ['warning_level=3'])
+
+   exe = executable('my_project', 'my_project.c',
+       dependencies : dependency('tscl-xtest-c'), # add this line
+       install : true)
+
+   test('basic', exe)
    ```
 
 3. **Compile the Project**:
    ```bash
+   meson setup builddir
    meson compile -C builddir
    ```
 
-4. **Install the Project**:
-   ```bash
-   meson install -C builddir
-   ```
+4. **Visit the reference guide to learn how to this**
+
+Here is the link to the [Refrence Docs](https://trilobite.home.blog/reference-docs/)
 
 ## Including the Demo and Running Tests
 
