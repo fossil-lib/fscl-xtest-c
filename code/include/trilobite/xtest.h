@@ -78,6 +78,7 @@ typedef struct {
     uint16_t passed_count;     // Number of passed tests
     uint16_t failed_count;     // Number of failed tests
     uint16_t ignored_count;    // Number of ignored tests
+    uint16_t error_count;      // Number of ignored tests
     uint16_t total_count;      // Total number of tests
 } xstats;
 
@@ -95,6 +96,7 @@ int xtest_end(xengine *runner);
 void xtest_run_test_unit(xtest* test_case, xstats* stats);
 void xtest_run_test_fixture(xtest* test_case, xfixture* fixture, xstats* stats);
 
+void xerrors(const char* reason, const char* file, int line, const char* func);
 void xignore(const char* reason, const char* file, int line, const char* func);
 void xassert(bool expression, const char *message, const char* file, int line, const char* func);
 void xexpect(bool expression, const char *message, const char* file, int line, const char* func);
@@ -187,13 +189,14 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // TEST_EXPECT: expectation function with optional message.
 // TEST_ASSERT: assertion function with optional message.
 // TEST_IGNORE: ignored with a specified reason and prints it to stderr
-//
+// TEST_XERROR: information about an error condition
 // ------------------------------------------------------------------------
 //
 
 #define TEST_ASSERT(expression, message) xassert(expression, message, __FILE__, __LINE__, __func__)
 #define TEST_EXPECT(expression, message) xexpect(expression, message, __FILE__, __LINE__, __func__)
-#define XTEST_IGNORE(reason) xignore(reason, __FILE__, __LINE__, __func__)
+#define TEST_IGNORE(reason) xignore(reason, __FILE__, __LINE__, __func__)
+#define TEST_XERROR(reason) xerrors(reason, __FILE__, __LINE__, __func__)
 
 // =================================================================
 // XTest utility commands
