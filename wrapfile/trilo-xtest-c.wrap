@@ -1,9 +1,0 @@
-# ================#
-#  TSCL wrap file #
-# ================#
-[wrap-git]
-url = https://github.com/trilobite-stdlib/trilo-xtest-c.git
-revision = main
- 
-[provide]
-trilo-xtest-c = trilo_xtest_c_dep

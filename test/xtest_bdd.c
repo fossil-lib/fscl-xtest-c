@@ -133,20 +133,9 @@ XTEST_CASE(xbdd_valid_login) {
 //
 // XUNIT-GROUP:
 //
-void group_bdd_test(XUnitRunner *runner) {
-    XTEST_RUN_UNIT(xbdd_logic_test,   runner);
-    XTEST_RUN_UNIT(xbdd_user_account, runner);
-    XTEST_RUN_UNIT(xbdd_empty_cart,   runner);
-    XTEST_RUN_UNIT(xbdd_valid_login,  runner);
+XTEST_DEFINE_POOL(bdd_test_group) {
+    XTEST_RUN_UNIT(xbdd_logic_test);
+    XTEST_RUN_UNIT(xbdd_user_account);
+    XTEST_RUN_UNIT(xbdd_empty_cart);
+    XTEST_RUN_UNIT(xbdd_valid_login);
 } // end of group
-
-//
-// XUNIT-RUNNER:
-//
-int main(int argc, char **argv) {
-    XUnitRunner runner = XTEST_RUNNER_START(argc, argv);
-
-    group_bdd_test(&runner);
-
-    return XTEST_RUNNER_END(runner);
-} // end of func
