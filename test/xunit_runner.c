@@ -52,5 +52,5 @@ int main(int argc, char **argv) {
     XTEST_IMPORT_POOL(bdd_test_group);
     XTEST_IMPORT_POOL(tdd_test_group);
 
-    return XTEST_ERASE(runner);
+    return XTEST_ERASE();
 } // end of func
