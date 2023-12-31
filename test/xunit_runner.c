@@ -34,19 +34,23 @@
 //
 // XUNIT-GROUP: list of test groups for the runner
 //
-XTEST_GROUP_EXTERN(xassert_test_group);
-XTEST_GROUP_EXTERN(xexpect_test_group);
-XTEST_GROUP_EXTERN(xbenchs_test_group);
+XTEST_EXTERN_POOL(xassert_test_group);
+XTEST_EXTERN_POOL(xexpect_test_group);
+XTEST_EXTERN_POOL(xbenchs_test_group);
+XTEST_EXTERN_POOL(bdd_test_group);
+XTEST_EXTERN_POOL(tdd_test_group);
 
 //
 // XUNIT-TEST RUNNER:
 //
 int main(int argc, char **argv) {
-    XUnitRunner runner = XTEST_RUNNER_START(argc, argv);
+    XTEST_CREATE(argc, argv);
 
-    XTEST_GROUP_REGISTER(xassert_test_group, runner);
-    XTEST_GROUP_REGISTER(xexpect_test_group, runner);
-    XTEST_GROUP_REGISTER(xbenchs_test_group, runner);
+    XTEST_IMPORT_POOL(xassert_test_group);
+    XTEST_IMPORT_POOL(xexpect_test_group);
+    XTEST_IMPORT_POOL(xbenchs_test_group);
+    XTEST_IMPORT_POOL(bdd_test_group);
+    XTEST_IMPORT_POOL(tdd_test_group);
 
-    return XTEST_RUNNER_END(runner);
+    return XTEST_ERASE();
 } // end of func

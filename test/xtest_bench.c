@@ -1,5 +1,5 @@
 /*  ----------------------------------------------------------------------------
-    File: xtest_bench.c
+    File: XTEST_MARK.c
 
     Description:
     This test file contains unit tests for the various functions and utilities provided
@@ -60,7 +60,7 @@ void bubble_sort(int *array, size_t size) {
 //
 // XUNIT-TEST:
 //
-XTEST_BENCH(comput_bubble_sort_small_dataset) {
+XTEST_MARK(comput_bubble_sort_small_dataset) {
     // Example data
     int data[] = {5, 2, 8, 12, 3};
     size_t size = sizeof(data) / sizeof(data[0]);
@@ -73,7 +73,7 @@ XTEST_BENCH(comput_bubble_sort_small_dataset) {
     }
 } // end benchmark
 
-XTEST_BENCH(comput_bubble_sort_large_dataset) {
+XTEST_MARK(comput_bubble_sort_large_dataset) {
     // Example data
     int data[] = {100, 75, 43, 28, 56, 89, 34, 12};
     size_t size = sizeof(data) / sizeof(data[0]);
@@ -86,7 +86,7 @@ XTEST_BENCH(comput_bubble_sort_large_dataset) {
     }
 } // end benchmark
 
-XTEST_BENCH(comput_bubble_sort_medium_dataset) {
+XTEST_MARK(comput_bubble_sort_medium_dataset) {
     // Example data
     int data[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
     size_t size = sizeof(data) / sizeof(data[0]);
@@ -99,7 +99,7 @@ XTEST_BENCH(comput_bubble_sort_medium_dataset) {
     }
 } // end benchmark
 
-XTEST_BENCH(comput_bubble_sort_empty_dataset) {
+XTEST_MARK(comput_bubble_sort_empty_dataset) {
     // Edge case: Empty dataset
     int data[] = {};
     size_t size = 0;
@@ -109,7 +109,7 @@ XTEST_BENCH(comput_bubble_sort_empty_dataset) {
     // Nothing to assert for an empty dataset
 } // end benchmark
 
-XTEST_BENCH(comput_bubble_sort_sorted_dataset) {
+XTEST_MARK(comput_bubble_sort_sorted_dataset) {
     // Edge case: Already sorted dataset
     int data[] = {1, 2, 3, 4, 5};
     size_t size = sizeof(data) / sizeof(data[0]);
@@ -122,7 +122,7 @@ XTEST_BENCH(comput_bubble_sort_sorted_dataset) {
     }
 } // end benchmark
 
-XTEST_BENCH(comput_bubble_sort_reverse_sorted_dataset) {
+XTEST_MARK(comput_bubble_sort_reverse_sorted_dataset) {
     // Edge case: Reverse sorted dataset
     int data[] = {5, 4, 3, 2, 1};
     size_t size = sizeof(data) / sizeof(data[0]);
@@ -139,11 +139,11 @@ XTEST_BENCH(comput_bubble_sort_reverse_sorted_dataset) {
 //
 // XUNIT-GROUP:
 //
-void xbenchs_test_group(XUnitRunner *runner) {
-    XTEST_RUN_UNIT(comput_bubble_sort_small_dataset, runner);
-    XTEST_RUN_UNIT(comput_bubble_sort_medium_dataset, runner);
-    XTEST_RUN_UNIT(comput_bubble_sort_large_dataset, runner);
-    XTEST_RUN_UNIT(comput_bubble_sort_empty_dataset, runner);
-    XTEST_RUN_UNIT(comput_bubble_sort_sorted_dataset, runner);
-    XTEST_RUN_UNIT(comput_bubble_sort_reverse_sorted_dataset, runner);
+XTEST_DEFINE_POOL(xbenchs_test_group) {
+    XTEST_RUN_UNIT(comput_bubble_sort_small_dataset);
+    XTEST_RUN_UNIT(comput_bubble_sort_medium_dataset);
+    XTEST_RUN_UNIT(comput_bubble_sort_large_dataset);
+    XTEST_RUN_UNIT(comput_bubble_sort_empty_dataset);
+    XTEST_RUN_UNIT(comput_bubble_sort_sorted_dataset);
+    XTEST_RUN_UNIT(comput_bubble_sort_reverse_sorted_dataset);
 } // end of group
