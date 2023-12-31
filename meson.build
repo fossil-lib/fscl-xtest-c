@@ -1,4 +1,4 @@
-project('Trilobite XUnit', 'c',
+project('Trilobite XTest', 'c',
     meson_version: '>=1.0.0',
     version: '1.0.0',
     license: 'apache-2.0',
