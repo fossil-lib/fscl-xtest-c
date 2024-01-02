@@ -1,22 +1,8 @@
-# Trilobite XTest libraries - C
+# Fossil XTest - C
 
-The Trilobite Standard Component Libraries (TSCL) test framework, known as Xtest, is a robust testing tool designed within the laboratory environment with a straightforward goal— to validate your C or C++ source code. This testing framework is a part of the Trilobite Standard Component Libraries, a collection of standardized components for use in software development.
+Fossil Standard Component Libraries (FSCL) by Fossil Logic represent the pinnacle of software development, embodying our commitment to quality, security, and practicality. These meticulously curated libraries serve as the cornerstone for crafting cutting-edge applications, offering a foundation built on excellence in code. With FSCL, Fossil Logic empowers developers to seamlessly integrate standardized components that elevate the overall performance and reliability of digital solutions, setting a new standard for software excellence.
 
-Xtest is tailored to meet the essential needs of developers working with C or C++ codebases, providing a reliable means of ensuring the correctness and reliability of their software. With a focus on simplicity and ease of use, Xtest empowers developers to create and execute tests seamlessly, enabling the identification of potential issues early in the development process.
-
-Key Features of Xtest:
-1. **Ease of Integration:** Xtest is designed for easy integration into your development workflow. It seamlessly integrates with your C or C++ projects, allowing developers to effortlessly incorporate testing into their build and deployment processes.
-
-2. **Straightforward Validation:** The primary objective of Xtest is to validate your source code effectively. It offers a suite of testing capabilities to verify the correctness of your functions, classes, or modules, ensuring that they behave as expected.
-
-3. **Laboratory-Backed Reliability:** Developed within a laboratory environment, Xtest benefits from a foundation built on rigorous testing practices. The framework is crafted to adhere to high standards of reliability and accuracy, providing developers with confidence in their codebase.
-
-4. **Comprehensive Testing Support:** Xtest supports a variety of testing scenarios, including unit testing, integration testing, and more. This flexibility allows developers to tailor their testing approach based on the specific needs of their projects.
-
-5. **Readable Test Output:** Xtest generates clear and readable test output, making it easy for developers to interpret and act upon the results. This ensures that identifying and addressing issues in the codebase is a straightforward process.
-
-By leveraging the Trilobite Standard Component Libraries' Xtest framework, developers can enhance the quality of their C or C++ code through systematic and reliable testing practices. Whether you are developing a small utility or a complex software system, Xtest provides the tools needed to establish a robust testing infrastructure, contributing to the overall stability and maintainability of your projects.
-
+Fossil XTest is your go-to library for robust and comprehensive testing solutions. Elevate the quality of your software by incorporating advanced testing methodologies, ensuring that your code not only meets but exceeds industry standards. With Fossil XTest, testing becomes an integral part of your development process, providing confidence in the reliability and functionality of your applications.
 ## Who is This For?
 
 This guide is designed for developers of all skill levels who want to use the Meson build system for their projects. It assumes basic familiarity with command-line interfaces and project organization.
@@ -36,18 +22,18 @@ Before getting started, make sure you have the following installed:
 
 1. **Create a Wrap File**:
 
-Create a directory named subprojects in the root directory, next create a file named `tscl-xtest-c.wrap` in the `subprojects` directory of your project with the following content:
+Create a directory named subprojects in the root directory, next create a file named `fscl-xtest-c.wrap` in the `subprojects` directory of your project with the following content:
 
    ```bash
    # ================ #
-   #  TSCL Wrap File. #
+   #  FSCL Wrap File. #
    # ================ #
    [wrap-git]
-   url = https://github.com/trilobite-stdlib/tscl-xtest-c.git
+   url = https://github.com/fossil-lib/fscl-xtest-c.git
    revision = main
    
    [provide]
-   tscl-xtest-c = tscl_xtest_c_dep
+   fscl-xtest-c = fscl_xtest_c_dep
    ```
 
 2. **Integrate Wrap File in Meson Build**:
@@ -57,7 +43,7 @@ Create a directory named subprojects in the root directory, next create a file n
        default_options : ['warning_level=3'])
 
    exe = executable('my_project', 'my_project.c',
-       dependencies : dependency('tscl-xtest-c'), # add this line
+       dependencies : dependency('fscl-xtest-c'), # add this line
        install : true)
 
    test('basic', exe)
@@ -75,24 +61,23 @@ Here is the link to the [Refrence Docs](https://trilobite.home.blog/reference-do
 
 ## Including the Demo and Running Tests
 
-To include the demo and run tests, you can use the following options when configuring the build:
+To run tests, you can use the following options when configuring the build:
 
-- **Including the Demo**: Add `-Dwith_demo=enabled` when configuring the build.
 - **Running Tests**: Add `-Dwith_test=enabled` when configuring the build.
 
 Example:
 
 ```bash
-meson setup builddir -Dwith_demo=enabled -Dwith_test=enabled
+meson setup builddir -Dwith_test=enabled
 ```
 
 ## Contributing
 
-If you're interested in contributing to this project, please consider opening pull requests or creating issues on the [GitHub repository](https://github.com/trilobite-stdlib/trilo-xtest-c). Be sure to read the documentation on the [project website](https://trilobite.home.blog).
+If you're interested in contributing to this project, please consider opening pull requests or creating issues on the [GitHub repository](https://github.com/fossil-lib/fscl-xtest-c). Be sure to read the documentation on the [project website](https://trilobite.home.blog).
 
 ## Feedback and Support
 
-If you encounter any issues, have questions, or would like to provide feedback, don't hesitate to open an issue on the [GitHub repository](https://github.com/trilobite-stdlib/trilo-xtest-c/issues).
+If you encounter any issues, have questions, or would like to provide feedback, don't hesitate to open an issue on the [GitHub repository](https://github.com/fossil-lib/fscl-xtest-c/issues).
 
 ## License
 
