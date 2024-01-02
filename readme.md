@@ -55,10 +55,6 @@ Create a directory named subprojects in the root directory, next create a file n
    meson compile -C builddir
    ```
 
-4. **Visit the reference guide to learn how to this**
-
-Here is the link to the [Refrence Docs](https://trilobite.home.blog/reference-docs/)
-
 ## Including the Demo and Running Tests
 
 To run tests, you can use the following options when configuring the build:
@@ -73,7 +69,7 @@ meson setup builddir -Dwith_test=enabled
 
 ## Contributing
 
-If you're interested in contributing to this project, please consider opening pull requests or creating issues on the [GitHub repository](https://github.com/fossil-lib/fscl-xtest-c). Be sure to read the documentation on the [project website](https://trilobite.home.blog).
+If you're interested in contributing to this project, please consider opening pull requests or creating issues on the [GitHub repository](https://github.com/fossil-lib/fscl-xtest-c).
 
 ## Feedback and Support
 
@@ -86,7 +82,3 @@ This project is licensed under the [Apache License 2.0](LICENSE).
 ---
 
 Thank you for choosing this project with the Meson build system. Happy coding and building amazing projects!
-
-## Contact
-
-If you have questions or want to get in touch regarding programming solutions, you can find a way to contact me on my [website](https://trilobite.home.blog/contact/).
