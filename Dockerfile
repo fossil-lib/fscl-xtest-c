@@ -19,10 +19,10 @@ RUN meson setup builddir
 WORKDIR /app/builddir
 
 # Build the project
-RUN meson compile -C builddir
+RUN ninja
 
 # Install the library system-wide
-RUN meson install builddir
+RUN ninja install
 
 # Set the entry point for the container
 ENTRYPOINT ["/bin/bash"]
