@@ -202,7 +202,7 @@ static void xparser_parse_args(int argc, char *argv[]) {
             xcli.only_fish = false;
             xcli.only_test = false;
         } else if (xparser_has_option(argc, argv, "--version")) {
-            puts("1.0.0");
+            puts("1.1.0");
             exit(EXIT_SUCCESS);
         } else if (xparser_has_option(argc, argv, "--help")) {
             xparser_print_usage();
