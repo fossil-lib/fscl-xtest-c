@@ -33,6 +33,10 @@ extern "C"
 #include <time.h>
 #endif
 
+// Used in floating point asserts
+#define XTEST_FLOAT_EPSILON 1e-6
+#define XTEST_DOUBLE_EPSILON 1e-9
+
 typedef struct {
     const char* name;         // Name of the test case
     void (*test_function)(void);  // Function pointer to the test case's implementation
