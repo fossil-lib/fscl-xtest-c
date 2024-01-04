@@ -649,7 +649,6 @@ inline void test_assert_equal_array(const void* actual, const void* expected, si
     TEST_ASSERT(!feof(stream), "End of file (EOF) reached")
 #define TEST_ASSERT_CFILE_NO_ERROR(file) \
     TEST_ASSERT(ferror(file) == 0, "File operation error occurred")
-#endif
 
 #define TEST_ASSERT_OPEN_FILE(file) TEST_ASSERT(file.is_open(), "Failed to open file")
 #define TEST_ASSERT_READ_FILE(file, buffer, size) \
@@ -685,7 +684,6 @@ inline void test_assert_equal_array(const void* actual, const void* expected, si
     TEST_ASSERT(!feof(stream), "End of file (EOF) reached")
 #define TEST_ASSERT_CFILE_NO_ERROR(file) \
     TEST_ASSERT(ferror(file) == 0, "File operation error occurred")
-#endif
 
 #define TEST_ASSERT_OPEN_FILE(file) TEST_ASSERT((file) != NULL, "Failed to open file")
 #define TEST_ASSERT_READ_FILE(file, buffer, size) \
