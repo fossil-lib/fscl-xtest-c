@@ -434,186 +434,259 @@ TEST_ASSERT(found, "Memory not contains assertion failed");
 #define TEST_ASSERT_INVALID_OPERATION_ARRAY(condition)     TEST_ASSERT(condition, "Invalid array operation")
 #define TEST_ASSERT_INDEX_ARRAY(array, index)              TEST_ASSERT((index) >= 0 && (index) < sizeof(array) / sizeof(array[0]), "Array index out of bounds")
 
-#define TEST_ASSERT_EQUAL_INT_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((signed)(actual)[i]!= (signed)(expected)[i]) {     \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#ifdef __cplusplus
+template<typename T>
+bool test_assert_equal_array(const T* actual, const T* expected, size_t elem, const char* message) {
+    bool success = true;
+    for (size_t i = 0; i < elem; i++) {
+        if (actual[i] != expected[i]) {
+            success = false;
+            break;
+        }
+    }
+    TEST_ASSERT(success, message);
+    return success;
+}
 
-#define TEST_ASSERT_EQUAL_INT8_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((int8_t)(actual)[i]!= (int8_t)(expected)[i]) {     \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_INT_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<int>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_INT16_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((int16_t)(actual)[i]!= (int16_t)(expected)[i]) {   \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_INT8_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<int8_t>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_INT32_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((int32_t)(actual)[i]!= (int32_t)(expected)[i]) {   \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_INT16_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<int16_t>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_INT64_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((int64_t)(actual)[i]!= (int64_t)(expected)[i]) {   \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_INT32_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<int32_t>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_UINT_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((unsigned)(actual)[i]!= (unsigned)(expected)[i]) { \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_INT64_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<int64_t>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_UINT8_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((uint8_t)(actual)[i]!= (uint8_t)(expected)[i]) {   \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_UINT_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<unsigned>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_UINT16_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((uint16_t)(actual)[i]!= (uint16_t)(expected)[i]) { \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_UINT8_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<uint8_t>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_UINT32_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((uint32_t)(actual)[i]!= (uint32_t)(expected)[i]) { \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_UINT16_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<uint16_t>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_UINT64_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((uint64_t)(actual)[i]!= (uint64_t)(expected)[i]) { \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_UINT32_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<uint32_t>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_HEX_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((signed)(actual)[i]!= (signed)(expected)[i]) { \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_UINT64_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<uint64_t>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_HEX8_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((uint8_t)(actual)[i]!= (uint8_t)(expected)[i]) {   \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_HEX_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<int>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_HEX16_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((uint16_t)(actual)[i]!= (uint16_t)(expected)[i]) { \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_HEX8_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<uint8_t>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_HEX32_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((uint32_t)(actual)[i]!= (uint32_t)(expected)[i]) { \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_HEX16_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<uint16_t>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_HEX64_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((uint64_t)(actual)[i]!= (uint64_t)(expected)[i]) { \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_HEX32_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<uint32_t>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_OCT_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((signed)(actual)[i]!= (signed)(expected)[i]) { \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_HEX64_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<uint64_t>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_PTR_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if ((actual)[i] != (expected)[i]) { \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_OCT_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<int>(actual, expected, elem, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_STRING_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if (strcmp((actual)[i], (expected)[i] != 0)) { \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_PTR_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<void*>(actual, expected, elem, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_STRING_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<const char*>(actual, expected, elem, "Array equality expectation not met")
 
 #define TEST_ASSERT_EQUAL_CHAR_ARRAY(actual, expected, elem) \
-    bool success = true; \
-    for (size_t i = 0; i < (elem); i++) { \
-        if ((actual)[i] != (expected)[i]) { \
-            success = false; \
-            break; \
+    test_assert_equal_array<char>(actual, expected, elem, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_MEMORY_ARRAY(actual, expected, elem) \
+    test_assert_equal_array<uint8_t>(actual, expected, elem, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_FLOAT_ARRAY(actual, expected, elem) \
+    do { \
+        bool success = true; \
+        for (size_t i = 0; i < elem; i++) { \
+            if (fabs((actual)[i] - (expected)[i]) >= ASSERT_FLOAT_EPSILON) { \
+                success = false; \
+                break; \
+            } \
         } \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+        TEST_ASSERT(success, "Array equality expectation not met"); \
+    } while (false)
 
-#define TEST_ASSERT_EQUAL_MEMORY_ARRAY(actual, expected, elem)    \
-    bool success = true;                                       \
-    for (size_t i = 0; i < elem; i++) {                        \
-        if (memcmp(actual, expected, (elem) * sizeof(*(actual)) != 0)) { \
-            success = false; break;                            \
-        }                                                      \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_DOUBLE_ARRAY(actual, expected, elem) \
+    do { \
+        bool success = true; \
+        for (size_t i = 0; i < elem; i++) { \
+            if (fabs((actual)[i] - (expected)[i]) >= ASSERT_DOUBLE_EPSILON) { \
+                success = false; \
+                break; \
+            } \
+        } \
+        TEST_ASSERT(success, "Array equality expectation not met"); \
+    } while (false)
+#else
+inline void test_assert_equal_array(const void* actual, const void* expected, size_t elem, size_t size, const char* message) {
+    bool success = true;
+    for (size_t i = 0; i < elem; i++) {
+        const char* actual_ptr = (const char*)actual + i * size;
+        const char* expected_ptr = (const char*)expected + i * size;
+        if (memcmp(actual_ptr, expected_ptr, size) != 0) {
+            success = false;
+            break;
+        }
+    }
+    TEST_ASSERT(success, message);
+}
 
-#define TEST_ASSERT_EQUAL_FLOAT_ARRAY(actual, expected, elem)             \
-    bool success = true;                                                  \
-    for (size_t i = 0; i < elem; i++) {                                   \
-        if (fabs((actual)[i] - (expected)[i]) >= ASSERT_FLOAT_EPSILON) {  \
-            success = false; break;                                       \
-        }                                                                 \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_INT_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, int, "Array equality expectation not met")
 
-#define TEST_ASSERT_EQUAL_DOUBLE_ARRAY(actual, expected, elem)            \
-    bool success = true;                                                  \
-    for (size_t i = 0; i < elem; i++) {                                   \
-        if (fabs((actual)[i] - (expected)[i]) >= ASSERT_DOUBLE_EPSILON) { \
-            success = false; break;                                       \
-        }                                                                 \
-    } TEST_ASSERT(success, "Array equality expectation not met")
+#define TEST_ASSERT_EQUAL_INT8_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, int8_t, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_INT16_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, int16_t, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_INT32_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, int32_t, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_INT64_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, int64_t, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_UINT_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, unsigned, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_UINT8_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, uint8_t, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_UINT16_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, uint16_t, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_UINT32_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, uint32_t, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_UINT64_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, uint64_t, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_HEX_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, int, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_HEX8_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, uint8_t, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_HEX16_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, uint16_t, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_HEX32_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, uint32_t, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_HEX64_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, uint64_t, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_OCT_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, int, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_PTR_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, void*, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_STRING_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, const char*, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_CHAR_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, char, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_MEMORY_ARRAY(actual, expected, elem) \
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, uint8_t, "Array equality expectation not met")
+
+#define TEST_ASSERT_EQUAL_FLOAT_ARRAY(actual, expected, elem) \
+    do { \
+        bool success = true; \
+        for (size_t i = 0; i < elem; i++) { \
+            if (fabs((actual)[i] - (expected)[i]) >= ASSERT_FLOAT_EPSILON) { \
+                success = false; \
+                break; \
+            } \
+        } \
+        TEST_ASSERT(success, "Array equality expectation not met"); \
+    } while (false)
+
+#define TEST_ASSERT_EQUAL_DOUBLE_ARRAY(actual, expected, elem) \
+    do { \
+        bool success = true; \
+        for (size_t i = 0; i < elem; i++) { \
+            if (fabs((actual)[i] - (expected)[i]) >= ASSERT_DOUBLE_EPSILON) { \
+                success = false; \
+                break; \
+            } \
+        } \
+        TEST_ASSERT(success, "Array equality expectation not met"); \
+    } while (false)
+#endif
 
 // ----------------------------------------------------------------
 // File Stream assertions
 // ----------------------------------------------------------------
+#ifdef __cplusplus
+#define TEST_ASSERT_OPEN_CFILE(file) TEST_ASSERT((file) != NULL, "Failed to open file")
+#define TEST_ASSERT_READ_CFILE(file, buffer, size) \
+    TEST_ASSERT(fread(buffer, sizeof(char), size, file) == size, "Failed to read from file")
+#define TEST_ASSERT_WRITE_CFILE(file, data, size) \
+    TEST_ASSERT(fwrite(data, sizeof(char), size, file) == size, "Failed to write to file")
+#define TEST_ASSERT_SEEK_CFILE(file, offset, whence) \
+    TEST_ASSERT(fseek(file, offset, whence) == 0, "Failed to seek within file")
+#define TEST_ASSERT_TELL_CFILE(file) \
+    TEST_ASSERT(ftell(file) != -1L, "Failed to get file position")
+#define TEST_ASSERT_CLOSE_CFILE(file) \
+    TEST_ASSERT(fclose(file) == 0, "Failed to close file")
+#define TEST_ASSERT_EOF_CFILE(stream) \
+    TEST_ASSERT(!feof(stream), "End of file (EOF) reached")
+#define TEST_ASSERT_CFILE_NO_ERROR(file) \
+    TEST_ASSERT(ferror(file) == 0, "File operation error occurred")
+#endif
+
+#define TEST_ASSERT_OPEN_FILE(file) TEST_ASSERT(file.is_open(), "Failed to open file")
+#define TEST_ASSERT_READ_FILE(file, buffer, size) \
+    TEST_ASSERT(file.read(buffer, size), "Failed to read from file")
+#define TEST_ASSERT_WRITE_FILE(file, data, size) \
+    TEST_ASSERT(file.write(data, size), "Failed to write to file")
+#define TEST_ASSERT_SEEK_FILE(file, offset, whence) \
+    TEST_ASSERT(file.seekg(offset, whence).good(), "Failed to seek within file")
+#define TEST_ASSERT_TELL_FILE(file) \
+    TEST_ASSERT(file.tellg() != std::streampos(-1), "Failed to get file position")
+#define TEST_ASSERT_CLOSE_FILE(file) \
+    do { \
+        file.close(); \
+        TEST_ASSERT(!file.fail(), "Failed to close file"); \
+    } while (false)
+#define TEST_ASSERT_EOF_FILE(stream) \
+    TEST_ASSERT(!stream.eof(), "End of file (EOF) reached")
+#define TEST_ASSERT_FILE_NO_ERROR(file) \
+    TEST_ASSERT(!file.fail(), "File operation error occurred")
+#else
+#define TEST_ASSERT_OPEN_CFILE(file) TEST_ASSERT((file) != NULL, "Failed to open file")
+#define TEST_ASSERT_READ_CFILE(file, buffer, size) \
+    TEST_ASSERT(fread(buffer, sizeof(char), size, file) == size, "Failed to read from file")
+#define TEST_ASSERT_WRITE_CFILE(file, data, size) \
+    TEST_ASSERT(fwrite(data, sizeof(char), size, file) == size, "Failed to write to file")
+#define TEST_ASSERT_SEEK_CFILE(file, offset, whence) \
+    TEST_ASSERT(fseek(file, offset, whence) == 0, "Failed to seek within file")
+#define TEST_ASSERT_TELL_CFILE(file) \
+    TEST_ASSERT(ftell(file) != -1L, "Failed to get file position")
+#define TEST_ASSERT_CLOSE_CFILE(file) \
+    TEST_ASSERT(fclose(file) == 0, "Failed to close file")
+#define TEST_ASSERT_EOF_CFILE(stream) \
+    TEST_ASSERT(!feof(stream), "End of file (EOF) reached")
+#define TEST_ASSERT_CFILE_NO_ERROR(file) \
+    TEST_ASSERT(ferror(file) == 0, "File operation error occurred")
+#endif
+
 #define TEST_ASSERT_OPEN_FILE(file) TEST_ASSERT((file) != NULL, "Failed to open file")
 #define TEST_ASSERT_READ_FILE(file, buffer, size) \
     TEST_ASSERT(fread(buffer, sizeof(char), size, file) == size, "Failed to read from file")
@@ -627,9 +700,9 @@ TEST_ASSERT(found, "Memory not contains assertion failed");
     TEST_ASSERT(fclose(file) == 0, "Failed to close file")
 #define TEST_ASSERT_EOF_FILE(stream) \
     TEST_ASSERT(!feof(stream), "End of file (EOF) reached")
-// Assert that no file error has occurred
 #define TEST_ASSERT_FILE_NO_ERROR(file) \
     TEST_ASSERT(ferror(file) == 0, "File operation error occurred")
+#endif
 
 #ifdef __cplusplus
 }
