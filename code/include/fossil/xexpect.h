@@ -47,9 +47,6 @@ extern "C"
 #include <time.h>
 #endif
 
-#define EXPECT_FLOAT_EPSILON 1e-6 // Define your desired epsilon value
-#define EXPECT_DOUBLE_EPSILON 1e-9 // Define your desired epsilon value
-
 // ----------------------------------------------------------------
 // Memory assertions
 // ----------------------------------------------------------------
@@ -293,8 +290,8 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 // Float assertions
 // ----------------------------------------------------------------
 #ifdef __cplusplus
-#define TEST_EXPECT_FLOAT_EQUAL(actual, expected)         TEST_EXPECT(std::fabs((float)(actual) -  (float)(expected)) < EXPECT_FLOAT_EPSILON, "Floating-point value not equal within epsilon")
-#define TEST_EXPECT_FLOAT_NOT_EQUAL(actual, expected)     TEST_EXPECT(std::fabs((float)(actual) -  (float)(expected)) <= EXPECT_FLOAT_EPSILON, "Floating-point value equal within epsilon")
+#define TEST_EXPECT_FLOAT_EQUAL(actual, expected)         TEST_EXPECT(std::fabs((float)(actual) -  (float)(expected)) < XTEST_FLOAT_EPSILON, "Floating-point value not equal within epsilon")
+#define TEST_EXPECT_FLOAT_NOT_EQUAL(actual, expected)     TEST_EXPECT(std::fabs((float)(actual) -  (float)(expected)) <= XTEST_FLOAT_EPSILON, "Floating-point value equal within epsilon")
 #define TEST_EXPECT_FLOAT_LESS(actual, expected)          TEST_EXPECT((float)(actual)      <  (float)(expected),   "Floating-point value not less")
 #define TEST_EXPECT_FLOAT_GREATER(actual, expected)       TEST_EXPECT((float)(actual)      >  (float)(expected),   "Floating-point value not greater")
 #define TEST_EXPECT_FLOAT_GREATER_EQUAL(actual, expected) TEST_EXPECT((float)(actual)      >= (float)(expected),   "Floating-point value not greater or equal")
@@ -310,8 +307,8 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 #define TEST_EXPECT_FLOAT_IS_DETERMINATE(actual)         TEST_EXPECT(!std::isnan((float)actual) && std::isfinite((float)actual), "Floating-precision value not deterministic")
 #define TEST_EXPECT_FLOAT_IS_NOT_DETERMINATE(actual)     TEST_EXPECT(std::isnan((float)actual)  || std::isinf((float)actual),    "Floating-precision value deterministic")
 #else
-#define TEST_EXPECT_FLOAT_EQUAL(actual, expected)         TEST_EXPECT(fabs((float)(actual) -  (float)(expected)) < EXPECT_FLOAT_EPSILON, "Floating-point value not equal within epsilon")
-#define TEST_EXPECT_FLOAT_NOT_EQUAL(actual, expected)     TEST_EXPECT(fabs((float)(actual) -  (float)(expected)) <= EXPECT_FLOAT_EPSILON, "Floating-point value equal within epsilon")
+#define TEST_EXPECT_FLOAT_EQUAL(actual, expected)         TEST_EXPECT(fabs((float)(actual) -  (float)(expected)) < XTEST_FLOAT_EPSILON, "Floating-point value not equal within epsilon")
+#define TEST_EXPECT_FLOAT_NOT_EQUAL(actual, expected)     TEST_EXPECT(fabs((float)(actual) -  (float)(expected)) <= XTEST_FLOAT_EPSILON, "Floating-point value equal within epsilon")
 #define TEST_EXPECT_FLOAT_LESS(actual, expected)          TEST_EXPECT((float)(actual)      <  (float)(expected),   "Floating-point value not less")
 #define TEST_EXPECT_FLOAT_GREATER(actual, expected)       TEST_EXPECT((float)(actual)      >  (float)(expected),   "Floating-point value not greater")
 #define TEST_EXPECT_FLOAT_GREATER_EQUAL(actual, expected) TEST_EXPECT((float)(actual)      >= (float)(expected),   "Floating-point value not greater or equal")
@@ -332,8 +329,8 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 // Double assertions
 // ----------------------------------------------------------------
 #ifdef __cplusplus
-#define TEST_EXPECT_DOUBLE_EQUAL(actual, expected)         TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <  EXPECT_DOUBLE_EPSILON, "Double-precision value not equal within epsilon")
-#define TEST_EXPECT_DOUBLE_NOT_EQUAL(actual, expected)     TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <= EXPECT_DOUBLE_EPSILON, "Double-precision value equal within epsilon")
+#define TEST_EXPECT_DOUBLE_EQUAL(actual, expected)         TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <  XTEST_DOUBLE_EPSILON, "Double-precision value not equal within epsilon")
+#define TEST_EXPECT_DOUBLE_NOT_EQUAL(actual, expected)     TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <= XTEST_DOUBLE_EPSILON, "Double-precision value equal within epsilon")
 #define TEST_EXPECT_DOUBLE_LESS(actual, expected)          TEST_EXPECT((double)(actual) <  (double)(expected), "Double-precision value not less")
 #define TEST_EXPECT_DOUBLE_GREATER(actual, expected)       TEST_EXPECT((double)(actual) >  (double)(expected), "Double-precision value not greater")
 #define TEST_EXPECT_DOUBLE_GREATER_EQUAL(actual, expected) TEST_EXPECT((double)(actual) >= (double)(expected), "Double-precision value not greater or equal")
@@ -349,8 +346,8 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 #define TEST_EXPECT_DOUBLE_IS_DETERMINATE(actual)          TEST_EXPECT(!std::isnan((double)actual) && std::isfinite((double)actual), "Double-precision value not deterministic")
 #define TEST_EXPECT_DOUBLE_IS_NOT_DETERMINATE(actual)      TEST_EXPECT(std::isnan((double)actual)  || std::isinf((double)actual),    "Double-precision value deterministic")
 #else
-#define TEST_EXPECT_DOUBLE_EQUAL(actual, expected)         TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <  EXPECT_DOUBLE_EPSILON, "Double-precision value not equal within epsilon")
-#define TEST_EXPECT_DOUBLE_NOT_EQUAL(actual, expected)     TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <= EXPECT_DOUBLE_EPSILON, "Double-precision value equal within epsilon")
+#define TEST_EXPECT_DOUBLE_EQUAL(actual, expected)         TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <  XTEST_DOUBLE_EPSILON, "Double-precision value not equal within epsilon")
+#define TEST_EXPECT_DOUBLE_NOT_EQUAL(actual, expected)     TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <= XTEST_DOUBLE_EPSILON, "Double-precision value equal within epsilon")
 #define TEST_EXPECT_DOUBLE_LESS(actual, expected)          TEST_EXPECT((double)(actual) <  (double)(expected), "Double-precision value not less")
 #define TEST_EXPECT_DOUBLE_GREATER(actual, expected)       TEST_EXPECT((double)(actual) >  (double)(expected), "Double-precision value not greater")
 #define TEST_EXPECT_DOUBLE_GREATER_EQUAL(actual, expected) TEST_EXPECT((double)(actual) >= (double)(expected), "Double-precision value not greater or equal")
