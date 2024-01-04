@@ -22,13 +22,13 @@ extern "C"
 
 #ifdef __cplusplus
 // If compiled as C++, include the C++ version of the libraries
-#include <cstdbool>
 #include <cstring>
 #include <cstdlib>
 #include <cstddef>
 #include <cwctype>
 #include <cwchar>
 #include <cctype>
+#include <fstream>
 #include <cstdio>
 #include <cmath>
 #include <ctime>
