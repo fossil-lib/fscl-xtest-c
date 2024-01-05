@@ -42,7 +42,7 @@ typedef struct {
     void (*test_function)(void);  // Function pointer to the test case's implementation
     bool ignored;             // Indicates if the test case is ignored
     bool is_mark;             // Flag to identify benchmark tests
-    bool is_fish;             // Flag to identify FishAI tests
+    bool is_fish;             // Flag to identify Fish AI tests
     clock_t elapsed_time;     // Elapsed time for benchmark tests
 } xtest;
 
@@ -55,14 +55,15 @@ typedef struct {
     uint16_t passed_count;     // Number of passed tests
     uint16_t failed_count;     // Number of failed tests
     uint16_t ignored_count;    // Number of ignored tests
-    uint16_t error_count;      // Number of ignored tests
+    uint16_t error_count;      // Number of error tests
+    uint16_t mark_count;      // Number of benchmarks tests
+    uint16_t fish_count;      // Number of fish AI tests
     uint16_t total_count;      // Total number of tests
 } xstats;
 
 typedef struct {
     xstats stats;  // Test statistics including passed, failed, and ignored counts
 } xengine;
-
 
 // =================================================================
 // Initial implementation
