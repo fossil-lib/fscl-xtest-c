@@ -110,7 +110,7 @@ void xtest_console_out_color(const char *color_name, const char *format, ...) {
     va_end(args);
 }
 
-char* xtest_console_format(char *input) {
+char* xtest_console_format(const char *input) {
     if (input == NULL) {
         // Handle NULL input gracefully
         xtest_console_err("Error: Input string is NULL\n");
@@ -137,9 +137,6 @@ char* xtest_console_format(char *input) {
 
     // Add null terminator to the end of the new string
     result[length] = '\0';
-
-    // Free the dynamically allocated memory
-    free((void*)input);
 
     return result;
 }
