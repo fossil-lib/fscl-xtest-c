@@ -100,17 +100,17 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 
 #define XTEST_CASE_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
-    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, false, false, false, 0 }; \
+    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, false, false, false, {0, 0, 0}}; \
     void test_case##_xtest_##fixture_name(void)
 
 #define XTEST_MARK_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
-    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, false, true, false, 0 }; \
+    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, false, true, false, {0, 0, 0}}; \
     void test_case##_xtest_##fixture_name(void)
 
 #define XTEST_FISH_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
-    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, false, false, true, 0 }; \
+    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, false, false, true, {0, 0, 0}}; \
     void test_case##_xtest_##fixture_name(void)
 
 #define XTEST_FIXTURE(fixture_name) \
@@ -133,17 +133,17 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 #define XTEST_CASE(name) \
     void name##_xtest(void); \
-    xtest name = { #name, name##_xtest, false, false, false, 0 }; \
+    xtest name = { #name, name##_xtest, false, false, false, {0, 0, 0}}; \
     void name##_xtest(void)
 
 #define XTEST_MARK(name) \
     void name##_xtest(void); \
-    xtest name = { #name, name##_xtest, false, true, false, 0 }; \
+    xtest name = { #name, name##_xtest, false, true, false, {0, 0, 0}}; \
     void name##_xtest(void)
 
 #define XTEST_FISH(name) \
     void name##_xtest(void); \
-    xtest name = { #name, name##_xtest, false, false, true, 0 }; \
+    xtest name = { #name, name##_xtest, false, false, true, {0, 0, 0}}; \
     void name##_xtest(void)
 
 // =================================================================
