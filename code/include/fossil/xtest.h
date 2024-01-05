@@ -43,7 +43,7 @@ typedef struct {
     bool ignored;             // Indicates if the test case is ignored
     bool is_mark;             // Flag to identify benchmark tests
     bool is_fish;             // Flag to identify Fish AI tests
-    clock_t elapsed_time;     // Elapsed time for benchmark tests
+    clock_t elapsed_time;     // Elapsed time for current test
 } xtest;
 
 typedef struct {
@@ -63,6 +63,7 @@ typedef struct {
 
 typedef struct {
     xstats stats;  // Test statistics including passed, failed, and ignored counts
+    clock_t elapsed_time;     // Elapsed time for all tests
 } xengine;
 
 // =================================================================
