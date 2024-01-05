@@ -167,17 +167,21 @@ static void xtest_output_xtest_end(xtest *test_case, xstats *stats) {
 // Output for XUnit Test Case Report.
 static void xtest_output_xunittest_report(xengine *runner) {
     xtest_console_out_color("dark_blue", "[ ===== Xtest report system ===== ]\n");
+    xtest_console_out_color("white",     "===================================\n");
     if (xcli.verbose && !xcli.cutback) {
-        xtest_console_out_color("light_magenta",    "PASS : - %.2i\n", runner->stats.passed_count);
-        xtest_console_out_color("light_magenta",    "FAIL : - %.2i\n", runner->stats.failed_count);
-        xtest_console_out_color("light_magenta",    "SKIP : - %.2i\n", runner->stats.ignored_count);
-        xtest_console_out_color("light_magenta",    "ERROR: - %.2i\n", runner->stats.error_count);
-        xtest_console_out_color("light_magenta", "TOTAL: - %.2i\n", runner->stats.total_count);
+        xtest_console_out_color("light_magenta", "PASSED    : - %.2i\n", runner->stats.passed_count);
+        xtest_console_out_color("light_magenta", "FAILED    : - %.2i\n", runner->stats.failed_count);
+        xtest_console_out_color("light_magenta", "SKIPPED   : - %.2i\n", runner->stats.ignored_count);
+        xtest_console_out_color("light_magenta", "ERRORS    : - %.2i\n", runner->stats.error_count);
+        xtest_console_out_color("light_magenta", "TOTAL MARK: - %.2i\n", runner->stats.mark_count);
+        xtest_console_out_color("light_magenta", "TOTAL FISH: - %.2i\n", runner->stats.fish_count);
+        xtest_console_out_color("light_magenta", "TOTAL TEST: - %.2i\n", runner->stats.total_count);
     } else if (!xcli.verbose && !xcli.cutback) {
         xtest_console_out_color("light_magenta", "pass: %.2i, fail: %.2i\n", runner->stats.passed_count, runner->stats.failed_count);
     } else if (!xcli.verbose && xcli.cutback) {
         xtest_console_out_color("light_magenta", "result: %s\n", runner->stats.failed_count? "fail" : "pass");
     }
+    xtest_console_out_color("white",     "===================================\n\n");
 } // end of func
 
 static void xparser_init(void) {
@@ -267,7 +271,7 @@ xengine xtest_start(int argc, char **argv) {
     xparser_init();
     xparser_parse_args(argc, argv);
 
-    runner.stats = (xstats){0, 0, 0, 0, 0};
+    runner.stats = (xstats){0, 0, 0, 0, 0, 0, 0};
 
     if (xcli.dry_run) { // Check if it's a dry run
         xtest_console_out_color("light_blue", "Simulating a test run to ensure Xcli can run...\n");
@@ -328,8 +332,12 @@ void xtest_run_test(xtest* test_case, xstats* stats, xfixture* fixture) {
     test_case->elapsed_time = end_time - start_time;
 
     // Update the appropriate count based on your logic
+    if (test_case->is_mark && !test_case->is_fish) {
+        stats->mark_count++;
+    } else if (test_case->is_fish && !test_case->is_mark) {
+        stats->fish_count++;
+    }
     if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN) {
-        // If any expectations fail, consider the test as failed
         stats->failed_count++;
     } else {
         stats->passed_count++;
