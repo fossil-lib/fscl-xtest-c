@@ -390,7 +390,7 @@ xengine xtest_start(int argc, char **argv) {
 
     runner.stats = (xstats){0, 0, 0, 0, 0, 0, 0};
     runner.timer = (xtime){0, 0, 0};
-    runner.start_time   = clock();
+    runner->timer.start_time = clock();
 
     if (xcli.dry_run) { // Check if it's a dry run
         xtest_console_out("light_blue", "Simulating a test run to ensure Xcli can run...\n");
@@ -452,7 +452,7 @@ void xtest_run_test(xtest* test_case, xstats* stats, xfixture* fixture) {
     test_case->timer.end_time = clock();
 
     // Calculate elapsed time and store it in the test case
-    test_case->elapsed_time = test_case->timer.end_time - test_case->timer.start_time;
+    test_case->timer.elapsed_time = (test_case->timer.end_time - test_case->timer.start_time);
 
     // Update the appropriate count based on your logic
     if (test_case->is_mark && !test_case->is_fish) {
