@@ -17,7 +17,6 @@ Description:
 #include <stdbool.h>
 #include <string.h>
 
-
 typedef struct {
     bool cutback;
     bool verbose;
@@ -169,10 +168,10 @@ static void xtest_output_xtest_end(xtest *test_case, xstats *stats) {
 static void xtest_output_xunittest_report(xengine *runner) {
     xtest_console_out_color("dark_blue", "[ ===== Xtest report system ===== ]\n");
     if (xcli.verbose && !xcli.cutback) {
-        xtest_console_out_color("light_blue",    "PASS : - %.2i\n", runner->stats.passed_count);
-        xtest_console_out_color("light_blue",    "FAIL : - %.2i\n", runner->stats.failed_count);
-        xtest_console_out_color("light_blue",    "SKIP : - %.2i\n", runner->stats.ignored_count);
-        xtest_console_out_color("light_blue",    "ERROR: - %.2i\n", runner->stats.error_count);
+        xtest_console_out_color("light_magenta",    "PASS : - %.2i\n", runner->stats.passed_count);
+        xtest_console_out_color("light_magenta",    "FAIL : - %.2i\n", runner->stats.failed_count);
+        xtest_console_out_color("light_magenta",    "SKIP : - %.2i\n", runner->stats.ignored_count);
+        xtest_console_out_color("light_magenta",    "ERROR: - %.2i\n", runner->stats.error_count);
         xtest_console_out_color("light_magenta", "TOTAL: - %.2i\n", runner->stats.total_count);
     } else if (!xcli.verbose && !xcli.cutback) {
         xtest_console_out_color("dark_cyan", "pass: %.2i, fail: %.2i\n", runner->stats.passed_count, runner->stats.failed_count);
