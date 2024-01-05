@@ -263,16 +263,16 @@ static void xparser_init(void) {
 
 // Prints usage instructions, including custom options, for a command-line program.
 static void xparser_print_usage(void) {
-    xtest_console_out_color("dark_green",  "USAGE: Xcli [options]\n");
-    xtest_console_out_color("light_green", "Options:\n");
-    xtest_console_out_color("dark_gray",   "  --help        Display this help message\n");
-    xtest_console_out_color("light_gray",  "  --version     Display program version\n");
-    xtest_console_out_color("dark_gray",   "  --only-test   Run only test cases\n");
-    xtest_console_out_color("light_gray",  "  --only-fish   Run only AI training cases\n");
-    xtest_console_out_color("dark_gray",   "  --only-mark   Run only benchmark cases\n");
-    xtest_console_out_color("light_gray",  "  --cutback     Enable cutback mode\n");
-    xtest_console_out_color("dark_gray",   "  --verbose     Enable verbose mode\n");
-    xtest_console_out_color("light_gray",  "  --repeat N    Repeat the test N times (requires a numeric argument)\n");
+    xtest_console_out("dark_green",  "USAGE: Xcli [options]\n");
+    xtest_console_out("light_green", "Options:\n");
+    xtest_console_out("dark_gray",   "  --help        Display this help message\n");
+    xtest_console_out("light_gray",  "  --version     Display program version\n");
+    xtest_console_out("dark_gray",   "  --only-test   Run only test cases\n");
+    xtest_console_out("light_gray",  "  --only-fish   Run only AI training cases\n");
+    xtest_console_out("dark_gray",   "  --only-mark   Run only benchmark cases\n");
+    xtest_console_out("light_gray",  "  --cutback     Enable cutback mode\n");
+    xtest_console_out("dark_gray",   "  --verbose     Enable verbose mode\n");
+    xtest_console_out("light_gray",  "  --repeat N    Repeat the test N times (requires a numeric argument)\n");
 } // end of func
 
 // Function to check if a specific option is present
