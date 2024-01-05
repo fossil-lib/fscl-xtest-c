@@ -390,13 +390,12 @@ xengine xtest_start(int argc, char **argv) {
 
     runner.stats = (xstats){0, 0, 0, 0, 0, 0, 0};
     runner.timer = (xtime){0, 0, 0};
-    runner->timer.start_time = clock();
 
     if (xcli.dry_run) { // Check if it's a dry run
         xtest_console_out("light_blue", "Simulating a test run to ensure Xcli can run...\n");
         exit(xtest_end(&runner)); // Exit the program
     }
-
+    runner.timer.start_time = clock();
     return runner;
 } // end of func
 
