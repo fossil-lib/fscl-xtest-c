@@ -138,6 +138,9 @@ char* xtest_console_format(const char *input) {
     // Add null terminator to the end of the new string
     result[length] = '\0';
 
+    // Free the dynamically allocated memory
+    free((void*)input);
+
     return result;
 }
 
@@ -148,20 +151,20 @@ char* xtest_console_format(const char *input) {
 // Formats and displays information about the start/end of a test case.
 static void xtest_output_xtest_start(xtest *test_case, xstats *stats) {
     if (xcli.verbose && !xcli.cutback) {
-        xtest_console_out_color("dark_blue", "[Running Test Case] ...");
-        xtest_console_out_color("light_blue", "title: - %s\n", xtest_console_format(test_case->name));
-        xtest_console_out_color("light_blue", "index: - %.3i\n", stats->total_count + 1);
-        xtest_console_out_color("light_blue", "class: - %s\n", (test_case->is_fish)? "Fish AI" : (test_case->is_mark)? "Benchmark" : "Test Case");
+        xtest_console_out_color("dark_blue", "[Running Test Case] ...\n");
+        xtest_console_out_color("light_blue", "TITLE: - %s\n", xtest_console_format(test_case->name));
+        xtest_console_out_color("light_blue", "INDEX: - %.3i\n", stats->total_count + 1);
+        xtest_console_out_color("light_blue", "CLASS: - %s\n", (test_case->is_fish)? "Fish AI" : (test_case->is_mark)? "Benchmark" : "Test Case");
     } else if (!xcli.cutback && !xcli.verbose) {
-        xtest_console_out_color("dark_blue", "name: - %s, type: - %s\n", test_case->name, (test_case->is_fish)? "fish" : (test_case->is_mark)? "mark" : "test");
+        xtest_console_out_color("dark_blue", "name: - %s\n> type: - %s\n", test_case->name, (test_case->is_fish)? "fish" : (test_case->is_mark)? "mark" : "test");
     }
 } // end of func
 
 static void xtest_output_xtest_end(xtest *test_case, xstats *stats) {
     if (xcli.verbose && !xcli.cutback) {
-        xtest_console_out_color("light_blue", "time: %.6lu \n", test_case->elapsed_time);
-        xtest_console_out_color("light_blue", "ignore: %s\n", test_case->ignored ? "yes" : "no");
-        xtest_console_out_color("dark_blue", "[Current Case Done] ...");
+        xtest_console_out_color("light_blue", "TIME  : - %.6lu\n", test_case->elapsed_time);
+        xtest_console_out_color("light_blue", "SKIP  : - %s\n", test_case->ignored ? "yes" : "no");
+        xtest_console_out_color("dark_blue", "[Current Case Done] ...\n");
     } else if (!xcli.cutback && !xcli.verbose) {
         xtest_console_out_color("dark_blue", "ignore: %s\n", test_case->ignored ? "yes" : "no");
     }
@@ -169,7 +172,7 @@ static void xtest_output_xtest_end(xtest *test_case, xstats *stats) {
 
 // Output for XUnit Test Case Report.
 static void xtest_output_xunittest_report(xengine *runner) {
-    xtest_console_out_color("dark_blue", "[ ===== Xtest report system ===== ]");
+    xtest_console_out_color("dark_blue", "[ ===== Xtest report system ===== ]\n");
     if (xcli.verbose && !xcli.cutback) {
         xtest_console_out_color("light_blue",    "PASS : - %.2i\n", runner->stats.passed_count);
         xtest_console_out_color("light_blue",    "FAIL : - %.2i\n", runner->stats.failed_count);
@@ -195,16 +198,16 @@ static void xparser_init(void) {
 
 // Prints usage instructions, including custom options, for a command-line program.
 static void xparser_print_usage(void) {
-    xtest_console_out_color("dark_green",  "Usage: Xcli [options]");
-    xtest_console_out_color("light_green", "Options:");
-    xtest_console_out_color("dark_gray",   "  --help        Display this help message");
-    xtest_console_out_color("light_gray",  "  --version     Display program version");
-    xtest_console_out_color("dark_gray",   "  --only-test   Run only test cases");
-    xtest_console_out_color("light_gray",  "  --only-fish   Run only AI training cases");
-    xtest_console_out_color("dark_gray",   "  --only-mark   Run only benchmark cases");
-    xtest_console_out_color("light_gray",  "  --cutback     Enable cutback mode");
-    xtest_console_out_color("dark_gray",   "  --verbose     Enable verbose mode");
-    xtest_console_out_color("light_gray",  "  --repeat N    Repeat the test N times (requires a numeric argument)");
+    xtest_console_out_color("dark_green",  "USAGE: Xcli [options]\n");
+    xtest_console_out_color("light_green", "Options:\n");
+    xtest_console_out_color("dark_gray",   "  --help        Display this help message\n");
+    xtest_console_out_color("light_gray",  "  --version     Display program version\n");
+    xtest_console_out_color("dark_gray",   "  --only-test   Run only test cases\n");
+    xtest_console_out_color("light_gray",  "  --only-fish   Run only AI training cases\n");
+    xtest_console_out_color("dark_gray",   "  --only-mark   Run only benchmark cases\n");
+    xtest_console_out_color("light_gray",  "  --cutback     Enable cutback mode\n");
+    xtest_console_out_color("dark_gray",   "  --verbose     Enable verbose mode\n");
+    xtest_console_out_color("light_gray",  "  --repeat N    Repeat the test N times (requires a numeric argument)\n");
 } // end of func
 
 // Function to check if a specific option is present
@@ -241,7 +244,7 @@ static void xparser_parse_args(int argc, char *argv[]) {
             xcli.only_fish = false;
             xcli.only_test = false;
         } else if (xparser_has_option(argc, argv, "--version")) {
-            xtest_console_out_color("dark_green", "1.1.0");
+            xtest_console_out_color("dark_green", "1.1.0\n");
             exit(EXIT_SUCCESS);
         } else if (xparser_has_option(argc, argv, "--help")) {
             xparser_print_usage();
@@ -394,10 +397,9 @@ void xerrors(const char* reason, const char* file, int line, const char* func) {
 void xassert(bool expression, const char *message, const char* file, int line, const char* func) {
     if (!XASSERT_PASS_SCAN) {
         return;
-    } else if (!expression) {
-        XASSERT_PASS_SCAN = false;
     }
     if (!expression) {
+         XASSERT_PASS_SCAN = false;
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out_color("light_blue", "[ASSERT ISSUE]\n");
             xtest_console_out_color("dark_red", "line: %.4i\nfile: %s\nfunc: %s\n", line, file, func);
@@ -420,8 +422,6 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 
     if (!expression) {
         XEXPECT_PASS_SCAN = false;
-    }
-    if (!expression) {
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out_color("light_blue", "[EXPECT ISSUE]\n");
             xtest_console_out_color("dark_red", "line: %.4i\nfile: %s\nfunc: %s\n", line, file, func);
