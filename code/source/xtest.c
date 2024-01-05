@@ -13,15 +13,9 @@ Description:
 #include "fossil/xtest.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <string.h>
-
-// ANSI escape code macros for text color
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
 
 typedef struct {
     bool cutback;
@@ -45,103 +39,150 @@ static uint8_t XERRORS_TEST_CASE = false;
 static uint8_t MAX_REPEATS = 100;
 static uint8_t MIN_REPEATS = 1;
 
-// Output for XUnit Test Case Assert/Expect.
-static void xtest_output_xassert(bool expression, const char *message, const char *file, int line, const char *func) {
-    puts(ANSI_COLOR_BLUE);
-    if (xcli.verbose && !xcli.verbose) {
-        printf("[assert]\n line: %.4i\nfile: %s\nfunc: %s\n", line, file, func);
-        printf(ANSI_COLOR_RED "message: %s\nresult: %s\n", message, expression ? "PASS" : "FAIL");
-    } else if (xcli.cutback && !xcli.verbose) {
-        printf("%s[O]", (expression ? ANSI_COLOR_GREEN : ANSI_COLOR_RED));
-    } else if (!xcli.cutback && !xcli.verbose) {
-        printf(ANSI_COLOR_RED "message: %s\nresult: %s\n", message, expression ? "PASS" : "FAIL");
-    }
-    puts(ANSI_COLOR_RESET);
-} // end of func
+//
+// internal console functions
+//
 
-// Output for XUnit Test Case Assert/Expect.
-static void xtest_output_expect(bool expression, const char *message, const char *file, int line, const char *func) {
-    puts(ANSI_COLOR_BLUE);
-    if (xcli.verbose && !xcli.verbose) {
-        printf("[expect]\n line: %.4i\nfile: %s\nfunc: %s\n", line, file, func);
-        printf(ANSI_COLOR_RED "message: %s\nresult: %s\n", message, expression ? "PASS" : "FAIL");
-    } else if (xcli.cutback && !xcli.verbose) {
-        printf("%s[O]", (expression ? ANSI_COLOR_GREEN : ANSI_COLOR_RED));
-    } else if (!xcli.cutback && !xcli.verbose) {
-        printf(ANSI_COLOR_RED "message: %s\nresult: %s\n", message, expression ? "PASS" : "FAIL");
-    }
-    puts(ANSI_COLOR_RESET);
-} // end of func
+// General Output Function
+void xtest_console_out(const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+}
 
-// Output for XUnit Test Case Error.
-static void xtest_output_xerror(const char *reason, const char *file, int line, const char *func) {
-    puts(ANSI_COLOR_BLUE);
-    if (xcli.verbose && !xcli.cutback) {
-        puts("[ assumtion error ]" ANSI_COLOR_RESET);
-        printf(ANSI_COLOR_YELLOW "line: %.4i\nfile: %s\nfunc: %s\n" ANSI_COLOR_RESET, line, file, func);
-        printf(ANSI_COLOR_YELLOW "message: %s\n" ANSI_COLOR_RESET, reason);
-    } else if (xcli.cutback && !xcli.verbose) {
-        printf("%s", XERRORS_TEST_CASE ? ANSI_COLOR_YELLOW "[I]" : ANSI_COLOR_RED "[X]");
-    } else if (!xcli.cutback && !xcli.verbose) {
-        printf(ANSI_COLOR_YELLOW "message: %s\n" ANSI_COLOR_RESET, reason);
-    }
-    puts(ANSI_COLOR_RESET);
-} // end of func
+// Error Output Function
+void xtest_console_err(const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+    vfprintf(stderr, format, args);
+    va_end(args);
+}
 
-// Output for XUnit Test Case Ignored.
-static void xtest_output_xignore(const char *reason, const char *file, int line, const char *func) {
-    puts(ANSI_COLOR_BLUE);
-    if (xcli.verbose && !xcli.cutback) {
-        puts("[ assumtion skipped ]" ANSI_COLOR_RESET);
-        printf(ANSI_COLOR_YELLOW "line: %.4i\nfile: %s\nfunc: %s\n" ANSI_COLOR_RESET, line, file, func);
-        printf(ANSI_COLOR_YELLOW "message: %s\n" ANSI_COLOR_RESET, reason);
-    } else if (xcli.cutback && !xcli.verbose) {
-        printf("%s", XIGNORE_TEST_CASE ? ANSI_COLOR_YELLOW "[I]" : ANSI_COLOR_RED "[X]");
-    } else if (!xcli.cutback && !xcli.verbose) {
-        printf(ANSI_COLOR_YELLOW "message: %s\n" ANSI_COLOR_RESET, reason);
+// Color Output Function
+void xtest_console_out_color(const char *color_name, const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+
+    if (strcmp(color_name, "reset") == 0) {
+        printf("\033[0m");
+    } else if (strcmp(color_name, "black") == 0) {
+        printf("\033[0;30m");
+    } else if (strcmp(color_name, "dark_gray") == 0) {
+        printf("\033[1;30m");
+    } else if (strcmp(color_name, "light_gray") == 0) {
+        printf("\033[2;37m");
+    } else if (strcmp(color_name, "white") == 0) {
+        printf("\033[1;37m");
+    } else if (strcmp(color_name, "dark_red") == 0) {
+        printf("\033[0;31m");
+    } else if (strcmp(color_name, "light_red") == 0) {
+        printf("\033[1;31m");
+    } else if (strcmp(color_name, "dark_green") == 0) {
+        printf("\033[0;32m");
+    } else if (strcmp(color_name, "light_green") == 0) {
+        printf("\033[1;32m");
+    } else if (strcmp(color_name, "dark_yellow") == 0) {
+        printf("\033[0;33m");
+    } else if (strcmp(color_name, "light_yellow") == 0) {
+        printf("\033[1;33m");
+    } else if (strcmp(color_name, "dark_blue") == 0) {
+        printf("\033[0;34m");
+    } else if (strcmp(color_name, "light_blue") == 0) {
+        printf("\033[1;34m");
+    } else if (strcmp(color_name, "dark_magenta") == 0) {
+        printf("\033[0;35m");
+    } else if (strcmp(color_name, "light_magenta") == 0) {
+        printf("\033[1;35m");
+    } else if (strcmp(color_name, "dark_cyan") == 0) {
+        printf("\033[0;36m");
+    } else if (strcmp(color_name, "light_cyan") == 0) {
+        printf("\033[1;36m");
+    } else {
+        // Default to classic output if an unsupported color is specified
+        vprintf(format, args);
+        va_end(args);
+        return;
     }
-    puts(ANSI_COLOR_RESET);
-} // end of func
+
+    vprintf(format, args);
+    printf("\033[0m"); // Reset color
+    va_end(args);
+}
+
+char* xtest_console_format(const char *input) {
+    if (input == NULL) {
+        // Handle NULL input gracefully
+        xtest_console_err("Error: Input string is NULL\n");
+        return NULL;
+    }
+
+    // Get the length of the input string
+    size_t length = strlen(input);
+
+    // Allocate memory for the new string (including space for null terminator)
+    char *result = (char*)malloc((length + 1) * sizeof(char));
+
+    if (result == NULL) {
+        // Memory allocation failed
+        xtest_console_err("Error: Memory allocation failed\n");
+        return NULL;
+    }
+
+    // Iterate through each character in the input string
+    for (size_t i = 0; i < length; i++) {
+        // Replace underscores with spaces
+        result[i] = (input[i] == '_') ? ' ' : input[i];
+    }
+
+    // Add null terminator to the end of the new string
+    result[length] = '\0';
+
+    return result;
+}
 
 // Formats and displays information about the start/end of a test case.
-static void xtest_output_xunittest_format(bool is_start, xtest *test_case, xstats *stats) {
-    if (is_start) {
-        if (xcli.verbose && !xcli.cutback) {
-            puts(ANSI_COLOR_BLUE "[Running Test Case]" ANSI_COLOR_RESET);
-            printf("name  : %s\nnumber: %.4i\ntype: %s\n", test_case->name, stats->total_count + 1, (test_case->is_fish)? "Fish" : (test_case->is_mark)? "Mark" : "Test");
-        } else if (xcli.cutback && !xcli.verbose) {
-            printf("name: %s, type: %s\n", test_case->name, (test_case->is_fish)? "fish" : (test_case->is_mark)? "mark" : "test");
-        } else {
-            printf("name  : %s\nnumber: %.4i\ntype: %s\n", test_case->name, stats->total_count + 1, (test_case->is_fish)? "Fish" : (test_case->is_mark)? "Mark" : "Test");
-        }
-    } else if (!is_start) {
-        printf("time: %.6lu \n", test_case->elapsed_time);
-        if (xcli.verbose && !xcli.cutback) {
-            printf("ignore: %s\n", test_case->ignored ? "yes" : "no");
-            puts(ANSI_COLOR_BLUE "[Current unit done]" ANSI_COLOR_RESET);
-        } else if (xcli.cutback && !xcli.verbose) {
-            printf("\n");
-        } else {
-            printf("ignore: %s\n", test_case->ignored ? "yes" : "no");
-        }
+static void xtest_output_xtest_start(xtest *test_case, xstats *stats) {
+    if (xcli.verbose && !xcli.cutback) {
+        xtest_console_out_color("dark_blue", "[Running Test Case] ...\n");
+        xtest_console_out_color("light_cyan", "TITLE: - %s\n", xtest_console_format(test_case->name));
+        xtest_console_out_color("light_cyan", "INDEX: - %.3i\n", stats->total_count + 1);
+        xtest_console_out_color("light_cyan", "CLASS: - %s\n", (test_case->is_fish)? "Fish AI" : (test_case->is_mark)? "Benchmark" : "Test Case");
+    } else if (!xcli.cutback && !xcli.verbose) {
+        xtest_console_out_color("dark_blue", "> name: - %s\n", xtest_console_format(test_case->name));
+        xtest_console_out_color("dark_blue", "> type: - %s\n", (test_case->is_fish)? "fish" : (test_case->is_mark)? "mark" : "test");
+    }
+} // end of func
+
+static void xtest_output_xtest_end(xtest *test_case, xstats *stats) {
+    if (xcli.verbose && !xcli.cutback) {
+        xtest_console_out_color("light_cyan", "TIME  : - %.6lu\n", test_case->elapsed_time);
+        xtest_console_out_color("light_cyan", "SKIP  : - %s\n", test_case->ignored ? "yes" : "no");
+        xtest_console_out_color("dark_blue", "[Current Case Done] ...\n");
+    } else if (!xcli.cutback && !xcli.verbose) {
+        xtest_console_out_color("dark_blue", "ignore: %s\n", test_case->ignored ? "yes" : "no");
     }
 } // end of func
 
 // Output for XUnit Test Case Report.
 static void xtest_output_xunittest_report(xengine *runner) {
-    puts(ANSI_COLOR_BLUE "[ ===== Xtest report system ===== ]" ANSI_COLOR_RESET);
-    if (!xcli.verbose && xcli.cutback) {
-        printf("result: %s\n", runner->stats.failed_count? "fail" : "pass");
-    } else if (xcli.verbose && !xcli.cutback) {
-        printf(ANSI_COLOR_BLUE "pass : " ANSI_COLOR_YELLOW " %.2i\n" ANSI_COLOR_RESET, runner->stats.passed_count);
-        printf(ANSI_COLOR_BLUE "fail : " ANSI_COLOR_YELLOW " %.2i\n" ANSI_COLOR_RESET, runner->stats.failed_count);
-        printf(ANSI_COLOR_BLUE "skip : " ANSI_COLOR_YELLOW " %.2i\n" ANSI_COLOR_RESET, runner->stats.ignored_count);
-        printf(ANSI_COLOR_BLUE "error: " ANSI_COLOR_YELLOW " %.2i\n" ANSI_COLOR_RESET, runner->stats.error_count);
-        printf(ANSI_COLOR_BLUE "total: " ANSI_COLOR_YELLOW " %.2i\n" ANSI_COLOR_RESET, runner->stats.total_count);
-    } else {
-        printf(ANSI_COLOR_BLUE "pass: %.2i, fail: %.2i\n" ANSI_COLOR_RESET,
-            runner->stats.passed_count, runner->stats.failed_count);
+    xtest_console_out_color("dark_blue", "[ ===== Xtest report system ===== ]\n");
+    xtest_console_out_color("white",     "===================================\n");
+    if (xcli.verbose && !xcli.cutback) {
+        xtest_console_out_color("light_magenta", "PASSED    : - %.2i\n", runner->stats.passed_count);
+        xtest_console_out_color("light_magenta", "FAILED    : - %.2i\n", runner->stats.failed_count);
+        xtest_console_out_color("light_magenta", "SKIPPED   : - %.2i\n", runner->stats.ignored_count);
+        xtest_console_out_color("light_magenta", "ERRORS    : - %.2i\n", runner->stats.error_count);
+        xtest_console_out_color("light_magenta", "TOTAL MARK: - %.2i\n", runner->stats.mark_count);
+        xtest_console_out_color("light_magenta", "TOTAL FISH: - %.2i\n", runner->stats.fish_count);
+        xtest_console_out_color("light_magenta", "TOTAL TEST: - %.2i\n", runner->stats.total_count - runner->stats.fish_count - runner->stats.mark_count);
+        xtest_console_out_color("light_yellow",  "ALL TEST CASES: - %.2i\n", runner->stats.total_count);
+    } else if (!xcli.verbose && !xcli.cutback) {
+        xtest_console_out_color("light_magenta", "pass: %.2i, fail: %.2i\n", runner->stats.passed_count, runner->stats.failed_count);
+    } else if (!xcli.verbose && xcli.cutback) {
+        xtest_console_out_color("light_magenta", "result: %s\n", runner->stats.failed_count? "fail" : "pass");
     }
+    xtest_console_out_color("white",     "===================================\n\n");
 } // end of func
 
 static void xparser_init(void) {
@@ -156,16 +197,16 @@ static void xparser_init(void) {
 
 // Prints usage instructions, including custom options, for a command-line program.
 static void xparser_print_usage(void) {
-    puts("Usage: Xcli [options]");
-    puts("Options:");
-    puts("  --help        Display this help message");
-    puts("  --version     Display program version");
-    puts("  --only-test   Run only test cases");
-    puts("  --only-fish   Run only AI training cases");
-    puts("  --only-mark   Run only benchmark cases");
-    puts("  --cutback     Enable cutback mode");
-    puts("  --verbose     Enable verbose mode");
-    puts("  --repeat N    Repeat the test N times (requires a numeric argument)");
+    xtest_console_out_color("dark_green",  "USAGE: Xcli [options]\n");
+    xtest_console_out_color("light_green", "Options:\n");
+    xtest_console_out_color("dark_gray",   "  --help        Display this help message\n");
+    xtest_console_out_color("light_gray",  "  --version     Display program version\n");
+    xtest_console_out_color("dark_gray",   "  --only-test   Run only test cases\n");
+    xtest_console_out_color("light_gray",  "  --only-fish   Run only AI training cases\n");
+    xtest_console_out_color("dark_gray",   "  --only-mark   Run only benchmark cases\n");
+    xtest_console_out_color("light_gray",  "  --cutback     Enable cutback mode\n");
+    xtest_console_out_color("dark_gray",   "  --verbose     Enable verbose mode\n");
+    xtest_console_out_color("light_gray",  "  --repeat N    Repeat the test N times (requires a numeric argument)\n");
 } // end of func
 
 // Function to check if a specific option is present
@@ -202,7 +243,7 @@ static void xparser_parse_args(int argc, char *argv[]) {
             xcli.only_fish = false;
             xcli.only_test = false;
         } else if (xparser_has_option(argc, argv, "--version")) {
-            puts("1.1.0");
+            xtest_console_out_color("dark_green", "1.1.0\n");
             exit(EXIT_SUCCESS);
         } else if (xparser_has_option(argc, argv, "--help")) {
             xparser_print_usage();
@@ -214,11 +255,11 @@ static void xparser_parse_args(int argc, char *argv[]) {
                 if (iter_repeat >= MIN_REPEATS && iter_repeat <= MAX_REPEATS) {
                     xcli.iter_repeat = iter_repeat;
                 } else {
-                    fprintf(stderr, "Error: --repeat value must be between 1 and 100.\n");
+                    xtest_console_err("Error: --repeat value must be between 1 and 100.\n");
                     exit(EXIT_FAILURE);
                 }
             } else {
-                fprintf(stderr, "Error: --repeat option requires a numeric argument.\n");
+                xtest_console_err("Error: --repeat option requires a numeric argument.\n");
                 exit(EXIT_FAILURE);
             }
         }
@@ -231,10 +272,10 @@ xengine xtest_start(int argc, char **argv) {
     xparser_init();
     xparser_parse_args(argc, argv);
 
-    runner.stats = (xstats){0, 0, 0, 0, 0};
+    runner.stats = (xstats){0, 0, 0, 0, 0, 0, 0};
 
     if (xcli.dry_run) { // Check if it's a dry run
-        printf("Simulating a test run to ensure Xcli can run...\n");
+        xtest_console_out_color("light_blue", "Simulating a test run to ensure Xcli can run...\n");
         exit(xtest_end(&runner)); // Exit the program
     }
 
@@ -251,7 +292,7 @@ int xtest_end(xengine *runner) {
 
 // Common functionality for running a test case and updating test statistics.
 void xtest_run_test(xtest* test_case, xstats* stats, xfixture* fixture) {
-    xtest_output_xunittest_format(true, test_case, stats);
+    xtest_output_xtest_start(test_case, stats);
 
     // Check if the test should be ignored
     if (XIGNORE_TEST_CASE || (xcli.only_test && test_case->is_mark) || (xcli.only_mark && !test_case->is_mark) || (xcli.only_fish && !test_case->is_mark)) {
@@ -292,8 +333,12 @@ void xtest_run_test(xtest* test_case, xstats* stats, xfixture* fixture) {
     test_case->elapsed_time = end_time - start_time;
 
     // Update the appropriate count based on your logic
+    if (test_case->is_mark && !test_case->is_fish) {
+        stats->mark_count++;
+    } else if (test_case->is_fish && !test_case->is_mark) {
+        stats->fish_count++;
+    }
     if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN) {
-        // If any expectations fail, consider the test as failed
         stats->failed_count++;
     } else {
         stats->passed_count++;
@@ -301,7 +346,7 @@ void xtest_run_test(xtest* test_case, xstats* stats, xfixture* fixture) {
     stats->total_count++;
 
     // Output test format information
-    xtest_output_xunittest_format(false, test_case, stats);
+    xtest_output_xtest_end(test_case, stats);
 } // end of func
 
 // Runs a test case and updates test statistics.
@@ -325,13 +370,29 @@ void xtest_run_test_fixture(xtest* test_case, xfixture* fixture, xstats* stats) 
 // Marks a test case as ignored with a specified reason and prints it to stderr.
 void xignore(const char* reason, const char* file, int line, const char* func) {
     XIGNORE_TEST_CASE = true;
-    xtest_output_xignore(reason, file, line, func);
+    if (xcli.verbose && !xcli.cutback) {
+        xtest_console_out_color("light_yellow", "[SKIP CASE]\n");
+        xtest_console_out_color("dark_yellow", "line: %.4i\nfile: %s\nfunc: %s\n", line, file, func);
+        xtest_console_out_color("dark_yellow", "message: %s\n", reason);
+    } else if (!xcli.cutback && !xcli.verbose) {
+        xtest_console_out_color("light_yellow", "message: %s\n line: %.4i\n func: %s\n", reason, line, func);
+    } else if (xcli.cutback && !xcli.verbose) {
+        xtest_console_out_color("light_yellow", "[S]");
+    }
 } // end of func
 
 // Marks a test case as ignored with a specified reason and prints it to stderr.
 void xerrors(const char* reason, const char* file, int line, const char* func) {
     XERRORS_TEST_CASE = true;
-    xtest_output_xerror(reason, file, line, func);
+    if (xcli.verbose && !xcli.cutback) {
+        xtest_console_out_color("light_red", "[ERROR CASE]\n");
+        xtest_console_out_color("dark_red", "line: %.4i\nfile: %s\nfunc: %s\n", line, file, func);
+        xtest_console_out_color("dark_red", "message: %s\n", reason);
+    } else if (!xcli.cutback && !xcli.verbose) {
+        xtest_console_out_color("dark_red", "message: %s\n line: %.4i\n func: %s\n", reason, line, func);
+    } else if (xcli.cutback && !xcli.verbose) {
+        xtest_console_out_color("light_red", "[E]");
+    }
 } // end of func
 
 
@@ -339,10 +400,23 @@ void xerrors(const char* reason, const char* file, int line, const char* func) {
 void xassert(bool expression, const char *message, const char* file, int line, const char* func) {
     if (!XASSERT_PASS_SCAN) {
         return;
-    } else if (!expression) {
-        XASSERT_PASS_SCAN = false;
     }
-    xtest_output_xassert(expression, message, file, line, func);
+    if (!expression) {
+         XASSERT_PASS_SCAN = false;
+        if (xcli.verbose && !xcli.cutback) {
+            xtest_console_out_color("light_blue", "[ASSERT ISSUE]\n");
+            xtest_console_out_color("dark_red", "line: %.4i\nfile: %s\nfunc: %s\n", line, file, func);
+            xtest_console_out_color("dark_red", "message: %s\n", message);
+        } else if (!xcli.cutback && !xcli.verbose) {
+            xtest_console_out_color("dark_red", "message: %s\n line: %.4i\n func: %s\n", message, line, func);
+        } else if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out_color("light_red", "[F]");
+        }
+    } else {
+        if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out_color("light_green", "[P]");
+        }
+    }
 } // end of func
 
 // Custom expectation function with optional message.
@@ -351,6 +425,18 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 
     if (!expression) {
         XEXPECT_PASS_SCAN = false;
+        if (xcli.verbose && !xcli.cutback) {
+            xtest_console_out_color("light_blue", "[EXPECT ISSUE]\n");
+            xtest_console_out_color("dark_red", "line: %.4i\nfile: %s\nfunc: %s\n", line, file, func);
+            xtest_console_out_color("dark_red", "message: %s\n", message);
+        } else if (!xcli.cutback && !xcli.verbose) {
+            xtest_console_out_color("dark_red", "message: %s\n line: %.4i\n func: %s\n", message, line, func);
+        } else if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out_color("light_red", "[F]");
+        }
+    } else {
+        if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out_color("light_green", "[P]");
+        }
     }
-    xtest_output_expect(expression, message, file, line, func);
 } // end of func
