@@ -64,6 +64,8 @@ typedef struct {
 typedef struct {
     xstats stats;  // Test statistics including passed, failed, and ignored counts
     clock_t elapsed_time;     // Elapsed time for all tests
+    clock_t start_time;       // Elapsed time for start of tests
+    clock_t end_time;         // Elapsed time for end of tests
 } xengine;
 
 // =================================================================
