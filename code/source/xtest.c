@@ -17,6 +17,7 @@ Description:
 #include <stdbool.h>
 #include <string.h>
 
+
 typedef struct {
     bool cutback;
     bool verbose;
