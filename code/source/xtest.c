@@ -169,29 +169,51 @@ char* xtest_strdup(const char* source) {
 }
 
 xstring xtest_console_numeric(int number) {
-    // Determine the maximum number of digits needed
-    int digits = snprintf(NULL, 0, "%d", number);
-
-    // Allocate memory for the string (including space for null terminator)
-    char *result = (char*)malloc((digits + 1) * sizeof(char));
-
-    if (result == NULL) {
-        // Memory allocation failed
-        xtest_console_err("Error: Memory allocation failed\n");
-        return NULL;
+    if (number == 0) {
+        return xtest_strdup("zero");
     }
 
-    // Convert the number to a string
-    sprintf(result, "%d", number);
+    char result[1000] = "";  // Adjust the size based on your needs
 
-    // Duplicate the string and return the duplicated version
-    char *copy_str = xtest_strdup(result);
+    // Process each power of ten
+    for (int i = sizeof(powersOfTen) / sizeof(NumberMapping) - 1; i >= 0; i--) {
+        if (number >= powersOfTen[i].value) {
+            strcat(result, xtest_console_numeric(number / powersOfTen[i].value));
+            strcat(result, " ");
+            strcat(result, powersOfTen[i].word);
+            number %= powersOfTen[i].value;
+            if (number > 0) {
+                strcat(result, " ");
+            }
+        }
+    }
 
-    // Free the dynamically allocated memory before returning
-    free(result);
+    // Process the remaining digits
+    if (number >= 100) {
+        strcat(result, xtest_console_numeric(number / 100));
+        strcat(result, " hundred");
+        number %= 100;
+        if (number > 0) {
+            strcat(result, " and ");
+        }
+    }
 
-    // Return the duplicated string
-    return copy_str;
+    if (number >= 20) {
+        strcat(result, tens[number / 10].word);
+        number %= 10;
+        if (number > 0) {
+            strcat(result, " ");
+        }
+    } else if (number >= 10) {
+        strcat(result, teens[number - 10].word);
+        return xtest_strdup(result);
+    }
+
+    if (number > 0) {
+        strcat(result, units[number].word);
+    }
+
+    return xtest_strdup(result);
 }
 
 xstring xtest_console_name(const char *input) {
@@ -240,7 +262,7 @@ static void xtest_output_xtest_start(xtest *test_case, xstats *stats) {
 
 static void xtest_output_xtest_end(xtest *test_case, xstats *stats) {
     if (xcli.verbose && !xcli.cutback) {
-        xtest_console_out("light_cyan", "TIME  : - %.6lu\n", test_case->elapsed_time);
+        xtest_console_out("light_cyan", "TIME  : - %.6lu\n", test_case->timer.elapsed_time);
         xtest_console_out("light_cyan", "SKIP  : - %s\n", test_case->ignored ? "yes" : "no");
         xtest_console_out("dark_blue", "[Current Case Done] ...\n");
     } else if (!xcli.cutback && !xcli.verbose) {
@@ -250,10 +272,10 @@ static void xtest_output_xtest_end(xtest *test_case, xstats *stats) {
 
 // Output for XUnit Test Case Report.
 static void xtest_output_xunittest_report(xengine *runner) {
-    runner->end_time = clock();
+    runner->timer.end_time = clock();
     // Calculate elapsed time and store it in the test case
-    runner->elapsed_time = (runner->end_time - runner->start_time);
-    xtest_console_out("dark_blue", "[ ===== Xtest report system ===== ] time: %i\n", runner->elapsed_time);
+    runner->timer.elapsed_time = (runner->timer.end_time - runner->timer.start_time);
+    xtest_console_out("dark_blue", "[ ===== Xtest report system ===== ] time: %i\n", runner->timer.elapsed_time);
     xtest_console_out("white",     "===================================\n");
     if (xcli.verbose && !xcli.cutback) {
         xtest_console_out("light_magenta", "PASSED    : - %s\n",     xtest_console_numeric(runner->stats.passed_count));
@@ -367,9 +389,8 @@ xengine xtest_start(int argc, char **argv) {
     xparser_parse_args(argc, argv);
 
     runner.stats = (xstats){0, 0, 0, 0, 0, 0, 0};
-    runner.elapsed_time = 0;
+    runner.timer = (xtime){0, 0, 0};
     runner.start_time   = clock();
-    runner.end_time     = 0;
 
     if (xcli.dry_run) { // Check if it's a dry run
         xtest_console_out("light_blue", "Simulating a test run to ensure Xcli can run...\n");
@@ -409,7 +430,7 @@ void xtest_run_test(xtest* test_case, xstats* stats, xfixture* fixture) {
     }
 
     // Record start time
-    clock_t start_time = clock();
+    test_case->timer.start_time = clock();
 
     // Run tests sequentially
     for (uint8_t iter = 0; iter < xcli.iter_repeat; iter++) {
@@ -428,10 +449,10 @@ void xtest_run_test(xtest* test_case, xstats* stats, xfixture* fixture) {
     }
 
     // Record end time
-    clock_t end_time = clock();
+    test_case->timer.end_time = clock();
 
     // Calculate elapsed time and store it in the test case
-    test_case->elapsed_time = end_time - start_time;
+    test_case->elapsed_time = test_case->timer.end_time - test_case->timer.start_time;
 
     // Update the appropriate count based on your logic
     if (test_case->is_mark && !test_case->is_fish) {
