@@ -44,9 +44,9 @@ static uint8_t MIN_REPEATS = 1;
 //
 typedef char *xstring;
 
-//
+// ==============================================================================
 // Xtest internal written number logic
-//
+// ==============================================================================
 typedef struct {
     xstring word;
     int64_t value;
@@ -109,9 +109,9 @@ xstring xtest_string_number_from_numeric(int number) {
     return "unknown";
 }
 
-//
-// Xtest internal console functions
-//
+// ==============================================================================
+// Xtest internal console stream logic
+// ==============================================================================
 
 // General Output Function
 void xtest_console_out(const char *format, ...) {
@@ -236,7 +236,7 @@ static void xtest_output_xtest_end(xtest *test_case, xstats *stats) {
 
 // Output for XUnit Test Case Report.
 static void xtest_output_xunittest_report(xengine *runner) {
-    clock_t end_time = clock()
+    clock_t end_time = clock();
     xtest_console_out_color("dark_blue", "[ ===== Xtest report system ===== ] time: %i\n", (runner.elapsed_time - end_time));
     xtest_console_out_color("white",     "===================================\n");
     if (xcli.verbose && !xcli.cutback) {
@@ -256,6 +256,9 @@ static void xtest_output_xunittest_report(xengine *runner) {
     xtest_console_out_color("white",     "===================================\n\n");
 } // end of func
 
+// ==============================================================================
+// Xtest internal argument parser logic
+// ==============================================================================
 static void xparser_init(void) {
     // Initialize members individually
     xcli.cutback = false;
@@ -337,6 +340,10 @@ static void xparser_parse_args(int argc, char *argv[]) {
     }
 } // end of func
 
+// ==============================================================================
+// Xtest create and erase
+// ==============================================================================
+
 // Initializes an xengine and processes command-line arguments.
 xengine xtest_start(int argc, char **argv) {
     xengine runner;
@@ -361,6 +368,10 @@ int xtest_end(xengine *runner) {
     }
     return runner->stats.failed_count;
 } // end of func
+
+// ==============================================================================
+// Xtest basic functions
+// ==============================================================================
 
 // Common functionality for running a test case and updating test statistics.
 void xtest_run_test(xtest* test_case, xstats* stats, xfixture* fixture) {
@@ -438,6 +449,10 @@ void xtest_run_test_fixture(xtest* test_case, xfixture* fixture, xstats* stats) 
     // Run the test with the specified fixture
     xtest_run_test(test_case, stats, fixture);
 }  // end of func
+
+// ==============================================================================
+// Xtest functions for asserts
+// ==============================================================================
 
 // Marks a test case as ignored with a specified reason and prints it to stderr.
 void xignore(const char* reason, const char* file, int line, const char* func) {
