@@ -144,6 +144,30 @@ void xtest_console_out(const char *color_name, const char *format, ...) {
     va_end(args);
 }
 
+// Custom strdup implementation
+char* xtest_strdup(const char* source) {
+    if (source == NULL) {
+        return NULL;
+    }
+
+    // Calculate the length of the source string
+    size_t length = strlen(source);
+
+    // Allocate memory for the duplicated string (including space for null terminator)
+    char* result = (char*)malloc((length + 1) * sizeof(char));
+
+    if (result == NULL) {
+        // Memory allocation failed
+        xtest_console_err("Error: Memory allocation failed\n");
+        return NULL;
+    }
+
+    // Copy the source string to the newly allocated memory
+    strcpy(result, source);
+
+    return result;
+}
+
 xstring xtest_console_numeric(int number) {
     // Determine the maximum number of digits needed
     int digits = snprintf(NULL, 0, "%d", number);
@@ -161,7 +185,7 @@ xstring xtest_console_numeric(int number) {
     sprintf(result, "%d", number);
 
     // Duplicate the string and return the duplicated version
-    char *copy_str = result;
+    char *copy_str = xtest_strdup(result);
 
     // Free the dynamically allocated memory before returning
     free(result);
@@ -226,8 +250,10 @@ static void xtest_output_xtest_end(xtest *test_case, xstats *stats) {
 
 // Output for XUnit Test Case Report.
 static void xtest_output_xunittest_report(xengine *runner) {
-    clock_t end_time = clock();
-    xtest_console_out("dark_blue", "[ ===== Xtest report system ===== ] time: %i\n", (runner->elapsed_time - end_time));
+    runner->end_time = clock();
+    // Calculate elapsed time and store it in the test case
+    runner->elapsed_time = (runner->end_time - runner->start_time);
+    xtest_console_out("dark_blue", "[ ===== Xtest report system ===== ] time: %i\n", runner->elapsed_time);
     xtest_console_out("white",     "===================================\n");
     if (xcli.verbose && !xcli.cutback) {
         xtest_console_out("light_magenta", "PASSED    : - %s\n",     xtest_console_numeric(runner->stats.passed_count));
@@ -341,7 +367,9 @@ xengine xtest_start(int argc, char **argv) {
     xparser_parse_args(argc, argv);
 
     runner.stats = (xstats){0, 0, 0, 0, 0, 0, 0};
-    runner.elapsed_time = clock();
+    runner.elapsed_time = 0;
+    runner.start_time   = clock();
+    runner.end_time     = 0;
 
     if (xcli.dry_run) { // Check if it's a dry run
         xtest_console_out("light_blue", "Simulating a test run to ensure Xcli can run...\n");
