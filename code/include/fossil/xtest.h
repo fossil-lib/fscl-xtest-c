@@ -38,12 +38,18 @@ extern "C"
 #define XTEST_DOUBLE_EPSILON 1e-9
 
 typedef struct {
+    clock_t elapsed_time;     // Elapsed time for all tests
+    clock_t start_time;       // Elapsed time for start of tests
+    clock_t end_time;         // Elapsed time for end of tests
+} xtime;
+
+typedef struct {
     const char* name;         // Name of the test case
     void (*test_function)(void);  // Function pointer to the test case's implementation
     bool ignored;             // Indicates if the test case is ignored
     bool is_mark;             // Flag to identify benchmark tests
     bool is_fish;             // Flag to identify Fish AI tests
-    clock_t elapsed_time;     // Elapsed time for current test
+    xtime timer;              // Xtest timer for tracking time
 } xtest;
 
 typedef struct {
@@ -63,9 +69,7 @@ typedef struct {
 
 typedef struct {
     xstats stats;  // Test statistics including passed, failed, and ignored counts
-    clock_t elapsed_time;     // Elapsed time for all tests
-    clock_t start_time;       // Elapsed time for start of tests
-    clock_t end_time;         // Elapsed time for end of tests
+    xtime timer;   // Xtest timer for tracking time
 } xengine;
 
 // =================================================================
