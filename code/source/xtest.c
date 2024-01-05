@@ -40,7 +40,77 @@ static uint8_t MAX_REPEATS = 100;
 static uint8_t MIN_REPEATS = 1;
 
 //
-// internal console functions
+// local types
+//
+typedef char *xstring;
+
+//
+// Xtest internal written number logic
+//
+typedef struct {
+    xstring word;
+    int64_t value;
+} NumberMapping;
+
+typedef struct {
+    xstring operator;
+    int32_t priority;
+} OperatorMapping;
+
+OperatorMapping operators[] = {
+    {"+", 1}, {"-", 1}, {"*", 2}, {"/", 2}
+};
+
+// Define mappings for units, tens, and powers of ten
+NumberMapping units[] = {
+    {"zero", 0}, {"one", 1}, {"two", 2}, {"three", 3}, {"four", 4},
+    {"five", 5}, {"six", 6}, {"seven", 7}, {"eight", 8}, {"nine", 9}
+};
+
+NumberMapping teens[] = {
+    {"ten", 10}, {"eleven", 11}, {"twelve", 12}, {"thirteen", 13}, {"fourteen", 14},
+    {"fifteen", 15}, {"sixteen", 16}, {"seventeen", 17}, {"eighteen", 18}, {"nineteen", 19}
+};
+
+NumberMapping tens[] = {
+    {"twenty", 20}, {"thirty", 30}, {"forty", 40}, {"fifty", 50},
+    {"sixty", 60}, {"seventy", 70}, {"eighty", 80}, {"ninety", 90}
+};
+
+NumberMapping powersOfTen[] = {
+    {"thousand", 1000}, {"million", 1000000}, {"billion", 1000000000}, {"trillion", 1000000000000}
+};
+
+xstring xtest_string_number_from_numeric(int number) {
+    // Implementation of converting numeric values to English words is more complex
+    // and may require additional logic based on your specific requirements.
+    // This example includes only basic handling for numbers less than 100.
+    
+    if (number >= 10 && number <= 19) {
+        for (size_t i = 0; i < sizeof(teens) / sizeof(teens[0]); ++i) {
+            if (number == teens[i].value) {
+                return teens[i].word;
+            }
+        }
+    } else if (number % 10 == 0 && number < 100) {
+        for (size_t i = 0; i < sizeof(tens) / sizeof(tens[0]); ++i) {
+            if (number == tens[i].value) {
+                return tens[i].word;
+            }
+        }
+    } else {
+        for (size_t i = 0; i < sizeof(units) / sizeof(units[0]); ++i) {
+            if (number % 10 == units[i].value) {
+                return units[i].word;
+            }
+        }
+    }
+
+    return "unknown";
+}
+
+//
+// Xtest internal console functions
 //
 
 // General Output Function
@@ -146,7 +216,7 @@ static void xtest_output_xtest_start(xtest *test_case, xstats *stats) {
     if (xcli.verbose && !xcli.cutback) {
         xtest_console_out_color("dark_blue", "[Running Test Case] ...\n");
         xtest_console_out_color("light_cyan", "TITLE: - %s\n", xtest_console_format(test_case->name));
-        xtest_console_out_color("light_cyan", "INDEX: - %.3i\n", stats->total_count + 1);
+        xtest_console_out_color("light_cyan", "INDEX: - %.3i\n", xtest_string_number_from_numeric(stats->total_count + 1));
         xtest_console_out_color("light_cyan", "CLASS: - %s\n", (test_case->is_fish)? "Fish AI" : (test_case->is_mark)? "Benchmark" : "Test Case");
     } else if (!xcli.cutback && !xcli.verbose) {
         xtest_console_out_color("dark_blue", "> name: - %s\n", xtest_console_format(test_case->name));
@@ -166,17 +236,18 @@ static void xtest_output_xtest_end(xtest *test_case, xstats *stats) {
 
 // Output for XUnit Test Case Report.
 static void xtest_output_xunittest_report(xengine *runner) {
-    xtest_console_out_color("dark_blue", "[ ===== Xtest report system ===== ]\n");
+    clock_t end_time = clock()
+    xtest_console_out_color("dark_blue", "[ ===== Xtest report system ===== ] time: %i\n", (runner.elapsed_time - end_time));
     xtest_console_out_color("white",     "===================================\n");
     if (xcli.verbose && !xcli.cutback) {
-        xtest_console_out_color("light_magenta", "PASSED    : - %.2i\n", runner->stats.passed_count);
-        xtest_console_out_color("light_magenta", "FAILED    : - %.2i\n", runner->stats.failed_count);
-        xtest_console_out_color("light_magenta", "SKIPPED   : - %.2i\n", runner->stats.ignored_count);
-        xtest_console_out_color("light_magenta", "ERRORS    : - %.2i\n", runner->stats.error_count);
-        xtest_console_out_color("light_magenta", "TOTAL MARK: - %.2i\n", runner->stats.mark_count);
-        xtest_console_out_color("light_magenta", "TOTAL FISH: - %.2i\n", runner->stats.fish_count);
-        xtest_console_out_color("light_magenta", "TOTAL TEST: - %.2i\n", runner->stats.total_count - runner->stats.fish_count - runner->stats.mark_count);
-        xtest_console_out_color("light_yellow",  "ALL TEST CASES: - %.2i\n", runner->stats.total_count);
+        xtest_console_out_color("light_magenta", "PASSED    : - %.2i\n",     xtest_string_number_from_numeric(runner->stats.passed_count));
+        xtest_console_out_color("light_magenta", "FAILED    : - %.2i\n",     xtest_string_number_from_numeric(runner->stats.failed_count));
+        xtest_console_out_color("light_magenta", "SKIPPED   : - %.2i\n",     xtest_string_number_from_numeric(runner->stats.ignored_count));
+        xtest_console_out_color("light_magenta", "ERRORS    : - %.2i\n",     xtest_string_number_from_numeric(runner->stats.error_count));
+        xtest_console_out_color("light_magenta", "TOTAL MARK: - %.2i\n",     xtest_string_number_from_numeric(runner->stats.mark_count));
+        xtest_console_out_color("light_magenta", "TOTAL FISH: - %.2i\n",     xtest_string_number_from_numeric(runner->stats.fish_count));
+        xtest_console_out_color("light_magenta", "TOTAL TEST: - %.2i\n",     xtest_string_number_from_numeric(runner->stats.total_count - runner->stats.fish_count - runner->stats.mark_count));
+        xtest_console_out_color("light_yellow",  "ALL TEST CASES: - %.2i\n", xtest_string_number_from_numeric(runner->stats.total_count));
     } else if (!xcli.verbose && !xcli.cutback) {
         xtest_console_out_color("light_magenta", "pass: %.2i, fail: %.2i\n", runner->stats.passed_count, runner->stats.failed_count);
     } else if (!xcli.verbose && xcli.cutback) {
@@ -273,6 +344,7 @@ xengine xtest_start(int argc, char **argv) {
     xparser_parse_args(argc, argv);
 
     runner.stats = (xstats){0, 0, 0, 0, 0, 0, 0};
+    runner.elapsed_time = clock();
 
     if (xcli.dry_run) { // Check if it's a dry run
         xtest_console_out_color("light_blue", "Simulating a test run to ensure Xcli can run...\n");
