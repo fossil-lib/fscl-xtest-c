@@ -145,31 +145,29 @@ void xtest_console_out(const char *color_name, const char *format, ...) {
 }
 
 xstring xtest_console_numeric(int number) {
-    // Implementation of converting numeric values to English words is more complex
-    // and may require additional logic based on your specific requirements.
-    // This example includes only basic handling for numbers less than 100.
-    
-    if (number >= 10 && number <= 19) {
-        for (size_t i = 0; i < sizeof(teens) / sizeof(teens[0]); ++i) {
-            if (number == teens[i].value) {
-                return teens[i].word;
-            }
-        }
-    } else if (number % 10 == 0 && number < 100) {
-        for (size_t i = 0; i < sizeof(tens) / sizeof(tens[0]); ++i) {
-            if (number == tens[i].value) {
-                return tens[i].word;
-            }
-        }
-    } else {
-        for (size_t i = 0; i < sizeof(units) / sizeof(units[0]); ++i) {
-            if (number % 10 == units[i].value) {
-                return units[i].word;
-            }
-        }
+    // Determine the maximum number of digits needed
+    int digits = snprintf(NULL, 0, "%d", number);
+
+    // Allocate memory for the string (including space for null terminator)
+    char *result = (char*)malloc((digits + 1) * sizeof(char));
+
+    if (result == NULL) {
+        // Memory allocation failed
+        xtest_console_err("Error: Memory allocation failed\n");
+        return NULL;
     }
 
-    return "unknown";
+    // Convert the number to a string
+    sprintf(result, "%d", number);
+
+    // Duplicate the string and return the duplicated version
+    char *copy_str = result;
+
+    // Free the dynamically allocated memory before returning
+    free(result);
+
+    // Return the duplicated string
+    return copy_str;
 }
 
 xstring xtest_console_name(const char *input) {
