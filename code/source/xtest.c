@@ -216,7 +216,7 @@ static void xtest_output_xtest_start(xtest *test_case, xstats *stats) {
     if (xcli.verbose && !xcli.cutback) {
         xtest_console_out_color("dark_blue", "[Running Test Case] ...\n");
         xtest_console_out_color("light_cyan", "TITLE: - %s\n", xtest_console_format(test_case->name));
-        xtest_console_out_color("light_cyan", "INDEX: - %.3i\n", xtest_string_number_from_numeric(stats->total_count + 1));
+        xtest_console_out_color("light_cyan", "INDEX: - %s\n", xtest_string_number_from_numeric(stats->total_count + 1));
         xtest_console_out_color("light_cyan", "CLASS: - %s\n", (test_case->is_fish)? "Fish AI" : (test_case->is_mark)? "Benchmark" : "Test Case");
     } else if (!xcli.cutback && !xcli.verbose) {
         xtest_console_out_color("dark_blue", "> name: - %s\n", xtest_console_format(test_case->name));
@@ -240,14 +240,14 @@ static void xtest_output_xunittest_report(xengine *runner) {
     xtest_console_out_color("dark_blue", "[ ===== Xtest report system ===== ] time: %i\n", (runner.elapsed_time - end_time));
     xtest_console_out_color("white",     "===================================\n");
     if (xcli.verbose && !xcli.cutback) {
-        xtest_console_out_color("light_magenta", "PASSED    : - %.2i\n",     xtest_string_number_from_numeric(runner->stats.passed_count));
-        xtest_console_out_color("light_magenta", "FAILED    : - %.2i\n",     xtest_string_number_from_numeric(runner->stats.failed_count));
-        xtest_console_out_color("light_magenta", "SKIPPED   : - %.2i\n",     xtest_string_number_from_numeric(runner->stats.ignored_count));
-        xtest_console_out_color("light_magenta", "ERRORS    : - %.2i\n",     xtest_string_number_from_numeric(runner->stats.error_count));
-        xtest_console_out_color("light_magenta", "TOTAL MARK: - %.2i\n",     xtest_string_number_from_numeric(runner->stats.mark_count));
-        xtest_console_out_color("light_magenta", "TOTAL FISH: - %.2i\n",     xtest_string_number_from_numeric(runner->stats.fish_count));
-        xtest_console_out_color("light_magenta", "TOTAL TEST: - %.2i\n",     xtest_string_number_from_numeric(runner->stats.total_count - runner->stats.fish_count - runner->stats.mark_count));
-        xtest_console_out_color("light_yellow",  "ALL TEST CASES: - %.2i\n", xtest_string_number_from_numeric(runner->stats.total_count));
+        xtest_console_out_color("light_magenta", "PASSED    : - %s\n",     xtest_string_number_from_numeric(runner->stats.passed_count));
+        xtest_console_out_color("light_magenta", "FAILED    : - %s\n",     xtest_string_number_from_numeric(runner->stats.failed_count));
+        xtest_console_out_color("light_magenta", "SKIPPED   : - %s\n",     xtest_string_number_from_numeric(runner->stats.ignored_count));
+        xtest_console_out_color("light_magenta", "ERRORS    : - %s\n",     xtest_string_number_from_numeric(runner->stats.error_count));
+        xtest_console_out_color("light_magenta", "TOTAL MARK: - %s\n",     xtest_string_number_from_numeric(runner->stats.mark_count));
+        xtest_console_out_color("light_magenta", "TOTAL FISH: - %s\n",     xtest_string_number_from_numeric(runner->stats.fish_count));
+        xtest_console_out_color("light_magenta", "TOTAL TEST: - %s\n",     xtest_string_number_from_numeric(runner->stats.total_count - runner->stats.fish_count - runner->stats.mark_count));
+        xtest_console_out_color("light_yellow",  "ALL TEST CASES: - %s\n", xtest_string_number_from_numeric(runner->stats.total_count));
     } else if (!xcli.verbose && !xcli.cutback) {
         xtest_console_out_color("light_magenta", "pass: %.2i, fail: %.2i\n", runner->stats.passed_count, runner->stats.failed_count);
     } else if (!xcli.verbose && xcli.cutback) {
