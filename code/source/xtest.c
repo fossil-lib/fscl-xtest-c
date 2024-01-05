@@ -144,10 +144,6 @@ char* xtest_console_format(const char *input) {
     return result;
 }
 
-//
-//
-//
-
 // Formats and displays information about the start/end of a test case.
 static void xtest_output_xtest_start(xtest *test_case, xstats *stats) {
     if (xcli.verbose && !xcli.cutback) {
@@ -156,7 +152,8 @@ static void xtest_output_xtest_start(xtest *test_case, xstats *stats) {
         xtest_console_out_color("light_blue", "INDEX: - %.3i\n", stats->total_count + 1);
         xtest_console_out_color("light_blue", "CLASS: - %s\n", (test_case->is_fish)? "Fish AI" : (test_case->is_mark)? "Benchmark" : "Test Case");
     } else if (!xcli.cutback && !xcli.verbose) {
-        xtest_console_out_color("dark_blue", "name: - %s\n> type: - %s\n", test_case->name, (test_case->is_fish)? "fish" : (test_case->is_mark)? "mark" : "test");
+        xtest_console_out_color("dark_blue", "> name: - %s\n", xtest_console_format(test_case->name));
+        xtest_console_out_color("dark_blue", "> type: - %s\n", (test_case->is_fish)? "fish" : (test_case->is_mark)? "mark" : "test");
     }
 } // end of func
 
