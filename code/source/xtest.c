@@ -45,43 +45,6 @@ static uint8_t MIN_REPEATS = 1;
 typedef char *xstring;
 
 // ==============================================================================
-// Xtest internal written number logic
-// ==============================================================================
-typedef struct {
-    xstring word;
-    int64_t value;
-} NumberMapping;
-
-typedef struct {
-    xstring operator;
-    int32_t priority;
-} OperatorMapping;
-
-OperatorMapping operators[] = {
-    {"+", 1}, {"-", 1}, {"*", 2}, {"/", 2}
-};
-
-// Define mappings for units, tens, and powers of ten
-NumberMapping units[] = {
-    {"zero", 0}, {"one", 1}, {"two", 2}, {"three", 3}, {"four", 4},
-    {"five", 5}, {"six", 6}, {"seven", 7}, {"eight", 8}, {"nine", 9}
-};
-
-NumberMapping teens[] = {
-    {"ten", 10}, {"eleven", 11}, {"twelve", 12}, {"thirteen", 13}, {"fourteen", 14},
-    {"fifteen", 15}, {"sixteen", 16}, {"seventeen", 17}, {"eighteen", 18}, {"nineteen", 19}
-};
-
-NumberMapping tens[] = {
-    {"twenty", 20}, {"thirty", 30}, {"forty", 40}, {"fifty", 50},
-    {"sixty", 60}, {"seventy", 70}, {"eighty", 80}, {"ninety", 90}
-};
-
-NumberMapping powersOfTen[] = {
-    {"thousand", 1000}, {"million", 1000000}, {"billion", 1000000000}, {"trillion", 1000000000000}
-};
-
-// ==============================================================================
 // Xtest internal console stream logic
 // ==============================================================================
 
@@ -144,78 +107,6 @@ void xtest_console_out(const char *color_name, const char *format, ...) {
     va_end(args);
 }
 
-// Custom strdup implementation
-char* xtest_strdup(const char* source) {
-    if (source == NULL) {
-        return NULL;
-    }
-
-    // Calculate the length of the source string
-    size_t length = strlen(source);
-
-    // Allocate memory for the duplicated string (including space for null terminator)
-    char* result = (char*)malloc((length + 1) * sizeof(char));
-
-    if (result == NULL) {
-        // Memory allocation failed
-        xtest_console_err("Error: Memory allocation failed\n");
-        return NULL;
-    }
-
-    // Copy the source string to the newly allocated memory
-    strcpy(result, source);
-
-    return result;
-}
-
-xstring xtest_console_numeric(int number) {
-    if (number == 0) {
-        return xtest_strdup("zero");
-    }
-
-    char result[1000] = "";  // Adjust the size based on your needs
-
-    // Process each power of ten
-    for (int i = sizeof(powersOfTen) / sizeof(NumberMapping) - 1; i >= 0; i--) {
-        if (number >= powersOfTen[i].value) {
-            strcat(result, xtest_console_numeric(number / powersOfTen[i].value));
-            strcat(result, " ");
-            strcat(result, powersOfTen[i].word);
-            number %= powersOfTen[i].value;
-            if (number > 0) {
-                strcat(result, " ");
-            }
-        }
-    }
-
-    // Process the remaining digits
-    if (number >= 100) {
-        strcat(result, xtest_console_numeric(number / 100));
-        strcat(result, " hundred");
-        number %= 100;
-        if (number > 0) {
-            strcat(result, " and ");
-        }
-    }
-
-    if (number >= 20) {
-        strcat(result, tens[number / 10].word);
-        number %= 10;
-        if (number > 0) {
-            strcat(result, " ");
-        }
-    } else if (number >= 10) {
-        strcat(result, teens[number - 10].word);
-        return xtest_strdup(result);
-    }
-
-    if (number > 0) {
-        strcat(result, units[number].word);
-    }
-
-    return xtest_strdup(result);
-}
-
 xstring xtest_console_name(const char *input) {
     if (input == NULL) {
         // Handle NULL input gracefully
@@ -252,7 +143,7 @@ static void xtest_output_xtest_start(xtest *test_case, xstats *stats) {
     if (xcli.verbose && !xcli.cutback) {
         xtest_console_out("dark_blue", "[Running Test Case] ...\n");
         xtest_console_out("light_cyan", "TITLE: - %s\n", xtest_console_name(test_case->name));
-        xtest_console_out("light_cyan", "INDEX: - %s\n", xtest_console_numeric(stats->total_count + 1));
+        xtest_console_out("light_cyan", "INDEX: - %.2i\n", stats->total_count + 1);
         xtest_console_out("light_cyan", "CLASS: - %s\n", (test_case->is_fish)? "Fish AI" : (test_case->is_mark)? "Benchmark" : "Test Case");
     } else if (!xcli.cutback && !xcli.verbose) {
         xtest_console_out("dark_blue", "> name: - %s\n", xtest_console_name(test_case->name));
@@ -262,7 +153,10 @@ static void xtest_output_xtest_start(xtest *test_case, xstats *stats) {
 
 static void xtest_output_xtest_end(xtest *test_case, xstats *stats) {
     if (xcli.verbose && !xcli.cutback) {
-        xtest_console_out("light_cyan", "TIME  : - %.6lu\n", test_case->timer.elapsed_time);
+        int minutes = (int)(test_case->timer.elapsed_time / (60 * 1000));
+        int seconds = (int)((test_case->timer.elapsed_time - minutes * 60 * 1000) / 1000);
+        int millis = (int)(test_case->timer.elapsed_time - minutes * 60 * 1000 - seconds * 1000);
+        xtest_console_out("light_cyan", "TIME  : - %d minutes, %d seconds, and %d milliseconds\n", minutes, seconds, millis);
         xtest_console_out("light_cyan", "SKIP  : - %s\n", test_case->ignored ? "yes" : "no");
         xtest_console_out("dark_blue", "[Current Case Done] ...\n");
     } else if (!xcli.cutback && !xcli.verbose) {
@@ -274,18 +168,22 @@ static void xtest_output_xtest_end(xtest *test_case, xstats *stats) {
 static void xtest_output_xunittest_report(xengine *runner) {
     runner->timer.end_time = clock();
     // Calculate elapsed time and store it in the test case
-    runner->timer.elapsed_time = (runner->timer.end_time - runner->timer.start_time);
-    xtest_console_out("dark_blue", "[ ===== Xtest report system ===== ] time: %i\n", runner->timer.elapsed_time);
+    runner->timer.elapsed_time = ((double)(runner->timer.end_time - runner->timer.start_time)  / CLOCKS_PER_SEC) * 1000.0;
+    int minutes = (int)(runner->timer.elapsed_time / (60 * 1000));
+    int seconds = (int)((runner->timer.elapsed_time - minutes * 60 * 1000) / 1000);
+    int millis = (int)(runner->timer.elapsed_time - minutes * 60 * 1000 - seconds * 1000);
+
+    xtest_console_out("dark_blue", "[ ===== Xtest report system ===== ] %d minutes, %d seconds, and %d milliseconds\n", minutes, seconds, millis);
     xtest_console_out("white",     "===================================\n");
     if (xcli.verbose && !xcli.cutback) {
-        xtest_console_out("light_magenta", "PASSED    : - %s\n",     xtest_console_numeric(runner->stats.passed_count));
-        xtest_console_out("light_magenta", "FAILED    : - %s\n",     xtest_console_numeric(runner->stats.failed_count));
-        xtest_console_out("light_magenta", "SKIPPED   : - %s\n",     xtest_console_numeric(runner->stats.ignored_count));
-        xtest_console_out("light_magenta", "ERRORS    : - %s\n",     xtest_console_numeric(runner->stats.error_count));
-        xtest_console_out("light_magenta", "TOTAL MARK: - %s\n",     xtest_console_numeric(runner->stats.mark_count));
-        xtest_console_out("light_magenta", "TOTAL FISH: - %s\n",     xtest_console_numeric(runner->stats.fish_count));
-        xtest_console_out("light_magenta", "TOTAL TEST: - %s\n",     xtest_console_numeric(runner->stats.total_count - runner->stats.fish_count - runner->stats.mark_count));
-        xtest_console_out("light_yellow",  "ALL TEST CASES: - %s\n", xtest_console_numeric(runner->stats.total_count));
+        xtest_console_out("light_magenta", "PASSED    : - %.2i\n",     (runner->stats.passed_count));
+        xtest_console_out("light_magenta", "FAILED    : - %.2i\n",     (runner->stats.failed_count));
+        xtest_console_out("light_magenta", "SKIPPED   : - %.2i\n",     (runner->stats.ignored_count));
+        xtest_console_out("light_magenta", "ERRORS    : - %.2i\n",     (runner->stats.error_count));
+        xtest_console_out("light_magenta", "TOTAL MARK: - %.2i\n",     (runner->stats.mark_count));
+        xtest_console_out("light_magenta", "TOTAL FISH: - %.2i\n",     (runner->stats.fish_count));
+        xtest_console_out("light_magenta", "TOTAL TEST: - %.2i\n",     (runner->stats.total_count - runner->stats.fish_count - runner->stats.mark_count));
+        xtest_console_out("light_yellow",  "ALL TEST CASES: - %.2i\n", (runner->stats.total_count));
     } else if (!xcli.verbose && !xcli.cutback) {
         xtest_console_out("light_magenta", "pass: %.2i, fail: %.2i\n", runner->stats.passed_count, runner->stats.failed_count);
     } else if (!xcli.verbose && xcli.cutback) {
@@ -451,7 +349,7 @@ void xtest_run_test(xtest* test_case, xstats* stats, xfixture* fixture) {
     test_case->timer.end_time = clock();
 
     // Calculate elapsed time and store it in the test case
-    test_case->timer.elapsed_time = (test_case->timer.end_time - test_case->timer.start_time);
+    test_case->timer.elapsed_time = ((double)(test_case->timer.end_time - test_case->timer.start_time)  / CLOCKS_PER_SEC) * 1000.0;
 
     // Update the appropriate count based on your logic
     if (test_case->is_mark && !test_case->is_fish) {
