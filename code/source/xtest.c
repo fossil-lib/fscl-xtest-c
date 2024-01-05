@@ -145,9 +145,9 @@ char* xtest_console_format(const char *input) {
 static void xtest_output_xtest_start(xtest *test_case, xstats *stats) {
     if (xcli.verbose && !xcli.cutback) {
         xtest_console_out_color("dark_blue", "[Running Test Case] ...\n");
-        xtest_console_out_color("light_blue", "TITLE: - %s\n", xtest_console_format(test_case->name));
-        xtest_console_out_color("light_blue", "INDEX: - %.3i\n", stats->total_count + 1);
-        xtest_console_out_color("light_blue", "CLASS: - %s\n", (test_case->is_fish)? "Fish AI" : (test_case->is_mark)? "Benchmark" : "Test Case");
+        xtest_console_out_color("light_cyan", "TITLE: - %s\n", xtest_console_format(test_case->name));
+        xtest_console_out_color("light_cyan", "INDEX: - %.3i\n", stats->total_count + 1);
+        xtest_console_out_color("light_cyan", "CLASS: - %s\n", (test_case->is_fish)? "Fish AI" : (test_case->is_mark)? "Benchmark" : "Test Case");
     } else if (!xcli.cutback && !xcli.verbose) {
         xtest_console_out_color("dark_blue", "> name: - %s\n", xtest_console_format(test_case->name));
         xtest_console_out_color("dark_blue", "> type: - %s\n", (test_case->is_fish)? "fish" : (test_case->is_mark)? "mark" : "test");
@@ -156,8 +156,8 @@ static void xtest_output_xtest_start(xtest *test_case, xstats *stats) {
 
 static void xtest_output_xtest_end(xtest *test_case, xstats *stats) {
     if (xcli.verbose && !xcli.cutback) {
-        xtest_console_out_color("light_blue", "TIME  : - %.6lu\n", test_case->elapsed_time);
-        xtest_console_out_color("light_blue", "SKIP  : - %s\n", test_case->ignored ? "yes" : "no");
+        xtest_console_out_color("light_cyan", "TIME  : - %.6lu\n", test_case->elapsed_time);
+        xtest_console_out_color("light_cyan", "SKIP  : - %s\n", test_case->ignored ? "yes" : "no");
         xtest_console_out_color("dark_blue", "[Current Case Done] ...\n");
     } else if (!xcli.cutback && !xcli.verbose) {
         xtest_console_out_color("dark_blue", "ignore: %s\n", test_case->ignored ? "yes" : "no");
@@ -174,9 +174,9 @@ static void xtest_output_xunittest_report(xengine *runner) {
         xtest_console_out_color("light_magenta",    "ERROR: - %.2i\n", runner->stats.error_count);
         xtest_console_out_color("light_magenta", "TOTAL: - %.2i\n", runner->stats.total_count);
     } else if (!xcli.verbose && !xcli.cutback) {
-        xtest_console_out_color("dark_cyan", "pass: %.2i, fail: %.2i\n", runner->stats.passed_count, runner->stats.failed_count);
+        xtest_console_out_color("light_magenta", "pass: %.2i, fail: %.2i\n", runner->stats.passed_count, runner->stats.failed_count);
     } else if (!xcli.verbose && xcli.cutback) {
-        xtest_console_out_color("dark_cyan", "result: %s\n", runner->stats.failed_count? "fail" : "pass");
+        xtest_console_out_color("light_magenta", "result: %s\n", runner->stats.failed_count? "fail" : "pass");
     }
 } // end of func
 
