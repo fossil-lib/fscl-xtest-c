@@ -175,7 +175,8 @@ static void xtest_output_xunittest_report(xengine *runner) {
         xtest_console_out_color("light_magenta", "ERRORS    : - %.2i\n", runner->stats.error_count);
         xtest_console_out_color("light_magenta", "TOTAL MARK: - %.2i\n", runner->stats.mark_count);
         xtest_console_out_color("light_magenta", "TOTAL FISH: - %.2i\n", runner->stats.fish_count);
-        xtest_console_out_color("light_magenta", "TOTAL TEST: - %.2i\n", runner->stats.total_count);
+        xtest_console_out_color("light_magenta", "TOTAL TEST: - %.2i\n", runner->stats.total_count - runner->stats.fish_count - runner->stats.mark_count);
+        xtest_console_out_color("light_yellow",  "ALL TEST CASES: - %.2i\n", runner->stats.total_count);
     } else if (!xcli.verbose && !xcli.cutback) {
         xtest_console_out_color("light_magenta", "pass: %.2i, fail: %.2i\n", runner->stats.passed_count, runner->stats.failed_count);
     } else if (!xcli.verbose && xcli.cutback) {
