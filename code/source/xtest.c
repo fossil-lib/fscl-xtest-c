@@ -309,7 +309,7 @@ static void xparser_parse_args(int argc, char *argv[]) {
             xcli.only_fish = false;
             xcli.only_test = false;
         } else if (xparser_has_option(argc, argv, "--version")) {
-            xtest_console_out_color("dark_green", "1.1.0\n");
+            xtest_console_out("dark_green", "1.1.0\n");
             exit(EXIT_SUCCESS);
         } else if (xparser_has_option(argc, argv, "--help")) {
             xparser_print_usage();
