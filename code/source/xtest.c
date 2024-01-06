@@ -13,6 +13,7 @@ Description:
 #include "fossil/xtest.h"
 #include <stdarg.h>
 #include <string.h>
+#include <time.h>
 
 typedef struct {
     bool cutback;
@@ -434,10 +435,10 @@ void xmark_assert_seconds(uint64_t elapsed_time_ns, double max_seconds) {
         XASSERT_PASS_SCAN = false;
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out("blue", "[XMARK ISSUE]\n");
-            xtest_console_out("red", "Elapsed time (%f min)\n", elapsed_minutes);
-            xtest_console_out("red", "Exceeds limit (%f min)\n", max_minutes);
+            xtest_console_out("red", "Elapsed time (%f min)\n", elapsed_seconds);
+            xtest_console_out("red", "Exceeds limit (%f min)\n", max_seconds);
         } else if (!xcli.cutback && !xcli.verbose) {
-            xtest_console_out("red", "Benchmark failed: elapsed time (%f min) exceeds limit (%f min)\n", elapsed_minutes, max_minutes);
+            xtest_console_out("red", "Benchmark failed: elapsed time (%f min) exceeds limit (%f min)\n", elapsed_seconds, max_seconds);
         } else if (xcli.cutback && !xcli.verbose) {
             xtest_console_out("red", "[F]");
         }
@@ -458,9 +459,9 @@ void xmark_assert_minutes(uint64_t elapsed_time_ns, double max_minutes) {
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out("blue", "[XMARK ISSUE]\n");
             xtest_console_out("red", "Elapsed time (%f min)\n", elapsed_minutes);
-            xtest_console_out("red", "Exceeds limit (%f min)\n", max_seconds);
+            xtest_console_out("red", "Exceeds limit (%f min)\n", max_minutes);
         } else if (!xcli.cutback && !xcli.verbose) {
-            xtest_console_out("red", "Benchmark failed: elapsed time (%f min) exceeds limit (%f min)\n", elapsed_minutes, max_seconds);
+            xtest_console_out("red", "Benchmark failed: elapsed time (%f min) exceeds limit (%f min)\n", elapsed_minutes, max_minutes);
         } else if (xcli.cutback && !xcli.verbose) {
             xtest_console_out("red", "[F]");
         }
@@ -479,10 +480,10 @@ void xmark_expect_seconds(uint64_t elapsed_time_ns, double max_seconds) {
         XEXPECT_PASS_SCAN = false;
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out("blue", "[XMARK ISSUE]\n");
-            xtest_console_out("red", "Elapsed time (%f min)\n", elapsed_minutes);
+            xtest_console_out("red", "Elapsed time (%f min)\n", elapsed_seconds);
             xtest_console_out("red", "Exceeds limit (%f min)\n", max_seconds);
         } else if (!xcli.cutback && !xcli.verbose) {
-            xtest_console_out("red", "Benchmark failed: elapsed time (%f min) exceeds limit (%f min)\n", elapsed_minutes, max_seconds);
+            xtest_console_out("red", "Benchmark failed: elapsed time (%f min) exceeds limit (%f min)\n", elapsed_seconds, max_seconds);
         } else if (xcli.cutback && !xcli.verbose) {
             xtest_console_out("red", "[F]");
         }
