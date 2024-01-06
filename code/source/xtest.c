@@ -101,7 +101,7 @@ static uint16_t xengine_get_fish_count(xengine *runner) {
 }
 
 static uint16_t xengine_get_test_count(xengine *runner) {
-    return runner->stats.test_count - runner->stats.fish_count - runner->stats.mark_count;
+    return runner->stats.test_count;
 }
 
 static uint16_t xengine_get_total_count(xengine *runner) {
