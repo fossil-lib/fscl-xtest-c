@@ -269,7 +269,7 @@ static void xparser_parse_args(int argc, char *argv[]) {
             xcli.only_fish = false;
             xcli.only_test = false;
         } else if (xparser_has_option(argc, argv, "--version") || xparser_has_option(argc, argv, "-v")) {
-            xtest_console_out("green", "1.1.0\n");
+            xtest_console_out("green", "1.1.1\n");
             exit(EXIT_SUCCESS);
         } else if (xparser_has_option(argc, argv, "--help") || xparser_has_option(argc, argv, "-h")) {
             xparser_print_usage();
@@ -391,7 +391,7 @@ static void xtest_run_test(xengine* engine, xtest* test_case, xfixture* fixture)
         return;
     }
 
-    xtest_update_scoreboard(test_case, engine);
+    xtest_update_scoreboard(engine, test_case);
     xtest_output_end(test_case, engine);
 } // end of func
 
