@@ -87,10 +87,12 @@ void xtest_run_test_unit(xengine* engine, xtest* test_case);
 void xtest_run_test_fixture(xengine* engine, xtest* test_case, xfixture* fixture);
 
 // Function prototypes for Xmark
-void xmark_start_benchmark();
-uint64_t xmark_stop_benchmark();
+void xmark_start_benchmark(void);
+uint64_t xmark_stop_benchmark(void);
 void xmark_assert_seconds(uint64_t elapsed_time_ns, double max_seconds);
 void xmark_assert_minutes(uint64_t elapsed_time_ns, double max_minutes);
+void xmark_expect_seconds(uint64_t elapsed_time_ns, double max_seconds);
+void xmark_expect_minutes(uint64_t elapsed_time_ns, double max_minutes);
 
 // Function prototypes for asserts
 void xerrors(const char* reason, const char* file, int line, const char* func);
@@ -189,6 +191,8 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 #define XMARK_STOP_BENCHMARK() xmark_stop_benchmark()
 #define XMARK_ASSERT_SECONDS(elapsed_time_ns, max_seconds) xmark_assert_seconds(elapsed_time_ns, max_seconds)
 #define XMARK_ASSERT_MINUTES(elapsed_time_ns, max_minutes) xmark_assert_minutes(elapsed_time_ns, max_minutes)
+#define XMARK_EXPECT_SECONDS(elapsed_time_ns, max_seconds) xmark_expect_seconds(elapsed_time_ns, max_seconds)
+#define XMARK_EXPECT_MINUTES(elapsed_time_ns, max_minutes) xmark_expect_minutes(elapsed_time_ns, max_minutes)
 
 //
 // ------------------------------------------------------------------------
