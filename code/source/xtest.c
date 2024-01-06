@@ -426,11 +426,11 @@ uint64_t xmark_stop_benchmark() {
 }
 
 void xmark_assert_seconds(uint64_t elapsed_time_ns, double max_seconds) {
-    double elapsed_seconds = elapsed_time_ns / 1e9;
     if (!XASSERT_PASS_SCAN) {
         return;
     }
-    if (!expression) {
+    double elapsed_seconds = elapsed_time_ns / 1e9;
+    if (elapsed_seconds > max_seconds) {
         XASSERT_PASS_SCAN = false;
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out("blue", "[XMARK ISSUE]\n");
@@ -449,11 +449,11 @@ void xmark_assert_seconds(uint64_t elapsed_time_ns, double max_seconds) {
 }
 
 void xmark_assert_minutes(uint64_t elapsed_time_ns, double max_minutes) {
-    double elapsed_minutes = elapsed_time_ns / 60e9;
     if (!XASSERT_PASS_SCAN) {
         return;
     }
-    if (!expression) {
+    double elapsed_minutes = elapsed_time_ns / 60e9;
+    if (elapsed_minutes > max_minutes) {
          XASSERT_PASS_SCAN = false;
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out("blue", "[XMARK ISSUE]\n");
