@@ -92,10 +92,10 @@ typedef struct {
 // =================================================================
 
 // Function prototypes for Xtest
-xengine xtest_start(int argc, char **argv);
-int xtest_end(xengine *runner);
-void xtest_run_test_unit(xengine* engine, xtest* test_case);
-void xtest_run_test_fixture(xengine* engine, xtest* test_case, xfixture* fixture);
+xengine xtest_create(int argc, char **argv);
+int xtest_erase(xengine *runner);
+void xtest_run_as_test(xengine* engine, xtest* test_case);
+void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture);
 
 // Function prototypes for Xmark
 void xmark_start_benchmark(void);
@@ -112,18 +112,10 @@ void xassert(bool expression, const char *message, const char* file, int line, c
 void xexpect(bool expression, const char *message, const char* file, int line, const char* func);
 
 // =================================================================
-// XTest create and erase commands
-// =================================================================
-
-#define XTEST_CREATE(argc, argv) xengine runner = xtest_start(argc, argv)
-#define XTEST_ERASE() xtest_end(&runner)
-
-// =================================================================
 // XTest run commands
 // =================================================================
-
-#define XTEST_RUN_UNIT(test_case) xtest_run_test_unit(runner, &test_case)
-#define XTEST_RUN_FIXTURE(test_case, fixture) xtest_run_test_fixture(runner, &test_case, &fixture)
+#define XTEST_RUN_UNIT(test_case) xtest_run_as_test(runner, &test_case)
+#define XTEST_RUN_FIXTURE(test_case, fixture) xtest_run_as_fixture(runner, &test_case, &fixture)
 
 #define XTEST_CASE_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
@@ -151,7 +143,6 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 // Test pool commands
 // =================================================================
-
 #define XTEST_DEFINE_POOL(group_name) void group_name(xengine *runner)
 #define XTEST_EXTERN_POOL(group_name) extern void group_name(xengine *runner)
 #define XTEST_IMPORT_POOL(group_name) group_name(&runner)
@@ -159,7 +150,6 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 // Implement test commands
 // =================================================================
-
 #define XTEST_CASE(name) \
     void name##_xtest(void); \
     xtest name = { #name, name##_xtest, {NULL, NULL}, {false, false, false}, {0, 0, 0}}; \
@@ -178,7 +168,6 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 // BDD specific commands
 // =================================================================
-
 #define GIVEN(description) \
     if (0) { \
         printf("Given %s\n", description); \
