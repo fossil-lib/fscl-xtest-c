@@ -99,8 +99,8 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 // XTest run commands
 // =================================================================
-#define XTEST_RUN_UNIT(test_case) xtest_run_test_unit(&runner, &test_case)
-#define XTEST_RUN_FIXTURE(test_case, fixture) xtest_run_test_fixture(&runner, &test_case, &fixture)
+#define XTEST_RUN_UNIT(test_case) xtest_run_test_unit(runner, &test_case)
+#define XTEST_RUN_FIXTURE(test_case, fixture) xtest_run_test_fixture(runner, &test_case, &fixture)
 
 #define XTEST_CASE_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
