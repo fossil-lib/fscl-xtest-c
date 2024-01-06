@@ -13,12 +13,6 @@ Description:
 #include "fossil/xtest.h"
 #include <stdarg.h>
 #include <string.h>
-#if defined(_WIN32)
-#include <Windows.h>
-#else
-#define _POSIX_C_SOURCE 200809L // allows use of other time functions
-#include <time.h>
-#endif
 
 typedef struct {
     bool cutback;
