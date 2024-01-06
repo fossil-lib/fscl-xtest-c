@@ -18,6 +18,9 @@ extern "C"
 {
 #endif
 
+// Use _GNU_SOURCE to enable POSIX features and additional GNU extensions
+#define _GNU_SOURCE
+
 #ifdef __cplusplus
 #include <cstdlib>
 #include <cstdint>
@@ -25,7 +28,6 @@ extern "C"
 #if defined(_WIN32)
 #include <Windows.h>
 #else
-#define _POSIX_C_SOURCE 200809L // allows use of other time functions
 #include <ctime>
 #endif
 #else
@@ -36,7 +38,6 @@ extern "C"
 #if defined(_WIN32)
 #include <Windows.h>
 #else
-#define _POSIX_C_SOURCE 200809L // allows use of other time functions
 #include <time.h>
 #endif
 #endif
