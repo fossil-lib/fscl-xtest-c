@@ -25,21 +25,19 @@ extern "C"
 #include <cstdlib>
 #include <cstdint>
 #include <cstdio>
-    #if defined(_WIN32)
-    #include <Windows.h>
-    #else
-    #include <ctime>
-    #endif
+#include <ctime>
+#if defined(_WIN32)
+#include <Windows.h>
+#endif
 #else
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
-    #if defined(_WIN32)
-    #include <Windows.h>
-    #else
-    #include <time.h>
-    #endif
+#include <time.h>
+#if defined(_WIN32)
+#include <Windows.h>
+#endif
 #endif
 
 // Used in floating point asserts
