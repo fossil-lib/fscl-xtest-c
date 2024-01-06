@@ -10,11 +10,15 @@ Description:
     feel free to contact Michael at michaelbrockus@gmail.com.
 ==============================================================================
 */
-#define _POSIX_C_SOURCE 200809L // allows use of other time functions
 #include "fossil/xtest.h"
 #include <stdarg.h>
 #include <string.h>
+#if defined(_WIN32)
+#include <Windows.h>
+#else
+#define _POSIX_C_SOURCE 200809L // allows use of other time functions
 #include <time.h>
+#endif
 
 typedef struct {
     bool cutback;
@@ -42,7 +46,7 @@ static uint8_t MIN_REPEATS = 1;
 // local types
 //
 typedef char *xstring;
-static struct timespec start_time;
+static uint64_t start_time;
 
 // =================================================================
 // XEngine utility functions
@@ -417,14 +421,27 @@ void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture) 
 // ==============================================================================
 
 void xmark_start_benchmark() {
-    clock_gettime(CLOCK_MONOTONIC, &start_time);
+#if defined(_WIN32)
+    LARGE_INTEGER frequency;
+    QueryPerformanceFrequency(&frequency);
+    QueryPerformanceCounter((LARGE_INTEGER*)&start_time);
+#else
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    start_time = ts.tv_sec * 1e9 + ts.tv_nsec;
+#endif
 }
 
 uint64_t xmark_stop_benchmark() {
-    struct timespec end_time;
-    clock_gettime(CLOCK_MONOTONIC, &end_time);
-
-    return (end_time.tv_sec - start_time.tv_sec) * 1e9 + (end_time.tv_nsec - start_time.tv_nsec);
+#if defined(_WIN32)
+    LARGE_INTEGER end_time;
+    QueryPerformanceCounter(&end_time);
+    return (end_time.QuadPart - start_time) * 1e9 / frequency.QuadPart;
+#else
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (ts.tv_sec * 1e9 + ts.tv_nsec) - start_time;
+#endif
 }
 
 void xmark_assert_seconds(uint64_t elapsed_time_ns, double max_seconds) {
