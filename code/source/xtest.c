@@ -10,6 +10,7 @@ Description:
     feel free to contact Michael at michaelbrockus@gmail.com.
 ==============================================================================
 */
+#define _POSIX_C_SOURCE 200809L // allows use of other time functions
 #include "fossil/xtest.h"
 #include <stdarg.h>
 #include <string.h>
