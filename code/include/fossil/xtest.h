@@ -22,13 +22,23 @@ extern "C"
 #include <cstdlib>
 #include <cstdint>
 #include <cstdio>
+#if defined(_WIN32)
+#include <Windows.h>
+#else
+#define _POSIX_C_SOURCE 200809L // allows use of other time functions
 #include <ctime>
+#endif
 #else
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+#if defined(_WIN32)
+#include <Windows.h>
+#else
+#define _POSIX_C_SOURCE 200809L // allows use of other time functions
 #include <time.h>
+#endif
 #endif
 
 // Used in floating point asserts
