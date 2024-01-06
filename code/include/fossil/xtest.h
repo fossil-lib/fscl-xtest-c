@@ -19,14 +19,12 @@ extern "C"
 #endif
 
 #ifdef __cplusplus
-#include <cstring>
 #include <cstdlib>
 #include <cstdint>
 #include <cstdio>
 #include <ctime>
 #else
 #include <stdbool.h>
-#include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -44,18 +42,23 @@ typedef struct {
 } xtime;
 
 typedef struct {
-    const char* name;         // Name of the test case
-    void (*test_function)(void);  // Function pointer to the test case's implementation
     bool ignored;             // Indicates if the test case is ignored
     bool is_mark;             // Flag to identify benchmark tests
     bool is_fish;             // Flag to identify Fish AI tests
-    xtime timer;              // Xtest timer for tracking time
-} xtest;
+} xconfig;
 
 typedef struct {
     void (*setup)(void);     // Setup function for the fixture
     void (*teardown)(void);  // Teardown function for the fixture
 } xfixture;
+
+typedef struct {
+    const char* name;            // Name of the test case
+    void (*test_function)(void); // Function pointer to the test case's implementation
+    xfixture fixture;            // The fixture settings
+    xconfig config;              // Configuration
+    xtime timer;                 // Xtest timer for tracking time
+} xtest;
 
 typedef struct {
     uint16_t passed_count;     // Number of passed tests
@@ -64,6 +67,7 @@ typedef struct {
     uint16_t error_count;      // Number of error tests
     uint16_t mark_count;      // Number of benchmarks tests
     uint16_t fish_count;      // Number of fish AI tests
+    uint16_t test_count;      // Number of fish AI tests
     uint16_t total_count;      // Total number of tests
 } xstats;
 
@@ -78,8 +82,8 @@ typedef struct {
 xengine xtest_start(int argc, char **argv);
 int xtest_end(xengine *runner);
 
-void xtest_run_test_unit(xtest* test_case, xstats* stats);
-void xtest_run_test_fixture(xtest* test_case, xfixture* fixture, xstats* stats);
+void xtest_run_test_unit(xengine* engine, xtest* test_case);
+void xtest_run_test_fixture(xengine* engine, xtest* test_case, xfixture* fixture);
 
 void xerrors(const char* reason, const char* file, int line, const char* func);
 void xignore(const char* reason, const char* file, int line, const char* func);
@@ -95,22 +99,22 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 // XTest run commands
 // =================================================================
-#define XTEST_RUN_UNIT(test_case) xtest_run_test_unit(&test_case, &runner->stats)
-#define XTEST_RUN_FIXTURE(test_case, fixture) xtest_run_test_fixture(&test_case, &fixture, &runner->stats)
+#define XTEST_RUN_UNIT(test_case) xtest_run_test_unit(&runner, &test_case)
+#define XTEST_RUN_FIXTURE(test_case, fixture) xtest_run_test_fixture(&runner, &test_case, &fixture)
 
 #define XTEST_CASE_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
-    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, false, false, false, {0, 0, 0}}; \
+    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, {NULL, NULL}, {false, false, false}, {0, 0, 0}}; \
     void test_case##_xtest_##fixture_name(void)
 
 #define XTEST_MARK_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
-    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, false, true, false, {0, 0, 0}}; \
+    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, {NULL, NULL}, {false, true, false}, {0, 0, 0}}; \
     void test_case##_xtest_##fixture_name(void)
 
 #define XTEST_FISH_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
-    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, false, false, true, {0, 0, 0}}; \
+    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, {NULL, NULL}, {false, false, true}, {0, 0, 0}}; \
     void test_case##_xtest_##fixture_name(void)
 
 #define XTEST_FIXTURE(fixture_name) \
@@ -133,17 +137,17 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 #define XTEST_CASE(name) \
     void name##_xtest(void); \
-    xtest name = { #name, name##_xtest, false, false, false, {0, 0, 0}}; \
+    xtest name = { #name, name##_xtest, {NULL, NULL}, {false, false, false}, {0, 0, 0}}; \
     void name##_xtest(void)
 
 #define XTEST_MARK(name) \
     void name##_xtest(void); \
-    xtest name = { #name, name##_xtest, false, true, false, {0, 0, 0}}; \
+    xtest name = { #name, name##_xtest, {NULL, NULL}, {false, true, false}, {0, 0, 0}}; \
     void name##_xtest(void)
 
 #define XTEST_FISH(name) \
     void name##_xtest(void); \
-    xtest name = { #name, name##_xtest, false, false, true, {0, 0, 0}}; \
+    xtest name = { #name, name##_xtest, {NULL, NULL}, {false, false, true}, {0, 0, 0}}; \
     void name##_xtest(void)
 
 // =================================================================
