@@ -415,12 +415,12 @@ static void xtest_run_test(xengine* engine, xtest* test_case, xfixture* fixture)
     test_case->timer.elapsed_time = ((double)(test_case->timer.end_time - test_case->timer.start_time)  / CLOCKS_PER_SEC) * 1000.0;
 
     // Update the appropriate count based on your logic
-    if (test_case->config.is_mark && !test_case->config.is_fish) {
-        xengine_add_mark_count(engine);
+    if (!test_case->config.is_mark && !test_case->config.is_fish) {
+        xengine_add_test_count(engine);
     } else if (test_case->config.is_fish && !test_case->config.is_mark) {
         xengine_add_fish_count(engine);
-    } else if (!test_case->config.is_mark && !test_case->config.is_fish) {
-        xengine_add_test_count(engine);
+    } else if (test_case->config.is_mark && !test_case->config.is_fish) {
+        xengine_add_mark_count(engine);
     }
 
     // Update main score values
