@@ -112,6 +112,12 @@ void xassert(bool expression, const char *message, const char* file, int line, c
 void xexpect(bool expression, const char *message, const char* file, int line, const char* func);
 
 // =================================================================
+// XTest create and erase commands
+// =================================================================
+#define XTEST_CREATE(argc, argv) xengine runner = xtest_create(argc, argv)
+#define XTEST_ERASE() xtest_erase(&runner)
+
+// =================================================================
 // XTest run commands
 // =================================================================
 #define XTEST_RUN_UNIT(test_case) xtest_run_as_test(runner, &test_case)
