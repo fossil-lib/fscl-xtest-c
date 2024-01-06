@@ -40,6 +40,7 @@ static uint8_t MIN_REPEATS = 1;
 // local types
 //
 typedef char *xstring;
+static struct timespec start_time;
 
 // =================================================================
 // XEngine utility functions
@@ -396,8 +397,9 @@ static void xtest_run_test(xengine* engine, xtest* test_case, xfixture* fixture)
 } // end of func
 
 // ==============================================================================
-// Xtest essintal test runner functions
+// Xtest essential test runner functions
 // ==============================================================================
+
 void xtest_run_as_test(xengine* engine, xtest* test_case) {
     test_case->config.ignored = false;
     xtest_run_test(engine, test_case, NULL);
@@ -407,6 +409,111 @@ void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture) 
     test_case->config.ignored = false;
     xtest_run_test(engine, test_case, fixture);
 } // end of func
+
+// ==============================================================================
+// Xmark functions for benchmarks
+// ==============================================================================
+
+void xmark_start_benchmark() {
+    clock_gettime(CLOCK_MONOTONIC, &start_time);
+}
+
+uint64_t xmark_stop_benchmark() {
+    struct timespec end_time;
+    clock_gettime(CLOCK_MONOTONIC, &end_time);
+
+    return (end_time.tv_sec - start_time.tv_sec) * 1e9 + (end_time.tv_nsec - start_time.tv_nsec);
+}
+
+void xmark_assert_seconds(uint64_t elapsed_time_ns, double max_seconds) {
+    double elapsed_seconds = elapsed_time_ns / 1e9;
+    if (!XASSERT_PASS_SCAN) {
+        return;
+    }
+    if (!expression) {
+        XASSERT_PASS_SCAN = false;
+        if (xcli.verbose && !xcli.cutback) {
+            xtest_console_out("blue", "[XMARK ISSUE]\n");
+            xtest_console_out("red", "Elapsed time (%f min)\n", elapsed_minutes);
+            xtest_console_out("red", "Exceeds limit (%f min)\n", max_minutes);
+        } else if (!xcli.cutback && !xcli.verbose) {
+            xtest_console_out("red", "Benchmark failed: elapsed time (%f min) exceeds limit (%f min)\n", elapsed_minutes, max_minutes);
+        } else if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out("red", "[F]");
+        }
+    } else {
+        if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out("green", "[P]");
+        }
+    }
+}
+
+void xmark_assert_minutes(uint64_t elapsed_time_ns, double max_minutes) {
+    double elapsed_minutes = elapsed_time_ns / 60e9;
+    if (!XASSERT_PASS_SCAN) {
+        return;
+    }
+    if (!expression) {
+         XASSERT_PASS_SCAN = false;
+        if (xcli.verbose && !xcli.cutback) {
+            xtest_console_out("blue", "[XMARK ISSUE]\n");
+            xtest_console_out("red", "Elapsed time (%f min)\n", elapsed_minutes);
+            xtest_console_out("red", "Exceeds limit (%f min)\n", max_seconds);
+        } else if (!xcli.cutback && !xcli.verbose) {
+            xtest_console_out("red", "Benchmark failed: elapsed time (%f min) exceeds limit (%f min)\n", elapsed_minutes, max_seconds);
+        } else if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out("red", "[F]");
+        }
+    } else {
+        if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out("green", "[P]");
+        }
+    }
+}
+
+void xmark_expect_seconds(uint64_t elapsed_time_ns, double max_seconds) {
+    double elapsed_seconds = elapsed_time_ns / 1e9;
+    XEXPECT_PASS_SCAN = true;
+
+    if (elapsed_seconds > max_seconds) {
+        XEXPECT_PASS_SCAN = false;
+        if (xcli.verbose && !xcli.cutback) {
+            xtest_console_out("blue", "[XMARK ISSUE]\n");
+            xtest_console_out("red", "Elapsed time (%f min)\n", elapsed_minutes);
+            xtest_console_out("red", "Exceeds limit (%f min)\n", max_seconds);
+        } else if (!xcli.cutback && !xcli.verbose) {
+            xtest_console_out("red", "Benchmark failed: elapsed time (%f min) exceeds limit (%f min)\n", elapsed_minutes, max_seconds);
+        } else if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out("red", "[F]");
+        }
+    } else {
+        if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out("green", "[P]");
+        }
+    }
+}
+
+void xmark_expect_minutes(uint64_t elapsed_time_ns, double max_minutes) {
+    double elapsed_minutes = elapsed_time_ns / 60e9;
+    XEXPECT_PASS_SCAN = true;
+
+    if (elapsed_minutes > max_minutes) {
+        XEXPECT_PASS_SCAN = false;
+        if (xcli.verbose && !xcli.cutback) {
+            xtest_console_out("blue", "[XMARK ISSUE]\n");
+            xtest_console_out("red", "Elapsed time (%f min)\n", elapsed_minutes);
+            xtest_console_out("red", "Exceeds limit (%f min)\n", max_minutes);
+        } else if (!xcli.cutback && !xcli.verbose) {
+            xtest_console_out("red", "Benchmark failed: elapsed time (%f min) exceeds limit (%f min)\n", elapsed_minutes, max_minutes);
+        } else if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out("red", "[F]");
+        }
+    } else {
+        if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out("green", "[P]");
+        }
+    }
+}
 
 // ==============================================================================
 // Xtest functions for asserts
