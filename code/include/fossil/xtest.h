@@ -36,9 +36,9 @@ extern "C"
 #define XTEST_DOUBLE_EPSILON 1e-9
 
 typedef struct {
-    clock_t elapsed;     // Elapsed time for all tests
-    clock_t start;       // Elapsed time for start of tests
-    clock_t end;         // Elapsed time for end of tests
+    clock_t elapsed_time;     // Elapsed time for all tests
+    clock_t start_time;       // Elapsed time for start of tests
+    clock_t end_time;         // Elapsed time for end of tests
 } xtime;
 
 typedef struct {
@@ -79,12 +79,20 @@ typedef struct {
 // =================================================================
 // Initial implementation
 // =================================================================
-xengine xtest_create(int argc, char **argv);
-int xtest_erase(xengine *runner);
 
-void xtest_run_as_test(xengine* engine, xtest* test_case);
-void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture);
+// Function prototypes for Xtest
+xengine xtest_start(int argc, char **argv);
+int xtest_end(xengine *runner);
+void xtest_run_test_unit(xengine* engine, xtest* test_case);
+void xtest_run_test_fixture(xengine* engine, xtest* test_case, xfixture* fixture);
 
+// Function prototypes for Xmark
+void xmark_start_benchmark();
+uint64_t xmark_stop_benchmark();
+void xmark_assert_seconds(uint64_t elapsed_time_ns, double max_seconds);
+void xmark_assert_minutes(uint64_t elapsed_time_ns, double max_minutes);
+
+// Function prototypes for asserts
 void xerrors(const char* reason, const char* file, int line, const char* func);
 void xignore(const char* reason, const char* file, int line, const char* func);
 void xassert(bool expression, const char *message, const char* file, int line, const char* func);
@@ -93,14 +101,16 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 // XTest create and erase commands
 // =================================================================
-#define XTEST_CREATE(argc, argv) xengine runner = xtest_create(argc, argv)
-#define XTEST_ERASE() xtest_erase(&runner)
+
+#define XTEST_CREATE(argc, argv) xengine runner = xtest_start(argc, argv)
+#define XTEST_ERASE() xtest_end(&runner)
 
 // =================================================================
 // XTest run commands
 // =================================================================
-#define XTEST_RUN_UNIT(test_case) xtest_run_as_test(runner, &test_case)
-#define XTEST_RUN_FIXTURE(test_case, fixture) xtest_run_as_fixture(runner, &test_case, &fixture)
+
+#define XTEST_RUN_UNIT(test_case) xtest_run_test_unit(runner, &test_case)
+#define XTEST_RUN_FIXTURE(test_case, fixture) xtest_run_test_fixture(runner, &test_case, &fixture)
 
 #define XTEST_CASE_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
@@ -128,6 +138,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 // Test pool commands
 // =================================================================
+
 #define XTEST_DEFINE_POOL(group_name) void group_name(xengine *runner)
 #define XTEST_EXTERN_POOL(group_name) extern void group_name(xengine *runner)
 #define XTEST_IMPORT_POOL(group_name) group_name(&runner)
@@ -135,6 +146,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 // Implement test commands
 // =================================================================
+
 #define XTEST_CASE(name) \
     void name##_xtest(void); \
     xtest name = { #name, name##_xtest, {NULL, NULL}, {false, false, false}, {0, 0, 0}}; \
@@ -153,6 +165,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 // BDD specific commands
 // =================================================================
+
 #define GIVEN(description) \
     if (0) { \
         printf("Given %s\n", description); \
@@ -167,6 +180,15 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
     if (0) { \
         printf("Then %s\n", description); \
     } else
+
+// =================================================================
+// XMark specific commands for benchmarking
+// =================================================================
+
+#define XMARK_START_BENCHMARK() xmark_start_benchmark()
+#define XMARK_STOP_BENCHMARK() xmark_stop_benchmark()
+#define XMARK_ASSERT_SECONDS(elapsed_time_ns, max_seconds) xmark_assert_seconds(elapsed_time_ns, max_seconds)
+#define XMARK_ASSERT_MINUTES(elapsed_time_ns, max_minutes) xmark_assert_minutes(elapsed_time_ns, max_minutes)
 
 //
 // ------------------------------------------------------------------------
@@ -190,6 +212,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 // XTest utility commands
 // =================================================================
+
 #define XTEST_DATA(group_name) typedef struct group_name##_xdata group_name##_xdata; struct group_name##_xdata
 
 #define XTEST_FAIL(message) \
