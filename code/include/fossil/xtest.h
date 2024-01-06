@@ -36,9 +36,9 @@ extern "C"
 #define XTEST_DOUBLE_EPSILON 1e-9
 
 typedef struct {
-    clock_t elapsed_time;     // Elapsed time for all tests
-    clock_t start_time;       // Elapsed time for start of tests
-    clock_t end_time;         // Elapsed time for end of tests
+    clock_t elapsed;     // Elapsed time for all tests
+    clock_t start;       // Elapsed time for start of tests
+    clock_t end;         // Elapsed time for end of tests
 } xtime;
 
 typedef struct {
@@ -79,11 +79,11 @@ typedef struct {
 // =================================================================
 // Initial implementation
 // =================================================================
-xengine xtest_start(int argc, char **argv);
-int xtest_end(xengine *runner);
+xengine xtest_create(int argc, char **argv);
+int xtest_erase(xengine *runner);
 
-void xtest_run_test_unit(xengine* engine, xtest* test_case);
-void xtest_run_test_fixture(xengine* engine, xtest* test_case, xfixture* fixture);
+void xtest_run_as_test(xengine* engine, xtest* test_case);
+void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture);
 
 void xerrors(const char* reason, const char* file, int line, const char* func);
 void xignore(const char* reason, const char* file, int line, const char* func);
@@ -93,14 +93,14 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 // XTest create and erase commands
 // =================================================================
-#define XTEST_CREATE(argc, argv) xengine runner = xtest_start(argc, argv)
-#define XTEST_ERASE() xtest_end(&runner)
+#define XTEST_CREATE(argc, argv) xengine runner = xtest_create(argc, argv)
+#define XTEST_ERASE() xtest_erase(&runner)
 
 // =================================================================
 // XTest run commands
 // =================================================================
-#define XTEST_RUN_UNIT(test_case) xtest_run_test_unit(runner, &test_case)
-#define XTEST_RUN_FIXTURE(test_case, fixture) xtest_run_test_fixture(runner, &test_case, &fixture)
+#define XTEST_RUN_UNIT(test_case) xtest_run_as_test(runner, &test_case)
+#define XTEST_RUN_FIXTURE(test_case, fixture) xtest_run_as_fixture(runner, &test_case, &fixture)
 
 #define XTEST_CASE_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
