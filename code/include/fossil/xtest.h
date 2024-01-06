@@ -36,9 +36,9 @@ extern "C"
 #define XTEST_DOUBLE_EPSILON 1e-9
 
 typedef struct {
-    clock_t elapsed_time;     // Elapsed time for all tests
-    clock_t start_time;       // Elapsed time for start of tests
-    clock_t end_time;         // Elapsed time for end of tests
+    clock_t elapsed;     // Elapsed time for all tests
+    clock_t start;       // Elapsed time for start of tests
+    clock_t end;         // Elapsed time for end of tests
 } xtime;
 
 typedef struct {
