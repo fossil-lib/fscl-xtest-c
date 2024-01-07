@@ -18,17 +18,26 @@ extern "C"
 {
 #endif
 
+// Use _GNU_SOURCE to enable POSIX features and additional GNU extensions
+#define _GNU_SOURCE
+
 #ifdef __cplusplus
 #include <cstdlib>
 #include <cstdint>
 #include <cstdio>
 #include <ctime>
+#if defined(_WIN32)
+#include <Windows.h>
+#endif
 #else
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <time.h>
+#if defined(_WIN32)
+#include <Windows.h>
+#endif
 #endif
 
 // Used in floating point asserts
@@ -79,12 +88,22 @@ typedef struct {
 // =================================================================
 // Initial implementation
 // =================================================================
+
+// Function prototypes for Xtest
 xengine xtest_create(int argc, char **argv);
 int xtest_erase(xengine *runner);
-
 void xtest_run_as_test(xengine* engine, xtest* test_case);
 void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture);
 
+// Function prototypes for Xmark
+void xmark_start_benchmark(void);
+uint64_t xmark_stop_benchmark(void);
+void xmark_assert_seconds(uint64_t elapsed_time_ns, double max_seconds);
+void xmark_assert_minutes(uint64_t elapsed_time_ns, double max_minutes);
+void xmark_expect_seconds(uint64_t elapsed_time_ns, double max_seconds);
+void xmark_expect_minutes(uint64_t elapsed_time_ns, double max_minutes);
+
+// Function prototypes for asserts
 void xerrors(const char* reason, const char* file, int line, const char* func);
 void xignore(const char* reason, const char* file, int line, const char* func);
 void xassert(bool expression, const char *message, const char* file, int line, const char* func);
@@ -168,6 +187,17 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
         printf("Then %s\n", description); \
     } else
 
+// =================================================================
+// XMark specific commands for benchmarking
+// =================================================================
+
+#define XMARK_START_BENCHMARK() xmark_start_benchmark()
+#define XMARK_STOP_BENCHMARK() xmark_stop_benchmark()
+#define XMARK_ASSERT_SECONDS(elapsed_time_ns, max_seconds) xmark_assert_seconds(elapsed_time_ns, max_seconds)
+#define XMARK_ASSERT_MINUTES(elapsed_time_ns, max_minutes) xmark_assert_minutes(elapsed_time_ns, max_minutes)
+#define XMARK_EXPECT_SECONDS(elapsed_time_ns, max_seconds) xmark_expect_seconds(elapsed_time_ns, max_seconds)
+#define XMARK_EXPECT_MINUTES(elapsed_time_ns, max_minutes) xmark_expect_minutes(elapsed_time_ns, max_minutes)
+
 //
 // ------------------------------------------------------------------------
 //
@@ -190,6 +220,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 // XTest utility commands
 // =================================================================
+
 #define XTEST_DATA(group_name) typedef struct group_name##_xdata group_name##_xdata; struct group_name##_xdata
 
 #define XTEST_FAIL(message) \
