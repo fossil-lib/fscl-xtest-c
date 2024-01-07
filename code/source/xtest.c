@@ -41,6 +41,9 @@ static uint8_t MIN_REPEATS = 1;
 //
 typedef char *xstring;
 static uint64_t start_time;
+#if defined(_WIN32)
+static double frequency; // Variable to store the frequency for Windows
+#endif
 
 // =================================================================
 // XEngine utility functions
@@ -416,8 +419,9 @@ void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture) 
 
 void xmark_start_benchmark() {
 #if defined(_WIN32)
-    LARGE_INTEGER frequency;
-    QueryPerformanceFrequency(&frequency);
+    LARGE_INTEGER freq;
+    QueryPerformanceFrequency(&freq);
+    frequency = (double)freq.QuadPart;
     QueryPerformanceCounter((LARGE_INTEGER*)&start_time);
 #else
     struct timespec ts;
@@ -430,7 +434,7 @@ uint64_t xmark_stop_benchmark() {
 #if defined(_WIN32)
     LARGE_INTEGER end_time;
     QueryPerformanceCounter(&end_time);
-    return (end_time.QuadPart - start_time) * 1e9 / frequency.QuadPart;
+    return (uint64_t)((end_time.QuadPart - start_time) * 1e9 / frequency);
 #else
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
