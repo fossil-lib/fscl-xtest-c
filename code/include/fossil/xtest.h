@@ -19,7 +19,7 @@ extern "C"
 #endif
 
 // Use _GNU_SOURCE to enable POSIX features and additional GNU extensions
-#define _GNU_SOURCE
+// #define _GNU_SOURCE
 
 #ifdef __cplusplus
 #include <cstdlib>
