@@ -221,25 +221,10 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // =================================================================
 
 #define XTEST_DATA(group_name) typedef struct group_name##_xdata group_name##_xdata; struct group_name##_xdata
-
-#define XTEST_FAIL(message) \
-    do { \
-        TEST_ASSERT(false, message); \
-    } while (false)
-
-#define XTEST_PASS() \
-    do { \
-        TEST_ASSERT(true, "Test passed"); \
-    } while (false)
-
-#define XTEST_NOTE(comment) do { \
-    fprintf(stderr, "XTEST NOTE: %s\n", comment); \
-} while(0)
-
-#define XTEST_NOT_IMPLEMENTED() \
-    do { \
-        TEST_ASSERT(false, "Test not implemented yet") \
-    } while (false)
+#define XTEST_FAIL(message) TEST_ASSERT(false, message);
+#define XTEST_PASS() TEST_ASSERT(true, "Test passed");
+#define XTEST_NOTE(comment) fprintf(stderr, "XTEST NOTE: %s\n", comment);
+#define XTEST_NOT_IMPLEMENTED() TEST_ASSERT(false, "Test not implemented yet")
 
 
 #ifdef __cplusplus
