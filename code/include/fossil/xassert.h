@@ -21,7 +21,6 @@ extern "C"
 #include "xtest.h"
 
 #ifdef __cplusplus
-// If compiled as C++, include the C++ version of the libraries
 #include <cstring>
 #include <cstdlib>
 #include <cstddef>
@@ -33,7 +32,6 @@ extern "C"
 #include <cmath>
 #include <ctime>
 #else
-// If compiled as C, include the C version of the libraries
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
