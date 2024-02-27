@@ -2,8 +2,6 @@ name: CI Support
 
 on:
   push:
-    branches:
-      - "main"
     paths:
       - "**.c"
       - "**.h"
