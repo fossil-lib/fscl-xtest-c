@@ -22,37 +22,20 @@ Before getting started, make sure you have the following installed:
 
 1. **Create a Wrap File**:
 
-Create a directory named subprojects in the root directory, next create a file named `fscl-xtest-c.wrap` in the `subprojects` directory of your project with the following content:
+To fetch a wrap file from the Fossil WrapDB repositories for this package simply run this command:
 
    ```bash
-   # ================ #
-   #  FSCL Wrap File. #
-   # ================ #
-   [wrap-git]
-   url = https://github.com/fossil-lib/fscl-xtest-c.git
-   revision = main
-   
-   [provide]
-   fscl-xtest-c = fscl_xtest_c_dep
+meson wrap install --type git --source https://github.com/fossil-lib/fscl-xtest-c.git
    ```
 
 2. **Integrate Wrap File in Meson Build**:
    ```meson
-   project('my_project', 'c',
-       version : '0.1',
-       default_options : ['warning_level=3'])
+   project('my_project', 'c')
 
    exe = executable('my_project', 'my_project.c',
-       dependencies : dependency('fscl-xtest-c'), # add this line
-       install : true)
+       dependencies : dependency('fscl-xtest-c')) # add this line
 
    test('basic', exe)
-   ```
-
-3. **Compile the Project**:
-   ```bash
-   meson setup builddir
-   meson compile -C builddir
    ```
 
 ## Including the Demo and Running Tests
