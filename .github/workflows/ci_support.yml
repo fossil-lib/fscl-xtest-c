@@ -2,50 +2,34 @@ name: CI Support
 
 on:
   push:
-    paths:
-      - "**.c"
-      - "**.h"
-      - "**.txt"
-      - "**.build"
-  pull_request:
     branches:
       - "main"
     paths:
       - "**.c"
       - "**.h"
-      - "**.txt"
+      - "**.cpp"
+      - "**.hpp"
+      - "**.py"
+      - "**.pyx"  # Added for Cython files
       - "**.build"
 
 permissions:
   contents: read
 
 jobs:
-  meson_versions:
+  meson_support:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        meson_version: ["1.0.0", "1.1.0", "1.2.0", "1.3.0", "latest"]
     steps:
     - uses: actions/checkout@v4
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-        architecture: x64
-    - name: Install Meson Build System
+    - name: Setup Python and Tools
       run: |
-        if [[ "${{ matrix.meson_version }}" == "latest" ]]; then
-          pip install meson ninja
-        else
-          pip install "meson==${{ matrix.meson_version }}" "ninja==1.11.1"
-        fi
-        sudo apt-get install -y gcc
+          python -m pip install meson==1.0.0 ninja==1.11.1 cython==3.0.8
     - name: Setup Build Directory
       run: |
-        meson setup builddir -Dwith_test=enabled
+          meson setup builddir -Dwith_test=enabled
     - name: Compile Source Code
       run: |
-        meson compile -C builddir
+          meson compile -C builddir
     - name: Test Project Code
       run: |
-        meson test -C builddir -v
+          meson test -C builddir -v
