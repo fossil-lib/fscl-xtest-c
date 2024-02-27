@@ -18,12 +18,17 @@ Before getting started, make sure you have the following installed:
 
 ## Setting up, Compiling, Installing, and Running the Project
 
-**Fetch Wrap Dependency**:
+**Adding Dependency**:
 
-   To fetch a wrap file from the Fossil WrapDB repositories for this package simply run this command:
+Create a directory named subprojects in the root directory, next create a file named `fscl-xtest-c.wrap` in the `subprojects` directory of your project with the following content:
 
    ```bash
-meson wrap install --type git --source https://fossil-lib.github.io.git --subproject-dir upstream/fscl-xtest-c
+   [wrap-git]
+   url = https://github.com/fossil-lib/fscl-xtest-c.git
+   revision = main
+   
+   [provide]
+   fscl-xtest-c = fscl_xtest_c_dep
    ```
 
 **Integrate Dependency**:
