@@ -18,16 +18,15 @@ Before getting started, make sure you have the following installed:
 
 ## Setting up, Compiling, Installing, and Running the Project
 
-**Create a Wrap File**:
+**Fetch Wrap Dependency**:
 
    To fetch a wrap file from the Fossil WrapDB repositories for this package simply run this command:
 
    ```bash
 meson wrap install --type git --source https://github.com/fossil-lib/fscl-xtest-c.git --subproject-dir upstream
-    ```
+   ```
 
-
-**Integrate Wrap File in Meson Build**:
+**Integrate Dependency**:
    ```meson
    project('my_project', 'c')
 
