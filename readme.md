@@ -1,6 +1,4 @@
-# Fossil XTest - C
-
-Fossil Standard Component Libraries (FSCL) by Fossil Logic represent the pinnacle of software development, embodying our commitment to quality, security, and practicality. These meticulously curated libraries serve as the cornerstone for crafting cutting-edge applications, offering a foundation built on excellence in code. With FSCL, Fossil Logic empowers developers to seamlessly integrate standardized components that elevate the overall performance and reliability of digital solutions, setting a new standard for software excellence.
+# Fossil XTest - **C**
 
 Fossil XTest is your go-to library for robust and comprehensive testing solutions. Elevate the quality of your software by incorporating advanced testing methodologies, ensuring that your code not only meets but exceeds industry standards. With Fossil XTest, testing becomes an integral part of your development process, providing confidence in the reliability and functionality of your applications.
 ## Who is This For?
@@ -27,6 +25,7 @@ To fetch a wrap file from the Fossil WrapDB repositories for this package simply
    ```bash
 meson wrap install --type git --source https://github.com/fossil-lib/fscl-xtest-c.git
    ```
+
 
 2. **Integrate Wrap File in Meson Build**:
    ```meson
