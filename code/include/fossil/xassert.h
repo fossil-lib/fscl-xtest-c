@@ -593,26 +593,7 @@ inline void test_assert_equal_array(const void* actual, const void* expected, si
 // ----------------------------------------------------------------
 // File Stream assertions
 // ----------------------------------------------------------------
-#ifdef __cplusplus
-#define TEST_ASSERT_OPEN_FILE(file) TEST_ASSERT(file.is_open(), "Failed to open file")
-#define TEST_ASSERT_READ_FILE(file, buffer, size) \
-    TEST_ASSERT(file.read(buffer, size), "Failed to read from file")
-#define TEST_ASSERT_WRITE_FILE(file, data, size) \
-    TEST_ASSERT(file.write(data, size), "Failed to write to file")
-#define TEST_ASSERT_SEEK_FILE(file, offset, whence) \
-    TEST_ASSERT(file.seekg(offset, whence).good(), "Failed to seek within file")
-#define TEST_ASSERT_TELL_FILE(file) \
-    TEST_ASSERT(file.tellg() != std::streampos(-1), "Failed to get file position")
-#define TEST_ASSERT_CLOSE_FILE(file) \
-    do { \
-        file.close(); \
-        TEST_ASSERT(!file.fail(), "Failed to close file"); \
-    } while (false)
-#define TEST_ASSERT_EOF_FILE(stream) \
-    TEST_ASSERT(!stream.eof(), "End of file (EOF) reached")
-#define TEST_ASSERT_FILE_NO_ERROR(file) \
-    TEST_ASSERT(!file.fail(), "File operation error occurred")
-#else
+
 #define TEST_ASSERT_OPEN_FILE(file) TEST_ASSERT((file) != NULL, "Failed to open file")
 #define TEST_ASSERT_READ_FILE(file, buffer, size) \
     TEST_ASSERT(fread(buffer, sizeof(char), size, file) == size, "Failed to read from file")
@@ -628,7 +609,6 @@ inline void test_assert_equal_array(const void* actual, const void* expected, si
     TEST_ASSERT(!feof(stream), "End of file (EOF) reached")
 #define TEST_ASSERT_FILE_NO_ERROR(file) \
     TEST_ASSERT(ferror(file) == 0, "File operation error occurred")
-#endif
 
 #ifdef __cplusplus
 }
