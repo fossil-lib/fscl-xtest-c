@@ -595,27 +595,7 @@ inline void test_expect_equal_array(const void* actual, const void* expected, si
 // ----------------------------------------------------------------
 // File Stream assertions
 // ----------------------------------------------------------------
-#ifdef __cplusplus
-#define TEST_EXPECT_OPEN_FILE(file) TEST_EXPECT((file).is_open(), "Failed to open file")
-#define TEST_EXPECT_READ_FILE(file, buffer, size) \
-    TEST_EXPECT((file).read(buffer, size), "Failed to read from file")
-#define TEST_EXPECT_WRITE_FILE(file, data, size) \
-    TEST_EXPECT((file).write(data, size), "Failed to write to file")
-#define TEST_EXPECT_SEEK_FILE(file, offset, whence) \
-    TEST_EXPECT((file).seekg(offset, whence).good(), "Failed to seek within file")
-#define TEST_EXPECT_TELL_FILE(file) \
-    TEST_EXPECT((file).tellg() != std::streampos(-1), "Failed to get file position")
-#define TEST_EXPECT_CLOSE_FILE(file) \
-    do { \
-        (file).close(); \
-        TEST_EXPECT(!(file).fail(), "Failed to close file"); \
-    } while (false)
-#define TEST_EXPECT_EOF_FILE(stream) \
-    TEST_EXPECT(!(stream).eof(), "End of file (EOF) reached")
-#define TEST_EXPECT_FILE_NO_ERROR(file) \
-    TEST_EXPECT(!(file).fail(), "File operation error occurred")
 
-#else
 #define TEST_EXPECT_OPEN_FILE(file) TEST_EXPECT((file) != NULL, "Failed to open file")
 #define TEST_EXPECT_READ_FILE(file, buffer, size) \
     TEST_EXPECT(fread(buffer, sizeof(char), size, file) == size, "Failed to read from file")
@@ -631,7 +611,6 @@ inline void test_expect_equal_array(const void* actual, const void* expected, si
     TEST_EXPECT(!feof(stream), "End of file (EOF) reached")
 #define TEST_EXPECT_FILE_NO_ERROR(file) \
     TEST_EXPECT(ferror(file) == 0, "File operation error occurred")
-#endif
 
 #ifdef __cplusplus
 }
