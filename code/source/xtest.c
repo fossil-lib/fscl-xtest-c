@@ -352,7 +352,7 @@ static void xtest_update_scoreboard(xengine* engine, xtest* test_case) {
     }
 
     // Update main score values
-    if (!XTEST_PASS_SCAN) {
+    if (!XTEST_PASS_SCAN || !XASSERT_PASS_SCAN || !XEXPECT_PASS_SCAN) {
         engine->stats.failed_count++;
     } else {
         engine->stats.passed_count++;
