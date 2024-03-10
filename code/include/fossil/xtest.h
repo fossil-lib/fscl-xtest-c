@@ -156,6 +156,9 @@ void xerrors(const char* reason, const char* file, int line, const char* func);
 void xignore(const char* reason, const char* file, int line, const char* func);
 
 // Asserts a boolean expression in a test, failing the test if the expression is false.
+void xassume(bool expression, const char *message, const char* file, int line, const char* func);
+
+// Asserts a boolean expression in a test, failing the test if the expression is false.
 void xassert(bool expression, const char *message, const char* file, int line, const char* func);
 
 // Expects a boolean expression in a test, failing the test if the expression is false.
@@ -385,7 +388,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // Macro to assume a given expression in a test. If the expression is false, the test is marked as failed,
 // but the test execution continues.
 // Usage: TEST_ASSUME(expression, message);
-#define TEST_ASSUME(expression, message) xassert(expression, message, __FILE__, __LINE__, __func__)
+#define TEST_ASSUME(expression, message) xassume(expression, message, __FILE__, __LINE__, __func__)
 
 // Macro to expect a given expression in a test. If the expression is false, the test fails,
 // and the test execution continues.
