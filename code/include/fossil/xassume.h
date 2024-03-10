@@ -51,9 +51,7 @@ typedef enum {
     CDNA_OPT_ITS_BIT_HIGH,
     CDNA_OPT_NOT_BIT_HIGH,
     CDNA_OPT_ITS_BIT_LOW,
-    CDNA_OPT_NOT_BIT_LOW,
-    CDNA_OPT_NOT_WITHIN,
-    CDNA_OPT_ITS_WITHIN
+    CDNA_OPT_NOT_BIT_LOW
 } cdna_opt;
 
 // Enumerated types for representing various data types.
@@ -240,8 +238,6 @@ cdna_assert_error assume_its_bit_high(const cdna* value, unsigned bit_position);
 cdna_assert_error assume_not_bit_high(const cdna* value, unsigned bit_position);
 cdna_assert_error assume_its_bit_low(const cdna* value, unsigned bit_position);
 cdna_assert_error assume_not_bit_low(const cdna* value, unsigned bit_position);
-cdna_assert_error assume_its_within(const cdna* value, const cdna* lower_bound, const cdna* upper_bound);
-cdna_assert_error assume_not_within(const cdna* value, const cdna* lower_bound, const cdna* upper_bound);
 
 #ifdef __cplusplus
 }
