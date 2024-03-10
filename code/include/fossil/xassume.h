@@ -126,6 +126,12 @@ struct cdna {
     cdna_data data;  // The data stored.
 };
 
+// Helper macro to create a cdna_data structure with a specified type and value
+#define CDNA_CAST(type, value) ((cdna_data){ .type = type, .value = value })
+
+// Utility function to simplify assignment assumptions and return a pointer to a static cdna variable
+cdna* assign_gene(cdna_type type, cdna_data value);
+
 // Assertion operations
 cdna_assert_error assume(cdna_opt op, const cdna* left, const cdna* right);
 cdna_assert_error assume_not_equal(const cdna* left, const cdna* right);
