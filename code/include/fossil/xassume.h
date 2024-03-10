@@ -125,7 +125,13 @@ typedef struct {
 } cdna;
 
 // Assertion operations
-cdna_assert_error assume(cdna_opt op, const cdna* value1, const cdna* value2);
+cdna_assert_error assume(cdna_opt op, const cdna* left, const cdna* right);
+cdna_assert_error assume_not_equal(const cdna* left, const cdna* right);
+cdna_assert_error assume_its_equal(const cdna* left, const cdna* right);
+cdna_assert_error assume_its_less(const cdna* left, const cdna* right);
+cdna_assert_error assume_its_more(const cdna* left, const cdna* right);
+cdna_assert_error assume_less_or_equal(const cdna* left, const cdna* right);
+cdna_assert_error assume_more_or_equal(const cdna* left, const cdna* right);
 
 #ifdef __cplusplus
 }
