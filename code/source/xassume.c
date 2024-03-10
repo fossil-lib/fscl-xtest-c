@@ -11,6 +11,8 @@ Description:
 ==============================================================================
 */
 #include "fossil/xassume.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 // Helper function to get string representation of cdna_type
