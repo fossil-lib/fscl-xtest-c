@@ -29,6 +29,7 @@ typedef struct {
 xparser xcli;
 
 // Static control panel for assert/expect and marks
+extern uint8_t XTEST_PASS_SCAN;
 static uint8_t XEXPECT_PASS_SCAN = true;
 static uint8_t XASSERT_PASS_SCAN = true;
 static uint8_t XIGNORE_TEST_CASE = false;
@@ -351,7 +352,7 @@ static void xtest_update_scoreboard(xengine* engine, xtest* test_case) {
     }
 
     // Update main score values
-    if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN) {
+    if (!XEXPECT_PASS_SCAN || !XASSERT_PASS_SCAN || !XTEST_PASS_SCAN) {
         engine->stats.failed_count++;
     } else {
         engine->stats.passed_count++;
