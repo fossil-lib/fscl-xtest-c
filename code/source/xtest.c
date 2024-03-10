@@ -30,8 +30,8 @@ xparser xcli;
 
 // Static control panel for assert/expect and marks
 extern uint8_t XTEST_PASS_SCAN;
-// static uint8_t XEXPECT_PASS_SCAN = true;
-// static uint8_t XASSERT_PASS_SCAN = true;
+static uint8_t XEXPECT_PASS_SCAN = true;
+static uint8_t XASSERT_PASS_SCAN = true;
 static uint8_t XIGNORE_TEST_CASE = false;
 static uint8_t XERRORS_TEST_CASE = false;
 static uint8_t MAX_REPEATS = 100;
