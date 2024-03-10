@@ -207,48 +207,6 @@ static cdna_assert_error compare_not_bit_low(const cdna_data* value_data, unsign
     }
 }
 
-// Utility function for within range
-static cdna_assert_error compare_within(const cdna_data* value_data, const cdna_data* lower_bound_data, const cdna_data* upper_bound_data) {
-    switch (value_data->type) {
-        case CDNA_INT_TYPE:
-            return (value_data->int_type >= lower_bound_data->int_type && value_data->int_type <= upper_bound_data->int_type)
-                       ? CDNA_ASSERT_SUCCESS
-                       : CDNA_ASSERT_FAILURE;
-        case CDNA_UINT_TYPE:
-            return (value_data->uint_type >= lower_bound_data->uint_type && value_data->uint_type <= upper_bound_data->uint_type)
-                       ? CDNA_ASSERT_SUCCESS
-                       : CDNA_ASSERT_FAILURE;
-        case CDNA_FLOAT_TYPE:
-            return (value_data->float_type >= lower_bound_data->float_type && value_data->float_type <= upper_bound_data->float_type)
-                       ? CDNA_ASSERT_SUCCESS
-                       : CDNA_ASSERT_FAILURE;
-        // Add cases for other types as needed
-        default:
-            return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for range comparison
-    }
-}
-
-// Utility function for not within range
-static cdna_assert_error compare_not_within(const cdna_data* value_data, const cdna_data* lower_bound_data, const cdna_data* upper_bound_data) {
-    switch (value_data->type) {
-        case CDNA_INT_TYPE:
-            return (value_data->int_type < lower_bound_data->int_type || value_data->int_type > upper_bound_data->int_type)
-                       ? CDNA_ASSERT_SUCCESS
-                       : CDNA_ASSERT_FAILURE;
-        case CDNA_UINT_TYPE:
-            return (value_data->uint_type < lower_bound_data->uint_type || value_data->uint_type > upper_bound_data->uint_type)
-                       ? CDNA_ASSERT_SUCCESS
-                       : CDNA_ASSERT_FAILURE;
-        case CDNA_FLOAT_TYPE:
-            return (value_data->float_type < lower_bound_data->float_type || value_data->float_type > upper_bound_data->float_type)
-                       ? CDNA_ASSERT_SUCCESS
-                       : CDNA_ASSERT_FAILURE;
-        // Add cases for other types as needed
-        default:
-            return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for range comparison
-    }
-}
-
 cdna_assert_error assume(cdna_opt op, const cdna* left, const cdna* right) {
     cdna_assert_error result = CDNA_ASSERT_SUCCESS;
     switch (op) {
@@ -386,18 +344,5 @@ cdna_assert_error assume_bit_its_low(const cdna* value, unsigned bit_position) {
 
 cdna_assert_error assume_bit_not_low(const cdna* value, unsigned bit_position) {
     XTEST_PASS_SCAN = assume(CDNA_OPT_BIT_NOT_LOW, value, xtest_as_uint(bit_position));
-    return XTEST_PASS_SCAN;
-}
-
-cdna_assert_error assume_its_within(const cdna* value, cdna lower_bound, cdna upper_bound) {
-    XTEST_PASS_SCAN = (assume(CDNA_OPT_WITHIN, value, &lower_bound) != CDNA_ASSERT_SUCCESS ||
-            assume(CDNA_OPT_WITHIN, value, &upper_bound) != CDNA_ASSERT_SUCCESS)
-               ? CDNA_ASSERT_ERROR_OUT_OF_RANGE
-               : CDNA_ASSERT_SUCCESS;
-    return XTEST_PASS_SCAN;
-}
-
-cdna_assert_error assume_not_within(const cdna* value, cdna lower_bound, cdna upper_bound) {
-    XTEST_PASS_SCAN = !assume_its_within(value, lower_bound, upper_bound);
     return XTEST_PASS_SCAN;
 }
