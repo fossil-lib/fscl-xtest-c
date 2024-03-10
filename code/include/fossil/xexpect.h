@@ -262,24 +262,6 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 // ----------------------------------------------------------------
 // Float assertions
 // ----------------------------------------------------------------
-#ifdef __cplusplus
-#define TEST_EXPECT_FLOAT_EQUAL(actual, expected)         TEST_EXPECT(std::fabs((float)(actual) -  (float)(expected)) < XTEST_FLOAT_EPSILON, "Floating-point value not equal within epsilon")
-#define TEST_EXPECT_FLOAT_NOT_EQUAL(actual, expected)     TEST_EXPECT(std::fabs((float)(actual) -  (float)(expected)) <= XTEST_FLOAT_EPSILON, "Floating-point value equal within epsilon")
-#define TEST_EXPECT_FLOAT_LESS(actual, expected)          TEST_EXPECT((float)(actual)      <  (float)(expected),   "Floating-point value not less")
-#define TEST_EXPECT_FLOAT_GREATER(actual, expected)       TEST_EXPECT((float)(actual)      >  (float)(expected),   "Floating-point value not greater")
-#define TEST_EXPECT_FLOAT_GREATER_EQUAL(actual, expected) TEST_EXPECT((float)(actual)      >= (float)(expected),   "Floating-point value not greater or equal")
-#define TEST_EXPECT_FLOAT_LESS_EQUAL(actual, expected)    TEST_EXPECT((float)(actual)      <= (float)(expected),   "Floating-point value not less or equal")
-#define TEST_EXPECT_FLOAT_IS_NOT_INF(value)               TEST_EXPECT(!std::isinf((float)value) || (float)(value) <= 0, "Floating-point value is infinite")
-#define TEST_EXPECT_FLOAT_IS_INF(value)                   TEST_EXPECT(std::isinf((float)value)  && (float)(value) > 0,  "Floating-point value is not positive infinity")
-#define TEST_EXPECT_FLOAT_IS_NOT_NEG_INF(value)           TEST_EXPECT(!std::isinf((float)value) || (float)(value) >= 0, "Floating-point value is negative infinity")
-#define TEST_EXPECT_FLOAT_IS_NEG_INF(value)               TEST_EXPECT(std::isinf((float)value)  && (float)(value) < 0,  "Floating-point value is not negative infinity")
-#define TEST_EXPECT_FLOAT_IS_NOT_FINITE(value)            TEST_EXPECT(!std::isfinite((float)value), "Floating-point value is finite")
-#define TEST_EXPECT_FLOAT_IS_FINITE(value)                TEST_EXPECT(std::isfinite((float)value),  "Floating-point value is not finite")
-#define TEST_EXPECT_FLOAT_IS_NOT_NAN(value)               TEST_EXPECT(!std::isnan((float)value),    "Floating-point value is NaN")
-#define TEST_EXPECT_FLOAT_IS_NAN(value)                   TEST_EXPECT(std::isnan((float)value),     "Floating-point value is not NaN")
-#define TEST_EXPECT_FLOAT_IS_DETERMINATE(actual)         TEST_EXPECT(!std::isnan((float)actual) && std::isfinite((float)actual), "Floating-precision value not deterministic")
-#define TEST_EXPECT_FLOAT_IS_NOT_DETERMINATE(actual)     TEST_EXPECT(std::isnan((float)actual)  || std::isinf((float)actual),    "Floating-precision value deterministic")
-#else
 #define TEST_EXPECT_FLOAT_EQUAL(actual, expected)         TEST_EXPECT(fabs((float)(actual) -  (float)(expected)) < XTEST_FLOAT_EPSILON, "Floating-point value not equal within epsilon")
 #define TEST_EXPECT_FLOAT_NOT_EQUAL(actual, expected)     TEST_EXPECT(fabs((float)(actual) -  (float)(expected)) <= XTEST_FLOAT_EPSILON, "Floating-point value equal within epsilon")
 #define TEST_EXPECT_FLOAT_LESS(actual, expected)          TEST_EXPECT((float)(actual)      <  (float)(expected),   "Floating-point value not less")
@@ -296,29 +278,10 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 #define TEST_EXPECT_FLOAT_IS_NAN(value)                   TEST_EXPECT(isnan((float)value),     "Floating-point value is not NaN")
 #define TEST_EXPECT_FLOAT_IS_DETERMINATE(actual)         TEST_EXPECT(!isnan((float)actual) && isfinite((float)actual), "Floating-precision value not deterministic")
 #define TEST_EXPECT_FLOAT_IS_NOT_DETERMINATE(actual)     TEST_EXPECT(isnan((float)actual)  || isinf((float)actual),    "Floating-precision value deterministic")
-#endif
 
 // ----------------------------------------------------------------
 // Double assertions
 // ----------------------------------------------------------------
-#ifdef __cplusplus
-#define TEST_EXPECT_DOUBLE_EQUAL(actual, expected)         TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <  XTEST_DOUBLE_EPSILON, "Double-precision value not equal within epsilon")
-#define TEST_EXPECT_DOUBLE_NOT_EQUAL(actual, expected)     TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <= XTEST_DOUBLE_EPSILON, "Double-precision value equal within epsilon")
-#define TEST_EXPECT_DOUBLE_LESS(actual, expected)          TEST_EXPECT((double)(actual) <  (double)(expected), "Double-precision value not less")
-#define TEST_EXPECT_DOUBLE_GREATER(actual, expected)       TEST_EXPECT((double)(actual) >  (double)(expected), "Double-precision value not greater")
-#define TEST_EXPECT_DOUBLE_GREATER_EQUAL(actual, expected) TEST_EXPECT((double)(actual) >= (double)(expected), "Double-precision value not greater or equal")
-#define TEST_EXPECT_DOUBLE_LESS_EQUAL(actual, expected)    TEST_EXPECT((double)(actual) <= (double)(expected), "Double-precision value not less or equal")
-#define TEST_EXPECT_DOUBLE_IS_NOT_INF(value)               TEST_EXPECT(!std::isinf((double)value) || (double)(value) <= 0, "Double-precision value is infinite")
-#define TEST_EXPECT_DOUBLE_IS_INF(value)                   TEST_EXPECT(std::isinf((double)value) &&  (double)(value) > 0,  "Double-precision value is not positive infinity")
-#define TEST_EXPECT_DOUBLE_IS_NOT_NEG_INF(value)           TEST_EXPECT(!std::isinf((double)value) || (double)(value) >= 0, "Double-precision value is negative infinity")
-#define TEST_EXPECT_DOUBLE_IS_NEG_INF(value)               TEST_EXPECT(std::isinf((double)value) &&  (double)(value) < 0,  "Double-precision value is not negative infinity")
-#define TEST_EXPECT_DOUBLE_IS_NOT_FINITE(value)            TEST_EXPECT(!std::isfinite((double)value), "Double-precision value is finite")
-#define TEST_EXPECT_DOUBLE_IS_FINITE(value)                TEST_EXPECT(std::isfinite((double)value),  "Double-precision value is not finite")
-#define TEST_EXPECT_DOUBLE_IS_NOT_NAN(value)               TEST_EXPECT(!std::isnan((double)value),    "Double-precision value is NaN")
-#define TEST_EXPECT_DOUBLE_IS_NAN(value)                   TEST_EXPECT(std::isnan((double)value),     "Double-precision value is not NaN")
-#define TEST_EXPECT_DOUBLE_IS_DETERMINATE(actual)          TEST_EXPECT(!std::isnan((double)actual) && std::isfinite((double)actual), "Double-precision value not deterministic")
-#define TEST_EXPECT_DOUBLE_IS_NOT_DETERMINATE(actual)      TEST_EXPECT(std::isnan((double)actual)  || std::isinf((double)actual),    "Double-precision value deterministic")
-#else
 #define TEST_EXPECT_DOUBLE_EQUAL(actual, expected)         TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <  XTEST_DOUBLE_EPSILON, "Double-precision value not equal within epsilon")
 #define TEST_EXPECT_DOUBLE_NOT_EQUAL(actual, expected)     TEST_EXPECT(fabs((double)(actual) - (double)(expected)) <= XTEST_DOUBLE_EPSILON, "Double-precision value equal within epsilon")
 #define TEST_EXPECT_DOUBLE_LESS(actual, expected)          TEST_EXPECT((double)(actual) <  (double)(expected), "Double-precision value not less")
@@ -335,26 +298,16 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 #define TEST_EXPECT_DOUBLE_IS_NAN(value)                   TEST_EXPECT(isnan((double)value),     "Double-precision value is not NaN")
 #define TEST_EXPECT_DOUBLE_IS_DETERMINATE(actual)          TEST_EXPECT(!isnan((double)actual) && isfinite((double)actual), "Double-precision value not deterministic")
 #define TEST_EXPECT_DOUBLE_IS_NOT_DETERMINATE(actual)      TEST_EXPECT(isnan((double)actual)  || isinf((double)actual),    "Double-precision value deterministic")
-#endif
 
 // ----------------------------------------------------------------
 // Pointer assertions
 // ----------------------------------------------------------------
-#ifdef __cplusplus
-#define TEST_EXPECT_CNULLPTR(pointer)      TEST_EXPECT((pointer) == nullptr, "Expected nullptr")
-#define TEST_EXPECT_NOT_CNULLPTR(pointer)  TEST_EXPECT((pointer) != nullptr, "Expected not nullptr")
-#define TEST_EXPECT_INVALID_PTR(pointer)   TEST_EXPECT((pointer) != nullptr, "Invalid pointer error")
-#define TEST_EXPECT_EMPTY_PTR(pointer)     TEST_EXPECT((pointer) == nullptr, "Expected empty pointer")
-#define TEST_EXPECT_NOT_EMPTY_PTR(pointer) TEST_EXPECT((pointer) != nullptr, "Expected not empty pointer")
-#define TEST_EXPECT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_EXPECT(pointer != nullptr, "Invalid memory access")
-#else
 #define TEST_EXPECT_CNULLPTR(pointer)      TEST_EXPECT((pointer) == NULL, "Expected NULL")
 #define TEST_EXPECT_NOT_CNULLPTR(pointer)  TEST_EXPECT((pointer) != NULL, "Expected not NULL")
 #define TEST_EXPECT_INVALID_PTR(pointer)   TEST_EXPECT((pointer) != NULL, "Invalid pointer error")
 #define TEST_EXPECT_EMPTY_PTR(pointer)     TEST_EXPECT((pointer) == NULL, "Expected empty pointer")
 #define TEST_EXPECT_NOT_EMPTY_PTR(pointer) TEST_EXPECT((pointer) != NULL, "Expected not empty pointer")
 #define TEST_EXPECT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_EXPECT(pointer != NULL, "Invalid memory access")
-#endif
 #define TEST_EXPECT_ARRAY_BOUNDS_PTR(pointer, index, size) TEST_EXPECT((index) >= 0 && (index) < (size), "Array index out of bounds")
 #define TEST_EXPECT_EQUAL_PTR(actual, expected)            TEST_EXPECT((actual) == (expected), "Pointer equality check failed")
 #define TEST_EXPECT_NOT_EQUAL_PTR(actual, expected)        TEST_EXPECT((actual) != (expected), "Pointer inequality check failed")
@@ -411,31 +364,6 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 // ----------------------------------------------------------------
 // Char assertions
 // ----------------------------------------------------------------
-#ifdef __cplusplus
-#define TEST_EXPECT_EQUAL_CHAR(actual, expected)          TEST_EXPECT((actual) == (expected), "Character equality expectation not met")
-#define TEST_EXPECT_NOT_EQUAL_CHAR(actual, expected)      TEST_EXPECT((actual) != (expected), "Character inequality expectation not met")
-#define TEST_EXPECT_LESS_CHAR(actual, expected)           TEST_EXPECT((actual) < (expected), "Character less-than expectation not met")
-#define TEST_EXPECT_GREATER_CHAR(actual, expected)        TEST_EXPECT((actual) > (expected), "Character greater-than expectation not met")
-#define TEST_EXPECT_LESS_EQUAL_CHAR(actual, expected)     TEST_EXPECT((actual) <= (expected), "Character less-than-or-equal expectation not met")
-#define TEST_EXPECT_GREATER_EQUAL_CHAR(actual, expected)  TEST_EXPECT((actual) >= (expected), "Character greater-than-or-equal expectation not met")
-#define TEST_EXPECT_IN_RANGE_CHAR(character, min, max)    TEST_EXPECT((character >= (min) && character <= (max)), "Character not in the specified range")
-#define TEST_EXPECT_IS_UPPERCASE_CHAR(character)          TEST_EXPECT(std::isupper(character), "Character is not uppercase")
-#define TEST_EXPECT_IS_LOWERCASE_CHAR(character)          TEST_EXPECT(std::islower(character), "Character is not lowercase")
-#define TEST_EXPECT_TO_UPPER_CHAR(character, expected)    TEST_EXPECT(std::toupper(character) == expected, "Character not converted to uppercase as expected")
-#define TEST_EXPECT_TO_LOWER_CHAR(character, expected)    TEST_EXPECT(std::tolower(character) == expected, "Character not converted to lowercase as expected")
-
-#define TEST_EXPECT_EQUAL_WCHAR(actual, expected)         TEST_EXPECT((actual) == (expected), "Wide character equality expectation not met")
-#define TEST_EXPECT_NOT_EQUAL_WCHAR(actual, expected)     TEST_EXPECT((actual) != (expected), "Wide character inequality expectation not met")
-#define TEST_EXPECT_LESS_WCHAR(actual, expected)          TEST_EXPECT((actual) < (expected), "Wide character less-than expectation not met")
-#define TEST_EXPECT_GREATER_WCHAR(actual, expected)       TEST_EXPECT((actual) > (expected), "Wide character greater-than expectation not met")
-#define TEST_EXPECT_LESS_EQUAL_WCHAR(actual, expected)    TEST_EXPECT((actual) <= (expected), "Wide character less-than-or-equal expectation not met")
-#define TEST_EXPECT_GREATER_EQUAL_WCHAR(actual, expected) TEST_EXPECT((actual) >= (expected), "Wide character greater-than-or-equal expectation not met")
-#define TEST_EXPECT_IN_RANGE_WCHAR(character, min, max)   TEST_EXPECT((character >= (min) && character <= (max)), "Wide character not in the specified range")
-#define TEST_EXPECT_IS_UPPERCASE_WCHAR(character)         TEST_EXPECT(std::iswupper(character), "Wide character is not uppercase")
-#define TEST_EXPECT_IS_LOWERCASE_WCHAR(character)         TEST_EXPECT(std::iswlower(character), "Wide character is not lowercase")
-#define TEST_EXPECT_TO_UPPER_WCHAR(character, expected)   TEST_EXPECT(std::towupper(character) == expected, "Wide character not converted to uppercase as expected")
-#define TEST_EXPECT_TO_LOWER_WCHAR(character, expected)   TEST_EXPECT(std::towlower(character) == expected, "Wide character not converted to lowercase as expected")
-#else
 #define TEST_EXPECT_EQUAL_CHAR(actual, expected)          TEST_EXPECT((actual) == (expected), "Character equality expectation not met")
 #define TEST_EXPECT_NOT_EQUAL_CHAR(actual, expected)      TEST_EXPECT((actual) != (expected), "Character inequality expectation not met")
 #define TEST_EXPECT_LESS_CHAR(actual, expected)           TEST_EXPECT((actual) < (expected), "Character less-than expectation not met")
@@ -459,7 +387,6 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 #define TEST_EXPECT_IS_LOWERCASE_WCHAR(character)         TEST_EXPECT(iswlower(character), "Wide character is not lowercase")
 #define TEST_EXPECT_TO_UPPER_WCHAR(character, expected)   TEST_EXPECT(towupper(character) == expected, "Wide character not converted to uppercase as expected")
 #define TEST_EXPECT_TO_LOWER_WCHAR(character, expected)   TEST_EXPECT(towlower(character) == expected, "Wide character not converted to lowercase as expected")
-#endif
 
 // ----------------------------------------------------------------
 // Array assertions
