@@ -20,31 +20,6 @@ extern "C"
 
 #include "xtest.h"
 
-#ifdef __cplusplus
-#include <cstring>
-#include <cstdlib>
-#include <cstddef>
-#include <cwctype>
-#include <cwchar>
-#include <cctype>
-#include <fstream>
-#include <cstdio>
-#include <cmath>
-#include <ctime>
-#else
-#include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <stddef.h>
-#include <wctype.h>
-#include <wchar.h>
-#include <ctype.h>
-#include <stdio.h>
-#include <math.h>
-#include <time.h>
-#endif
-
 // ----------------------------------------------------------------
 // Memory assertions
 // ----------------------------------------------------------------
