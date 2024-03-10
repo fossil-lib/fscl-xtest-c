@@ -231,6 +231,19 @@ static bool compare_nullptr(cdna_opt op, const void* left, const void* right) {
     }
 }
 
+// Utility function to simplify assignment assumptions and return a pointer to a static cdna variable
+cdna* assign_gene(cdna_type type, cdna_data value) {
+    // Declare a static cdna variable
+    static cdna variable;
+
+    // Set the type and data of the cdna variable
+    variable.type = type;
+    variable.data = value;
+
+    // Return a pointer to the static cdna variable
+    return &variable;
+}
+
 // Assertion operation
 cdna_assert_error assume(cdna_opt op, const cdna* left, const cdna* right) {
     if (!are_types_equal(left->type, right->type)) {
