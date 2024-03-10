@@ -180,8 +180,7 @@ static bool compare_array(cdna_opt op, const struct cdna* left, const struct cdn
 }
 
 // Helper function to compare map types
-static bool compare_map(cdna_opt op, const struct cdna* left_key, const struct cdna* right_key,
-                        const struct cdna* left_value, const struct cdna* right_value) {
+static bool compare_map(cdna_opt op, const struct cdna* left, const struct cdna* right) {
     // Implement comparison logic for map types
     // (Assuming maps of the same size and keys/values of the same type)
     if (left->data.map_type.size != right->data.map_type.size) {
@@ -229,9 +228,9 @@ cdna_assert_error assume(cdna_opt op, const cdna* left, const cdna* right) {
 
     switch (left->type) {
         case CDNA_INT_TYPE:
-            return compare_int(op, left->data.int64_type, right->data.int64_type);
+            return compare_int(op, left->data.int_type, right->data.int_type);
         case CDNA_UINT_TYPE:
-            return compare_int(op, left->data.uint64_type, right->data.uint64_type);
+            return compare_int(op, left->data.uint_type, right->data.uint_type);
         case CDNA_INT8_TYPE:
             return compare_int(op, left->data.int8_type, right->data.int8_type);
         case CDNA_INT16_TYPE:
