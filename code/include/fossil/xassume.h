@@ -22,6 +22,8 @@ extern "C"
 #include <stdint.h>
 #include <stdbool.h>
 
+typedef struct cdna cdna;
+
 // Enumerated error codes for assertion operations.
 typedef enum {
     CDNA_ASSERT_SUCCESS = 0,       // Assertion successful.
@@ -119,10 +121,10 @@ typedef union {
 } cdna_data;
 
 // Struct to represent the data and its type.
-typedef struct {
+struct cdna {
     cdna_type type;  // The data type.
     cdna_data data;  // The data stored.
-} cdna;
+};
 
 // Assertion operations
 cdna_assert_error assume(cdna_opt op, const cdna* left, const cdna* right);
