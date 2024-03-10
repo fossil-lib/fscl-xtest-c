@@ -39,6 +39,7 @@ const char* build_assertion_error_message(cdna_assert_error error) {
         default:
             return "Unknown assertion error.";
     }
+    return "Unknown assertion error.";
 }
 
 // Utility function for equality (==)
@@ -62,6 +63,7 @@ static cdna_assert_error compare_less(const cdna_data* left_data, const cdna_dat
         default:
             return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
     }
+    return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
 }
 
 // Utility function for not less than (>=)
@@ -75,6 +77,7 @@ static cdna_assert_error compare_not_less(const cdna_data* left_data, const cdna
         default:
             return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
     }
+    return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
 }
 
 // Utility function for less than or equal to (<=)
@@ -88,6 +91,7 @@ static cdna_assert_error compare_less_or_equal(const cdna_data* left_data, const
         default:
             return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
     }
+    return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
 }
 
 // Utility function for not less than or equal to (>)
@@ -101,6 +105,7 @@ static cdna_assert_error compare_not_less_or_equal(const cdna_data* left_data, c
         default:
             return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
     }
+    return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
 }
 
 // Utility function for greater than (>)
@@ -114,6 +119,7 @@ static cdna_assert_error compare_more(const cdna_data* left_data, const cdna_dat
         default:
             return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
     }
+    return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
 }
 
 // Utility function for not greater than (<=)
@@ -127,6 +133,7 @@ static cdna_assert_error compare_not_more(const cdna_data* left_data, const cdna
         default:
             return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
     }
+    return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
 }
 
 // Utility function for greater than or equal to (>=)
@@ -140,6 +147,7 @@ static cdna_assert_error compare_more_or_equal(const cdna_data* left_data, const
         default:
             return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
     }
+    return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
 }
 
 // Utility function for not greater than or equal to (<)
@@ -153,6 +161,7 @@ static cdna_assert_error compare_not_more_or_equal(const cdna_data* left_data, c
         default:
             return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
     }
+    return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
 }
 
 // Utility function for bit high
@@ -166,6 +175,7 @@ static cdna_assert_error compare_bit_high(const cdna_data* value_data, unsigned 
         default:
             return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for bit comparison
     }
+    return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
 }
 
 // Utility function for not bit high
@@ -179,6 +189,7 @@ static cdna_assert_error compare_not_bit_high(const cdna_data* value_data, unsig
         default:
             return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for bit comparison
     }
+    return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
 }
 
 // Utility function for bit low
@@ -192,6 +203,7 @@ static cdna_assert_error compare_bit_low(const cdna_data* value_data, unsigned b
         default:
             return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for bit comparison
     }
+    return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
 }
 
 // Utility function for not bit low
@@ -205,6 +217,7 @@ static cdna_assert_error compare_not_bit_low(const cdna_data* value_data, unsign
         default:
             return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for bit comparison
     }
+    return CDNA_ASSERT_INVALID_OPERATION; // Unsupported type for comparison
 }
 
 cdna_assert_error assume(cdna_opt op, const cdna* left, const cdna* right) {
