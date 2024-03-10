@@ -10,9 +10,8 @@ Description:
     feel free to contact Michael at michaelbrockus@gmail.com.
 ==============================================================================
 */
-#include "fossil/xtest.h"
+#include "fossil/xtest/internal.h"
 #include <stdarg.h>
-#include <string.h>
 
 typedef struct {
     bool cutback;
