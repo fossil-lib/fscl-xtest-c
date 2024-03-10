@@ -256,93 +256,74 @@ cdna_assert_error assume(cdna_opt op, const cdna* left, const cdna* right) {
             result = CDNA_ASSERT_INVALID_OPERATION; // Invalid operation specified
     }
     // Print error message on failure if XTEST_PASS_SCAN flag is set
-    if (result != CDNA_ASSERT_SUCCESS && XTEST_PASS_SCAN) {
+    if (result != CDNA_ASSERT_SUCCESS) {
+        XTEST_PASS_SCAN = false;
         printf("Assertion failed: %s\n", build_assertion_error_message(result));
     }
     return result;
 }
 
 cdna_assert_error assume_not_cnullptr(const cdna* left) {
-    XTEST_PASS_SCAN = assume_not_equal(left, NULL);
-    // Print error message on failure
-    if (result != CDNA_ASSERT_SUCCESS) {
-        printf("Assertion failed: %s\n", build_assertion_error_message(result));
-    }
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_NOT_EQUAL, left, xtest_as_ptr(NULL));
 }
 
 cdna_assert_error assume_its_cnullptr(const cdna* left) {
-    XTEST_PASS_SCAN = assume_its_equal(left, NULL);
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_ITS_EQUAL, left, xtest_as_ptr(NULL));
 }
 
 cdna_assert_error assume_not_empty(const cdna* left) {
-    XTEST_PASS_SCAN = assume_not_equal(left, NULL);
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_NOT_EQUAL, left, xtest_as_size(0));
 }
 
 cdna_assert_error assume_its_empty(const cdna* left) {
-    XTEST_PASS_SCAN = assume_its_equal(left, NULL);
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_ITS_EQUAL, left, xtest_as_size(0));
 }
 
 // Specific assertion functions
 cdna_assert_error assume_not_equal(const cdna* left, const cdna* right) {
-    XTEST_PASS_SCAN = assume(CDNA_OPT_NOT_EQUAL, left, right);
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_NOT_EQUAL, left, right);
 }
 
 cdna_assert_error assume_its_equal(const cdna* left, const cdna* right) {
-    XTEST_PASS_SCAN = assume(CDNA_OPT_EQUAL, left, right);
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_ITS_EQUAL, left, right);
 }
 
 cdna_assert_error assume_its_less(const cdna* left, const cdna* right) {
-    XTEST_PASS_SCAN = assume(CDNA_OPT_LESS_THAN, left, right);
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_ITS_LESS, left, right);
 }
 
 cdna_assert_error assume_its_more(const cdna* left, const cdna* right) {
-    XTEST_PASS_SCAN = assume(CDNA_OPT_GREATER_THAN, left, right);
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_ITS_MORE, left, right);
 }
 
 cdna_assert_error assume_not_less(const cdna* left, const cdna* right) {
-    XTEST_PASS_SCAN = !assume_its_less(left, right);
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_NOT_LESS, left, right);
 }
 
 cdna_assert_error assume_not_more(const cdna* left, const cdna* right) {
-    XTEST_PASS_SCAN = !assume_its_more(left, right);
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_NOT_MORE, left, right);
 }
 
 cdna_assert_error assume_less_or_equal(const cdna* left, const cdna* right) {
-    XTEST_PASS_SCAN = assume(CDNA_OPT_LESS_THAN_OR_EQUAL, left, right);
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_ITS_LESS_OR_EQUAL, left, right);
 }
 
 cdna_assert_error assume_more_or_equal(const cdna* left, const cdna* right) {
-    XTEST_PASS_SCAN = assume(CDNA_OPT_GREATER_THAN_OR_EQUAL, left, right);
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_ITS_MORE_OR_EQUAL, left, right);
 }
 
 cdna_assert_error assume_bit_its_high(const cdna* value, unsigned bit_position) {
-    XTEST_PASS_SCAN = assume(CDNA_OPT_BIT_HIGH, value, xtest_as_uint(bit_position));
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_ITS_BIT_HIGH, value, xtest_as_uint(bit_position));
 }
 
 cdna_assert_error assume_bit_not_high(const cdna* value, unsigned bit_position) {
-    XTEST_PASS_SCAN = assume(CDNA_OPT_BIT_NOT_HIGH, value, xtest_as_uint(bit_position));
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_NOT_BIT_HIGH, value, xtest_as_uint(bit_position));
 }
 
 cdna_assert_error assume_bit_its_low(const cdna* value, unsigned bit_position) {
-    XTEST_PASS_SCAN = assume(CDNA_OPT_BIT_LOW, value, xtest_as_uint(bit_position));
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_ITS_BIT_LOW, value, xtest_as_uint(bit_position));
 }
 
 cdna_assert_error assume_bit_not_low(const cdna* value, unsigned bit_position) {
-    XTEST_PASS_SCAN = assume(CDNA_OPT_BIT_NOT_LOW, value, xtest_as_uint(bit_position));
-    return XTEST_PASS_SCAN;
+    return assume(CDNA_OPT_NOT_BIT_LOW, value, xtest_as_uint(bit_position));
 }
