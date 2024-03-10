@@ -588,29 +588,6 @@ void xassert(bool expression, const char *message, const char* file, int line, c
     }
 } // end of func
 
-// Custom assertion function with optional message.
-void xassume(bool expression, const char *message, const char* file, int line, const char* func) {
-    if (!XASSERT_PASS_SCAN) {
-        return;
-    }
-    if (!expression) {
-         XASSERT_PASS_SCAN = false;
-        if (xcli.verbose && !xcli.cutback) {
-            xtest_console_out("blue", "[ASSUME ISSUE]\n");
-            xtest_console_out("red", "line: %.4i\nfile: %s\nfunc: %s\n", line, file, func);
-            xtest_console_out("red", "message: %s\n", message);
-        } else if (!xcli.cutback && !xcli.verbose) {
-            xtest_console_out("red", "message: %s\n line: %.4i\n func: %s\n", message, line, func);
-        } else if (xcli.cutback && !xcli.verbose) {
-            xtest_console_out("red", "[F]");
-        }
-    } else {
-        if (xcli.cutback && !xcli.verbose) {
-            xtest_console_out("green", "[P]");
-        }
-    }
-} // end of func
-
 // Custom expectation function with optional message.
 void xexpect(bool expression, const char *message, const char* file, int line, const char* func) {
     XEXPECT_PASS_SCAN = true;
