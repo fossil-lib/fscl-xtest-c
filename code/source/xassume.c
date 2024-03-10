@@ -90,16 +90,49 @@ static const char* build_error_message(cdna_opt op, const cdna* left, const cdna
 
 // Assertion operation
 cdna_assert_error assume(cdna_opt op, const cdna* left, const cdna* right) {
-    // Check if the assertion operation is valid
-    if (op < CDNA_OPT_EQUAL || op > CDNA_OPT_GREATER_THAN_OR_EQUAL) {
+    if (!are_types_equal(left->type, right->type)) {
+        // Types are not equal, handle error
+        const char* error_message = build_error_message(op, left, right);
+        fprintf(stderr, "Error: %s\n", error_message);
+        free((void*)error_message);  // Free allocated memory
         return CDNA_ASSERT_INVALID_OPERATION;
     }
 
-    // Compare the values based on the assertion operation and type check
-    bool result = compare_values(op, left, right);
+    switch (left->type) {
+        case CDNA_INT_TYPE:
+            return compare_int(op, left->data.int64_type, right->data.int64_type);
+        case CDNA_UINT_TYPE:
+            return compare_int(op, left->data.uint64_type, right->data.uint64_type);
+        case CDNA_INT8_TYPE:
+            return compare_int(op, left->data.int8_type, right->data.int8_type);
+        case CDNA_INT16_TYPE:
+            return compare_int(op, left->data.int16_type, right->data.int16_type);
+        case CDNA_INT32_TYPE:
+            return compare_int(op, left->data.int32_type, right->data.int32_type);
+        case CDNA_INT64_TYPE:
+            return compare_int(op, left->data.int64_type, right->data.int64_type);
+        case CDNA_UINT8_TYPE:
+            return compare_int(op, left->data.uint8_type, right->data.uint8_type);
+        case CDNA_UINT16_TYPE:
+            return compare_int(op, left->data.uint16_type, right->data.uint16_type);
+        case CDNA_UINT32_TYPE:
+            return compare_int(op, left->data.uint32_type, right->data.uint32_type);
+        case CDNA_UINT64_TYPE:
+            return compare_int(op, left->data.uint64_type, right->data.uint64_type);
+        case CDNA_OCTAL8_TYPE:
+            // Implement comparison for octal types
+            break;
+        // Add cases for other types as needed
 
-    // Return the appropriate assertion result
-    return result ? CDNA_ASSERT_SUCCESS : CDNA_ASSERT_FAILURE;
+        default:
+            return CDNA_ASSERT_INVALID_OPERATION;
+    }
+
+    // Assertion failed
+    const char* error_message = build_error_message(op, left, right);
+    fprintf(stderr, "Assertion failed: %s\n", error_message);
+    free((void*)error_message);  // Free allocated memory
+    return CDNA_ASSERT_FAILURE;
 }
 
 // Specific assertion functions
