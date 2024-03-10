@@ -300,12 +300,21 @@ TEST_ASSERT(found, "Memory not contains assertion failed");
 // ----------------------------------------------------------------
 // Pointer assertions
 // ----------------------------------------------------------------
+#ifdef __cplusplus
+#define TEST_ASSERT_CNULLPTR(pointer)      TEST_ASSERT((pointer) == nullptr, "Expected nullptr")
+#define TEST_ASSERT_NOT_CNULLPTR(pointer)  TEST_ASSERT((pointer) != nullptr, "Expected not nullptr")
+#define TEST_ASSERT_INVALID_PTR(pointer)   TEST_ASSERT((pointer) != nullptr, "Invalid pointer error")
+#define TEST_ASSERT_EMPTY_PTR(pointer)     TEST_ASSERT((pointer) == nullptr, "Expected empty pointer")
+#define TEST_ASSERT_NOT_EMPTY_PTR(pointer) TEST_ASSERT((pointer) != nullptr, "Expected not empty pointer")
+#define TEST_ASSERT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_ASSERT(pointer != nullptr, "Invalid memory access")
+#else
 #define TEST_ASSERT_CNULLPTR(pointer)      TEST_ASSERT((pointer) == NULL, "Expected NULL")
 #define TEST_ASSERT_NOT_CNULLPTR(pointer)  TEST_ASSERT((pointer) != NULL, "Expected not NULL")
 #define TEST_ASSERT_INVALID_PTR(pointer)   TEST_ASSERT((pointer) != NULL, "Invalid pointer error")
 #define TEST_ASSERT_EMPTY_PTR(pointer)     TEST_ASSERT((pointer) == NULL, "Expected empty pointer")
 #define TEST_ASSERT_NOT_EMPTY_PTR(pointer) TEST_ASSERT((pointer) != NULL, "Expected not empty pointer")
 #define TEST_ASSERT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_ASSERT(pointer != NULL, "Invalid memory access")
+#endif
 #define TEST_ASSERT_ARRAY_BOUNDS_PTR(pointer, index, size) TEST_ASSERT((index) >= 0 && (index) < (size), "Array index out of bounds")
 #define TEST_ASSERT_EQUAL_PTR(actual, expected)            TEST_ASSERT((actual) == (expected), "Pointer equality check failed")
 #define TEST_ASSERT_NOT_EQUAL_PTR(actual, expected)        TEST_ASSERT((actual) != (expected), "Pointer inequality check failed")
