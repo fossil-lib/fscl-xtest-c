@@ -15,6 +15,8 @@ Description:
 #include <stdlib.h>
 #include <string.h>
 
+uint8_t XTEST_PASS_SCAN = true;
+
 // Helper function to get string representation of cdna_type
 const char* cdna_type_to_string(cdna_type type) {
     switch (type) {
@@ -316,25 +318,31 @@ cdna_assert_error assume(cdna_opt op, const cdna* left, const cdna* right) {
 
 // Specific assertion functions
 cdna_assert_error assume_not_equal(const cdna* left, const cdna* right) {
-    return assume(CDNA_OPT_NOT_EQUAL, left, right);
+    XTEST_PASS_SCAN = assume(CDNA_OPT_NOT_EQUAL, left, right);
+    return XTEST_PASS_SCAN;
 }
 
 cdna_assert_error assume_its_equal(const cdna* left, const cdna* right) {
-    return assume(CDNA_OPT_EQUAL, left, right);
+    XTEST_PASS_SCAN = assume(CDNA_OPT_EQUAL, left, right);
+    return XTEST_PASS_SCAN;
 }
 
 cdna_assert_error assume_its_less(const cdna* left, const cdna* right) {
-    return assume(CDNA_OPT_LESS_THAN, left, right);
+    XTEST_PASS_SCAN = assume(CDNA_OPT_LESS_THAN, left, right);
+    return XTEST_PASS_SCAN;
 }
 
 cdna_assert_error assume_its_more(const cdna* left, const cdna* right) {
-    return assume(CDNA_OPT_GREATER_THAN, left, right);
+    XTEST_PASS_SCAN = assume(CDNA_OPT_GREATER_THAN, left, right);
+    return XTEST_PASS_SCAN;
 }
 
 cdna_assert_error assume_less_or_equal(const cdna* left, const cdna* right) {
-    return assume(CDNA_OPT_LESS_THAN_OR_EQUAL, left, right);
+    XTEST_PASS_SCAN = assume(CDNA_OPT_LESS_THAN_OR_EQUAL, left, right);
+    return XTEST_PASS_SCAN;
 }
 
 cdna_assert_error assume_more_or_equal(const cdna* left, const cdna* right) {
-    return assume(CDNA_OPT_GREATER_THAN_OR_EQUAL, left, right);
+    XTEST_PASS_SCAN = assume(CDNA_OPT_GREATER_THAN_OR_EQUAL, left, right);
+    return XTEST_PASS_SCAN;
 }
