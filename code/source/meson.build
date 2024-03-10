@@ -1,5 +1,5 @@
 lib = static_library('fscl-xtest-c',
-    'xtest.c', 'xassume.c',
+    'xtest.c',
     install : true,
     include_directories: dir)
 
