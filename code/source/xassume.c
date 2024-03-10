@@ -99,6 +99,19 @@ static bool compare_octal(cdna_opt op, uint64_t left, uint64_t right) {
     }
 }
 
+// Helper function to compare float types
+static bool compare_int(cdna_opt op, uint64_t left, uint64_t right) {
+    switch (op) {
+        case CDNA_OPT_EQUAL: return left == right;
+        case CDNA_OPT_NOT_EQUAL: return left != right;
+        case CDNA_OPT_LESS_THAN: return left < right;
+        case CDNA_OPT_GREATER_THAN: return left > right;
+        case CDNA_OPT_LESS_THAN_OR_EQUAL: return left <= right;
+        case CDNA_OPT_GREATER_THAN_OR_EQUAL: return left >= right;
+        default: return false;
+    }
+}
+
 // Helper function to compare bitwise types
 static bool compare_bitwise(cdna_opt op, uint64_t left, uint64_t right) {
     switch (op) {
@@ -284,8 +297,7 @@ cdna_assert_error assume(cdna_opt op, const cdna* left, const cdna* right) {
         case CDNA_ARRAY_TYPE:
             return compare_array(op, &left->data.array_type.elements[0], &right->data.array_type.elements[0]);
         case CDNA_MAP_TYPE:
-            return compare_map(op, &left->data.map_type.key[0], &right->data.map_type.key[0],
-                               &left->data.map_type.value[0], &right->data.map_type.value[0]);
+            return compare_map(op, left, right);  // Pass the maps directly
         case CDNA_QBIT_TYPE:
             return compare_qbit(op, left->data.qbit_type, right->data.qbit_type);
         case CDNA_NULLPTR_TYPE:
