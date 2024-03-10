@@ -302,12 +302,21 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 // ----------------------------------------------------------------
 // Pointer assertions
 // ----------------------------------------------------------------
+#ifdef __cplusplus
+#define TEST_EXPECT_CNULLPTR(pointer)      TEST_EXPECT((pointer) == nullptr, "Expected nullptr")
+#define TEST_EXPECT_NOT_CNULLPTR(pointer)  TEST_EXPECT((pointer) != nullptr, "Expected not nullptr")
+#define TEST_EXPECT_INVALID_PTR(pointer)   TEST_EXPECT((pointer) != nullptr, "Invalid pointer error")
+#define TEST_EXPECT_EMPTY_PTR(pointer)     TEST_EXPECT((pointer) == nullptr, "Expected empty pointer")
+#define TEST_EXPECT_NOT_EMPTY_PTR(pointer) TEST_EXPECT((pointer) != nullptr, "Expected not empty pointer")
+#define TEST_EXPECT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_EXPECT(pointer != nullptr, "Invalid memory access")
+#else
 #define TEST_EXPECT_CNULLPTR(pointer)      TEST_EXPECT((pointer) == NULL, "Expected NULL")
 #define TEST_EXPECT_NOT_CNULLPTR(pointer)  TEST_EXPECT((pointer) != NULL, "Expected not NULL")
 #define TEST_EXPECT_INVALID_PTR(pointer)   TEST_EXPECT((pointer) != NULL, "Invalid pointer error")
 #define TEST_EXPECT_EMPTY_PTR(pointer)     TEST_EXPECT((pointer) == NULL, "Expected empty pointer")
 #define TEST_EXPECT_NOT_EMPTY_PTR(pointer) TEST_EXPECT((pointer) != NULL, "Expected not empty pointer")
 #define TEST_EXPECT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_EXPECT(pointer != NULL, "Invalid memory access")
+#endif
 #define TEST_EXPECT_ARRAY_BOUNDS_PTR(pointer, index, size) TEST_EXPECT((index) >= 0 && (index) < (size), "Array index out of bounds")
 #define TEST_EXPECT_EQUAL_PTR(actual, expected)            TEST_EXPECT((actual) == (expected), "Pointer equality check failed")
 #define TEST_EXPECT_NOT_EQUAL_PTR(actual, expected)        TEST_EXPECT((actual) != (expected), "Pointer inequality check failed")
