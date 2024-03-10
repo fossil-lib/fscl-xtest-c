@@ -10,7 +10,7 @@ Description:
     feel free to contact Michael at michaelbrockus@gmail.com.
 ==============================================================================
 */
-#include "fossil/xtest/internal.h"
+#include "fossil/xtest.h"
 #include <stdarg.h>
 
 typedef struct {
