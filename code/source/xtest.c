@@ -29,6 +29,7 @@ typedef struct xflakydetector {
     int total_runs;
     int flaky_count;
 } xflakydetector;
+xflakydetector flaky_detector = {NULL, 0, 0};
 
 // Global xparser variable
 xparser xcli;
