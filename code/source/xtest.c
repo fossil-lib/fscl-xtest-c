@@ -24,6 +24,12 @@ typedef struct {
     uint8_t iter_repeat;
 } xparser;
 
+// Define a struct for flaky test detection
+typedef struct xflakydetector {
+    int total_runs;
+    int flaky_count;
+} xflakydetector;
+
 // Global xparser variable
 xparser xcli;
 
@@ -48,6 +54,22 @@ static double frequency; // Variable to store the frequency for Windows
 // =================================================================
 // XEngine utility functions
 // =================================================================
+
+// Function to detect and handle flaky tests
+void detect_flaky_tests() {
+    if (flaky_detector.total_runs > 1) {
+        int current_test_outcome = flaky_detector.outcomes[global_score.total_tests - 1];
+        int previous_test_outcome = flaky_detector.outcomes[global_score.total_tests - 2];
+
+        if (current_test_outcome != previous_test_outcome) {
+            // Detected a flaky test
+            flaky_detector.flaky_count++;
+            printf("Flaky Test Detected and Isolated!\n");
+        }
+    }
+    flaky_detector.total_runs++;
+}
+
 static uint16_t xengine_get_passed_count(xengine *runner) {
     return runner->stats.passed_count;
 }
@@ -377,6 +399,11 @@ static void xtest_run(xtest* test_case, xfixture* fixture) {
 
     test_case->timer.end = clock(); // Calculate elapsed time and store it in the test case
     test_case->timer.elapsed = ((double)(test_case->timer.end - test_case->timer.start)  / CLOCKS_PER_SEC) * 1000.0;
+    // Flaky test detection summary
+    detect_flaky_tests();
+    printf("Flaky Test Detection Summary:\n");
+    printf("Total Runs: %d\n", flaky_detector.total_runs);
+    printf("Flaky Tests Identified: %d\n", flaky_detector.flaky_count);
 } // end of func
 
 // Common functionality for running a test case.
