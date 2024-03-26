@@ -267,13 +267,17 @@ static void output_summary_format(xengine *runner) {
     xconsole_out("blue", "[Test Summary: Fossil Test] %d minutes, %d seconds, %d milliseconds, %d microseconds\n", minutes, seconds, millis, microseconds);
     xconsole_out("blue", "***************************:\n");
 
-    xconsole_out("magenta", "> - All Passed  : - %.2i\n",    runner->stats.passed_count);
-    xconsole_out("magenta", "> - All Failed  : - %.2i\n",    runner->stats.failed_count);
-    xconsole_out("magenta", "> - All Skipped : - %.2i\n",    runner->stats.ignored_count);
-    xconsole_out("magenta", "> - All Error   : - %.2i\n",    runner->stats.error_count);
-    xconsole_out("magenta", "> - Benchmark   : - %.2i\n",    runner->stats.mark_count);
-    xconsole_out("magenta", "> - Jellyfish AI: - %.2i\n",   runner->stats.fish_count);
-    xconsole_out("yellow",  "> - Total Cases : - %.2i\n", runner->stats.total_count);
+    if (runner->stats.total_count > 0) {
+        xconsole_out("cyan", "> - All Passed  : - %.2i\n",    runner->stats.passed_count);
+        xconsole_out("cyan", "> - All Failed  : - %.2i\n",    runner->stats.failed_count);
+        xconsole_out("cyan", "> - All Skipped : - %.2i\n",    runner->stats.ignored_count);
+        xconsole_out("cyan", "> - All Error   : - %.2i\n",    runner->stats.error_count);
+        xconsole_out("cyan", "> - Benchmark   : - %.2i\n",    runner->stats.mark_count);
+        xconsole_out("cyan", "> - Jellyfish AI: - %.2i\n",   runner->stats.fish_count);
+        xconsole_out("yellow",  "> - Total Cases : - %.2i\n", runner->stats.total_count);
+    } else {
+        xconsole_out("blue", "\n\n\n%s\n\n\n\n\n", empty_runner_comment());
+    }
 
     xconsole_out("blue", "***************************:\n");
 
@@ -414,23 +418,35 @@ void output_benchmark_format(uint64_t elapsed, double max) {
     }
 }
 
+// Prints usage instructions, including custom options, for a command-line program.
+static void output_usage_format(void) {
+    if (xcli.debug) {
+        xconsole_out("purple", "DEBUG: operator in: %s\n", __func__); 
+    }
+
+    xconsole_out("blue", "Usage: xcli [options]\n");
+    xconsole_out("blue", "Options:\n");
+    xconsole_out("cyan", "\t-h, --help   : Display this help message\n");
+    xconsole_out("cyan", "\t-v, --version: Display program version\n");
+    xconsole_out("cyan", "\t-t, --tip    : Display a helpful tip\n");
+    xconsole_out("cyan", "\t--only-test  : Run only test cases\n");
+    xconsole_out("cyan", "\t--only-fish  : Run only AI training cases\n");
+    xconsole_out("cyan", "\t--only-mark  : Run only benchmark cases\n");
+    xconsole_out("cyan", "\t--cutback    : Enable cutback mode\n");
+    xconsole_out("cyan", "\t--color      : Enable colored output\n");
+    xconsole_out("cyan", "\t--verbose    : Enable verbose mode\n");
+    xconsole_out("cyan", "\t--ci         : Enable CI pipeline optimizer\n");
+    xconsole_out("cyan", "\t--repeat N   : Repeat the test N times (requires a numeric argument)\n");
+    xconsole_out("cyan", "\t--debug      : Enable debug mode\n");
+
+    if (xcli.debug) {
+        xconsole_out("purple", "DEBUG: operator leaving: %s\n", __func__); 
+    }
+} // end of func
+
 // ==============================================================================
 // Xtest internal argument parser logic
 // ==============================================================================
-
-// Prints usage instructions, including custom options, for a command-line program.
-static void xparser_print_usage(void) {
-    xconsole_out("green",  "USAGE: Xcli [options]\n");
-    xconsole_out("green", "Options:\n");
-    xconsole_out("gray", "  -h, --help    Display this help message\n");
-    xconsole_out("gray", "  -v, --version Display program version\n");
-    xconsole_out("gray", "  --only-test   Run only test cases\n");
-    xconsole_out("gray", "  --only-fish   Run only AI training cases\n");
-    xconsole_out("gray", "  --only-mark   Run only benchmark cases\n");
-    xconsole_out("gray", "  --cutback     Enable cutback mode\n");
-    xconsole_out("gray", "  --verbose     Enable verbose mode\n");
-    xconsole_out("gray", "  --repeat N    Repeat the test N times (requires a numeric argument)\n");
-} // end of func
 
 // Function to check if a specific option is present
 static bool xparser_has_option(int argc, char *argv[], const char *option) {
@@ -481,10 +497,13 @@ static void xparser_parse_args(int argc, char *argv[]) {
             xcli.only_fish = false;
             xcli.only_test = false;
         } else if (xparser_has_option(argc, argv, "--version") || xparser_has_option(argc, argv, "-v")) {
-            xconsole_out("green", "1.1.1\n");
+            xconsole_out("blue", "1.1.1\n");
+            exit(EXIT_SUCCESS);
+        } else if (xparser_has_option(argc, argv, "--tip")) {
+            xconsole_out("blue", "%s\n", helpful_tester_tip());
             exit(EXIT_SUCCESS);
         } else if (xparser_has_option(argc, argv, "--help") || xparser_has_option(argc, argv, "-h")) {
-            xparser_print_usage();
+            output_usage_format();
             exit(EXIT_SUCCESS);
         } else if (xparser_has_option(argc, argv, "--repeat")) {
             xcli.repeat = true;
