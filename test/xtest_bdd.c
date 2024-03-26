@@ -19,15 +19,15 @@ Description:
 XTEST_CASE(xbdd_logic_test) {
     GIVEN("a valid statement is passed") {
         // Set up the context
-        bool givenExecuted = true;
+        xbool givenExecuted = xtrue;
 
-        WHEN("a statement is true") {
+        WHEN("a statement is xtrue") {
             // Perform the login action
-            bool whenExecuted = true;
+            xbool whenExecuted = xtrue;
             
             THEN("we validate everything was worked") {
                 // Check the expected outcome
-                bool thenExecuted = true;
+                xbool thenExecuted = xtrue;
 
                 TEST_EXPECT_TRUE(givenExecuted);
                 TEST_EXPECT_TRUE(whenExecuted);
@@ -80,13 +80,13 @@ XTEST_CASE(xbdd_empty_cart) {
 XTEST_CASE(xbdd_valid_login) {
     GIVEN("a registered user with valid credentials") {
         // Set up the context
-        const char* validUsername = "user123";
-        const char* validPassword = "pass456";
+        const xstring validUsername = "user123";
+        const xstring validPassword = "pass456";
 
         WHEN("the user provides correct username and password") {
             // Perform the action of user login
-            const char* inputUsername = "user123";
-            const char* inputPassword = "pass456";
+            const xstring inputUsername = "user123";
+            const xstring inputPassword = "pass456";
 
             THEN("the login should be successful") {
                 // Check the expected outcome
@@ -98,8 +98,8 @@ XTEST_CASE(xbdd_valid_login) {
 
         WHEN("the user provides incorrect password") {
             // Perform the action of user login
-            const char* inputUsername = "user123";
-            const char* inputPassword = "wrongpass";
+            const xstring inputUsername = "user123";
+            const xstring inputPassword = "wrongpass";
 
             THEN("the login should fail with an error message") {
                 // Check the expected outcome
