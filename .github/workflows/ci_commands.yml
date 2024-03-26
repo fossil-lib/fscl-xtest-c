@@ -15,6 +15,23 @@ permissions:
   contents: read
 
 jobs:
+  help_command:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Python and Tools
+      run: |
+          python -m pip install meson==1.0.0 ninja==1.11.1 cython==3.0.8
+    - name: Setup Build Directory
+      run: |
+          meson setup builddir -Dwith_test=enabled
+    - name: Compile Source Code
+      run: |
+          meson compile -C builddir
+    - name: Test Project Code
+      run: |
+          meson test -C builddir -v --test-args='--help'
+
   version_command:
     runs-on: ubuntu-latest
     steps:
