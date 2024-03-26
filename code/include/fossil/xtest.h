@@ -140,6 +140,9 @@ void xerrors(const char* reason, const char* file, int line, const char* func);
 void xignore(const char* reason, const char* file, int line, const char* func);
 
 // Asserts a boolean expression in a test, failing the test if the expression is false.
+void xassume(bool expression, const char *message, const char* file, int line, const char* func);
+
+// Asserts a boolean expression in a test, failing the test if the expression is false.
 void xassert(bool expression, const char *message, const char* file, int line, const char* func);
 
 // Expects a boolean expression in a test, failing the test if the expression is false.
@@ -160,7 +163,6 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // Macro to erase (clean up) the instance of the testing engine.
 // Usage: XTEST_ERASE();
 #define XTEST_ERASE() xtest_erase(&runner)
-
 
 // =================================================================
 // XTest run commands
@@ -363,6 +365,11 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // Usage: TEST_EXPECT(expression, message);
 #define TEST_EXPECT(expression, message) xexpect(expression, message, __FILE__, __LINE__, __func__)
 
+// Macro to assume a given expression in a test. If the expression is false, the test fails,
+// and the test execution continues.
+// Usage: TEST_ASSUME(expression, message)
+#define TEST_ASSUME(expression, message) xassume(expression, message, __FILE__, __LINE__, __func__)
+
 // Macro to ignore a test with a specified reason.
 // Usage: TEST_IGNORE(reason);
 #define TEST_IGNORE(reason) xignore(reason, __FILE__, __LINE__, __func__)
@@ -383,11 +390,11 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 
 // Macro to indicate test failure with a specified message.
 // Usage: XTEST_FAIL(message);
-#define XTEST_FAIL(message) TEST_ASSERT(false, message);
+#define XTEST_FAIL(message) TEST_ASSUME(false, message);
 
 // Macro to indicate test success.
 // Usage: XTEST_PASS();
-#define XTEST_PASS() TEST_ASSERT(true, "Test passed");
+#define XTEST_PASS() TEST_ASSUME(true, "Test passed");
 
 // Macro to output a note during test execution.
 // Usage: XTEST_NOTE(comment);
@@ -395,7 +402,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 
 // Macro to indicate that a test is not yet implemented.
 // Usage: XTEST_NOT_IMPLEMENTED();
-#define XTEST_NOT_IMPLEMENTED() TEST_ASSERT(false, "Test not implemented yet")
+#define XTEST_NOT_IMPLEMENTED() TEST_ASSUME(false, "Test not implemented yet")
 
 #ifdef __cplusplus
 }

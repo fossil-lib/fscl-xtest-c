@@ -16,6 +16,7 @@ Description:
 // XUNIT-GROUP: list of test groups for the runner
 //
 XTEST_EXTERN_POOL(xassert_test_group);
+XTEST_EXTERN_POOL(xassume_test_group);
 XTEST_EXTERN_POOL(xexpect_test_group);
 XTEST_EXTERN_POOL(xbenchs_test_group);
 XTEST_EXTERN_POOL(bdd_test_group);
@@ -28,6 +29,7 @@ int main(int argc, char **argv) {
     XTEST_CREATE(argc, argv);
 
     XTEST_IMPORT_POOL(xassert_test_group);
+    XTEST_IMPORT_POOL(xassume_test_group);
     XTEST_IMPORT_POOL(xexpect_test_group);
     XTEST_IMPORT_POOL(xbenchs_test_group);
     XTEST_IMPORT_POOL(bdd_test_group);
