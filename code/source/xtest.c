@@ -32,6 +32,7 @@ static uint8_t ASSUME_ISSUES = 0;
 
 // Static control panel for assert/expect and marks
 static uint8_t XEXPECT_PASS_SCAN = true;
+static uint8_t XASSUME_PASS_SCAN = true;
 static uint8_t XASSERT_PASS_SCAN = true;
 static uint8_t XIGNORE_TEST_CASE = false;
 static uint8_t XERRORS_TEST_CASE = false;
@@ -574,6 +575,7 @@ void xassume(bool expression, const char *message, const char* file, int line, c
         return;
     }
     if (!expression) {
+        XASSUME_PASS_SCAN = false;
         ASSUME_ISSUES++;
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out("blue", "[ASSUME ISSUE]\n");
