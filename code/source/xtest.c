@@ -493,11 +493,11 @@ static void xparser_parse_args(int argc, char *argv[]) {
                 if (iter_repeat >= MIN_REPEATS && iter_repeat <= MAX_REPEATS) {
                     xcli.iter_repeat = iter_repeat;
                 } else {
-                    xtest_console_err("Error: --repeat value must be between 1 and 100.\n");
+                    xconsole_out("Error: --repeat value must be between 1 and 100.\n");
                     exit(EXIT_FAILURE);
                 }
             } else {
-                xtest_console_err("Error: --repeat option requires a numeric argument.\n");
+                xconsole_out("Error: --repeat option requires a numeric argument.\n");
                 exit(EXIT_FAILURE);
             }
         }
@@ -706,7 +706,7 @@ void xignore(const char* reason, const char* file, int line, const char* func) {
 
 // Marks a test case as error with a specified reason and prints it to stderr.
 void xerrors(const char* reason, const char* file, int line, const char* func) {
-    output_xerror_format(reason, file, line, func);
+    output_xerrors_format(reason, file, line, func);
 } // end of func
 
 
