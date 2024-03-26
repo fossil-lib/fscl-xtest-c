@@ -70,7 +70,7 @@ static char *xstrdup(const char *str) {
 }
 
 
-static char *replace_underscore(char *str) {
+static char *replace_underscore(const char *str) {
     char *result = xstrdup(str);
     char *ptr = result;
 
@@ -656,6 +656,7 @@ uint64_t xmark_stop_benchmark() {
     clock_gettime(CLOCK_MONOTONIC, &ts);
     return (ts.tv_sec * 1e9 + ts.tv_nsec) - start_time;
 #endif
+}
 
 void xmark_assert_seconds(uint64_t elapsed_time_ns, double max_seconds) {
     if (!XTEST_PASS_SCAN) {
