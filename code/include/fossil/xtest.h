@@ -383,25 +383,25 @@ void xexpect(xbool expression, const xstring message, const xstring file, int li
 
 // Macro to assert a given expression in a test. If the expression is xfalse, the test fails.
 // Usage: TEST_ASSERT(expression, message);
-#define TEST_ASSERT(expression, message) xassert(expression, message, __FILE__, __LINE__, __func__)
+#define TEST_ASSERT(expression, message) xassert(expression, message, __FILE__, __LINE__, (const xstring)__func__)
 
 // Macro to expect a given expression in a test. If the expression is xfalse, the test fails,
 // and the test execution continues.
 // Usage: TEST_EXPECT(expression, message);
-#define TEST_EXPECT(expression, message) xexpect(expression, message, __FILE__, __LINE__, __func__)
+#define TEST_EXPECT(expression, message) xexpect(expression, message, __FILE__, __LINE__, (const xstring)__func__)
 
 // Macro to assume a given expression in a test. If the expression is xfalse, the test fails,
 // and the test execution continues.
 // Usage: TEST_ASSUME(expression, message)
-#define TEST_ASSUME(expression, message) xassume(expression, message, __FILE__, __LINE__, __func__)
+#define TEST_ASSUME(expression, message) xassume(expression, message, __FILE__, __LINE__, (const xstring)__func__)
 
 // Macro to ignore a test with a specified reason.
 // Usage: TEST_IGNORE(reason);
-#define TEST_IGNORE(reason) xignore(reason, __FILE__, __LINE__, __func__)
+#define TEST_IGNORE(reason) xignore(reason, __FILE__, __LINE__, (const xstring)__func__)
 
 // Macro to handle an error condition in a test. It marks the test as failed and provides a reason.
 // Usage: TEST_XERROR(reason);
-#define TEST_XERROR(reason) xerrors(reason, __FILE__, __LINE__, __func__)
+#define TEST_XERROR(reason) xerrors(reason, __FILE__, __LINE__, (const xstring)__func__)
 
 #ifdef __cplusplus
 }
