@@ -35,7 +35,7 @@ jobs:
           meson compile -C builddir
     - name: Test Project Code
       run: |
-          meson test -C builddir -v
+        meson test -C builddir -v --test-args='--ci'
 
   host_windows:
     strategy:
@@ -62,7 +62,7 @@ jobs:
           meson compile -C builddir
     - name: Test Project Code
       run: |
-          meson test -C builddir -v
+          meson test -C builddir -v --test-args='--ci'
 
   host_ubuntu:
     strategy:
@@ -83,7 +83,7 @@ jobs:
           meson compile -C builddir
     - name: Test Project Code
       run: |
-          meson test -C builddir -v
+          meson test -C builddir -v --test-args='--ci'
 
   meson_support:
     strategy:
@@ -103,4 +103,4 @@ jobs:
           meson compile -C builddir
     - name: Test Project Code
       run: |
-          meson test -C builddir -v
+          meson test -C builddir -v --test-args='--ci'
