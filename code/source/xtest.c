@@ -69,6 +69,18 @@ static char *xstrdup(const char *str) {
     return copy;
 }
 
+char* current_datetime(void) {
+    time_t rawtime;
+    struct tm* timeinfo;
+    static char datetime[20];  // Buffer to hold the formatted date and time
+
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    strftime(datetime, sizeof(datetime), "%Y-%m-%d %H:%M:%S", timeinfo);
+
+    return datetime;
+}
 
 static char *replace_underscore(const char *str) {
     char *result = xstrdup(str);
@@ -264,8 +276,8 @@ static void output_summary_format(xengine *runner) {
     int64_t millis       = (int64_t)(((runner->timer.elapsed % CLOCKS_PER_SEC) * 1000) / CLOCKS_PER_SEC);
     int64_t microseconds = (int64_t)(((runner->timer.elapsed % CLOCKS_PER_SEC) * 1000000) / CLOCKS_PER_SEC);
 
-    xconsole_out("blue", "[Test Summary: Fossil Test] %lld minutes, %lld seconds, %lld milliseconds, %lld microseconds\n", minutes, seconds, millis, microseconds);
-    xconsole_out("blue", "***************************:\n");
+    xconsole_out("blue", "[Test Summary: Fossil Test]: %lld minutes, %lld seconds, %lld milliseconds, %lld microseconds\n", minutes, seconds, millis, microseconds);
+    xconsole_out("blue", "***************************: %s\n", current_datetime());
 
     if (runner->stats.total_count > 0) {
         xconsole_out("cyan", "> - All Passed  : - %.2i\n",    runner->stats.passed_count);
@@ -424,19 +436,20 @@ static void output_usage_format(void) {
         xconsole_out("purple", "DEBUG: operator in: %s\n", __func__); 
     }
 
-    xconsole_out("blue", "Usage: xcli [options]\n");
+    xconsole_out("blue", "Usage: xcli [options] %s\n", current_datetime());
     xconsole_out("blue", "Options:\n");
-    xconsole_out("cyan", "\t-h, --help   : Display this help message\n");
-    xconsole_out("cyan", "\t-v, --version: Display program version\n");
-    xconsole_out("cyan", "\t-t, --tip    : Display a helpful tip\n");
-    xconsole_out("cyan", "\t--only-test  : Run only test cases\n");
-    xconsole_out("cyan", "\t--only-fish  : Run only AI training cases\n");
-    xconsole_out("cyan", "\t--only-mark  : Run only benchmark cases\n");
-    xconsole_out("cyan", "\t--cutback    : Enable cutback mode\n");
-    xconsole_out("cyan", "\t--color      : Enable colored output\n");
-    xconsole_out("cyan", "\t--verbose    : Enable verbose mode\n");
-    xconsole_out("cyan", "\t--ci         : Enable CI pipeline optimizer\n");
-    xconsole_out("cyan", "\t--repeat N   : Repeat the test N times (requires a numeric argument)\n");
+    xconsole_out("cyan", "\t-h, --help   : Display this help message                             :\n");
+    xconsole_out("cyan", "\t-v, --version: Display program version                               :\n");
+    xconsole_out("cyan", "\t-t, --tip    : Display a helpful tip                                 :\n");
+    xconsole_out("cyan", "\t--only-test  : Run only test cases                                   :\n");
+    xconsole_out("cyan", "\t--only-fish  : Run only AI training cases                            :\n");
+    xconsole_out("cyan", "\t--only-mark  : Run only benchmark cases                              :\n");
+    xconsole_out("cyan", "\t--cutback    : Enable cutback 50%% of output                         :\n");
+    xconsole_out("cyan", "\t--human      : Enable human format mode                              :\n");
+    xconsole_out("cyan", "\t--color      : Enable colored output                                 :\n");
+    xconsole_out("cyan", "\t--verbose    : Enable verbose mode for extra information             :\n");
+    xconsole_out("cyan", "\t--ci         : Enable CI pipeline optimizer to save time             :\n");
+    xconsole_out("cyan", "\t--repeat N   : Repeat the test N times (requires a numeric argument) :\n");
     xconsole_out("cyan", "\t--debug      : Enable debug mode\n");
 
     if (xcli.debug) {
@@ -482,6 +495,9 @@ static void xparser_parse_args(int argc, char *argv[]) {
             xcli.debug = true;
         } else if (xparser_has_option(argc, argv, "--color")) {
             xcli.color = true;
+        } else if (xparser_has_option(argc, argv, "--human")) {
+            xcli.color = true;
+            xcli.verbose = true;
         } else if (xparser_has_option(argc, argv, "--ci")) {
             xcli.ci = true;
         } else if (xparser_has_option(argc, argv, "--only-test")) {
