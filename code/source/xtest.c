@@ -206,7 +206,7 @@ const char *helpful_tester_tip() {
 // ==============================================================================
 
 // Formats and displays information about the start/end of a test case.
-static void output_end_start(xtest *test_case, xengine* engine) {
+static void output_start_test(xtest *test_case, xengine* engine) {
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator in: %s\n", __func__); 
     }
@@ -231,10 +231,10 @@ static void output_end_test(xtest *test_case, xengine* engine) {
         xconsole_out("purple", "DEBUG: operator in: %s\n", __func__); 
     }
 
-    int64_t minutes      = (int64_t)(test_case->timer.elapsed / (60 * 1000));
-    int64_t seconds      = (int64_t)((test_case->timer.elapsed - minutes * 60 * 1000) / 1000);
-    int64_t millis       = (int64_t)(test_case->timer.elapsed - minutes * 60 * 1000 - seconds * 1000);
-    int64_t microseconds = (int64_t)(((test_case->timer.elapsed - seconds)    * 1000) - millis * 1000);
+    int64_t minutes      = (int64_t)(test_case->timer.elapsed / 60);
+    int64_t seconds      = (int64_t)(test_case->timer.elapsed) % 60;
+    int64_t millis       = (int64_t)((test_case->timer.elapsed - seconds) * 1000);
+    int64_t microseconds = (int64_t)((((test_case->timer.elapsed - seconds) * 1000) - millis) * 1000);
 
     if (xcli.verbose && !xcli.cutback) {
         xconsole_out("cyan", ".\t> TIME: - %d minutes, %d seconds, %d milliseconds, %d microseconds\n", minutes, seconds, millis, microseconds);
@@ -257,12 +257,12 @@ static void output_summary_format(xengine *runner) {
     }
 
     runner->timer.end = clock();
-    // Calculate elapsed time and store it in the test case
-    runner->timer.elapsed = ((double)(runner->timer.end - runner->timer.start)  / CLOCKS_PER_SEC) * 1000.0;
-    int64_t minutes      = (int64_t)(runner->timer.elapsed / (60 * 1000));
-    int64_t seconds      = (int64_t)((runner->timer.elapsed - minutes * 60 * 1000) / 1000);
-    int64_t millis       = (int64_t)(runner->timer.elapsed - minutes * 60  * 1000 - seconds * 1000);
-    int64_t microseconds = (int64_t)(((runner->timer.elapsed - seconds)    * 1000) - millis * 1000);
+    runner->timer.elapsed = (double)(runner->timer.end - runner->timer.start) / CLOCKS_PER_SEC;
+
+    int64_t minutes      = (int64_t)(runner->timer.elapsed / 60);
+    int64_t seconds      = (int64_t)(runner->timer.elapsed) % 60;
+    int64_t millis       = (int64_t)((runner->timer.elapsed - seconds) * 1000);
+    int64_t microseconds = (int64_t)((((runner->timer.elapsed - seconds) * 1000) - millis) * 1000);
 
     xconsole_out("blue", "[Test Summary: Fossil Test] %d minutes, %d seconds, %d milliseconds, %d microseconds\n", minutes, seconds, millis, microseconds);
     xconsole_out("blue", "***************************:\n");
@@ -616,7 +616,7 @@ static void xtest_run(xtest* test_case, xfixture* fixture) {
 
 // Common functionality for running a test case.
 static void xtest_run_test(xengine* engine, xtest* test_case, xfixture* fixture) {
-    output_end_start(test_case, engine);
+    output_start_test(test_case, engine);
 
     if (!xcli.dry_run && !XIGNORE_TEST_CASE) {
         xtest_run(test_case, fixture);
