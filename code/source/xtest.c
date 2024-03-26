@@ -233,15 +233,15 @@ static void output_end_test(xtest *test_case, xengine* engine) {
 
     int64_t minutes      = (int64_t)(test_case->timer.elapsed / 60);
     int64_t seconds      = (int64_t)(test_case->timer.elapsed) % 60;
-    int64_t millis       = (int64_t)((test_case->timer.elapsed - seconds) * 1000);
-    int64_t microseconds = (int64_t)((((test_case->timer.elapsed - seconds) * 1000) - millis) * 1000);
+    int64_t millis       = (int64_t)((test_case->timer.elapsed - minutes * 60 - seconds) * 1000);
+    int64_t microseconds = (int64_t)((((test_case->timer.elapsed - minutes * 60 - seconds) * 1000) - millis) * 1000);
 
     if (xcli.verbose && !xcli.cutback) {
-        xconsole_out("cyan", ".\t> TIME: - %d minutes, %d seconds, %d milliseconds, %d microseconds\n", minutes, seconds, millis, microseconds);
+        xconsole_out("cyan", ".\t> TIME: - %lld minutes, %lld seconds, %lld milliseconds, %lld microseconds\n", minutes, seconds, millis, microseconds);
         xconsole_out("cyan", ".\t> SKIP: - %s\n", test_case->config.ignored ? "yes" : "no");
         xconsole_out("blue", "[...end...]\n");
     } else if (!xcli.cutback && !xcli.verbose) {
-        xconsole_out("cyan", "> timestamp: - %d:%d:%d:%d\n", minutes, seconds, millis, microseconds);
+        xconsole_out("cyan", "> timestamp: - %lld:%lld:%lld:%lld\n", minutes, seconds, millis, microseconds);
         xconsole_out("blue", "> ignore   : - %s\n", test_case->config.ignored ? "yes" : "no");
     }
 
@@ -261,10 +261,10 @@ static void output_summary_format(xengine *runner) {
 
     int64_t minutes      = (int64_t)(runner->timer.elapsed / 60);
     int64_t seconds      = (int64_t)(runner->timer.elapsed) % 60;
-    int64_t millis       = (int64_t)((runner->timer.elapsed - seconds) * 1000);
-    int64_t microseconds = (int64_t)((((runner->timer.elapsed - seconds) * 1000) - millis) * 1000);
+    int64_t millis       = (int64_t)((runner->timer.elapsed - minutes * 60 - seconds) * 1000);
+    int64_t microseconds = (int64_t)((((runner->timer.elapsed - minutes * 60 - seconds) * 1000) - millis) * 1000);
 
-    xconsole_out("blue", "[Test Summary: Fossil Test] %d minutes, %d seconds, %d milliseconds, %d microseconds\n", minutes, seconds, millis, microseconds);
+    xconsole_out("blue", "[Test Summary: Fossil Test] %lld minutes, %lld seconds, %lld milliseconds, %lld microseconds\n", minutes, seconds, millis, microseconds);
     xconsole_out("blue", "***************************:\n");
 
     if (runner->stats.total_count > 0) {
@@ -285,6 +285,7 @@ static void output_summary_format(xengine *runner) {
         xconsole_out("purple", "DEBUG: operator leaving: %s\n", __func__); 
     }
 } // end of func
+
 
 void output_assert_format(const char *message, const char* file, int line, const char* func) {
     if (xcli.debug) {
