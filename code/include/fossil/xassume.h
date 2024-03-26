@@ -26,20 +26,20 @@ extern "C"
 #define TEST_ASSUME_EQUAL_MEMORY(actual, expected, size)     TEST_ASSUME(memcmp(actual, expected, size) != 0, "Assumtion for memory equality not met")
 #define TEST_ASSUME_NOT_EQUAL_MEMORY(actual, expected, size) TEST_ASSUME(memcmp(actual, expected, size) == 0, "Assumtion for memory inequality not met")
 #define TEST_ASSUME_CONTAINS_MEMORY(haystack, needle, haystackSize, needleSize) \
-bool found = false; \
+xbool found = xfalse; \
 for (size_t i = 0; i <= (haystackSize - needleSize); i++) { \
     if (memcmp(haystack + i, needle, needleSize) == 0) { \
-        found = true; \
+        found = xtrue; \
         break; \
     } \
 } \
 TEST_ASSUME(!found, "Memory contains assertion failed");
 
 #define TEST_ASSUME_NOT_CONTAINS_MEMORY(haystack, needle, haystackSize, needleSize) \
-bool found = false; \
+xbool found = xfalse; \
 for (size_t i = 0; i <= (haystackSize - needleSize); i++) { \
     if (memcmp(haystack + i, needle, needleSize) == 0) { \
-        found = true; \
+        found = xtrue; \
         break; \
     } \
 } \
@@ -49,24 +49,24 @@ TEST_ASSUME(found, "Memory not contains assertion failed");
 #define TEST_ASSUME_NOT_COPIED_MEMORY(dest, source, size) TEST_ASSUME((memcmp(dest, source, size) != 0), "Memory not copied check failed");
 
 // ----------------------------------------------------------------
-// Boolean assertions
+// xboolean assertions
 // ----------------------------------------------------------------
-#define TEST_ASSUME_EQUAL(actual, expected)     TEST_ASSUME((bool)(actual) == (bool)(expected), "Assumtion for equality not met")
-#define TEST_ASSUME_NOT_EQUAL(actual, expected) TEST_ASSUME((bool)(actual) != (bool)(expected), "Assumtion for inequality not met")
-#define TEST_ASSUME_LESS(actual, expected)      TEST_ASSUME((bool)(actual) <  (bool)(expected), "Assumtion for less than not met")
-#define TEST_ASSUME_GREATER(actual, expected)   TEST_ASSUME((bool)(actual) >  (bool)(expected), "Assumtion for greater than not met")
+#define TEST_ASSUME_EQUAL(actual, expected)     TEST_ASSUME((xbool)(actual) == (xbool)(expected), "Assumtion for equality not met")
+#define TEST_ASSUME_NOT_EQUAL(actual, expected) TEST_ASSUME((xbool)(actual) != (xbool)(expected), "Assumtion for inequality not met")
+#define TEST_ASSUME_LESS(actual, expected)      TEST_ASSUME((xbool)(actual) <  (xbool)(expected), "Assumtion for less than not met")
+#define TEST_ASSUME_GREATER(actual, expected)   TEST_ASSUME((xbool)(actual) >  (xbool)(expected), "Assumtion for greater than not met")
 #define TEST_ASSUME_UNLESS(expression)          TEST_ASSUME((expression), "Assumtion not met")
-#define TEST_ASSUME_TRUE(expression)            TEST_ASSUME((expression), "Assumtion for true not met")
-#define TEST_ASSUME_FALSE(expression)           TEST_ASSUME(!(expression), "Assumtion for false not met")
+#define TEST_ASSUME_TRUE(expression)            TEST_ASSUME((expression), "Assumtion for xtrue not met")
+#define TEST_ASSUME_FALSE(expression)           TEST_ASSUME(!(expression), "Assumtion for xfalse not met")
 #define TEST_ASSUME_MSG(expression, message)    TEST_ASSUME(!(expression), message)
 
-#define TEST_ASSUME_EQUAL_BOOL(actual, expected)     TEST_ASSUME((bool)(actual) == (bool)(expected), "Assumtion for equality not met")
-#define TEST_ASSUME_NOT_EQUAL_BOOL(actual, expected) TEST_ASSUME((bool)(actual) != (bool)(expected), "Assumtion for inequality not met")
-#define TEST_ASSUME_LESS_BOOL(actual, expected)      TEST_ASSUME((bool)(actual) <  (bool)(expected), "Assumtion for less than not met")
-#define TEST_ASSUME_GREATER_BOOL(actual, expected)   TEST_ASSUME((bool)(actual) >  (bool)(expected), "Assumtion for greater than not met")
+#define TEST_ASSUME_EQUAL_BOOL(actual, expected)     TEST_ASSUME((xbool)(actual) == (xbool)(expected), "Assumtion for equality not met")
+#define TEST_ASSUME_NOT_EQUAL_BOOL(actual, expected) TEST_ASSUME((xbool)(actual) != (xbool)(expected), "Assumtion for inequality not met")
+#define TEST_ASSUME_LESS_BOOL(actual, expected)      TEST_ASSUME((xbool)(actual) <  (xbool)(expected), "Assumtion for less than not met")
+#define TEST_ASSUME_GREATER_BOOL(actual, expected)   TEST_ASSUME((xbool)(actual) >  (xbool)(expected), "Assumtion for greater than not met")
 #define TEST_ASSUME_UNLESS_BOOL(expression)          TEST_ASSUME((expression), "Assumtion not met")
-#define TEST_ASSUME_TRUE_BOOL(expression)            TEST_ASSUME((expression), "Assumtion for true not met")
-#define TEST_ASSUME_FALSE_BOOL(expression)           TEST_ASSUME(!(expression), "Assumtion for false not met")
+#define TEST_ASSUME_TRUE_BOOL(expression)            TEST_ASSUME((expression), "Assumtion for xtrue not met")
+#define TEST_ASSUME_FALSE_BOOL(expression)           TEST_ASSUME(!(expression), "Assumtion for xfalse not met")
 #define TEST_ASSUME_MSG_BOOL(expression, message)    TEST_ASSUME(!(expression), message)
 
 // ----------------------------------------------------------------
@@ -301,19 +301,19 @@ TEST_ASSUME(found, "Memory not contains assertion failed");
 // Pointer assertions
 // ----------------------------------------------------------------
 #ifdef __cplusplus
-#define TEST_ASSUME_CNULLPTR(pointer)      TEST_ASSUME((pointer) == nullptr, "Expected nullptr")
-#define TEST_ASSUME_NOT_CNULLPTR(pointer)  TEST_ASSUME((pointer) != nullptr, "Expected not nullptr")
-#define TEST_ASSUME_INVALID_PTR(pointer)   TEST_ASSUME((pointer) != nullptr, "Invalid pointer error")
-#define TEST_ASSUME_EMPTY_PTR(pointer)     TEST_ASSUME((pointer) == nullptr, "Expected empty pointer")
-#define TEST_ASSUME_NOT_EMPTY_PTR(pointer) TEST_ASSUME((pointer) != nullptr, "Expected not empty pointer")
-#define TEST_ASSUME_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_ASSUME(pointer != nullptr, "Invalid memory access")
+#define TEST_ASSUME_CNULLPTR(pointer)      TEST_ASSUME((pointer) == xnullptrptr, "Expected xnullptrptr")
+#define TEST_ASSUME_NOT_CNULLPTR(pointer)  TEST_ASSUME((pointer) != xnullptrptr, "Expected not xnullptrptr")
+#define TEST_ASSUME_INVALID_PTR(pointer)   TEST_ASSUME((pointer) != xnullptrptr, "Invalid pointer error")
+#define TEST_ASSUME_EMPTY_PTR(pointer)     TEST_ASSUME((pointer) == xnullptrptr, "Expected empty pointer")
+#define TEST_ASSUME_NOT_EMPTY_PTR(pointer) TEST_ASSUME((pointer) != xnullptrptr, "Expected not empty pointer")
+#define TEST_ASSUME_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_ASSUME(pointer != xnullptrptr, "Invalid memory access")
 #else
-#define TEST_ASSUME_CNULLPTR(pointer)      TEST_ASSUME((pointer) == NULL, "Expected NULL")
-#define TEST_ASSUME_NOT_CNULLPTR(pointer)  TEST_ASSUME((pointer) != NULL, "Expected not NULL")
-#define TEST_ASSUME_INVALID_PTR(pointer)   TEST_ASSUME((pointer) != NULL, "Invalid pointer error")
-#define TEST_ASSUME_EMPTY_PTR(pointer)     TEST_ASSUME((pointer) == NULL, "Expected empty pointer")
-#define TEST_ASSUME_NOT_EMPTY_PTR(pointer) TEST_ASSUME((pointer) != NULL, "Expected not empty pointer")
-#define TEST_ASSUME_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_ASSUME(pointer != NULL, "Invalid memory access")
+#define TEST_ASSUME_CNULLPTR(pointer)      TEST_ASSUME((pointer) == xnullptr, "Expected xnullptr")
+#define TEST_ASSUME_NOT_CNULLPTR(pointer)  TEST_ASSUME((pointer) != xnullptr, "Expected not xnullptr")
+#define TEST_ASSUME_INVALID_PTR(pointer)   TEST_ASSUME((pointer) != xnullptr, "Invalid pointer error")
+#define TEST_ASSUME_EMPTY_PTR(pointer)     TEST_ASSUME((pointer) == xnullptr, "Expected empty pointer")
+#define TEST_ASSUME_NOT_EMPTY_PTR(pointer) TEST_ASSUME((pointer) != xnullptr, "Expected not empty pointer")
+#define TEST_ASSUME_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_ASSUME(pointer != xnullptr, "Invalid memory access")
 #endif
 #define TEST_ASSUME_ARRAY_BOUNDS_PTR(pointer, index, size) TEST_ASSUME((index) >= 0 && (index) < (size), "Array index out of bounds")
 #define TEST_ASSUME_EQUAL_PTR(actual, expected)            TEST_ASSUME((actual) == (expected), "Pointer equality check failed")
@@ -330,40 +330,40 @@ TEST_ASSUME(found, "Memory not contains assertion failed");
 #define TEST_ASSUME_EQUAL_STRING(actual, expected) TEST_ASSUME((actual) == (expected), "String equality Assumtion not met")
 #define TEST_ASSUME_NOT_EQUAL_STRING(actual, expected) TEST_ASSUME((actual) != (expected), "String inequality Assumtion not met")
 #define TEST_ASSUME_LENGTH_STRING(actual, expected) TEST_ASSUME((actual).length() == (expected), "String length Assumtion not met")
-#define TEST_ASSUME_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSUME(strstr((string), (substring)) != nullptr, "Substring not found")
-#define TEST_ASSUME_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSUME(strstr((string), (substring)) == nullptr, "Substring found")
+#define TEST_ASSUME_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSUME(strstr((string), (substring)) != xnullptrptr, "Substring not found")
+#define TEST_ASSUME_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSUME(strstr((string), (substring)) == xnullptrptr, "Substring found")
 #define TEST_ASSUME_STARTS_WITH_STRING(string, prefix) TEST_ASSUME(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
-#define TEST_ASSUME_ENDS_WITH_STRING(string, suffix) TEST_ASSUME(strstr((string), (suffix) != nullptr && (strlen(string) - strlen(suffix)) == (strstr(string, suffix) - string)), "String doesn't end with the suffix")
+#define TEST_ASSUME_ENDS_WITH_STRING(string, suffix) TEST_ASSUME(strstr((string), (suffix) != xnullptrptr && (strlen(string) - strlen(suffix)) == (strstr(string, suffix) - string)), "String doesn't end with the suffix")
 #define TEST_ASSUME_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) == 0, "Case-insensitive string equality Assumtion not met")
 #define TEST_ASSUME_NOT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality Assumtion not met")
 
 #define TEST_ASSUME_EQUAL_CSTRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) == 0, "String equality Assumtion not met")
 #define TEST_ASSUME_NOT_EQUAL_CSTRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) != 0, "String inequality Assumtion not met")
 #define TEST_ASSUME_LENGTH_CSTRING(actual, expected) TEST_ASSUME(strlen((actual)) == (expected), "String length Assumtion not met")
-#define TEST_ASSUME_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSUME(strstr((string), (substring)) != NULL, "Substring not found")
-#define TEST_ASSUME_NOT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSUME(strstr((string), (substring)) == NULL, "Substring found")
+#define TEST_ASSUME_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSUME(strstr((string), (substring)) != xnullptr, "Substring not found")
+#define TEST_ASSUME_NOT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSUME(strstr((string), (substring)) == xnullptr, "Substring found")
 #define TEST_ASSUME_STARTS_WITH_CSTRING(string, prefix) TEST_ASSUME(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
-#define TEST_ASSUME_ENDS_WITH_CSTRING(string, suffix) TEST_ASSUME((strstr(string, suffix) != NULL && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
+#define TEST_ASSUME_ENDS_WITH_CSTRING(string, suffix) TEST_ASSUME((strstr(string, suffix) != xnullptr && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
 #define TEST_ASSUME_EQUAL_CASE_INSENSITIVE_CSTRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) == 0, "Case-insensitive string equality Assumtion not met")
 #define TEST_ASSUME_NOT_EQUAL_CASE_INSENSITIVE_CSTRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality Assumtion not met")
 #else
 #define TEST_ASSUME_EQUAL_CSTRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) == 0, "String equality Assumtion not met")
 #define TEST_ASSUME_NOT_EQUAL_CSTRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) != 0, "String inequality Assumtion not met")
 #define TEST_ASSUME_LENGTH_CSTRING(actual, expected) TEST_ASSUME(strlen((actual)) == (expected), "String length Assumtion not met")
-#define TEST_ASSUME_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSUME(strstr((string), (substring)) != NULL, "Substring not found")
-#define TEST_ASSUME_NOT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSUME(strstr((string), (substring)) == NULL, "Substring found")
+#define TEST_ASSUME_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSUME(strstr((string), (substring)) != xnullptr, "Substring not found")
+#define TEST_ASSUME_NOT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSUME(strstr((string), (substring)) == xnullptr, "Substring found")
 #define TEST_ASSUME_STARTS_WITH_CSTRING(string, prefix) TEST_ASSUME(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
-#define TEST_ASSUME_ENDS_WITH_CSTRING(string, suffix) TEST_ASSUME((strstr(string, suffix) != NULL && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
+#define TEST_ASSUME_ENDS_WITH_CSTRING(string, suffix) TEST_ASSUME((strstr(string, suffix) != xnullptr && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
 #define TEST_ASSUME_EQUAL_CASE_INSENSITIVE_CSTRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) == 0, "Case-insensitive string equality Assumtion not met")
 #define TEST_ASSUME_NOT_EQUAL_CASE_INSENSITIVE_CSTRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality Assumtion not met")
 
 #define TEST_ASSUME_EQUAL_STRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) == 0, "String equality Assumtion not met")
 #define TEST_ASSUME_NOT_EQUAL_STRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) != 0, "String inequality Assumtion not met")
 #define TEST_ASSUME_LENGTH_STRING(actual, expected) TEST_ASSUME(strlen((actual)) == (expected), "String length Assumtion not met")
-#define TEST_ASSUME_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSUME(strstr((string), (substring)) != NULL, "Substring not found")
-#define TEST_ASSUME_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSUME(strstr((string), (substring)) == NULL, "Substring found")
+#define TEST_ASSUME_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSUME(strstr((string), (substring)) != xnullptr, "Substring not found")
+#define TEST_ASSUME_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSUME(strstr((string), (substring)) == xnullptr, "Substring found")
 #define TEST_ASSUME_STARTS_WITH_STRING(string, prefix) TEST_ASSUME(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
-#define TEST_ASSUME_ENDS_WITH_STRING(string, suffix) TEST_ASSUME((strstr(string, suffix) != NULL && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
+#define TEST_ASSUME_ENDS_WITH_STRING(string, suffix) TEST_ASSUME((strstr(string, suffix) != xnullptr && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
 #define TEST_ASSUME_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) == 0, "Case-insensitive string equality Assumtion not met")
 #define TEST_ASSUME_NOT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSUME(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality Assumtion not met")
 #endif
@@ -402,14 +402,14 @@ TEST_ASSUME(found, "Memory not contains assertion failed");
 #define TEST_ASSUME_INVALID_OPERATION_ARRAY(condition)     TEST_ASSUME(condition, "Invalid array operation")
 #define TEST_ASSUME_INDEX_ARRAY(array, index)              TEST_ASSUME((index) >= 0 && (index) < sizeof(array) / sizeof(array[0]), "Array index out of bounds")
 
-#define TEST_ASSUME_CNULLPTR_POINTER_ARRAY(array)              TEST_ASSUME((array) != NULL, "Null array pointer")
-inline void TEST_ASSUME_equal_array(const void* actual, const void* expected, size_t elem, size_t size, const char* message) {
-    bool success = true;
+#define TEST_ASSUME_CNULLPTR_POINTER_ARRAY(array)              TEST_ASSUME((array) != xnullptr, "Null array pointer")
+inline void TEST_ASSUME_equal_array(const void* actual, const void* expected, size_t elem, size_t size, const xstring message) {
+    xbool success = xtrue;
     for (size_t i = 0; i < elem; i++) {
-        const char* actual_ptr = (const char*)actual + i * size;
-        const char* expected_ptr = (const char*)expected + i * size;
+        const xstring actual_ptr = (const xstring)actual + i * size;
+        const xstring expected_ptr = (const xstring)expected + i * size;
         if (memcmp(actual_ptr, expected_ptr, size) != 0) {
-            success = false;
+            success = xfalse;
             break;
         }
     }
@@ -468,7 +468,7 @@ inline void TEST_ASSUME_equal_array(const void* actual, const void* expected, si
     TEST_ASSUME_EQUAL_ARRAY(actual, expected, elem, void*, "Array equality Assumtion not met")
 
 #define TEST_ASSUME_EQUAL_STRING_ARRAY(actual, expected, elem) \
-    TEST_ASSUME_EQUAL_ARRAY(actual, expected, elem, const char*, "Array equality Assumtion not met")
+    TEST_ASSUME_EQUAL_ARRAY(actual, expected, elem, const xstring, "Array equality Assumtion not met")
 
 #define TEST_ASSUME_EQUAL_CHAR_ARRAY(actual, expected, elem) \
     TEST_ASSUME_EQUAL_ARRAY(actual, expected, elem, char, "Array equality Assumtion not met")
@@ -478,33 +478,33 @@ inline void TEST_ASSUME_equal_array(const void* actual, const void* expected, si
 
 #define TEST_ASSUME_EQUAL_FLOAT_ARRAY(actual, expected, elem) \
     do { \
-        bool success = true; \
+        xbool success = xtrue; \
         for (size_t i = 0; i < elem; i++) { \
             if (fabs((actual)[i] - (expected)[i]) >= ASSERT_FLOAT_EPSILON) { \
-                success = false; \
+                success = xfalse; \
                 break; \
             } \
         } \
         TEST_ASSUME(success, "Array equality Assumtion not met"); \
-    } while (false)
+    } while (xfalse)
 
 #define TEST_ASSUME_EQUAL_DOUBLE_ARRAY(actual, expected, elem) \
     do { \
-        bool success = true; \
+        xbool success = xtrue; \
         for (size_t i = 0; i < elem; i++) { \
             if (fabs((actual)[i] - (expected)[i]) >= ASSERT_DOUBLE_EPSILON) { \
-                success = false; \
+                success = xfalse; \
                 break; \
             } \
         } \
         TEST_ASSUME(success, "Array equality Assumtion not met"); \
-    } while (false)
+    } while (xfalse)
 
 // ----------------------------------------------------------------
 // File Stream assertions
 // ----------------------------------------------------------------
 
-#define TEST_ASSUME_OPEN_FILE(file) TEST_ASSUME((file) != NULL, "Failed to open file")
+#define TEST_ASSUME_OPEN_FILE(file) TEST_ASSUME((file) != xnullptr, "Failed to open file")
 #define TEST_ASSUME_READ_FILE(file, buffer, size) \
     TEST_ASSUME(fread(buffer, sizeof(char), size, file) == size, "Failed to read from file")
 #define TEST_ASSUME_WRITE_FILE(file, data, size) \

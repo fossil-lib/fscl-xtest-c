@@ -26,20 +26,20 @@ extern "C"
 #define TEST_EXPECT_EQUAL_MEMORY(actual, expected, size)     TEST_EXPECT(memcmp(actual, expected, size) != 0, "Expectation for memory equality not met")
 #define TEST_EXPECT_NOT_EQUAL_MEMORY(actual, expected, size) TEST_EXPECT(memcmp(actual, expected, size) == 0, "Expectation for memory inequality not met")
 #define TEST_EXPECT_CONTAINS_MEMORY(haystack, needle, haystackSize, needleSize) \
-bool found = false; \
+xbool found = xfalse; \
 for (size_t i = 0; i <= (haystackSize - needleSize); i++) { \
     if (memcmp(haystack + i, needle, needleSize) == 0) { \
-        found = true; \
+        found = xtrue; \
         break; \
     } \
 } \
 TEST_EXPECT(!found, "Memory contains assertion failed");
 
 #define TEST_EXPECT_NOT_CONTAINS_MEMORY(haystack, needle, haystackSize, needleSize) \
-bool found = false; \
+xbool found = xfalse; \
 for (size_t i = 0; i <= (haystackSize - needleSize); i++) { \
     if (memcmp(haystack + i, needle, needleSize) == 0) { \
-        found = true; \
+        found = xtrue; \
         break; \
     } \
 } \
@@ -49,24 +49,24 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 #define TEST_EXPECT_NOT_COPIED_MEMORY(dest, source, size) TEST_EXPECT((memcmp(dest, source, size) != 0), "Memory not copied check failed");
 
 // ----------------------------------------------------------------
-// Boolean assertions
+// xboolean assertions
 // ----------------------------------------------------------------
-#define TEST_EXPECT_EQUAL(actual, expected)     TEST_EXPECT((bool)(actual) == (bool)(expected), "Expectation for equality not met")
-#define TEST_EXPECT_NOT_EQUAL(actual, expected) TEST_EXPECT((bool)(actual) != (bool)(expected), "Expectation for inequality not met")
-#define TEST_EXPECT_LESS(actual, expected)      TEST_EXPECT((bool)(actual) <  (bool)(expected), "Expectation for less than not met")
-#define TEST_EXPECT_GREATER(actual, expected)   TEST_EXPECT((bool)(actual) >  (bool)(expected), "Expectation for greater than not met")
+#define TEST_EXPECT_EQUAL(actual, expected)     TEST_EXPECT((xbool)(actual) == (xbool)(expected), "Expectation for equality not met")
+#define TEST_EXPECT_NOT_EQUAL(actual, expected) TEST_EXPECT((xbool)(actual) != (xbool)(expected), "Expectation for inequality not met")
+#define TEST_EXPECT_LESS(actual, expected)      TEST_EXPECT((xbool)(actual) <  (xbool)(expected), "Expectation for less than not met")
+#define TEST_EXPECT_GREATER(actual, expected)   TEST_EXPECT((xbool)(actual) >  (xbool)(expected), "Expectation for greater than not met")
 #define TEST_EXPECT_UNLESS(expression)          TEST_EXPECT((expression), "Expectation not met")
-#define TEST_EXPECT_TRUE(expression)            TEST_EXPECT((expression), "Expectation for true not met")
-#define TEST_EXPECT_FALSE(expression)           TEST_EXPECT(!(expression), "Expectation for false not met")
+#define TEST_EXPECT_TRUE(expression)            TEST_EXPECT((expression), "Expectation for xtrue not met")
+#define TEST_EXPECT_FALSE(expression)           TEST_EXPECT(!(expression), "Expectation for xfalse not met")
 #define TEST_EXPECT_MSG(expression, message)    TEST_EXPECT(!(expression), message)
 
-#define TEST_EXPECT_EQUAL_BOOL(actual, expected)     TEST_EXPECT((bool)(actual) == (bool)(expected), "Expectation for equality not met")
-#define TEST_EXPECT_NOT_EQUAL_BOOL(actual, expected) TEST_EXPECT((bool)(actual) != (bool)(expected), "Expectation for inequality not met")
-#define TEST_EXPECT_LESS_BOOL(actual, expected)      TEST_EXPECT((bool)(actual) <  (bool)(expected), "Expectation for less than not met")
-#define TEST_EXPECT_GREATER_BOOL(actual, expected)   TEST_EXPECT((bool)(actual) >  (bool)(expected), "Expectation for greater than not met")
+#define TEST_EXPECT_EQUAL_BOOL(actual, expected)     TEST_EXPECT((xbool)(actual) == (xbool)(expected), "Expectation for equality not met")
+#define TEST_EXPECT_NOT_EQUAL_BOOL(actual, expected) TEST_EXPECT((xbool)(actual) != (xbool)(expected), "Expectation for inequality not met")
+#define TEST_EXPECT_LESS_BOOL(actual, expected)      TEST_EXPECT((xbool)(actual) <  (xbool)(expected), "Expectation for less than not met")
+#define TEST_EXPECT_GREATER_BOOL(actual, expected)   TEST_EXPECT((xbool)(actual) >  (xbool)(expected), "Expectation for greater than not met")
 #define TEST_EXPECT_UNLESS_BOOL(expression)          TEST_EXPECT((expression), "Expectation not met")
-#define TEST_EXPECT_TRUE_BOOL(expression)            TEST_EXPECT((expression), "Expectation for true not met")
-#define TEST_EXPECT_FALSE_BOOL(expression)           TEST_EXPECT(!(expression), "Expectation for false not met")
+#define TEST_EXPECT_TRUE_BOOL(expression)            TEST_EXPECT((expression), "Expectation for xtrue not met")
+#define TEST_EXPECT_FALSE_BOOL(expression)           TEST_EXPECT(!(expression), "Expectation for xfalse not met")
 #define TEST_EXPECT_MSG_BOOL(expression, message)    TEST_EXPECT(!(expression), message)
 
 // ----------------------------------------------------------------
@@ -303,19 +303,19 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 // Pointer assertions
 // ----------------------------------------------------------------
 #ifdef __cplusplus
-#define TEST_EXPECT_CNULLPTR(pointer)      TEST_EXPECT((pointer) == nullptr, "Expected nullptr")
-#define TEST_EXPECT_NOT_CNULLPTR(pointer)  TEST_EXPECT((pointer) != nullptr, "Expected not nullptr")
-#define TEST_EXPECT_INVALID_PTR(pointer)   TEST_EXPECT((pointer) != nullptr, "Invalid pointer error")
-#define TEST_EXPECT_EMPTY_PTR(pointer)     TEST_EXPECT((pointer) == nullptr, "Expected empty pointer")
-#define TEST_EXPECT_NOT_EMPTY_PTR(pointer) TEST_EXPECT((pointer) != nullptr, "Expected not empty pointer")
-#define TEST_EXPECT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_EXPECT(pointer != nullptr, "Invalid memory access")
+#define TEST_EXPECT_CNULLPTR(pointer)      TEST_EXPECT((pointer) == xnullptrptr, "Expected xnullptrptr")
+#define TEST_EXPECT_NOT_CNULLPTR(pointer)  TEST_EXPECT((pointer) != xnullptrptr, "Expected not xnullptrptr")
+#define TEST_EXPECT_INVALID_PTR(pointer)   TEST_EXPECT((pointer) != xnullptrptr, "Invalid pointer error")
+#define TEST_EXPECT_EMPTY_PTR(pointer)     TEST_EXPECT((pointer) == xnullptrptr, "Expected empty pointer")
+#define TEST_EXPECT_NOT_EMPTY_PTR(pointer) TEST_EXPECT((pointer) != xnullptrptr, "Expected not empty pointer")
+#define TEST_EXPECT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_EXPECT(pointer != xnullptrptr, "Invalid memory access")
 #else
-#define TEST_EXPECT_CNULLPTR(pointer)      TEST_EXPECT((pointer) == NULL, "Expected NULL")
-#define TEST_EXPECT_NOT_CNULLPTR(pointer)  TEST_EXPECT((pointer) != NULL, "Expected not NULL")
-#define TEST_EXPECT_INVALID_PTR(pointer)   TEST_EXPECT((pointer) != NULL, "Invalid pointer error")
-#define TEST_EXPECT_EMPTY_PTR(pointer)     TEST_EXPECT((pointer) == NULL, "Expected empty pointer")
-#define TEST_EXPECT_NOT_EMPTY_PTR(pointer) TEST_EXPECT((pointer) != NULL, "Expected not empty pointer")
-#define TEST_EXPECT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_EXPECT(pointer != NULL, "Invalid memory access")
+#define TEST_EXPECT_CNULLPTR(pointer)      TEST_EXPECT((pointer) == xnullptr, "Expected xnullptr")
+#define TEST_EXPECT_NOT_CNULLPTR(pointer)  TEST_EXPECT((pointer) != xnullptr, "Expected not xnullptr")
+#define TEST_EXPECT_INVALID_PTR(pointer)   TEST_EXPECT((pointer) != xnullptr, "Invalid pointer error")
+#define TEST_EXPECT_EMPTY_PTR(pointer)     TEST_EXPECT((pointer) == xnullptr, "Expected empty pointer")
+#define TEST_EXPECT_NOT_EMPTY_PTR(pointer) TEST_EXPECT((pointer) != xnullptr, "Expected not empty pointer")
+#define TEST_EXPECT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_EXPECT(pointer != xnullptr, "Invalid memory access")
 #endif
 #define TEST_EXPECT_ARRAY_BOUNDS_PTR(pointer, index, size) TEST_EXPECT((index) >= 0 && (index) < (size), "Array index out of bounds")
 #define TEST_EXPECT_EQUAL_PTR(actual, expected)            TEST_EXPECT((actual) == (expected), "Pointer equality check failed")
@@ -332,40 +332,40 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 #define TEST_EXPECT_EQUAL_STRING(actual, expected) TEST_EXPECT((actual) == (expected), "String equality expectation not met")
 #define TEST_EXPECT_NOT_EQUAL_STRING(actual, expected) TEST_EXPECT((actual) != (expected), "String inequality expectation not met")
 #define TEST_EXPECT_LENGTH_STRING(actual, expected) TEST_EXPECT((actual).length() == (expected), "String length expectation not met")
-#define TEST_EXPECT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_EXPECT(strstr((string), (substring)) != nullptr, "Substring not found")
-#define TEST_EXPECT_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_EXPECT(strstr((string), (substring)) == nullptr, "Substring found")
+#define TEST_EXPECT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_EXPECT(strstr((string), (substring)) != xnullptrptr, "Substring not found")
+#define TEST_EXPECT_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_EXPECT(strstr((string), (substring)) == xnullptrptr, "Substring found")
 #define TEST_EXPECT_STARTS_WITH_STRING(string, prefix) TEST_EXPECT(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
-#define TEST_EXPECT_ENDS_WITH_STRING(string, suffix) TEST_EXPECT(strstr((string), (suffix) != nullptr && (strlen(string) - strlen(suffix)) == (strstr(string, suffix) - string)), "String doesn't end with the suffix")
+#define TEST_EXPECT_ENDS_WITH_STRING(string, suffix) TEST_EXPECT(strstr((string), (suffix) != xnullptrptr && (strlen(string) - strlen(suffix)) == (strstr(string, suffix) - string)), "String doesn't end with the suffix")
 #define TEST_EXPECT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) == 0, "Case-insensitive string equality expectation not met")
 #define TEST_EXPECT_NOT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality expectation not met")
 
 #define TEST_EXPECT_EQUAL_CSTRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) == 0, "String equality expectation not met")
 #define TEST_EXPECT_NOT_EQUAL_CSTRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) != 0, "String inequality expectation not met")
 #define TEST_EXPECT_LENGTH_CSTRING(actual, expected) TEST_EXPECT(strlen((actual)) == (expected), "String length expectation not met")
-#define TEST_EXPECT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_EXPECT(strstr((string), (substring)) != NULL, "Substring not found")
-#define TEST_EXPECT_NOT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_EXPECT(strstr((string), (substring)) == NULL, "Substring found")
+#define TEST_EXPECT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_EXPECT(strstr((string), (substring)) != xnullptr, "Substring not found")
+#define TEST_EXPECT_NOT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_EXPECT(strstr((string), (substring)) == xnullptr, "Substring found")
 #define TEST_EXPECT_STARTS_WITH_CSTRING(string, prefix) TEST_EXPECT(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
-#define TEST_EXPECT_ENDS_WITH_CSTRING(string, suffix) TEST_EXPECT((strstr(string, suffix) != NULL && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
+#define TEST_EXPECT_ENDS_WITH_CSTRING(string, suffix) TEST_EXPECT((strstr(string, suffix) != xnullptr && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
 #define TEST_EXPECT_EQUAL_CASE_INSENSITIVE_CSTRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) == 0, "Case-insensitive string equality expectation not met")
 #define TEST_EXPECT_NOT_EQUAL_CASE_INSENSITIVE_CSTRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality expectation not met")
 #else
 #define TEST_EXPECT_EQUAL_CSTRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) == 0, "String equality expectation not met")
 #define TEST_EXPECT_NOT_EQUAL_CSTRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) != 0, "String inequality expectation not met")
 #define TEST_EXPECT_LENGTH_CSTRING(actual, expected) TEST_EXPECT(strlen((actual)) == (expected), "String length expectation not met")
-#define TEST_EXPECT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_EXPECT(strstr((string), (substring)) != NULL, "Substring not found")
-#define TEST_EXPECT_NOT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_EXPECT(strstr((string), (substring)) == NULL, "Substring found")
+#define TEST_EXPECT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_EXPECT(strstr((string), (substring)) != xnullptr, "Substring not found")
+#define TEST_EXPECT_NOT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_EXPECT(strstr((string), (substring)) == xnullptr, "Substring found")
 #define TEST_EXPECT_STARTS_WITH_CSTRING(string, prefix) TEST_EXPECT(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
-#define TEST_EXPECT_ENDS_WITH_CSTRING(string, suffix) TEST_EXPECT((strstr(string, suffix) != NULL && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
+#define TEST_EXPECT_ENDS_WITH_CSTRING(string, suffix) TEST_EXPECT((strstr(string, suffix) != xnullptr && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
 #define TEST_EXPECT_EQUAL_CASE_INSENSITIVE_CSTRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) == 0, "Case-insensitive string equality expectation not met")
 #define TEST_EXPECT_NOT_EQUAL_CASE_INSENSITIVE_CSTRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality expectation not met")
 
 #define TEST_EXPECT_EQUAL_STRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) == 0, "String equality expectation not met")
 #define TEST_EXPECT_NOT_EQUAL_STRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) != 0, "String inequality expectation not met")
 #define TEST_EXPECT_LENGTH_STRING(actual, expected) TEST_EXPECT(strlen((actual)) == (expected), "String length expectation not met")
-#define TEST_EXPECT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_EXPECT(strstr((string), (substring)) != NULL, "Substring not found")
-#define TEST_EXPECT_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_EXPECT(strstr((string), (substring)) == NULL, "Substring found")
+#define TEST_EXPECT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_EXPECT(strstr((string), (substring)) != xnullptr, "Substring not found")
+#define TEST_EXPECT_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_EXPECT(strstr((string), (substring)) == xnullptr, "Substring found")
 #define TEST_EXPECT_STARTS_WITH_STRING(string, prefix) TEST_EXPECT(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
-#define TEST_EXPECT_ENDS_WITH_STRING(string, suffix) TEST_EXPECT((strstr(string, suffix) != NULL && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
+#define TEST_EXPECT_ENDS_WITH_STRING(string, suffix) TEST_EXPECT((strstr(string, suffix) != xnullptr && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
 #define TEST_EXPECT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) == 0, "Case-insensitive string equality expectation not met")
 #define TEST_EXPECT_NOT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_EXPECT(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality expectation not met")
 #endif
@@ -402,17 +402,17 @@ TEST_EXPECT(found, "Memory not contains assertion failed");
 // ----------------------------------------------------------------
 #define TEST_EXPECT_INVALID_SIZE_ARRAY(size)               TEST_EXPECT((size) > 0, "Invalid array size")
 #define TEST_EXPECT_INDEX_OUT_OF_BOUNDS_ARRAY(index, size) TEST_EXPECT((index) >= 0 && (index) < (size), "Array index out of bounds")
-#define TEST_EXPECT_CNULLPTR_POINTER_ARRAY(array)              TEST_EXPECT((array) != NULL, "Null array pointer")
+#define TEST_EXPECT_CNULLPTR_POINTER_ARRAY(array)              TEST_EXPECT((array) != xnullptr, "Null array pointer")
 #define TEST_EXPECT_INVALID_OPERATION_ARRAY(condition)     TEST_EXPECT(condition, "Invalid array operation")
 #define TEST_EXPECT_INDEX_ARRAY(array, index)              TEST_EXPECT((index) >= 0 && (index) < sizeof(array) / sizeof(array[0]), "Array index out of bounds")
 
-inline void test_expect_equal_array(const void* actual, const void* expected, size_t elem, size_t size, const char* message) {
-    bool success = true;
+inline void test_expect_equal_array(const void* actual, const void* expected, size_t elem, size_t size, const xstring message) {
+    xbool success = xtrue;
     for (size_t i = 0; i < elem; i++) {
-        const char* actual_ptr = (const char*)actual + i * size;
-        const char* expected_ptr = (const char*)expected + i * size;
+        const xstring actual_ptr = (const xstring)actual + i * size;
+        const xstring expected_ptr = (const xstring)expected + i * size;
         if (memcmp(actual_ptr, expected_ptr, size) != 0) {
-            success = false;
+            success = xfalse;
             break;
         }
     }
@@ -471,7 +471,7 @@ inline void test_expect_equal_array(const void* actual, const void* expected, si
     TEST_EXPECT_EQUAL_ARRAY(actual, expected, elem, void*, "Array equality expectation not met")
 
 #define TEST_EXPECT_EQUAL_STRING_ARRAY(actual, expected, elem) \
-    TEST_EXPECT_EQUAL_ARRAY(actual, expected, elem, const char*, "Array equality expectation not met")
+    TEST_EXPECT_EQUAL_ARRAY(actual, expected, elem, const xstring, "Array equality expectation not met")
 
 #define TEST_EXPECT_EQUAL_CHAR_ARRAY(actual, expected, elem) \
     TEST_EXPECT_EQUAL_ARRAY(actual, expected, elem, char, "Array equality expectation not met")
@@ -481,33 +481,33 @@ inline void test_expect_equal_array(const void* actual, const void* expected, si
 
 #define TEST_EXPECT_EQUAL_FLOAT_ARRAY(actual, expected, elem) \
     do { \
-        bool success = true; \
+        xbool success = xtrue; \
         for (size_t i = 0; i < elem; i++) { \
             if (fabs((actual)[i] - (expected)[i]) >= ASSERT_FLOAT_EPSILON) { \
-                success = false; \
+                success = xfalse; \
                 break; \
             } \
         } \
         TEST_EXPECT(success, "Array equality expectation not met"); \
-    } while (false)
+    } while (xfalse)
 
 #define TEST_EXPECT_EQUAL_DOUBLE_ARRAY(actual, expected, elem) \
     do { \
-        bool success = true; \
+        xbool success = xtrue; \
         for (size_t i = 0; i < elem; i++) { \
             if (fabs((actual)[i] - (expected)[i]) >= ASSERT_DOUBLE_EPSILON) { \
-                success = false; \
+                success = xfalse; \
                 break; \
             } \
         } \
         TEST_EXPECT(success, "Array equality expectation not met"); \
-    } while (false)
+    } while (xfalse)
 
 // ----------------------------------------------------------------
 // File Stream assertions
 // ----------------------------------------------------------------
 
-#define TEST_EXPECT_OPEN_FILE(file) TEST_EXPECT((file) != NULL, "Failed to open file")
+#define TEST_EXPECT_OPEN_FILE(file) TEST_EXPECT((file) != xnullptr, "Failed to open file")
 #define TEST_EXPECT_READ_FILE(file, buffer, size) \
     TEST_EXPECT(fread(buffer, sizeof(char), size, file) == size, "Failed to read from file")
 #define TEST_EXPECT_WRITE_FILE(file, data, size) \
