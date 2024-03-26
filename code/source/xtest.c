@@ -274,9 +274,9 @@ static void output_summary_format(xengine *runner) {
         xconsole_out("cyan", "> - All Error   : - %.2i\n",    runner->stats.error_count);
         xconsole_out("cyan", "> - Benchmark   : - %.2i\n",    runner->stats.mark_count);
         xconsole_out("cyan", "> - Jellyfish AI: - %.2i\n",   runner->stats.fish_count);
-        xconsole_out("yellow",  "> - Total Cases : - %.2i\n", runner->stats.total_count);
+        xconsole_out("orange",  "> - Total Cases : - %.2i\n", runner->stats.total_count);
     } else {
-        xconsole_out("blue", "\n\n\n%s\n\n\n\n\n", empty_runner_comment());
+        xconsole_out("cyan", "\n\n\n%s\n\n\n\n\n", empty_runner_comment());
     }
 
     xconsole_out("blue", "***************************:\n");
@@ -360,13 +360,13 @@ void output_xerrors_format(const char* reason, const char* file, int line, const
 
     if (xcli.verbose && !xcli.cutback) {
         xconsole_out("blue", "***************************:\n");
-        xconsole_out("red", " .\n\t> File: %s .\n\t> Line: %d .\n\t> Function: %s\n", file, line, func);
-        xconsole_out("red", " .\n\t> Test error: %s\n", reason);
+        xconsole_out("orange", " .\n\t> File: %s .\n\t> Line: %d .\n\t> Function: %s\n", file, line, func);
+        xconsole_out("orange", " .\n\t> Test error: %s\n", reason);
     } else if (!xcli.cutback && !xcli.verbose) {
-        xconsole_out("red", "Test error: %s\n", reason);
-        xconsole_out("red", "File: %s, Line: %d, Function: %s\n", file, line, func);
+        xconsole_out("orange", "Test error: %s\n", reason);
+        xconsole_out("orange", "File: %s, Line: %d, Function: %s\n", file, line, func);
     } else if (xcli.cutback && !xcli.verbose) {
-        xconsole_out("red", "[E]");
+        xconsole_out("orange", "[F]");
     }
     XERRORS_TEST_CASE = true;
 
