@@ -27,18 +27,18 @@ typedef struct {
 // Global xparser variable
 xparser xcli;
 
+static uint8_t ASSUME_MAX    = 5;
+static uint8_t ASSUME_ISSUES = 0;
+
 // Static control panel for assert/expect and marks
-// extern uint8_t XTEST_PASS_SCAN;
 static uint8_t XEXPECT_PASS_SCAN = true;
 static uint8_t XASSERT_PASS_SCAN = true;
 static uint8_t XIGNORE_TEST_CASE = false;
 static uint8_t XERRORS_TEST_CASE = false;
+
 static uint8_t MAX_REPEATS = 100;
 static uint8_t MIN_REPEATS = 1;
 
-// Fish AI variables
-static uint8_t FISH_ANOMALY_DETECTED = false;
-static uint8_t FISH_FLAKY_DETECTED = false;
 
 //
 // local types
@@ -322,13 +322,6 @@ xengine xtest_create(int argc, char **argv) {
 
 // Finalizes the execution of a Trilobite XUnit runner and displays test results.
 int xtest_erase(xengine *runner) {
-    if (FISH_ANOMALY_DETECTED) {
-        xtest_console_out("red", "Fish anomaly detected!\n");
-    }
-
-    if (FISH_FLAKY_DETECTED) {
-        xtest_console_out("red", "Flaky test detected!\n");
-    }
     if (xcli.dry_run) {
         xtest_console_out("blue", "Simulating test results...\n");
     } else {
@@ -363,7 +356,7 @@ static void xtest_update_scoreboard(xengine* engine, xtest* test_case) {
     }
 
     // Update main score values
-    if (!XASSERT_PASS_SCAN || !XEXPECT_PASS_SCAN || FISH_ANOMALY_DETECTED) {
+    if (!XASSERT_PASS_SCAN || !XEXPECT_PASS_SCAN || !XASSUME_PASS_SCAN) {
         engine->stats.failed_count++;
     } else {
         engine->stats.passed_count++;
@@ -460,7 +453,6 @@ void xmark_assert_seconds(uint64_t elapsed_time_ns, double max_seconds) {
     }
     double elapsed_seconds = elapsed_time_ns / 1e9;
     if (elapsed_seconds > max_seconds) {
-        FISH_ANOMALY_DETECTED = true;
         XASSERT_PASS_SCAN = false;
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out("blue", "[XMARK ISSUE]\n");
@@ -484,7 +476,6 @@ void xmark_assert_minutes(uint64_t elapsed_time_ns, double max_minutes) {
     }
     double elapsed_minutes = elapsed_time_ns / 60e9;
     if (elapsed_minutes > max_minutes) {
-        FISH_ANOMALY_DETECTED = true;
         XASSERT_PASS_SCAN = false;
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out("blue", "[XMARK ISSUE]\n");
@@ -506,7 +497,6 @@ void xmark_expect_seconds(uint64_t elapsed_time_ns, double max_seconds) {
     double elapsed_seconds = elapsed_time_ns / 1e9;
     XEXPECT_PASS_SCAN = true;
     if (elapsed_seconds > max_seconds) {
-        FISH_ANOMALY_DETECTED = true;
         XEXPECT_PASS_SCAN = false;
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out("blue", "[XMARK ISSUE]\n");
@@ -529,7 +519,6 @@ void xmark_expect_minutes(uint64_t elapsed_time_ns, double max_minutes) {
     XEXPECT_PASS_SCAN = true;
 
     if (elapsed_minutes > max_minutes) {
-        FISH_ANOMALY_DETECTED = true;
         XEXPECT_PASS_SCAN = false;
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out("blue", "[XMARK ISSUE]\n");
@@ -579,6 +568,28 @@ void xerrors(const char* reason, const char* file, int line, const char* func) {
     }
 } // end of func
 
+// Custom assumptions function with optional message.
+void xassume(bool expression, const char *message, const char* file, int line, const char* func) {
+    if (ASSUME_ISSUES == ASSUME_MAX) {
+        return;
+    }
+    if (!expression) {
+        ASSUME_ISSUES++;
+        if (xcli.verbose && !xcli.cutback) {
+            xtest_console_out("blue", "[ASSUME ISSUE]\n");
+            xtest_console_out("red", "line: %.4i\nfile: %s\nfunc: %s\n", line, file, func);
+            xtest_console_out("red", "message: %s\n", message);
+        } else if (!xcli.cutback && !xcli.verbose) {
+            xtest_console_out("red", "message: %s\n line: %.4i\n func: %s\n", message, line, func);
+        } else if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out("red", "[F]");
+        }
+    } else {
+        if (xcli.cutback && !xcli.verbose) {
+            xtest_console_out("green", "[P]");
+        }
+    }
+} // end of func
 
 // Custom assertion function with optional message.
 void xassert(bool expression, const char *message, const char* file, int line, const char* func) {
@@ -586,7 +597,6 @@ void xassert(bool expression, const char *message, const char* file, int line, c
         return;
     }
     if (!expression) {
-        FISH_ANOMALY_DETECTED = true;
         XASSERT_PASS_SCAN = false;
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out("blue", "[ASSERT ISSUE]\n");
@@ -610,7 +620,6 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 
     if (!expression) {
         XEXPECT_PASS_SCAN = false;
-        FISH_ANOMALY_DETECTED = true;
         if (xcli.verbose && !xcli.cutback) {
             xtest_console_out("blue", "[EXPECT ISSUE]\n");
             xtest_console_out("red", "line: %.4i\nfile: %s\nfunc: %s\n", line, file, func);
