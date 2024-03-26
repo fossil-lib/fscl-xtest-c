@@ -1,4 +1,4 @@
-name: CI Support
+name: CI Command Test
 
 on:
   push:
