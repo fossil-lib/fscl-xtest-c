@@ -493,11 +493,11 @@ static void xparser_parse_args(int argc, char *argv[]) {
                 if (iter_repeat >= MIN_REPEATS && iter_repeat <= MAX_REPEATS) {
                     xcli.iter_repeat = iter_repeat;
                 } else {
-                    xconsole_out("Error: --repeat value must be between 1 and 100.\n");
+                    xconsole_out("red", "Error: --repeat value must be between 1 and 100.\n");
                     exit(EXIT_FAILURE);
                 }
             } else {
-                xconsole_out("Error: --repeat option requires a numeric argument.\n");
+                xconsole_out("red", "Error: --repeat option requires a numeric argument.\n");
                 exit(EXIT_FAILURE);
             }
         }
