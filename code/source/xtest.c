@@ -14,16 +14,16 @@ Description:
 #include <stdarg.h>
 
 typedef struct {
-    bool cutback;
-    bool verbose;
-    bool dry_run;
-    bool only_test;
-    bool only_fish;
-    bool only_mark;
-    bool debug;
-    bool color;
-    bool ci;
-    bool repeat;
+    xbool cutback;
+    xbool verbose;
+    xbool dry_run;
+    xbool only_test;
+    xbool only_fish;
+    xbool only_mark;
+    xbool debug;
+    xbool color;
+    xbool ci;
+    xbool repeat;
     uint8_t iter_repeat;
 } xparser;
 
@@ -34,18 +34,17 @@ static uint8_t ASSUME_MAX    = 5;
 static uint8_t ASSUME_ISSUES = 0;
 
 // Static control panel for assert/expect and marks
-static uint8_t XTEST_PASS_SCAN = true;
-static uint8_t XIGNORE_TEST_CASE = false;
-static uint8_t XERRORS_TEST_CASE = false;
+static uint8_t XTEST_PASS_SCAN = xtrue;
+static uint8_t XIGNORE_TEST_CASE = xfalse;
+static uint8_t XERRORS_TEST_CASE = xfalse;
 
 static uint8_t MAX_REPEATS = 100;
 static uint8_t MIN_REPEATS = 1;
 
-
 //
 // local types
 //
-typedef char *xstring;
+typedef xstring xstring;
 static uint64_t start_time;
 #if defined(_WIN32)
 static double frequency; // Variable to store the frequency for Windows
@@ -57,19 +56,19 @@ static double frequency; // Variable to store the frequency for Windows
 
 // to make strdup work on multable platforms and be C23, C18 compatabliity
 // a custom strdup has been written to soul purpose of using strdup.
-static char *xstrdup(const char *str) {
-    if (str == NULL) {
-        return NULL;
+static xstring xstrdup(const xstring str) {
+    if (str == xnullptr) {
+        return xnullptr;
     }
     size_t len = strlen(str) + 1;
-    char *copy = (char *)malloc(len);
-    if (copy != NULL) {
+    xstring copy = (xstring )malloc(len);
+    if (copy != xnullptr) {
         memcpy(copy, str, len);
     }
     return copy;
 }
 
-char* current_datetime(void) {
+xstring current_datetime(void) {
     time_t rawtime;
     struct tm* timeinfo;
     static char datetime[20];  // Buffer to hold the formatted date and time
@@ -82,9 +81,9 @@ char* current_datetime(void) {
     return datetime;
 }
 
-static char *replace_underscore(const char *str) {
-    char *result = xstrdup(str);
-    char *ptr = result;
+static xstring replace_underscore(const xstring str) {
+    xstring result = xstrdup(str);
+    xstring ptr = result;
 
     while (*ptr) {
         if (*ptr == '_') {
@@ -98,12 +97,12 @@ static char *replace_underscore(const char *str) {
 // printf has its use cases but to handle multable general purpose features without
 // forgetting to change a printf this would servse as the internal prinf with color
 // and potintal for additnal output releated functionality.
-static void xconsole_out(const char *color_name, const char *format, ...) {
+static void xconsole_out(const xstring color_name, const xstring format, ...) {
     va_list args;
     va_start(args, format);
     
     if (xcli.color) {
-        char *color_code = "";
+        xstring color_code = "";
         
         if (strcmp(color_name, "red") == 0) {
             color_code = "\033[1;31m";
@@ -135,8 +134,8 @@ static void xconsole_out(const char *color_name, const char *format, ...) {
 
 // Function to generate a random humorous comment about an empty test runner
 // becuse way not add a little sillyness.
-const char *empty_runner_comment() {
-    const char *comments[] = {
+const xstring empty_runner_comment() {
+    const xstring comments[] = {
         "Looks like the test runner is on a coffee break!",
         "The test runner is feeling a bit empty today, like my coffee cup.",
         "The test runner is as empty as a developer's coffee mug on Monday morning.",
@@ -162,7 +161,7 @@ const char *empty_runner_comment() {
 
     int num_comments = sizeof(comments) / sizeof(comments[0]);
 
-    srand(time(NULL));
+    srand(time(xnullptr));
 
     // Generate a random index
     int random_index = rand() % num_comments;
@@ -173,8 +172,8 @@ const char *empty_runner_comment() {
 // Function to generate a random tip for unit testing released tasks
 // as this would servse as a handy feature and be helpful for teaching
 // new developers how they can write good test cases.
-const char *helpful_tester_tip() {
-    const char *tips[] = {
+const xstring helpful_tester_tip() {
+    const xstring tips[] = {
         "Always write meaningful test names.",
         "Test both positive and negative cases.",
         "Use mocking for external dependencies.",
@@ -204,7 +203,7 @@ const char *helpful_tester_tip() {
 
     int num_tips = sizeof(tips) / sizeof(tips[0]);
 
-    srand(time(NULL));
+    srand(time(xnullptr));
 
     // Generate a random index
     int random_index = rand() % num_tips;
@@ -298,7 +297,7 @@ static void output_summary_format(xengine *runner) {
     }
 } // end of func
 
-void output_assert_format(const char *message, const char* file, int line, const char* func) {
+void output_assert_format(const xstring message, const xstring file, int line, const xstring func) {
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator in: %s\n", __func__); 
     }
@@ -314,13 +313,13 @@ void output_assert_format(const char *message, const char* file, int line, const
     } else if (xcli.cutback && !xcli.verbose) {
         xconsole_out("red", "[F]");
     }
-    XTEST_PASS_SCAN = false;
+    XTEST_PASS_SCAN = xfalse;
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator leaving: %s\n", __func__); 
     }
 }
 
-void output_assume_format(const char *message, const char* file, int line, const char* func) {
+void output_assume_format(const xstring message, const xstring file, int line, const xstring func) {
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator in: %s\n", __func__); 
     }
@@ -337,13 +336,13 @@ void output_assume_format(const char *message, const char* file, int line, const
         xconsole_out("red", "[F]");
     }
     ASSUME_ISSUES++;
-    XTEST_PASS_SCAN = false;
+    XTEST_PASS_SCAN = xfalse;
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator leaving: %s\n", __func__); 
     }
 }
 
-void output_expect_format(const char *message, const char* file, int line, const char* func) {
+void output_expect_format(const xstring message, const xstring file, int line, const xstring func) {
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator in: %s\n", __func__); 
     }
@@ -359,13 +358,13 @@ void output_expect_format(const char *message, const char* file, int line, const
     } else if (xcli.cutback && !xcli.verbose) {
         xconsole_out("red", "[F]");
     }
-    XTEST_PASS_SCAN = false;
+    XTEST_PASS_SCAN = xfalse;
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator leaving: %s\n", __func__); 
     }
 }
 
-void output_xerrors_format(const char* reason, const char* file, int line, const char* func) {
+void output_xerrors_format(const xstring reason, const xstring file, int line, const xstring func) {
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator in: %s\n", __func__); 
     }
@@ -380,14 +379,14 @@ void output_xerrors_format(const char* reason, const char* file, int line, const
     } else if (xcli.cutback && !xcli.verbose) {
         xconsole_out("orange", "[F]");
     }
-    XERRORS_TEST_CASE = true;
+    XERRORS_TEST_CASE = xtrue;
 
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator leaving: %s\n", __func__); 
     }
 }
 
-void output_xignore_format(const char* reason, const char* file, int line, const char* func) {
+void output_xignore_format(const xstring reason, const xstring file, int line, const xstring func) {
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator in: %s\n", __func__); 
     }
@@ -402,7 +401,7 @@ void output_xignore_format(const char* reason, const char* file, int line, const
     } else if (xcli.cutback && !xcli.verbose) {
         xconsole_out("yellow", "[S]");
     }
-    XIGNORE_TEST_CASE = true;
+    XIGNORE_TEST_CASE = xtrue;
 
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator leaving: %s\n", __func__); 
@@ -423,7 +422,7 @@ void output_benchmark_format(uint64_t elapsed, double max) {
     } else if (xcli.cutback && !xcli.verbose) {
         xconsole_out("red", "[F]");
     }
-    XTEST_PASS_SCAN = false;
+    XTEST_PASS_SCAN = xfalse;
 
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator leaving: %s\n", __func__); 
@@ -462,56 +461,56 @@ static void output_usage_format(void) {
 // ==============================================================================
 
 // Function to check if a specific option is present
-static bool xparser_has_option(int argc, char *argv[], const char *option) {
+static xbool xparser_has_option(int argc, xstring argv[], const xstring option) {
     for (int32_t i = 1; i < argc; i++) {
         if (strcmp(argv[i], option) == 0) {
-            return true;
+            return xtrue;
         }
     }
-    return false;
+    return xfalse;
 }
 
 // Original xparser_parse_args function
-static void xparser_parse_args(int argc, char *argv[]) {
-    xcli.cutback   = false;
-    xcli.verbose   = false;
-    xcli.dry_run   = false;
-    xcli.repeat    = false;
-    xcli.debug     = false;
-    xcli.color     = false;
-    xcli.only_test = false;
-    xcli.only_mark = false;
-    xcli.ci        = false;
+static void xparser_parse_args(int argc, xstring argv[]) {
+    xcli.cutback   = xfalse;
+    xcli.verbose   = xfalse;
+    xcli.dry_run   = xfalse;
+    xcli.repeat    = xfalse;
+    xcli.debug     = xfalse;
+    xcli.color     = xfalse;
+    xcli.only_test = xfalse;
+    xcli.only_mark = xfalse;
+    xcli.ci        = xfalse;
 
     for (int32_t i = 1; i < argc; i++) {
         if (xparser_has_option(argc, argv, "--dry-run")) {
-            xcli.dry_run = true;
+            xcli.dry_run = xtrue;
         } else if (xparser_has_option(argc, argv, "--cutback")) {
-            xcli.cutback = true;
-            xcli.verbose = false;
+            xcli.cutback = xtrue;
+            xcli.verbose = xfalse;
         } else if (xparser_has_option(argc, argv, "--verbose")) {
-            xcli.ci = true;
+            xcli.ci = xtrue;
         }else if (xparser_has_option(argc, argv, "--debug")) {
-            xcli.debug = true;
+            xcli.debug = xtrue;
         } else if (xparser_has_option(argc, argv, "--color")) {
-            xcli.color = true;
+            xcli.color = xtrue;
         } else if (xparser_has_option(argc, argv, "--human")) {
-            xcli.color = true;
-            xcli.verbose = true;
+            xcli.color = xtrue;
+            xcli.verbose = xtrue;
         } else if (xparser_has_option(argc, argv, "--ci")) {
-            xcli.ci = true;
+            xcli.ci = xtrue;
         } else if (xparser_has_option(argc, argv, "--only-test")) {
-            xcli.only_test = true;
-            xcli.only_fish = false;
-            xcli.only_mark = false;
+            xcli.only_test = xtrue;
+            xcli.only_fish = xfalse;
+            xcli.only_mark = xfalse;
         } else if (xparser_has_option(argc, argv, "--only-fish")) {
-            xcli.only_fish = true;
-            xcli.only_mark = false;
-            xcli.only_test = false;
+            xcli.only_fish = xtrue;
+            xcli.only_mark = xfalse;
+            xcli.only_test = xfalse;
         } else if (xparser_has_option(argc, argv, "--only-mark")) {
-            xcli.only_mark = true;
-            xcli.only_fish = false;
-            xcli.only_test = false;
+            xcli.only_mark = xtrue;
+            xcli.only_fish = xfalse;
+            xcli.only_test = xfalse;
         } else if (xparser_has_option(argc, argv, "--version") || xparser_has_option(argc, argv, "-v")) {
             xconsole_out("blue", "2.0.1\n");
             exit(EXIT_SUCCESS);
@@ -522,7 +521,7 @@ static void xparser_parse_args(int argc, char *argv[]) {
             output_usage_format();
             exit(EXIT_SUCCESS);
         } else if (xparser_has_option(argc, argv, "--repeat")) {
-            xcli.repeat = true;
+            xcli.repeat = xtrue;
             if (++i < argc) {
                 int iter_repeat = atoi(argv[i]);
                 if (iter_repeat >= MIN_REPEATS && iter_repeat <= MAX_REPEATS) {
@@ -539,10 +538,10 @@ static void xparser_parse_args(int argc, char *argv[]) {
 
         // Check if the program is running in CI mode
         if (xcli.ci) {
-            xcli.verbose = false;
-            xcli.cutback = true;
-            xcli.color = false;
-            xcli.debug = false;
+            xcli.verbose = xfalse;
+            xcli.cutback = xtrue;
+            xcli.color = xfalse;
+            xcli.debug = xfalse;
         }
     }
 } // end of func
@@ -552,7 +551,7 @@ static void xparser_parse_args(int argc, char *argv[]) {
 // ==============================================================================
 
 // Initializes an xengine and processes command-line arguments.
-xengine xtest_create(int argc, char **argv) {
+xengine xtest_create(int argc, xstring *argv) {
     xengine runner;
     xparser_parse_args(argc, argv);
 
@@ -634,7 +633,7 @@ static void xtest_run_test(xengine* engine, xtest* test_case, xfixture* fixture)
 
     } else if (!xcli.dry_run && XIGNORE_TEST_CASE) {
         test_case->config.ignored = XIGNORE_TEST_CASE;
-        XIGNORE_TEST_CASE = false;
+        XIGNORE_TEST_CASE = xfalse;
 
     } else if (xcli.dry_run) {
         xconsole_out("blue", "Simulating test case...\n");
@@ -650,12 +649,12 @@ static void xtest_run_test(xengine* engine, xtest* test_case, xfixture* fixture)
 // ==============================================================================
 
 void xtest_run_as_test(xengine* engine, xtest* test_case) {
-    test_case->config.ignored = false;
-    xtest_run_test(engine, test_case, NULL);
+    test_case->config.ignored = xfalse;
+    xtest_run_test(engine, test_case, xnullptr);
 } // end of func
 
 void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture) {
-    test_case->config.ignored = false;
+    test_case->config.ignored = xfalse;
     xtest_run_test(engine, test_case, fixture);
 } // end of func
 
@@ -710,7 +709,7 @@ void xmark_assert_minutes(uint64_t elapsed_time_ns, double max_minutes) {
 
 void xmark_expect_seconds(uint64_t elapsed_time_ns, double max_seconds) {
     double elapsed_seconds = elapsed_time_ns / 1e9;
-    XTEST_PASS_SCAN = true;
+    XTEST_PASS_SCAN = xtrue;
     if (elapsed_seconds > max_seconds) {
         output_benchmark_format(elapsed_seconds, max_seconds);
     }
@@ -718,7 +717,7 @@ void xmark_expect_seconds(uint64_t elapsed_time_ns, double max_seconds) {
 
 void xmark_expect_minutes(uint64_t elapsed_time_ns, double max_minutes) {
     double elapsed_minutes = elapsed_time_ns / 60e9;
-    XTEST_PASS_SCAN = true;
+    XTEST_PASS_SCAN = xtrue;
 
     if (elapsed_minutes > max_minutes) {
         output_benchmark_format(elapsed_minutes, max_minutes);
@@ -730,18 +729,18 @@ void xmark_expect_minutes(uint64_t elapsed_time_ns, double max_minutes) {
 // ==============================================================================
 
 // Marks a test case as ignored with a specified reason and prints it to stderr.
-void xignore(const char* reason, const char* file, int line, const char* func) {
+void xignore(const xstring reason, const xstring file, int line, const xstring func) {
     output_xignore_format(reason, file, line, func);
 } // end of func
 
 // Marks a test case as error with a specified reason and prints it to stderr.
-void xerrors(const char* reason, const char* file, int line, const char* func) {
+void xerrors(const xstring reason, const xstring file, int line, const xstring func) {
     output_xerrors_format(reason, file, line, func);
 } // end of func
 
 
 // Custom assumptions function with optional message.
-void xassume(bool expression, const char *message, const char* file, int line, const char* func) {
+void xassume(xbool expression, const xstring message, const xstring file, int line, const xstring func) {
     if (ASSUME_ISSUES == ASSUME_MAX) {
         return;
     }
@@ -751,7 +750,7 @@ void xassume(bool expression, const char *message, const char* file, int line, c
 } // end of func
 
 // Custom assertion function with optional message.
-void xassert(bool expression, const char *message, const char* file, int line, const char* func) {
+void xassert(xbool expression, const xstring message, const xstring file, int line, const xstring func) {
     if (!XTEST_PASS_SCAN) {
         return;
     }
@@ -761,7 +760,7 @@ void xassert(bool expression, const char *message, const char* file, int line, c
 } // end of func
 
 // Custom expectation function with optional message.
-void xexpect(bool expression, const char *message, const char* file, int line, const char* func) {
+void xexpect(xbool expression, const xstring message, const xstring file, int line, const xstring func) {
     if (!expression) {
         output_expect_format(message, file, line, func);
     }
