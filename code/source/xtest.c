@@ -460,14 +460,15 @@ static bool xparser_has_option(int argc, char *argv[], const char *option) {
 
 // Original xparser_parse_args function
 static void xparser_parse_args(int argc, char *argv[]) {
-    xcli.cutback = false;
-    xcli.verbose = false;
-    xcli.dry_run = false;
-    xcli.repeat  = false;
-    xcli.debug = false;
-    xcli.color = false;
+    xcli.cutback   = false;
+    xcli.verbose   = false;
+    xcli.dry_run   = false;
+    xcli.repeat    = false;
+    xcli.debug     = false;
+    xcli.color     = false;
     xcli.only_test = false;
     xcli.only_mark = false;
+    xcli.ci        = false;
 
     for (int32_t i = 1; i < argc; i++) {
         if (xparser_has_option(argc, argv, "--dry-run")) {
@@ -482,8 +483,7 @@ static void xparser_parse_args(int argc, char *argv[]) {
         } else if (xparser_has_option(argc, argv, "--color")) {
             xcli.color = true;
         } else if (xparser_has_option(argc, argv, "--ci")) {
-            xcli.verbose = true;
-            xcli.cutback = false;
+            xcli.ci = true;
         } else if (xparser_has_option(argc, argv, "--only-test")) {
             xcli.only_test = true;
             xcli.only_fish = false;
