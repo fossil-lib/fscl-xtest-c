@@ -497,9 +497,9 @@ static void xparser_parse_args(int argc, char *argv[]) {
             xcli.only_fish = false;
             xcli.only_test = false;
         } else if (xparser_has_option(argc, argv, "--version") || xparser_has_option(argc, argv, "-v")) {
-            xconsole_out("blue", "1.1.1\n");
+            xconsole_out("blue", "2.0.1\n");
             exit(EXIT_SUCCESS);
-        } else if (xparser_has_option(argc, argv, "--tip")) {
+        } else if (xparser_has_option(argc, argv, "--tip") || xparser_has_option(argc, argv, "-t")) {
             xconsole_out("blue", "%s\n", helpful_tester_tip());
             exit(EXIT_SUCCESS);
         } else if (xparser_has_option(argc, argv, "--help") || xparser_has_option(argc, argv, "-h")) {
