@@ -22,8 +22,6 @@ typedef struct {
     xbool only_mark;
     xbool debug;
     xbool color;
-    xbool shuffle;
-    xbool reverse;
     xbool ci;
     xbool repeat;
     uint8_t iter_repeat;
@@ -447,8 +445,6 @@ static void output_usage_format(void) {
     xconsole_out("cyan", "\t-t, --tip    : Display a helpful tip                                 :\n");
     xconsole_out("cyan", "\t--cutback    : Enable cutback 50%% of output                         :\n");
     xconsole_out("cyan", "\t--verbose    : Enable verbose mode for extra information             :\n");
-    xconsole_out("cyan", "\t--shuffle    : Enable shuffle test cases in queue                    :\n");
-    xconsole_out("cyan", "\t--reverse    : Enable reverse test cases in queue                    :\n");
     xconsole_out("cyan", "\t--human      : Enable human format mode                              :\n");
     xconsole_out("cyan", "\t--color      : Enable colored output                                 :\n");
     xconsole_out("cyan", "\t--ci         : Enable CI pipeline optimizer to save time             :\n");
@@ -509,103 +505,6 @@ xtest* xqueue_dequeue(xqueue* queue) {
     return temp;
 }
 
-// Helper function to get the node at a specific index
-xtest* xqueue_get_node_at(xqueue* queue, int index) {
-    xtest* current = queue->front;
-    for (int i = 0; i < index && current != xnullptr; i++) {
-        current = current->next;
-    }
-    return current;
-}
-
-// Helper function to get the size of the queue
-int xqueue_size(xqueue* queue) {
-    int count = 0;
-    xtest* current = queue->front;
-    while (current != xnullptr) {
-        count++;
-        current = current->next;
-    }
-    return count;
-}
-
-// Swap two nodes in the queue
-void xqueue_swap(xqueue* queue, xtest* node1, xtest* node2) {
-    // Check if nodes are the same or either node is NULL
-    if (node1 == node2 || node1 == xnullptr || node2 == xnullptr) {
-        return;
-    }
-
-    // Swap the prev pointers
-    if (node1->prev != xnullptr) {
-        node1->prev->next = node2;
-    } else {
-        queue->front = node2;
-    }
-    if (node2->prev != xnullptr) {
-        node2->prev->next = node1;
-    } else {
-        queue->front = node1;
-    }
-
-    xtest* temp_prev = node1->prev;
-    node1->prev = node2->prev;
-    node2->prev = temp_prev;
-
-    // Swap the next pointers
-    if (node1->next != xnullptr) {
-        node1->next->prev = node2;
-    } else {
-        queue->rear = node2;
-    }
-    if (node2->next != xnullptr) {
-        node2->next->prev = node1;
-    } else {
-        queue->rear = node1;
-    }
-
-    xtest* temp_next = node1->next;
-    node1->next = node2->next;
-    node2->next = temp_next;
-}
-
-// Shuffle the queue
-void xqueue_shuffle(xqueue* queue) {
-    srand(time(xnullptr));  // Seed the random number generator
-
-    int n = xqueue_size(queue);
-
-    for (int i = 0; i < n; i++) {
-        // Pick a random index between i and n-1
-        int j = i + rand() % (n - i);
-
-        // Find the i-th and j-th nodes
-        xtest* node_i = xqueue_get_node_at(queue, i);
-        xtest* node_j = xqueue_get_node_at(queue, j);
-
-        // Swap the nodes
-        xqueue_swap(queue, node_i, node_j);
-    }
-}
-
-// Reverse the queue
-void xqueue_reverse(xqueue* queue) {
-    int size = xqueue_size(queue);
-    int mid = size / 2;
-
-    for (int i = 0; i < mid; i++) {
-        xtest* node_i = xqueue_get_node_at(queue, i);
-        xtest* node_j = xqueue_get_node_at(queue, size - 1 - i);
-
-        xqueue_swap(queue, node_i, node_j);
-    }
-
-    // Swap front and rear pointers
-    xtest* temp = queue->front;
-    queue->front = queue->rear;
-    queue->rear = temp;
-}
-
 // Erase the queue
 void xqueue_erase(xqueue* queue) {
     while (!xqueue_is_empty(queue)) {
@@ -640,8 +539,6 @@ static void xparser_parse_args(int argc, xstring argv[]) {
     xcli.color     = xfalse;
     xcli.only_test = xfalse;
     xcli.only_mark = xfalse;
-    xcli.shuffle   = xfalse;
-    xcli.reverse   = xfalse;
     xcli.ci        = xfalse;
 
     for (int32_t i = 1; i < argc; i++) {
@@ -656,10 +553,6 @@ static void xparser_parse_args(int argc, xstring argv[]) {
             xcli.debug = xtrue;
         } else if (xparser_has_option(argc, argv, "--color")) {
             xcli.color = xtrue;
-        } else if (xparser_has_option(argc, argv, "--shuffle")) {
-            xcli.shuffle = xtrue;
-        } else if (xparser_has_option(argc, argv, "--reverse")) {
-            xcli.reverse = xtrue;
         } else if (xparser_has_option(argc, argv, "--human")) {
             xcli.color = xtrue;
             xcli.verbose = xtrue;
@@ -706,7 +599,6 @@ static void xparser_parse_args(int argc, xstring argv[]) {
         if (xcli.ci) {
             xcli.verbose = xfalse;
             xcli.cutback = xtrue;
-            xcli.shuffle = xtrue;
             xcli.color = xfalse;
             xcli.debug = xfalse;
         }
@@ -837,13 +729,6 @@ void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture) 
 
 // Run all test cases in the queue
 void xtest_run_queue(xengine* engine) {
-    if (xcli.shuffle) {
-        xqueue_shuffle(engine->queue);
-    }
-
-    if (xcli.reverse) {
-        xqueue_reverse(engine->queue);
-    }
     while (!xqueue_is_empty(engine->queue)) {
         xtest* current_test = xqueue_dequeue(engine->queue);
         if (current_test != xnullptr) {
