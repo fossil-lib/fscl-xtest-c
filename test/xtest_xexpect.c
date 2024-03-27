@@ -79,62 +79,62 @@ XTEST_CASE(expect_case_memory_not_copied) {
     TEST_EXPECT_NOT_COPIED_MEMORY(dest, source, size); // Should pass
 }
 
-// Test case for boolean equality
+// Test case for xboolean equality
 XTEST_CASE(expect_case_boolean_equality) {
-    bool expected = true;
-    bool actual = true;
+    xbool expected = xtrue;
+    xbool actual = xtrue;
 
     TEST_EXPECT_EQUAL_BOOL(actual, expected); // Should pass
 }
 
-// Test case for boolean inequality
+// Test case for xboolean inequality
 XTEST_CASE(expect_case_boolean_inequality) {
-    bool expected = true;
-    bool actual = false;
+    xbool expected = xtrue;
+    xbool actual = xfalse;
 
     TEST_EXPECT_NOT_EQUAL_BOOL(actual, expected); // Should pass
 }
 
-// Test case for boolean less than
+// Test case for xboolean less than
 XTEST_CASE(expect_case_boolean_less_than) {
-    bool expected = false;
-    bool actual = true;
+    xbool expected = xfalse;
+    xbool actual = xtrue;
 
     TEST_EXPECT_LESS_BOOL(actual, expected); // Should pass
 }
 
-// Test case for boolean greater than
+// Test case for xboolean greater than
 XTEST_CASE(expect_case_boolean_greater_than) {
-    bool expected = true;
-    bool actual = false;
+    xbool expected = xtrue;
+    xbool actual = xfalse;
 
     TEST_EXPECT_GREATER_BOOL(actual, expected); // Should pass
 }
 
-// Test case for boolean unless
+// Test case for xboolean unless
 XTEST_CASE(expect_case_boolean_unless) {
-    bool condition = false;
+    xbool condition = xfalse;
 
     TEST_EXPECT_UNLESS_BOOL(condition); // Should pass
 }
 
-// Test case for boolean true
+// Test case for xboolean xtrue
 XTEST_CASE(expect_case_boolean_true) {
-    bool condition = true;
+    xbool condition = xtrue;
 
     TEST_EXPECT_TRUE_BOOL(condition); // Should pass
 }
 
-// Test case for boolean false
+// Test case for xboolean xfalse
 XTEST_CASE(expect_case_boolean_false) {
-    bool condition = false;
+    xbool condition = xfalse;
 
     TEST_EXPECT_FALSE_BOOL(condition); // Should pass
 }
 
-// Test case for boolean message
+// Test case for xboolean message
 XTEST_CASE(expect_case_boolean_message) {
-    bool condition = false;
+    xbool condition = xfalse;
 
     TEST_EXPECT_MSG_BOOL(condition, "This is a custom message."); // Should pass with the custom message
 }
@@ -1870,23 +1870,23 @@ XTEST_CASE(expect_case_greater_equal_ptr) {
 
 // Test case for checking if two strings are equal
 XTEST_CASE(expect_case_equal_string) {
-    const char* actual = "Hello, World!";
-    const char* expected = "Hello, World!";
+    const xstring actual = "Hello, World!";
+    const xstring expected = "Hello, World!";
 
     TEST_EXPECT_EQUAL_STRING(actual, expected); // Should pass
 }
 
 // Test case for checking if two strings are not equal
 XTEST_CASE(expect_case_not_equal_string) {
-    const char* actual = "Hello, World!";
-    const char* expected = "Hello, OpenAI!";
+    const xstring actual = "Hello, World!";
+    const xstring expected = "Hello, OpenAI!";
 
     TEST_EXPECT_NOT_EQUAL_STRING(actual, expected); // Should pass
 }
 
 // Test case for checking the length of a string
 XTEST_CASE(expect_case_length_string) {
-    const char* actual = "Hello, World!";
+    const xstring actual = "Hello, World!";
     size_t expected = 13;
 
     TEST_EXPECT_LENGTH_STRING(actual, expected); // Should pass
@@ -1894,48 +1894,48 @@ XTEST_CASE(expect_case_length_string) {
 
 // Test case for checking if a string contains a substring
 XTEST_CASE(expect_case_contains_substring_string) {
-    const char* string = "Hello, World!";
-    const char* substring = "World";
+    const xstring string = "Hello, World!";
+    const xstring substring = "World";
 
     TEST_EXPECT_CONTAINS_SUBSTRING_STRING(string, substring); // Should pass
 }
 
 // Test case for checking if a string does not contain a substring
 XTEST_CASE(expect_case_not_contains_substring_string) {
-    const char* string = "Hello, World!";
-    const char* substring = "OpenAI";
+    const xstring string = "Hello, World!";
+    const xstring substring = "OpenAI";
 
     TEST_EXPECT_NOT_CONTAINS_SUBSTRING_STRING(string, substring); // Should pass
 }
 
 // Test case for checking if a string starts with a prefix
 XTEST_CASE(expect_case_starts_with_string) {
-    const char* string = "Hello, World!";
-    const char* prefix = "Hello";
+    const xstring string = "Hello, World!";
+    const xstring prefix = "Hello";
 
     TEST_EXPECT_STARTS_WITH_STRING(string, prefix); // Should pass
 }
 
 // Test case for checking if a string ends with a suffix
 XTEST_CASE(expect_case_ends_with_string) {
-    const char* string = "Hello, World!";
-    const char* suffix = "World!";
+    const xstring string = "Hello, World!";
+    const xstring suffix = "World!";
 
     TEST_EXPECT_ENDS_WITH_STRING(string, suffix); // Should pass
 }
 
 // Test case for checking if two strings are equal in a case-insensitive manner
 XTEST_CASE(expect_case_equal_case_insensitive_string) {
-    const char* actual = "Hello, World!";
-    const char* expected = "hello, World!";
+    const xstring actual = "Hello, World!";
+    const xstring expected = "hello, World!";
 
     TEST_EXPECT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected); // Should pass
 }
 
 // Test case for checking if two strings are not equal in a case-insensitive manner
 XTEST_CASE(expect_case_not_equal_case_insensitive_string) {
-    const char* actual = "Hello, World!";
-    const char* expected = "OpenAI, World!";
+    const xstring actual = "Hello, World!";
+    const xstring expected = "OpenAI, World!";
 
     TEST_EXPECT_NOT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected); // Should pass
 }

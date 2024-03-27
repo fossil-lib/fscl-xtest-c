@@ -34,7 +34,6 @@ extern "C"
 #endif
 #endif
 
-#include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -43,6 +42,19 @@ extern "C"
 #include <ctype.h>
 #include <stdio.h>
 #include <math.h>
+
+#if __STDC_VERSION__ >= 202311L // making this work for both C23 and C11
+#define xnullptr nullptr
+#else
+#define xnullptr ((void*)0)
+#endif
+
+typedef enum {
+    xfalse,
+    xtrue
+} xbool;
+
+typedef char *xstring;
 
 // Used in floating-point asserts
 #define XTEST_FLOAT_EPSILON 1e-6
@@ -57,9 +69,9 @@ typedef struct {
 
 // Configuration settings for a test case
 typedef struct {
-    bool ignored;    // Indicates if the test case is ignored
-    bool is_mark;    // Flag to identify benchmark tests
-    bool is_fish;    // Flag to identify Fish AI tests
+    xbool ignored;    // Indicates if the test case is ignored
+    xbool is_mark;    // Flag to identify benchmark tests
+    xbool is_fish;    // Flag to identify Fish AI tests
 } xconfig;
 
 // Fixture information with setup and teardown functions
@@ -70,7 +82,7 @@ typedef struct {
 
 // Structure representing a test case
 typedef struct {
-    const char* name;            // Name of the test case
+    const xstring name;            // Name of the test case
     void (*test_function)(void); // Function pointer to the test case's implementation
     xfixture fixture;            // The fixture settings
     xconfig config;              // Configuration
@@ -99,54 +111,23 @@ typedef struct {
 // Initial implementation
 // =================================================================
 
-// Function prototypes for Xtest
-// Creates an instance of the testing engine and initializes it with command-line arguments.
-xengine xtest_create(int argc, char **argv);
-
-// Erases (cleans up) the instance of the testing engine.
-// Returns an integer indicating the result of the operation.
+// Function prototypes for XTest engine
+xengine xtest_create(int argc, xstring *argv);
 int xtest_erase(xengine *runner);
-
-// Runs a test case as a standalone test within the testing engine.
 void xtest_run_as_test(xengine* engine, xtest* test_case);
-
-// Runs a test case with a specified fixture within the testing engine.
 void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture);
 
-// Function prototypes for Xmark
-// Marks the start of a performance benchmark.
+// Runs a test case with a specified fixture within the testing engine
 void xmark_start_benchmark(void);
-
-// Marks the end of a performance benchmark and returns the elapsed time in nanoseconds.
 uint64_t xmark_stop_benchmark(void);
+void mark_duration(xstring duration_type, double expected, double actual);
 
-// Asserts that the elapsed time in nanoseconds does not exceed a specified maximum in seconds.
-void xmark_assert_seconds(uint64_t elapsed_time_ns, double max_seconds);
-
-// Asserts that the elapsed time in nanoseconds does not exceed a specified maximum in minutes.
-void xmark_assert_minutes(uint64_t elapsed_time_ns, double max_minutes);
-
-// Expects that the elapsed time in nanoseconds does not exceed a specified maximum in seconds.
-void xmark_expect_seconds(uint64_t elapsed_time_ns, double max_seconds);
-
-// Expects that the elapsed time in nanoseconds does not exceed a specified maximum in minutes.
-void xmark_expect_minutes(uint64_t elapsed_time_ns, double max_minutes);
-
-// Function prototypes for asserts
-// Logs information about an error condition in a test.
-void xerrors(const char* reason, const char* file, int line, const char* func);
-
-// Logs a message indicating that a test is being ignored, providing a reason.
-void xignore(const char* reason, const char* file, int line, const char* func);
-
-// Asserts a boolean expression in a test, failing the test if the expression is false.
-void xassume(bool expression, const char *message, const char* file, int line, const char* func);
-
-// Asserts a boolean expression in a test, failing the test if the expression is false.
-void xassert(bool expression, const char *message, const char* file, int line, const char* func);
-
-// Expects a boolean expression in a test, failing the test if the expression is false.
-void xexpect(bool expression, const char *message, const char* file, int line, const char* func);
+// Function prototypes for Xtest assertions
+void xerrors(const xstring reason, const xstring file, int line, const xstring func);
+void xignore(const xstring reason, const xstring file, int line, const xstring func);
+void xassume(xbool expression, const xstring message, const xstring file, int line, const xstring func);
+void xassert(xbool expression, const xstring message, const xstring file, int line, const xstring func);
+void xexpect(xbool expression, const xstring message, const xstring file, int line, const xstring func);
 
 // =================================================================
 // XTest create and erase commands
@@ -182,7 +163,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 //        }
 #define XTEST_CASE_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
-    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, {NULL, NULL}, {false, false, false}, {0, 0, 0}}; \
+    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, {xnullptr, xnullptr}, {xfalse, xfalse, xfalse}, {0, 0, 0}}; \
     void test_case##_xtest_##fixture_name(void)
 
 // Macro to define a marked (excluded) test case with a fixture.
@@ -191,7 +172,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 //        }
 #define XTEST_MARK_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
-    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, {NULL, NULL}, {false, true, false}, {0, 0, 0}}; \
+    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, {xnullptr, xnullptr}, {xfalse, xtrue, xfalse}, {0, 0, 0}}; \
     void test_case##_xtest_##fixture_name(void)
 
 // Macro to define a focused (exclusive) test case with a fixture.
@@ -200,7 +181,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 //        }
 #define XTEST_FISH_FIXTURE(fixture_name, test_case) \
     void test_case##_xtest_##fixture_name(void); \
-    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, {NULL, NULL}, {false, false, true}, {0, 0, 0}}; \
+    xtest test_case = { #test_case, test_case##_xtest_##fixture_name, {xnullptr, xnullptr}, {xfalse, xfalse, xtrue}, {0, 0, 0}}; \
     void test_case##_xtest_##fixture_name(void)
 
 // Macro to define a fixture.
@@ -253,7 +234,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 //        }
 #define XTEST_CASE(name) \
     void name##_xtest(void); \
-    xtest name = { #name, name##_xtest, {NULL, NULL}, {false, false, false}, {0, 0, 0}}; \
+    xtest name = { #name, name##_xtest, {xnullptr, xnullptr}, {xfalse, xfalse, xfalse}, {0, 0, 0}}; \
     void name##_xtest(void)
 
 // Macro to define a test case and mark it for exclusion from the test suite.
@@ -262,7 +243,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 //        }
 #define XTEST_MARK(name) \
     void name##_xtest(void); \
-    xtest name = { #name, name##_xtest, {NULL, NULL}, {false, true, false}, {0, 0, 0}}; \
+    xtest name = { #name, name##_xtest, {xnullptr, xnullptr}, {xfalse, xtrue, xfalse}, {0, 0, 0}}; \
     void name##_xtest(void)
 
 // Macro to define a test case with a focus on specific functionality.
@@ -271,7 +252,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 //        }
 #define XTEST_FISH(name) \
     void name##_xtest(void); \
-    xtest name = { #name, name##_xtest, {NULL, NULL}, {false, false, true}, {0, 0, 0}}; \
+    xtest name = { #name, name##_xtest, {xnullptr, xnullptr}, {xfalse, xfalse, xtrue}, {0, 0, 0}}; \
     void name##_xtest(void)
 
 // =================================================================
@@ -282,56 +263,58 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 // Usage: GIVEN("some context or condition") {
 //           // Code representing the given state or context
 //        }
-#define GIVEN(description) \
-    if (0) { \
-        printf("Given %s\n", description); \
-    } else
+#define GIVEN(description) if (xtrue)
 
 // Macro to describe an action or event in a BDD test.
 // Usage: WHEN("some action or event occurs") {
 //           // Code representing the action or event
 //        }
-#define WHEN(description) \
-    if (0) { \
-        printf("When %s\n", description); \
-    } else
+#define WHEN(description) if (xtrue)
 
 // Macro to describe an expected outcome or result in a BDD test.
 // Usage: THEN("some expected outcome or result") {
 //           // Code representing the expected outcome or result verification
 //        }
-#define THEN(description) \
-    if (0) { \
-        printf("Then %s\n", description); \
-    } else
+#define THEN(description) if (xtrue)
+
+// =================================================================
+// TDD specific commands
+// =================================================================
+
+// Macro to define test data structure for a specific group of tests.
+// Usage: XTEST_DATA(group_name) {
+//          // Define the structure of test data for the group
+//        };
+#define XTEST_DATA(group_name) typedef struct group_name##_xdata group_name##_xdata; struct group_name##_xdata
+
+// Macro to indicate test failure with a specified message.
+// Usage: XTEST_FAIL(message);
+#define XTEST_FAIL(message) TEST_ASSUME(xfalse, message);
+
+// Macro to indicate test success.
+// Usage: XTEST_PASS();
+#define XTEST_PASS() TEST_ASSUME(xtrue, "Test passed");
+
+// Macro to indicate that a test is not yet implemented.
+// Usage: XTEST_NOT_IMPLEMENTED();
+#define XTEST_NOT_IMPLEMENTED() TEST_ASSUME(xfalse, "Test not implemented yet")
 
 // =================================================================
 // XMark specific commands for benchmarking
 // =================================================================
 
-// Macro to initiate the start of a performance benchmark.
-// This macro is used to mark the beginning of the code section to be benchmarked.
-#define XMARK_START_BENCHMARK() xmark_start_benchmark()
+// Define macros for starting and stopping benchmarks
+#define XMARK_START_BENCHMARK() xmark_start_benchmark() // Macro for starting benchmark
+#define XMARK_STOP_BENCHMARK() xmark_stop_benchmark()   // Macro for stopping benchmark
 
-// Macro to signal the end of a performance benchmark.
-// Use this macro to mark the conclusion of the code section under benchmark.
-#define XMARK_STOP_BENCHMARK() xmark_stop_benchmark()
+// Define macro for marking duration with given units
+#define XMARK_DURATION(duration, elapsed, actual) mark_duration(duration, elapsed, actual)  // Macro for marking duration with specified units
 
-// Macro to assert that the elapsed time, given in nanoseconds, does not exceed a specified maximum time in seconds.
-// It is intended for use in test scenarios where a strict upper limit on execution time is crucial.
-#define XMARK_ASSERT_SECONDS(elapsed_time_ns, max_seconds) xmark_assert_seconds(elapsed_time_ns, max_seconds)
-
-// Macro to assert that the elapsed time, given in nanoseconds, does not exceed a specified maximum time in minutes.
-// Similar to XMARK_ASSERT_SECONDS but with the time limit specified in minutes.
-#define XMARK_ASSERT_MINUTES(elapsed_time_ns, max_minutes) xmark_assert_minutes(elapsed_time_ns, max_minutes)
-
-// Macro to set an expectation that the elapsed time should not exceed a specified maximum time in seconds.
-// It is used for expressing a non-strict upper limit on the execution time in test scenarios.
-#define XMARK_EXPECT_SECONDS(elapsed_time_ns, max_seconds) xmark_expect_seconds(elapsed_time_ns, max_seconds)
-
-// Macro to set an expectation that the elapsed time should not exceed a specified maximum time in minutes.
-// Similar to XMARK_EXPECT_SECONDS but with the time limit specified in minutes.
-#define XMARK_EXPECT_MINUTES(elapsed_time_ns, max_minutes) xmark_expect_minutes(elapsed_time_ns, max_minutes)
+// Define macros for marking duration in minutes, seconds, milliseconds, and microseconds
+#define XMARK_DURATION_MINUTES(elapsed, actual) XMARK_DURATION("minutes", elapsed, actual)        // Macro for marking duration in minutes
+#define XMARK_DURATION_SECONDS(elapsed, actual) XMARK_DURATION("seconds", elapsed, actual)        // Macro for marking duration in seconds
+#define XMARK_DURATION_MILLISECONDS(elapsed, actual) XMARK_DURATION("milliseconds", elapsed, actual)  // Macro for marking duration in milliseconds
+#define XMARK_DURATION_MICROSECONDS(elapsed, actual) XMARK_DURATION("picoseconds", elapsed, actual)  // Macro for marking duration in microseconds
 
 // ------------------------------------------------------------------------
 //
@@ -343,7 +326,7 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 //              Use it to express a non-critical expectation in tests.
 //
 // TEST_ASSERT: Assertion function with an optional message.
-//              Use it to validate critical conditions in tests. Fails the test if the condition is false.
+//              Use it to validate critical conditions in tests. Fails the test if the condition is xfalse.
 //
 // TEST_ASSUME: Smart assertion function with an optional message.
 //              Similar to TEST_ASSERT but allows test execution to continue even if the condition fails.
@@ -356,53 +339,20 @@ void xexpect(bool expression, const char *message, const char* file, int line, c
 //
 // ------------------------------------------------------------------------
 
-// Macro to assert a given expression in a test. If the expression is false, the test fails.
-// Usage: TEST_ASSERT(expression, message);
-#define TEST_ASSERT(expression, message) xassert(expression, message, __FILE__, __LINE__, __func__)
+// Define macros for test assertions with expression and message
+#define TEST_ASSERT(expression, message) xassert(expression, message, __FILE__, __LINE__, (const xstring)__func__)   // Macro for asserting a test condition
 
-// Macro to expect a given expression in a test. If the expression is false, the test fails,
-// and the test execution continues.
-// Usage: TEST_EXPECT(expression, message);
-#define TEST_EXPECT(expression, message) xexpect(expression, message, __FILE__, __LINE__, __func__)
+// Define macros for test expectations with expression and message
+#define TEST_EXPECT(expression, message) xexpect(expression, message, __FILE__, __LINE__, (const xstring)__func__)   // Macro for expecting a test condition
 
-// Macro to assume a given expression in a test. If the expression is false, the test fails,
-// and the test execution continues.
-// Usage: TEST_ASSUME(expression, message)
-#define TEST_ASSUME(expression, message) xassume(expression, message, __FILE__, __LINE__, __func__)
+// Define macros for test assumptions with expression and message
+#define TEST_ASSUME(expression, message) xassume(expression, message, __FILE__, __LINE__, (const xstring)__func__)   // Macro for assuming a test condition
 
-// Macro to ignore a test with a specified reason.
-// Usage: TEST_IGNORE(reason);
-#define TEST_IGNORE(reason) xignore(reason, __FILE__, __LINE__, __func__)
+// Define macro for ignoring a test with a given reason
+#define TEST_IGNORE(reason) xignore(reason, __FILE__, __LINE__, (const xstring)__func__)   // Macro for ignoring a test
 
-// Macro to handle an error condition in a test. It marks the test as failed and provides a reason.
-// Usage: TEST_XERROR(reason);
-#define TEST_XERROR(reason) xerrors(reason, __FILE__, __LINE__, __func__)
-
-// =================================================================
-// XTest utility commands
-// =================================================================
-
-// Macro to define test data structure for a specific group of tests.
-// Usage: XTEST_DATA(group_name) {
-//          // Define the structure of test data for the group
-//        };
-#define XTEST_DATA(group_name) typedef struct group_name##_xdata group_name##_xdata; struct group_name##_xdata
-
-// Macro to indicate test failure with a specified message.
-// Usage: XTEST_FAIL(message);
-#define XTEST_FAIL(message) TEST_ASSUME(false, message);
-
-// Macro to indicate test success.
-// Usage: XTEST_PASS();
-#define XTEST_PASS() TEST_ASSUME(true, "Test passed");
-
-// Macro to output a note during test execution.
-// Usage: XTEST_NOTE(comment);
-#define XTEST_NOTE(comment) fprintf(stderr, "XTEST NOTE: %s\n", comment);
-
-// Macro to indicate that a test is not yet implemented.
-// Usage: XTEST_NOT_IMPLEMENTED();
-#define XTEST_NOT_IMPLEMENTED() TEST_ASSUME(false, "Test not implemented yet")
+// Define macro for reporting test errors with a given reason
+#define TEST_XERROR(reason) xerrors(reason, __FILE__, __LINE__, (const xstring)__func__)   // Macro for reporting test errors
 
 #ifdef __cplusplus
 }

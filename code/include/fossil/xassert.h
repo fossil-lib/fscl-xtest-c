@@ -26,20 +26,20 @@ extern "C"
 #define TEST_ASSERT_EQUAL_MEMORY(actual, expected, size)     TEST_ASSERT(memcmp(actual, expected, size) != 0, "Expectation for memory equality not met")
 #define TEST_ASSERT_NOT_EQUAL_MEMORY(actual, expected, size) TEST_ASSERT(memcmp(actual, expected, size) == 0, "Expectation for memory inequality not met")
 #define TEST_ASSERT_CONTAINS_MEMORY(haystack, needle, haystackSize, needleSize) \
-bool found = false; \
+xbool found = xfalse; \
 for (size_t i = 0; i <= (haystackSize - needleSize); i++) { \
     if (memcmp(haystack + i, needle, needleSize) == 0) { \
-        found = true; \
+        found = xtrue; \
         break; \
     } \
 } \
 TEST_ASSERT(!found, "Memory contains assertion failed");
 
 #define TEST_ASSERT_NOT_CONTAINS_MEMORY(haystack, needle, haystackSize, needleSize) \
-bool found = false; \
+xbool found = xfalse; \
 for (size_t i = 0; i <= (haystackSize - needleSize); i++) { \
     if (memcmp(haystack + i, needle, needleSize) == 0) { \
-        found = true; \
+        found = xtrue; \
         break; \
     } \
 } \
@@ -49,24 +49,24 @@ TEST_ASSERT(found, "Memory not contains assertion failed");
 #define TEST_ASSERT_NOT_COPIED_MEMORY(dest, source, size) TEST_ASSERT((memcmp(dest, source, size) != 0), "Memory not copied check failed");
 
 // ----------------------------------------------------------------
-// Boolean assertions
+// xboolean assertions
 // ----------------------------------------------------------------
-#define TEST_ASSERT_EQUAL(actual, expected)     TEST_ASSERT((bool)(actual) == (bool)(expected), "Expectation for equality not met")
-#define TEST_ASSERT_NOT_EQUAL(actual, expected) TEST_ASSERT((bool)(actual) != (bool)(expected), "Expectation for inequality not met")
-#define TEST_ASSERT_LESS(actual, expected)      TEST_ASSERT((bool)(actual) <  (bool)(expected), "Expectation for less than not met")
-#define TEST_ASSERT_GREATER(actual, expected)   TEST_ASSERT((bool)(actual) >  (bool)(expected), "Expectation for greater than not met")
+#define TEST_ASSERT_EQUAL(actual, expected)     TEST_ASSERT((xbool)(actual) == (xbool)(expected), "Expectation for equality not met")
+#define TEST_ASSERT_NOT_EQUAL(actual, expected) TEST_ASSERT((xbool)(actual) != (xbool)(expected), "Expectation for inequality not met")
+#define TEST_ASSERT_LESS(actual, expected)      TEST_ASSERT((xbool)(actual) <  (xbool)(expected), "Expectation for less than not met")
+#define TEST_ASSERT_GREATER(actual, expected)   TEST_ASSERT((xbool)(actual) >  (xbool)(expected), "Expectation for greater than not met")
 #define TEST_ASSERT_UNLESS(expression)          TEST_ASSERT((expression), "Expectation not met")
-#define TEST_ASSERT_TRUE(expression)            TEST_ASSERT((expression), "Expectation for true not met")
-#define TEST_ASSERT_FALSE(expression)           TEST_ASSERT(!(expression), "Expectation for false not met")
+#define TEST_ASSERT_TRUE(expression)            TEST_ASSERT((expression), "Expectation for xtrue not met")
+#define TEST_ASSERT_FALSE(expression)           TEST_ASSERT(!(expression), "Expectation for xfalse not met")
 #define TEST_ASSERT_MSG(expression, message)    TEST_ASSERT(!(expression), message)
 
-#define TEST_ASSERT_EQUAL_BOOL(actual, expected)     TEST_ASSERT((bool)(actual) == (bool)(expected), "Expectation for equality not met")
-#define TEST_ASSERT_NOT_EQUAL_BOOL(actual, expected) TEST_ASSERT((bool)(actual) != (bool)(expected), "Expectation for inequality not met")
-#define TEST_ASSERT_LESS_BOOL(actual, expected)      TEST_ASSERT((bool)(actual) <  (bool)(expected), "Expectation for less than not met")
-#define TEST_ASSERT_GREATER_BOOL(actual, expected)   TEST_ASSERT((bool)(actual) >  (bool)(expected), "Expectation for greater than not met")
+#define TEST_ASSERT_EQUAL_BOOL(actual, expected)     TEST_ASSERT((xbool)(actual) == (xbool)(expected), "Expectation for equality not met")
+#define TEST_ASSERT_NOT_EQUAL_BOOL(actual, expected) TEST_ASSERT((xbool)(actual) != (xbool)(expected), "Expectation for inequality not met")
+#define TEST_ASSERT_LESS_BOOL(actual, expected)      TEST_ASSERT((xbool)(actual) <  (xbool)(expected), "Expectation for less than not met")
+#define TEST_ASSERT_GREATER_BOOL(actual, expected)   TEST_ASSERT((xbool)(actual) >  (xbool)(expected), "Expectation for greater than not met")
 #define TEST_ASSERT_UNLESS_BOOL(expression)          TEST_ASSERT((expression), "Expectation not met")
-#define TEST_ASSERT_TRUE_BOOL(expression)            TEST_ASSERT((expression), "Expectation for true not met")
-#define TEST_ASSERT_FALSE_BOOL(expression)           TEST_ASSERT(!(expression), "Expectation for false not met")
+#define TEST_ASSERT_TRUE_BOOL(expression)            TEST_ASSERT((expression), "Expectation for xtrue not met")
+#define TEST_ASSERT_FALSE_BOOL(expression)           TEST_ASSERT(!(expression), "Expectation for xfalse not met")
 #define TEST_ASSERT_MSG_BOOL(expression, message)    TEST_ASSERT(!(expression), message)
 
 // ----------------------------------------------------------------
@@ -301,19 +301,19 @@ TEST_ASSERT(found, "Memory not contains assertion failed");
 // Pointer assertions
 // ----------------------------------------------------------------
 #ifdef __cplusplus
-#define TEST_ASSERT_CNULLPTR(pointer)      TEST_ASSERT((pointer) == nullptr, "Expected nullptr")
-#define TEST_ASSERT_NOT_CNULLPTR(pointer)  TEST_ASSERT((pointer) != nullptr, "Expected not nullptr")
-#define TEST_ASSERT_INVALID_PTR(pointer)   TEST_ASSERT((pointer) != nullptr, "Invalid pointer error")
-#define TEST_ASSERT_EMPTY_PTR(pointer)     TEST_ASSERT((pointer) == nullptr, "Expected empty pointer")
-#define TEST_ASSERT_NOT_EMPTY_PTR(pointer) TEST_ASSERT((pointer) != nullptr, "Expected not empty pointer")
-#define TEST_ASSERT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_ASSERT(pointer != nullptr, "Invalid memory access")
+#define TEST_ASSERT_CNULLPTR(pointer)      TEST_ASSERT((pointer) == xnullptrptr, "Expected xnullptrptr")
+#define TEST_ASSERT_NOT_CNULLPTR(pointer)  TEST_ASSERT((pointer) != xnullptrptr, "Expected not xnullptrptr")
+#define TEST_ASSERT_INVALID_PTR(pointer)   TEST_ASSERT((pointer) != xnullptrptr, "Invalid pointer error")
+#define TEST_ASSERT_EMPTY_PTR(pointer)     TEST_ASSERT((pointer) == xnullptrptr, "Expected empty pointer")
+#define TEST_ASSERT_NOT_EMPTY_PTR(pointer) TEST_ASSERT((pointer) != xnullptrptr, "Expected not empty pointer")
+#define TEST_ASSERT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_ASSERT(pointer != xnullptrptr, "Invalid memory access")
 #else
-#define TEST_ASSERT_CNULLPTR(pointer)      TEST_ASSERT((pointer) == NULL, "Expected NULL")
-#define TEST_ASSERT_NOT_CNULLPTR(pointer)  TEST_ASSERT((pointer) != NULL, "Expected not NULL")
-#define TEST_ASSERT_INVALID_PTR(pointer)   TEST_ASSERT((pointer) != NULL, "Invalid pointer error")
-#define TEST_ASSERT_EMPTY_PTR(pointer)     TEST_ASSERT((pointer) == NULL, "Expected empty pointer")
-#define TEST_ASSERT_NOT_EMPTY_PTR(pointer) TEST_ASSERT((pointer) != NULL, "Expected not empty pointer")
-#define TEST_ASSERT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_ASSERT(pointer != NULL, "Invalid memory access")
+#define TEST_ASSERT_CNULLPTR(pointer)      TEST_ASSERT((pointer) == xnullptr, "Expected xnullptr")
+#define TEST_ASSERT_NOT_CNULLPTR(pointer)  TEST_ASSERT((pointer) != xnullptr, "Expected not xnullptr")
+#define TEST_ASSERT_INVALID_PTR(pointer)   TEST_ASSERT((pointer) != xnullptr, "Invalid pointer error")
+#define TEST_ASSERT_EMPTY_PTR(pointer)     TEST_ASSERT((pointer) == xnullptr, "Expected empty pointer")
+#define TEST_ASSERT_NOT_EMPTY_PTR(pointer) TEST_ASSERT((pointer) != xnullptr, "Expected not empty pointer")
+#define TEST_ASSERT_INVALID_MEMORY_ACCESS_PTR(pointer) TEST_ASSERT(pointer != xnullptr, "Invalid memory access")
 #endif
 #define TEST_ASSERT_ARRAY_BOUNDS_PTR(pointer, index, size) TEST_ASSERT((index) >= 0 && (index) < (size), "Array index out of bounds")
 #define TEST_ASSERT_EQUAL_PTR(actual, expected)            TEST_ASSERT((actual) == (expected), "Pointer equality check failed")
@@ -330,40 +330,40 @@ TEST_ASSERT(found, "Memory not contains assertion failed");
 #define TEST_ASSERT_EQUAL_STRING(actual, expected) TEST_ASSERT((actual) == (expected), "String equality expectation not met")
 #define TEST_ASSERT_NOT_EQUAL_STRING(actual, expected) TEST_ASSERT((actual) != (expected), "String inequality expectation not met")
 #define TEST_ASSERT_LENGTH_STRING(actual, expected) TEST_ASSERT((actual).length() == (expected), "String length expectation not met")
-#define TEST_ASSERT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) != nullptr, "Substring not found")
-#define TEST_ASSERT_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) == nullptr, "Substring found")
+#define TEST_ASSERT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) != xnullptrptr, "Substring not found")
+#define TEST_ASSERT_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) == xnullptrptr, "Substring found")
 #define TEST_ASSERT_STARTS_WITH_STRING(string, prefix) TEST_ASSERT(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
-#define TEST_ASSERT_ENDS_WITH_STRING(string, suffix) TEST_ASSERT(strstr((string), (suffix) != nullptr && (strlen(string) - strlen(suffix)) == (strstr(string, suffix) - string)), "String doesn't end with the suffix")
+#define TEST_ASSERT_ENDS_WITH_STRING(string, suffix) TEST_ASSERT(strstr((string), (suffix) != xnullptrptr && (strlen(string) - strlen(suffix)) == (strstr(string, suffix) - string)), "String doesn't end with the suffix")
 #define TEST_ASSERT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) == 0, "Case-insensitive string equality expectation not met")
 #define TEST_ASSERT_NOT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality expectation not met")
 
 #define TEST_ASSERT_EQUAL_CSTRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) == 0, "String equality expectation not met")
 #define TEST_ASSERT_NOT_EQUAL_CSTRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) != 0, "String inequality expectation not met")
 #define TEST_ASSERT_LENGTH_CSTRING(actual, expected) TEST_ASSERT(strlen((actual)) == (expected), "String length expectation not met")
-#define TEST_ASSERT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSERT(strstr((string), (substring)) != NULL, "Substring not found")
-#define TEST_ASSERT_NOT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSERT(strstr((string), (substring)) == NULL, "Substring found")
+#define TEST_ASSERT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSERT(strstr((string), (substring)) != xnullptr, "Substring not found")
+#define TEST_ASSERT_NOT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSERT(strstr((string), (substring)) == xnullptr, "Substring found")
 #define TEST_ASSERT_STARTS_WITH_CSTRING(string, prefix) TEST_ASSERT(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
-#define TEST_ASSERT_ENDS_WITH_CSTRING(string, suffix) TEST_ASSERT((strstr(string, suffix) != NULL && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
+#define TEST_ASSERT_ENDS_WITH_CSTRING(string, suffix) TEST_ASSERT((strstr(string, suffix) != xnullptr && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
 #define TEST_ASSERT_EQUAL_CASE_INSENSITIVE_CSTRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) == 0, "Case-insensitive string equality expectation not met")
 #define TEST_ASSERT_NOT_EQUAL_CASE_INSENSITIVE_CSTRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality expectation not met")
 #else
 #define TEST_ASSERT_EQUAL_CSTRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) == 0, "String equality expectation not met")
 #define TEST_ASSERT_NOT_EQUAL_CSTRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) != 0, "String inequality expectation not met")
 #define TEST_ASSERT_LENGTH_CSTRING(actual, expected) TEST_ASSERT(strlen((actual)) == (expected), "String length expectation not met")
-#define TEST_ASSERT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSERT(strstr((string), (substring)) != NULL, "Substring not found")
-#define TEST_ASSERT_NOT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSERT(strstr((string), (substring)) == NULL, "Substring found")
+#define TEST_ASSERT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSERT(strstr((string), (substring)) != xnullptr, "Substring not found")
+#define TEST_ASSERT_NOT_CONTAINS_SUBSTRING_CSTRING(string, substring) TEST_ASSERT(strstr((string), (substring)) == xnullptr, "Substring found")
 #define TEST_ASSERT_STARTS_WITH_CSTRING(string, prefix) TEST_ASSERT(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
-#define TEST_ASSERT_ENDS_WITH_CSTRING(string, suffix) TEST_ASSERT((strstr(string, suffix) != NULL && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
+#define TEST_ASSERT_ENDS_WITH_CSTRING(string, suffix) TEST_ASSERT((strstr(string, suffix) != xnullptr && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
 #define TEST_ASSERT_EQUAL_CASE_INSENSITIVE_CSTRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) == 0, "Case-insensitive string equality expectation not met")
 #define TEST_ASSERT_NOT_EQUAL_CASE_INSENSITIVE_CSTRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality expectation not met")
 
 #define TEST_ASSERT_EQUAL_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) == 0, "String equality expectation not met")
 #define TEST_ASSERT_NOT_EQUAL_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) != 0, "String inequality expectation not met")
 #define TEST_ASSERT_LENGTH_STRING(actual, expected) TEST_ASSERT(strlen((actual)) == (expected), "String length expectation not met")
-#define TEST_ASSERT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) != NULL, "Substring not found")
-#define TEST_ASSERT_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) == NULL, "Substring found")
+#define TEST_ASSERT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) != xnullptr, "Substring not found")
+#define TEST_ASSERT_NOT_CONTAINS_SUBSTRING_STRING(string, substring) TEST_ASSERT(strstr((string), (substring)) == xnullptr, "Substring found")
 #define TEST_ASSERT_STARTS_WITH_STRING(string, prefix) TEST_ASSERT(strncmp((string), (prefix), strlen(prefix)) == 0, "String doesn't start with the prefix")
-#define TEST_ASSERT_ENDS_WITH_STRING(string, suffix) TEST_ASSERT((strstr(string, suffix) != NULL && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
+#define TEST_ASSERT_ENDS_WITH_STRING(string, suffix) TEST_ASSERT((strstr(string, suffix) != xnullptr && strlen(string) >= strlen(suffix) && strcmp(string + strlen(string) - strlen(suffix), suffix)), "String doesn't end with the suffix")
 #define TEST_ASSERT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) == 0, "Case-insensitive string equality expectation not met")
 #define TEST_ASSERT_NOT_EQUAL_CASE_INSENSITIVE_STRING(actual, expected) TEST_ASSERT(strcmp((actual), (expected)) != 0, "Case-insensitive string inequality expectation not met")
 #endif
@@ -402,14 +402,14 @@ TEST_ASSERT(found, "Memory not contains assertion failed");
 #define TEST_ASSERT_INVALID_OPERATION_ARRAY(condition)     TEST_ASSERT(condition, "Invalid array operation")
 #define TEST_ASSERT_INDEX_ARRAY(array, index)              TEST_ASSERT((index) >= 0 && (index) < sizeof(array) / sizeof(array[0]), "Array index out of bounds")
 
-#define TEST_ASSERT_CNULLPTR_POINTER_ARRAY(array)              TEST_ASSERT((array) != NULL, "Null array pointer")
-inline void test_assert_equal_array(const void* actual, const void* expected, size_t elem, size_t size, const char* message) {
-    bool success = true;
+#define TEST_ASSERT_CNULLPTR_POINTER_ARRAY(array)              TEST_ASSERT((array) != xnullptr, "Null array pointer")
+inline void test_assert_equal_array(const void* actual, const void* expected, size_t elem, size_t size, const xstring message) {
+    xbool success = xtrue;
     for (size_t i = 0; i < elem; i++) {
-        const char* actual_ptr = (const char*)actual + i * size;
-        const char* expected_ptr = (const char*)expected + i * size;
+        const xstring actual_ptr = (const xstring)actual + i * size;
+        const xstring expected_ptr = (const xstring)expected + i * size;
         if (memcmp(actual_ptr, expected_ptr, size) != 0) {
-            success = false;
+            success = xfalse;
             break;
         }
     }
@@ -468,7 +468,7 @@ inline void test_assert_equal_array(const void* actual, const void* expected, si
     TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, void*, "Array equality expectation not met")
 
 #define TEST_ASSERT_EQUAL_STRING_ARRAY(actual, expected, elem) \
-    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, const char*, "Array equality expectation not met")
+    TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, const xstring, "Array equality expectation not met")
 
 #define TEST_ASSERT_EQUAL_CHAR_ARRAY(actual, expected, elem) \
     TEST_ASSERT_EQUAL_ARRAY(actual, expected, elem, char, "Array equality expectation not met")
@@ -478,33 +478,33 @@ inline void test_assert_equal_array(const void* actual, const void* expected, si
 
 #define TEST_ASSERT_EQUAL_FLOAT_ARRAY(actual, expected, elem) \
     do { \
-        bool success = true; \
+        xbool success = xtrue; \
         for (size_t i = 0; i < elem; i++) { \
             if (fabs((actual)[i] - (expected)[i]) >= ASSERT_FLOAT_EPSILON) { \
-                success = false; \
+                success = xfalse; \
                 break; \
             } \
         } \
         TEST_ASSERT(success, "Array equality expectation not met"); \
-    } while (false)
+    } while (xfalse)
 
 #define TEST_ASSERT_EQUAL_DOUBLE_ARRAY(actual, expected, elem) \
     do { \
-        bool success = true; \
+        xbool success = xtrue; \
         for (size_t i = 0; i < elem; i++) { \
             if (fabs((actual)[i] - (expected)[i]) >= ASSERT_DOUBLE_EPSILON) { \
-                success = false; \
+                success = xfalse; \
                 break; \
             } \
         } \
         TEST_ASSERT(success, "Array equality expectation not met"); \
-    } while (false)
+    } while (xfalse)
 
 // ----------------------------------------------------------------
 // File Stream assertions
 // ----------------------------------------------------------------
 
-#define TEST_ASSERT_OPEN_FILE(file) TEST_ASSERT((file) != NULL, "Failed to open file")
+#define TEST_ASSERT_OPEN_FILE(file) TEST_ASSERT((file) != xnullptr, "Failed to open file")
 #define TEST_ASSERT_READ_FILE(file, buffer, size) \
     TEST_ASSERT(fread(buffer, sizeof(char), size, file) == size, "Failed to read from file")
 #define TEST_ASSERT_WRITE_FILE(file, data, size) \

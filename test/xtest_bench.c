@@ -56,7 +56,7 @@ XTEST_MARK(comput_bubble_sort_small_dataset) {
     }
 
     uint64_t elapsed_time = XMARK_STOP_BENCHMARK();
-    XMARK_ASSERT_SECONDS(elapsed_time, 1.0);
+    XMARK_DURATION_SECONDS(elapsed_time, 1.0);
 } // end benchmark
 
 XTEST_MARK(comput_bubble_sort_large_dataset) {
@@ -74,7 +74,7 @@ XTEST_MARK(comput_bubble_sort_large_dataset) {
     }
 
     uint64_t elapsed_time = XMARK_STOP_BENCHMARK();
-    XMARK_ASSERT_SECONDS(elapsed_time, 1.0);
+    XMARK_DURATION_SECONDS(elapsed_time, 1.0);
 } // end benchmark
 
 XTEST_MARK(comput_bubble_sort_medium_dataset) {
@@ -92,7 +92,7 @@ XTEST_MARK(comput_bubble_sort_medium_dataset) {
     }
 
     uint64_t elapsed_time = XMARK_STOP_BENCHMARK();
-    XMARK_ASSERT_SECONDS(elapsed_time, 1.0);
+    XMARK_DURATION_SECONDS(elapsed_time, 1.0);
 } // end benchmark
 
 XTEST_MARK(comput_bubble_sort_empty_dataset) {
@@ -107,7 +107,7 @@ XTEST_MARK(comput_bubble_sort_empty_dataset) {
     // Nothing to assert for an empty dataset
 
     uint64_t elapsed_time = XMARK_STOP_BENCHMARK();
-    XMARK_ASSERT_SECONDS(elapsed_time, 1.0);
+    XMARK_DURATION_SECONDS(elapsed_time, 1.0);
 } // end benchmark
 
 XTEST_MARK(comput_bubble_sort_sorted_dataset) {
@@ -125,7 +125,7 @@ XTEST_MARK(comput_bubble_sort_sorted_dataset) {
     }
 
     uint64_t elapsed_time = XMARK_STOP_BENCHMARK();
-    XMARK_ASSERT_SECONDS(elapsed_time, 1.0);
+    XMARK_DURATION_SECONDS(elapsed_time, 1.0);
 } // end benchmark
 
 XTEST_MARK(comput_bubble_sort_reverse_sorted_dataset) {
@@ -143,7 +143,7 @@ XTEST_MARK(comput_bubble_sort_reverse_sorted_dataset) {
     }
 
     uint64_t elapsed_time = XMARK_STOP_BENCHMARK();
-    XMARK_ASSERT_SECONDS(elapsed_time, 1.0);
+    XMARK_DURATION_SECONDS(elapsed_time, 1.0);
 } // end benchmark
 
 //

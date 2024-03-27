@@ -25,7 +25,7 @@ XTEST_EXTERN_POOL(tdd_test_group);
 //
 // XUNIT-TEST RUNNER:
 //
-int main(int argc, char **argv) {
+int main(int argc, xstring *argv) {
     XTEST_CREATE(argc, argv);
 
     XTEST_IMPORT_POOL(xassert_test_group);
