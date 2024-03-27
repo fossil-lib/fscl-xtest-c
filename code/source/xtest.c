@@ -45,7 +45,6 @@ static uint8_t MIN_REPEATS = 1;
 // local types
 //
 static uint64_t start_time;
-static uint64_t end_time;
 
 #if defined(_WIN32)
 static double frequency; // Variable to store the frequency for Windows
