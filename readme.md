@@ -1,6 +1,6 @@
 # Fossil Logic XTest - `C`
 
-XDream is a cutting-edge test library developed by Fossil Logic, designed to streamline and enhance the testing process for modern software development. Combining the power of artificial intelligence, multi-threaded execution, rich assertion capabilities, behavior-driven development (BDD), test-driven development (TDD), and a command-line interface (CLI), XDream empowers developers to achieve unparalleled efficiency and reliability in their testing workflows. Xtest streamlines the testing process, enabling faster feedback cycles and accelerated development workflows. The intuitive CLI interface makes it easy for developers to interact with the test framework, facilitating seamless integration into existing development environments.
+XTest is a cutting-edge test library developed by Fossil Logic, designed to streamline and enhance the testing process for modern software development. Combining the power of rich assertion capabilities, behavior-driven development (BDD), test-driven development (TDD), and a command-line interface (CLI), XDream empowers developers to achieve unparalleled efficiency and reliability in their testing workflows. Xtest streamlines the testing process, enabling faster feedback cycles and accelerated development workflows. The intuitive CLI interface makes it easy for developers to interact with the test framework, facilitating seamless integration into existing development environments.
 
 ## Prerequisites
 
