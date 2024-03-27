@@ -81,19 +81,25 @@ xstring current_datetime(void) {
 
     strftime(datetime, sizeof(datetime), "%Y-%m-%d %H:%M:%S", timeinfo);
 
-    return datetime;
+    return xstrdup(datetime);  // Return a dynamically allocated copy of the datetime
 }
 
 static xstring replace_underscore(const xstring str) {
-    xstring result = xstrdup(str);
-    xstring ptr = result;
+    if (!str) {
+        return xnullptr; // Check for null input
+    }
 
-    while (*ptr) {
+    xstring result = xstrdup(str);
+    if (!result) {
+        return xnullptr; // Check for memory allocation failure
+    }
+
+    for (xstring ptr = result; *ptr; ptr++) {
         if (*ptr == '_') {
             *ptr = ' ';
         }
-        ptr++;
     }
+
     return result;
 }
 
@@ -244,6 +250,9 @@ static void output_end_test(xtest *test_case, xengine* engine) {
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator in: %s\n", __func__); 
     }
+
+    test_case->timer.end = clock();
+    test_case->timer.elapsed = test_case->timer.end - test_case->timer.start;
 
     int64_t minutes      = (int64_t)(test_case->timer.elapsed / (60 * CLOCKS_PER_SEC));
     int64_t seconds      = (int64_t)((test_case->timer.elapsed / CLOCKS_PER_SEC) % 60);
@@ -516,129 +525,6 @@ void xqueue_erase(xqueue* queue) {
 }
 
 // ==============================================================================
-// Xtest internal argument parser logic
-// ==============================================================================
-
-// Function to check if a specific option is present
-static xbool xparser_has_option(int argc, xstring argv[], const xstring option) {
-    for (int32_t i = 1; i < argc; i++) {
-        if (strcmp(argv[i], option) == 0) {
-            return xtrue;
-        }
-    }
-    return xfalse;
-}
-
-// Original xparser_parse_args function
-static void xparser_parse_args(int argc, xstring argv[]) {
-    xcli.cutback   = xfalse;
-    xcli.verbose   = xfalse;
-    xcli.dry_run   = xfalse;
-    xcli.repeat    = xfalse;
-    xcli.debug     = xfalse;
-    xcli.color     = xfalse;
-    xcli.only_test = xfalse;
-    xcli.only_mark = xfalse;
-    xcli.ci        = xfalse;
-
-    for (int32_t i = 1; i < argc; i++) {
-        if (xparser_has_option(argc, argv, "--dry-run")) {
-            xcli.dry_run = xtrue;
-        } else if (xparser_has_option(argc, argv, "--cutback")) {
-            xcli.cutback = xtrue;
-            xcli.verbose = xfalse;
-        } else if (xparser_has_option(argc, argv, "--verbose")) {
-            xcli.ci = xtrue;
-        }else if (xparser_has_option(argc, argv, "--debug")) {
-            xcli.debug = xtrue;
-        } else if (xparser_has_option(argc, argv, "--color")) {
-            xcli.color = xtrue;
-        } else if (xparser_has_option(argc, argv, "--human")) {
-            xcli.color = xtrue;
-            xcli.verbose = xtrue;
-        } else if (xparser_has_option(argc, argv, "--ci")) {
-            xcli.ci = xtrue;
-        } else if (xparser_has_option(argc, argv, "--only-test")) {
-            xcli.only_test = xtrue;
-            xcli.only_fish = xfalse;
-            xcli.only_mark = xfalse;
-        } else if (xparser_has_option(argc, argv, "--only-fish")) {
-            xcli.only_fish = xtrue;
-            xcli.only_mark = xfalse;
-            xcli.only_test = xfalse;
-        } else if (xparser_has_option(argc, argv, "--only-mark")) {
-            xcli.only_mark = xtrue;
-            xcli.only_fish = xfalse;
-            xcli.only_test = xfalse;
-        } else if (xparser_has_option(argc, argv, "--version") || xparser_has_option(argc, argv, "-v")) {
-            xconsole_out("blue", "2.0.1\n");
-            exit(EXIT_SUCCESS);
-        } else if (xparser_has_option(argc, argv, "--tip") || xparser_has_option(argc, argv, "-t")) {
-            xconsole_out("blue", "%s\n", helpful_tester_tip());
-            exit(EXIT_SUCCESS);
-        } else if (xparser_has_option(argc, argv, "--help") || xparser_has_option(argc, argv, "-h")) {
-            output_usage_format();
-            exit(EXIT_SUCCESS);
-        } else if (xparser_has_option(argc, argv, "--repeat")) {
-            xcli.repeat = xtrue;
-            if (++i < argc) {
-                int iter_repeat = atoi(argv[i]);
-                if (iter_repeat >= MIN_REPEATS && iter_repeat <= MAX_REPEATS) {
-                    xcli.iter_repeat = iter_repeat;
-                } else {
-                    xconsole_out("red", "Error: --repeat value must be between 1 and 100.\n");
-                    exit(EXIT_FAILURE);
-                }
-            } else {
-                xconsole_out("red", "Error: --repeat option requires a numeric argument.\n");
-                exit(EXIT_FAILURE);
-            }
-        }
-
-        // Check if the program is running in CI mode
-        if (xcli.ci) {
-            xcli.verbose = xfalse;
-            xcli.cutback = xtrue;
-            xcli.color = xfalse;
-            xcli.debug = xfalse;
-        }
-    }
-} // end of func
-
-// ==============================================================================
-// Xtest create and erase
-// ==============================================================================
-
-// Initializes an xengine and processes command-line arguments.
-xengine xtest_create(int argc, xstring *argv) {
-    xengine runner;
-    xparser_parse_args(argc, argv);
-
-    runner.stats = (xstats){0, 0, 0, 0, 0, 0, 0, 0};
-    runner.timer = (xtime){0, 0, 0};
-    runner.queue = xqueue_create();
-
-    if (xcli.dry_run) { // Check if it's a dry run
-        xconsole_out("blue", "Simulating config step...\n");
-    }
-    runner.timer.start = clock();
-    return runner;
-} // end of func
-
-// Finalizes the execution of a Trilobite XUnit runner and displays test results.
-int xtest_erase(xengine *runner) {
-    xtest_run_queue(runner);
-
-    if (xcli.dry_run) {
-        xconsole_out("blue", "Simulating test results...\n");
-    } else {
-        output_summary_format(runner);
-    }
-    xqueue_erase(runner->queue); // Erase the queue
-    return runner->stats.failed_count;
-} // end of func
-
-// ==============================================================================
 // Xtest basic utility functions
 // ==============================================================================
 
@@ -708,6 +594,150 @@ static void xtest_run_test(xengine* engine, xtest* test_case, xfixture* fixture)
 } // end of func
 
 // ==============================================================================
+// Xtest internal argument parser logic
+// ==============================================================================
+
+// Function to check if a specific option is present
+static xbool xparser_has_option(int argc, xstring argv[], const xstring option) {
+    for (int32_t i = 1; i < argc; i++) {
+        if (strcmp(argv[i], option) == 0) {
+            return xtrue;
+        }
+    }
+    return xfalse;
+}
+
+// Original xparser_parse_args function
+static void xparser_parse_args(int argc, xstring argv[]) {
+    xcli.cutback   = xfalse;
+    xcli.verbose   = xfalse;
+    xcli.dry_run   = xfalse;
+    xcli.repeat    = xfalse;
+    xcli.debug     = xfalse;
+    xcli.color     = xfalse;
+    xcli.only_test = xfalse;
+    xcli.only_mark = xfalse;
+    xcli.ci        = xfalse;
+
+    for (int32_t i = 1; i < argc; i++) {
+        if (xparser_has_option(argc, argv, "--dry-run")) {
+            xcli.dry_run = xtrue;
+        } else if (xparser_has_option(argc, argv, "--cutback")) {
+            xcli.cutback = xtrue;
+            xcli.verbose = xfalse;
+        } else if (xparser_has_option(argc, argv, "--verbose")) {
+            xcli.ci = xtrue;
+        }else if (xparser_has_option(argc, argv, "--debug")) {
+            xcli.debug = xtrue;
+        } else if (xparser_has_option(argc, argv, "--color")) {
+            xcli.color = xtrue;
+        } else if (xparser_has_option(argc, argv, "--human")) {
+            xcli.color = xtrue;
+            xcli.verbose = xtrue;
+        } else if (xparser_has_option(argc, argv, "--ci")) {
+            xcli.ci = xtrue;
+        } else if (xparser_has_option(argc, argv, "--only-test")) {
+            xcli.only_test = xtrue;
+            xcli.only_fish = xfalse;
+            xcli.only_mark = xfalse;
+        } else if (xparser_has_option(argc, argv, "--only-fish")) {
+            xcli.only_fish = xtrue;
+            xcli.only_mark = xfalse;
+            xcli.only_test = xfalse;
+        } else if (xparser_has_option(argc, argv, "--only-mark")) {
+            xcli.only_mark = xtrue;
+            xcli.only_fish = xfalse;
+            xcli.only_test = xfalse;
+        } else if (xparser_has_option(argc, argv, "--version") || xparser_has_option(argc, argv, "-v")) {
+            xconsole_out("blue", "2.2.0\n");
+            exit(EXIT_SUCCESS);
+        } else if (xparser_has_option(argc, argv, "--tip") || xparser_has_option(argc, argv, "-t")) {
+            xconsole_out("blue", "%s\n", helpful_tester_tip());
+            exit(EXIT_SUCCESS);
+        } else if (xparser_has_option(argc, argv, "--help") || xparser_has_option(argc, argv, "-h")) {
+            output_usage_format();
+            exit(EXIT_SUCCESS);
+        } else if (xparser_has_option(argc, argv, "--repeat")) {
+            xcli.repeat = xtrue;
+            if (++i < argc) {
+                int iter_repeat = atoi(argv[i]);
+                if (iter_repeat >= MIN_REPEATS && iter_repeat <= MAX_REPEATS) {
+                    xcli.iter_repeat = iter_repeat;
+                } else {
+                    xconsole_out("red", "Error: --repeat value must be between 1 and 100.\n");
+                    exit(EXIT_FAILURE);
+                }
+            } else {
+                xconsole_out("red", "Error: --repeat option requires a numeric argument.\n");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        // Check if the program is running in CI mode
+        if (xcli.ci) {
+            xcli.verbose = xfalse;
+            xcli.cutback = xtrue;
+            xcli.color = xfalse;
+            xcli.debug = xfalse;
+        }
+    }
+} // end of func
+
+// ==============================================================================
+// Xtest create and erase
+// ==============================================================================
+
+// Initialization steps for the xengine runner
+xengine xtest_create(int argc, xstring *argv) {
+    // here we initialize the xengine runner starting with its declaration followed
+    // by the processing of the command line arguments
+    xengine runner;
+    xparser_parse_args(argc, argv);
+
+    // initialization of member variables for scoreboard, timer
+    runner.stats = (xstats){0, 0, 0, 0, 0, 0, 0, 0};
+    runner.timer = (xtime){0, 0, 0};
+    runner.queue = xqueue_create();
+
+    if (xcli.dry_run) { // Check if it's a dry run
+        xconsole_out("blue", "Simulating config step...\n");
+    }
+
+    // Measure the start time
+    runner.timer.start = clock() / (double)CLOCKS_PER_SEC;
+    
+    return runner;
+} // end of func
+
+// Run all test cases in the queue
+void xtest_run_queue(xengine* engine) {
+    // assuming that queue is not empty we run the test cases in the queue
+    while (!xqueue_is_empty(engine->queue)) {
+        xtest* current_test = xqueue_dequeue(engine->queue);
+        if (current_test != xnullptr) {
+            xtest_run_test(engine, current_test, xnullptr);
+        }
+    }
+} // end of func
+
+// Deinitialization steps for the xengine runner
+int xtest_erase(xengine *runner) {
+    // here we check to see if the runner is in dry run mode if it is we simulate
+    // running else we just run the test cases and output the summary
+    if (xcli.dry_run) {
+        xconsole_out("blue", "Simulating test results...\n");
+    } else {
+        xtest_run_queue(runner);
+        output_summary_format(runner);
+    }
+
+    // then we clean up the queue and free the memory allocated for the runner
+    xqueue_erase(runner->queue); // Erase the queue
+
+    return runner->stats.failed_count;
+} // end of func
+
+// ==============================================================================
 // Xtest essential test runner functions
 // ==============================================================================
 
@@ -726,16 +756,6 @@ void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture) 
 
     xqueue_enqueue(engine->queue, test_case);
 } // end of func
-
-// Run all test cases in the queue
-void xtest_run_queue(xengine* engine) {
-    while (!xqueue_is_empty(engine->queue)) {
-        xtest* current_test = xqueue_dequeue(engine->queue);
-        if (current_test != xnullptr) {
-            xtest_run_test(engine, current_test, xnullptr);
-        }
-    }
-}
 
 // ==============================================================================
 // Xmark functions for benchmarks
