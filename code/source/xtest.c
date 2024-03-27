@@ -81,7 +81,7 @@ xstring current_datetime(void) {
 
     strftime(datetime, sizeof(datetime), "%Y-%m-%d %H:%M:%S", timeinfo);
 
-    return datetime;
+    return xstrdup(datetime);  // Return a dynamically allocated copy of the datetime
 }
 
 static xstring replace_underscore(const xstring str) {
@@ -244,6 +244,9 @@ static void output_end_test(xtest *test_case, xengine* engine) {
     if (xcli.debug) {
         xconsole_out("purple", "DEBUG: operator in: %s\n", __func__); 
     }
+
+    test_case->timer.end = clock();
+    test_case->timer.elapsed = test_case->timer.end - test_case->timer.start;
 
     int64_t minutes      = (int64_t)(test_case->timer.elapsed / (60 * CLOCKS_PER_SEC));
     int64_t seconds      = (int64_t)((test_case->timer.elapsed / CLOCKS_PER_SEC) % 60);
@@ -516,6 +519,75 @@ void xqueue_erase(xqueue* queue) {
 }
 
 // ==============================================================================
+// Xtest basic utility functions
+// ==============================================================================
+
+// Updates the statistics
+static void xtest_update_scoreboard(xengine* engine, xtest* test_case) {
+    // Check if the test should be ignored
+    if (test_case->config.ignored) {
+        engine->stats.ignored_count++;
+        return;
+    }
+    if (XERRORS_TEST_CASE) {
+        engine->stats.error_count++;
+        return;
+    }
+
+    // Update the appropriate count based on your logic
+    if (!test_case->config.is_mark && !test_case->config.is_fish) {
+        engine->stats.test_count++;
+    } else if (test_case->config.is_fish && !test_case->config.is_mark) {
+        engine->stats.fish_count++;
+    } else if (test_case->config.is_mark && !test_case->config.is_fish) {
+        engine->stats.mark_count++;
+    }
+
+    // Update main score values
+    if (!XTEST_PASS_SCAN) {
+        engine->stats.failed_count++;
+    } else {
+        engine->stats.passed_count++;
+    }
+    engine->stats.total_count++;
+} // end of func
+
+// Core steps to run a test case
+static void xtest_run(xtest* test_case, xfixture* fixture) {
+    for (uint8_t iter = 0; iter < xcli.iter_repeat; iter++) {
+        if (fixture && fixture->setup) {
+            fixture->setup();
+        }
+
+        test_case->test_function();
+
+        if (fixture && fixture->teardown) {
+            fixture->teardown();
+        }
+    }
+} // end of func
+
+// Common functionality for running a test case.
+static void xtest_run_test(xengine* engine, xtest* test_case, xfixture* fixture) {
+    output_start_test(test_case, engine);
+
+    if (!xcli.dry_run && !XIGNORE_TEST_CASE) {
+        xtest_run(test_case, fixture);
+
+    } else if (!xcli.dry_run && XIGNORE_TEST_CASE) {
+        test_case->config.ignored = XIGNORE_TEST_CASE;
+        XIGNORE_TEST_CASE = xfalse;
+
+    } else if (xcli.dry_run) {
+        xconsole_out("blue", "Simulating test case...\n");
+        return;
+    }
+
+    xtest_update_scoreboard(engine, test_case);
+    output_end_test(test_case, engine);
+} // end of func
+
+// ==============================================================================
 // Xtest internal argument parser logic
 // ==============================================================================
 
@@ -609,11 +681,14 @@ static void xparser_parse_args(int argc, xstring argv[]) {
 // Xtest create and erase
 // ==============================================================================
 
-// Initializes an xengine and processes command-line arguments.
+// Initialization steps for the xengine runner
 xengine xtest_create(int argc, xstring *argv) {
+    // here we initialize the xengine runner starting with its declaration followed
+    // by the processing of the command line arguments
     xengine runner;
     xparser_parse_args(argc, argv);
 
+    // initialization of member variables for scoreboard, timer
     runner.stats = (xstats){0, 0, 0, 0, 0, 0, 0, 0};
     runner.timer = (xtime){0, 0, 0};
     runner.queue = xqueue_create();
@@ -621,90 +696,39 @@ xengine xtest_create(int argc, xstring *argv) {
     if (xcli.dry_run) { // Check if it's a dry run
         xconsole_out("blue", "Simulating config step...\n");
     }
-    runner.timer.start = clock();
+
+    // Measure the start time
+    runner.timer.start = clock() / (double)CLOCKS_PER_SEC;
+    
     return runner;
 } // end of func
 
-// Finalizes the execution of a Trilobite XUnit runner and displays test results.
-int xtest_erase(xengine *runner) {
-    xtest_run_queue(runner);
+// Run all test cases in the queue
+void xtest_run_queue(xengine* engine) {
+    // assuming that queue is not empty we run the test cases in the queue
+    while (!xqueue_is_empty(engine->queue)) {
+        xtest* current_test = xqueue_dequeue(engine->queue);
+        if (current_test != xnullptr) {
+            xtest_run_test(engine, current_test, xnullptr);
+        }
+    }
+} // end of func
 
+// Deinitialization steps for the xengine runner
+int xtest_erase(xengine *runner) {
+    // here we check to see if the runner is in dry run mode if it is we simulate
+    // running else we just run the test cases and output the summary
     if (xcli.dry_run) {
         xconsole_out("blue", "Simulating test results...\n");
     } else {
+        xtest_run_queue(runner);
         output_summary_format(runner);
     }
+
+    // then we clean up the queue and free the memory allocated for the runner
     xqueue_erase(runner->queue); // Erase the queue
+
     return runner->stats.failed_count;
-} // end of func
-
-// ==============================================================================
-// Xtest basic utility functions
-// ==============================================================================
-
-// Updates the statistics
-static void xtest_update_scoreboard(xengine* engine, xtest* test_case) {
-    // Check if the test should be ignored
-    if (test_case->config.ignored) {
-        engine->stats.ignored_count++;
-        return;
-    }
-    if (XERRORS_TEST_CASE) {
-        engine->stats.error_count++;
-        return;
-    }
-
-    // Update the appropriate count based on your logic
-    if (!test_case->config.is_mark && !test_case->config.is_fish) {
-        engine->stats.test_count++;
-    } else if (test_case->config.is_fish && !test_case->config.is_mark) {
-        engine->stats.fish_count++;
-    } else if (test_case->config.is_mark && !test_case->config.is_fish) {
-        engine->stats.mark_count++;
-    }
-
-    // Update main score values
-    if (!XTEST_PASS_SCAN) {
-        engine->stats.failed_count++;
-    } else {
-        engine->stats.passed_count++;
-    }
-    engine->stats.total_count++;
-} // end of func
-
-// Core steps to run a test case
-static void xtest_run(xtest* test_case, xfixture* fixture) {
-    for (uint8_t iter = 0; iter < xcli.iter_repeat; iter++) {
-        if (fixture && fixture->setup) {
-            fixture->setup();
-        }
-
-        test_case->test_function();
-
-        if (fixture && fixture->teardown) {
-            fixture->teardown();
-        }
-    }
-} // end of func
-
-// Common functionality for running a test case.
-static void xtest_run_test(xengine* engine, xtest* test_case, xfixture* fixture) {
-    output_start_test(test_case, engine);
-
-    if (!xcli.dry_run && !XIGNORE_TEST_CASE) {
-        xtest_run(test_case, fixture);
-
-    } else if (!xcli.dry_run && XIGNORE_TEST_CASE) {
-        test_case->config.ignored = XIGNORE_TEST_CASE;
-        XIGNORE_TEST_CASE = xfalse;
-
-    } else if (xcli.dry_run) {
-        xconsole_out("blue", "Simulating test case...\n");
-        return;
-    }
-
-    xtest_update_scoreboard(engine, test_case);
-    output_end_test(test_case, engine);
 } // end of func
 
 // ==============================================================================
@@ -726,16 +750,6 @@ void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture) 
 
     xqueue_enqueue(engine->queue, test_case);
 } // end of func
-
-// Run all test cases in the queue
-void xtest_run_queue(xengine* engine) {
-    while (!xqueue_is_empty(engine->queue)) {
-        xtest* current_test = xqueue_dequeue(engine->queue);
-        if (current_test != xnullptr) {
-            xtest_run_test(engine, current_test, xnullptr);
-        }
-    }
-}
 
 // ==============================================================================
 // Xmark functions for benchmarks
