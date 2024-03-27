@@ -649,7 +649,7 @@ static void xparser_parse_args(int argc, xstring argv[]) {
             xcli.only_fish = xfalse;
             xcli.only_test = xfalse;
         } else if (xparser_has_option(argc, argv, "--version") || xparser_has_option(argc, argv, "-v")) {
-            xconsole_out("blue", "2.0.1\n");
+            xconsole_out("blue", "2.2.0\n");
             exit(EXIT_SUCCESS);
         } else if (xparser_has_option(argc, argv, "--tip") || xparser_has_option(argc, argv, "-t")) {
             xconsole_out("blue", "%s\n", helpful_tester_tip());
