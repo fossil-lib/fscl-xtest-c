@@ -44,8 +44,9 @@ static uint8_t MIN_REPEATS = 1;
 //
 // local types
 //
-typedef xstring xstring;
 static uint64_t start_time;
+static uint64_t end_time;
+
 #if defined(_WIN32)
 static double frequency; // Variable to store the frequency for Windows
 #endif
@@ -687,40 +688,49 @@ uint64_t xmark_stop_benchmark() {
 #endif
 }
 
-void xmark_assert_seconds(uint64_t elapsed_time_ns, double max_seconds) {
-    if (!XTEST_PASS_SCAN) {
-        return;
-    }
-    double elapsed_seconds = elapsed_time_ns / 1e9;
-    if (elapsed_seconds > max_seconds) {
-        output_benchmark_format(elapsed_seconds, max_seconds);
+static void assume_duration_minutes(double expected, double actual) {
+    clock_t end_time = clock();
+    double elapsed_time = (double)(end_time - start_time) / (double)CLOCKS_PER_SEC / 60.0;
+    if (elapsed_time < expected) {
+        output_benchmark_format(expected, actual);
     }
 }
 
-void xmark_assert_minutes(uint64_t elapsed_time_ns, double max_minutes) {
-    if (!XTEST_PASS_SCAN) {
-        return;
-    }
-    double elapsed_minutes = elapsed_time_ns / 60e9;
-    if (elapsed_minutes > max_minutes) {
-        output_benchmark_format(elapsed_minutes, max_minutes);
+static void assume_duration_seconds(double expected, double actual) {
+    clock_t end_time = clock();
+    double elapsed_time = (double)(end_time - start_time) / (double)CLOCKS_PER_SEC;
+    if (elapsed_time < expected) {
+        output_benchmark_format(expected, actual);
     }
 }
 
-void xmark_expect_seconds(uint64_t elapsed_time_ns, double max_seconds) {
-    double elapsed_seconds = elapsed_time_ns / 1e9;
-    XTEST_PASS_SCAN = xtrue;
-    if (elapsed_seconds > max_seconds) {
-        output_benchmark_format(elapsed_seconds, max_seconds);
+static void assume_duration_milliseconds(double expected, double actual) {
+    clock_t end_time = clock();
+    double elapsed_time = (double)(end_time - start_time) / ((double)CLOCKS_PER_SEC / 1000);
+    if (elapsed_time < expected) {
+        output_benchmark_format(expected, actual);
     }
 }
 
-void xmark_expect_minutes(uint64_t elapsed_time_ns, double max_minutes) {
-    double elapsed_minutes = elapsed_time_ns / 60e9;
-    XTEST_PASS_SCAN = xtrue;
+static void assume_duration_picoseconds(double expected, double actual) {
+    clock_t end_time = clock();
+    double elapsed_time = (double)(end_time - start_time) / ((double)CLOCKS_PER_SEC / 1000000000);
+    if (elapsed_time < expected) {
+        output_benchmark_format(expected, actual);
+    }
+}
 
-    if (elapsed_minutes > max_minutes) {
-        output_benchmark_format(elapsed_minutes, max_minutes);
+void mark_duration(xstring duration_type, double expected, double actual) {
+    if (strcmp(duration_type, "minutes") == 0) {
+        assume_duration_minutes(expected, actual);
+    } else if (strcmp(duration_type, "seconds") == 0) {
+        assume_duration_seconds(expected, actual);
+    } else if (strcmp(duration_type, "milliseconds") == 0) {
+        assume_duration_milliseconds(expected, actual);
+    } else if (strcmp(duration_type, "picoseconds") == 0) {
+        assume_duration_picoseconds(expected, actual);
+    } else {
+        xconsole_out("red", "Unknown option: %s\n", duration_type);
     }
 }
 

@@ -111,53 +111,22 @@ typedef struct {
 // Initial implementation
 // =================================================================
 
-// Function prototypes for Xtest
-// Creates an instance of the testing engine and initializes it with command-line arguments.
+// Function prototypes for XTest engine
 xengine xtest_create(int argc, xstring *argv);
-
-// Erases (cleans up) the instance of the testing engine.
-// Returns an integer indicating the result of the operation.
 int xtest_erase(xengine *runner);
-
-// Runs a test case as a standalone test within the testing engine.
 void xtest_run_as_test(xengine* engine, xtest* test_case);
-
-// Runs a test case with a specified fixture within the testing engine.
 void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture);
 
-// Function prototypes for Xmark
-// Marks the start of a performance benchmark.
+// Runs a test case with a specified fixture within the testing engine
 void xmark_start_benchmark(void);
-
-// Marks the end of a performance benchmark and returns the elapsed time in nanoseconds.
 uint64_t xmark_stop_benchmark(void);
+void mark_duration(xstring duration_type, double expected, double actual);
 
-// Asserts that the elapsed time in nanoseconds does not exceed a specified maximum in seconds.
-void xmark_assert_seconds(uint64_t elapsed_time_ns, double max_seconds);
-
-// Asserts that the elapsed time in nanoseconds does not exceed a specified maximum in minutes.
-void xmark_assert_minutes(uint64_t elapsed_time_ns, double max_minutes);
-
-// Expects that the elapsed time in nanoseconds does not exceed a specified maximum in seconds.
-void xmark_expect_seconds(uint64_t elapsed_time_ns, double max_seconds);
-
-// Expects that the elapsed time in nanoseconds does not exceed a specified maximum in minutes.
-void xmark_expect_minutes(uint64_t elapsed_time_ns, double max_minutes);
-
-// Function prototypes for asserts
-// Logs information about an error condition in a test.
+// Function prototypes for Xtest assertions
 void xerrors(const xstring reason, const xstring file, int line, const xstring func);
-
-// Logs a message indicating that a test is being ignored, providing a reason.
 void xignore(const xstring reason, const xstring file, int line, const xstring func);
-
-// Asserts a xboolean expression in a test, failing the test if the expression is xfalse.
 void xassume(xbool expression, const xstring message, const xstring file, int line, const xstring func);
-
-// Asserts a xboolean expression in a test, failing the test if the expression is xfalse.
 void xassert(xbool expression, const xstring message, const xstring file, int line, const xstring func);
-
-// Expects a xboolean expression in a test, failing the test if the expression is xfalse.
 void xexpect(xbool expression, const xstring message, const xstring file, int line, const xstring func);
 
 // =================================================================
@@ -334,29 +303,18 @@ void xexpect(xbool expression, const xstring message, const xstring file, int li
 // XMark specific commands for benchmarking
 // =================================================================
 
-// Macro to initiate the start of a performance benchmark.
-// This macro is used to mark the beginning of the code section to be benchmarked.
-#define XMARK_START_BENCHMARK() xmark_start_benchmark()
+// Define macros for starting and stopping benchmarks
+#define XMARK_START_BENCHMARK() xmark_start_benchmark() // Macro for starting benchmark
+#define XMARK_STOP_BENCHMARK() xmark_stop_benchmark()   // Macro for stopping benchmark
 
-// Macro to signal the end of a performance benchmark.
-// Use this macro to mark the conclusion of the code section under benchmark.
-#define XMARK_STOP_BENCHMARK() xmark_stop_benchmark()
+// Define macro for marking duration with given units
+#define XMARK_DURATION(duration, elapsed, actual) mark_duration(duration, elapsed, actual)  // Macro for marking duration with specified units
 
-// Macro to assert that the elapsed time, given in nanoseconds, does not exceed a specified maximum time in seconds.
-// It is intended for use in test scenarios where a strict upper limit on execution time is crucial.
-#define XMARK_ASSERT_SECONDS(elapsed_time_ns, max_seconds) xmark_assert_seconds(elapsed_time_ns, max_seconds)
-
-// Macro to assert that the elapsed time, given in nanoseconds, does not exceed a specified maximum time in minutes.
-// Similar to XMARK_ASSERT_SECONDS but with the time limit specified in minutes.
-#define XMARK_ASSERT_MINUTES(elapsed_time_ns, max_minutes) xmark_assert_minutes(elapsed_time_ns, max_minutes)
-
-// Macro to set an expectation that the elapsed time should not exceed a specified maximum time in seconds.
-// It is used for expressing a non-strict upper limit on the execution time in test scenarios.
-#define XMARK_EXPECT_SECONDS(elapsed_time_ns, max_seconds) xmark_expect_seconds(elapsed_time_ns, max_seconds)
-
-// Macro to set an expectation that the elapsed time should not exceed a specified maximum time in minutes.
-// Similar to XMARK_EXPECT_SECONDS but with the time limit specified in minutes.
-#define XMARK_EXPECT_MINUTES(elapsed_time_ns, max_minutes) xmark_expect_minutes(elapsed_time_ns, max_minutes)
+// Define macros for marking duration in minutes, seconds, milliseconds, and microseconds
+#define XMARK_DURATION_MINUTES(elapsed, actual) XMARK_DURATION("minutes", elapsed, actual)        // Macro for marking duration in minutes
+#define XMARK_DURATION_SECONDS(elapsed, actual) XMARK_DURATION("seconds", elapsed, actual)        // Macro for marking duration in seconds
+#define XMARK_DURATION_MILLISECONDS(elapsed, actual) XMARK_DURATION("milliseconds", elapsed, actual)  // Macro for marking duration in milliseconds
+#define XMARK_DURATION_MICROSECONDS(elapsed, actual) XMARK_DURATION("picoseconds", elapsed, actual)  // Macro for marking duration in microseconds
 
 // ------------------------------------------------------------------------
 //
@@ -381,27 +339,34 @@ void xexpect(xbool expression, const xstring message, const xstring file, int li
 //
 // ------------------------------------------------------------------------
 
-// Macro to assert a given expression in a test. If the expression is xfalse, the test fails.
-// Usage: TEST_ASSERT(expression, message);
-#define TEST_ASSERT(expression, message) xassert(expression, message, __FILE__, __LINE__, (const xstring)__func__)
+// Define macros for test assertions with expression and message
+#define TEST_ASSERT(expression, message) xassert(expression, message, __FILE__, __LINE__, (const xstring)__func__)   // Macro for asserting a test condition
 
-// Macro to expect a given expression in a test. If the expression is xfalse, the test fails,
-// and the test execution continues.
-// Usage: TEST_EXPECT(expression, message);
-#define TEST_EXPECT(expression, message) xexpect(expression, message, __FILE__, __LINE__, (const xstring)__func__)
+// Define macros for test expectations with expression and message
+#define TEST_EXPECT(expression, message) xexpect(expression, message, __FILE__, __LINE__, (const xstring)__func__)   // Macro for expecting a test condition
 
-// Macro to assume a given expression in a test. If the expression is xfalse, the test fails,
-// and the test execution continues.
-// Usage: TEST_ASSUME(expression, message)
-#define TEST_ASSUME(expression, message) xassume(expression, message, __FILE__, __LINE__, (const xstring)__func__)
+// Define macros for test assumptions with expression and message
+#define TEST_ASSUME(expression, message) xassume(expression, message, __FILE__, __LINE__, (const xstring)__func__)   // Macro for assuming a test condition
 
-// Macro to ignore a test with a specified reason.
-// Usage: TEST_IGNORE(reason);
-#define TEST_IGNORE(reason) xignore(reason, __FILE__, __LINE__, (const xstring)__func__)
+// Define macro for ignoring a test with a given reason
+#define TEST_IGNORE(reason) xignore(reason, __FILE__, __LINE__, (const xstring)__func__)   // Macro for ignoring a test
 
-// Macro to handle an error condition in a test. It marks the test as failed and provides a reason.
-// Usage: TEST_XERROR(reason);
-#define TEST_XERROR(reason) xerrors(reason, __FILE__, __LINE__, (const xstring)__func__)
+// Define macro for reporting test errors with a given reason
+#define TEST_XERROR(reason) xerrors(reason, __FILE__, __LINE__, (const xstring)__func__)   // Macro for reporting test errors
+
+// =================================================================
+// Mocking specific commands
+// =================================================================
+
+// Define macro for mocking a function with a given return type and name
+#define MOCK_FUNC(return_type, name, ...) return_type xmock_##name(__VA_ARGS__)   // Macro for mocking a function
+
+// Define macro for mocking a structure with a given name and members
+#define MOCK_STRUCT(name, ...) typedef struct { __VA_ARGS__ } xmock_##name;   // Macro for mocking a structure
+
+// Define macro for creating a mock type based on an existing type
+#define MOCK_TYPE(new_type, existing_type) typedef existing_type xmock_##new_type##_type; \   // Macro for creating a mock type
+    xmock_##new_type##_type xmock_##new_type(void)   // Function declaration for the mock type
 
 #ifdef __cplusplus
 }
