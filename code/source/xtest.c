@@ -537,36 +537,36 @@ void xqueue_swap(xqueue* queue, xtest* node1, xtest* node2) {
     }
 
     // Swap the prev pointers
+    if (node1->prev != xnullptr) {
+        node1->prev->next = node2;
+    } else {
+        queue->front = node2;
+    }
+    if (node2->prev != xnullptr) {
+        node2->prev->next = node1;
+    } else {
+        queue->front = node1;
+    }
+
     xtest* temp_prev = node1->prev;
     node1->prev = node2->prev;
     node2->prev = temp_prev;
 
     // Swap the next pointers
-    xtest* temp_next = node1->next;
-    node1->next = node2->next;
-    node2->next = temp_next;
-
-    // Update adjacent node pointers
-    if (node1->prev != xnullptr) {
-        node1->prev->next = node1;
-    } else {
-        queue->front = node1;
-    }
     if (node1->next != xnullptr) {
-        node1->next->prev = node1;
-    } else {
-        queue->rear = node1;
-    }
-    if (node2->prev != xnullptr) {
-        node2->prev->next = node2;
-    } else {
-        queue->front = node2;
-    }
-    if (node2->next != xnullptr) {
-        node2->next->prev = node2;
+        node1->next->prev = node2;
     } else {
         queue->rear = node2;
     }
+    if (node2->next != xnullptr) {
+        node2->next->prev = node1;
+    } else {
+        queue->rear = node1;
+    }
+
+    xtest* temp_next = node1->next;
+    node1->next = node2->next;
+    node2->next = temp_next;
 }
 
 // Shuffle the queue
