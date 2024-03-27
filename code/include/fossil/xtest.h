@@ -354,20 +354,6 @@ void xexpect(xbool expression, const xstring message, const xstring file, int li
 // Define macro for reporting test errors with a given reason
 #define TEST_XERROR(reason) xerrors(reason, __FILE__, __LINE__, (const xstring)__func__)   // Macro for reporting test errors
 
-// =================================================================
-// Mocking specific commands
-// =================================================================
-
-// Define macro for mocking a function with a given return type and name
-#define MOCK_FUNC(return_type, name, ...) return_type xmock_##name(__VA_ARGS__)   // Macro for mocking a function
-
-// Define macro for mocking a structure with a given name and members
-#define MOCK_STRUCT(name, ...) typedef struct { __VA_ARGS__ } xmock_##name;   // Macro for mocking a structure
-
-// Define macro for creating a mock type based on an existing type
-#define MOCK_TYPE(new_type, existing_type) typedef existing_type xmock_##new_type##_type; \   // Macro for creating a mock type
-    xmock_##new_type##_type xmock_##new_type(void)   // Function declaration for the mock type
-
 #ifdef __cplusplus
 }
 #endif
