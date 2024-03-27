@@ -81,13 +81,22 @@ typedef struct {
 } xfixture;
 
 // Structure representing a test case
-typedef struct {
+typedef struct xtest xtest;
+struct xtest {
     const xstring name;            // Name of the test case
     void (*test_function)(void); // Function pointer to the test case's implementation
     xfixture fixture;            // The fixture settings
     xconfig config;              // Configuration
     xtime timer;                 // Xtest timer for tracking time
-} xtest;
+    struct xtest *prev;             // Pointer to the previous xtest node
+    struct xtest *next;             // Pointer to the next xtest node
+};
+
+// Deque structure
+typedef struct {
+    xtest *front;   // Front of the deque
+    xtest *rear;    // Rear of the deque
+} xqueue;
 
 // Statistics for tracking test results
 typedef struct {
@@ -105,6 +114,7 @@ typedef struct {
 typedef struct {
     xstats stats;  // Test statistics including passed, failed, and ignored counts
     xtime timer;   // Xtest timer for tracking time
+    xqueue* queue; // Queue to hold the test cases
 } xengine;
 
 // =================================================================
