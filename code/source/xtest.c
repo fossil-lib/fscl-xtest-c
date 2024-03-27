@@ -85,15 +85,21 @@ xstring current_datetime(void) {
 }
 
 static xstring replace_underscore(const xstring str) {
-    xstring result = xstrdup(str);
-    xstring ptr = result;
+    if (!str) {
+        return xnullptr; // Check for null input
+    }
 
-    while (*ptr) {
+    xstring result = xstrdup(str);
+    if (!result) {
+        return xnullptr; // Check for memory allocation failure
+    }
+
+    for (xstring ptr = result; *ptr; ptr++) {
         if (*ptr == '_') {
             *ptr = ' ';
         }
-        ptr++;
     }
+
     return result;
 }
 
