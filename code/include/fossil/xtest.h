@@ -81,7 +81,8 @@ typedef struct {
 } xfixture;
 
 // Structure representing a test case
-typedef struct {
+typedef struct xtest xtest;
+struct xtest {
     const xstring name;            // Name of the test case
     void (*test_function)(void); // Function pointer to the test case's implementation
     xfixture fixture;            // The fixture settings
@@ -89,7 +90,7 @@ typedef struct {
     xtime timer;                 // Xtest timer for tracking time
     struct xtest *prev;             // Pointer to the previous xtest node
     struct xtest *next;             // Pointer to the next xtest node
-} xtest;
+};
 
 // Deque structure
 typedef struct {
