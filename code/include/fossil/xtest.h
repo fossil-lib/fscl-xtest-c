@@ -87,7 +87,15 @@ typedef struct {
     xfixture fixture;            // The fixture settings
     xconfig config;              // Configuration
     xtime timer;                 // Xtest timer for tracking time
+    struct xtest *prev;             // Pointer to the previous xtest node
+    struct xtest *next;             // Pointer to the next xtest node
 } xtest;
+
+// Deque structure
+typedef struct {
+    xtest *front;   // Front of the deque
+    xtest *rear;    // Rear of the deque
+} xqueue;
 
 // Statistics for tracking test results
 typedef struct {
@@ -105,6 +113,7 @@ typedef struct {
 typedef struct {
     xstats stats;  // Test statistics including passed, failed, and ignored counts
     xtime timer;   // Xtest timer for tracking time
+    xqueue* queue; // Queue to hold the test cases
 } xengine;
 
 // =================================================================
