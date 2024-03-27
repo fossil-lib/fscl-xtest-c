@@ -22,6 +22,8 @@ typedef struct {
     xbool only_mark;
     xbool debug;
     xbool color;
+    xbool shuffle;
+    xbool reverse;
     xbool ci;
     xbool repeat;
     uint8_t iter_repeat;
@@ -443,14 +445,16 @@ static void output_usage_format(void) {
     xconsole_out("cyan", "\t-h, --help   : Display this help message                             :\n");
     xconsole_out("cyan", "\t-v, --version: Display program version                               :\n");
     xconsole_out("cyan", "\t-t, --tip    : Display a helpful tip                                 :\n");
+    xconsole_out("cyan", "\t--cutback    : Enable cutback 50%% of output                         :\n");
+    xconsole_out("cyan", "\t--verbose    : Enable verbose mode for extra information             :\n");
+    xconsole_out("cyan", "\t--shuffle    : Enable shuffle test cases in queue                    :\n");
+    xconsole_out("cyan", "\t--reverse    : Enable reverse test cases in queue                    :\n");
+    xconsole_out("cyan", "\t--human      : Enable human format mode                              :\n");
+    xconsole_out("cyan", "\t--color      : Enable colored output                                 :\n");
+    xconsole_out("cyan", "\t--ci         : Enable CI pipeline optimizer to save time             :\n");
     xconsole_out("cyan", "\t--only-test  : Run only test cases                                   :\n");
     xconsole_out("cyan", "\t--only-fish  : Run only AI training cases                            :\n");
     xconsole_out("cyan", "\t--only-mark  : Run only benchmark cases                              :\n");
-    xconsole_out("cyan", "\t--cutback    : Enable cutback 50%% of output                         :\n");
-    xconsole_out("cyan", "\t--human      : Enable human format mode                              :\n");
-    xconsole_out("cyan", "\t--color      : Enable colored output                                 :\n");
-    xconsole_out("cyan", "\t--verbose    : Enable verbose mode for extra information             :\n");
-    xconsole_out("cyan", "\t--ci         : Enable CI pipeline optimizer to save time             :\n");
     xconsole_out("cyan", "\t--repeat N   : Repeat the test N times (requires a numeric argument) :\n");
     xconsole_out("cyan", "\t--debug      : Enable debug mode\n");
 
@@ -505,6 +509,55 @@ xtest* xqueue_dequeue(xqueue* queue) {
     return temp;
 }
 
+// Shuffle the queue
+void xqueue_shuffle(xqueue* queue) {
+    srand(time(NULL));  // Seed the random number generator
+
+    for (xtest* current = queue->front; current != xnullptr; current = current->next) {
+        int j = rand() % (queue->rear - queue->front + 1);
+
+        // Swap elements at i and j
+        xtest* temp = current;
+        current = queue->front;
+        for (int i = 0; i < j && current != xnullptr; i++) {
+            current = current->next;
+        }
+        temp->next->prev = temp->prev;
+        temp->prev->next = temp->next;
+        if (j == 0) {
+            queue->front = temp->next;
+        } else if (j == queue->rear - queue->front) {
+            queue->rear = temp->prev;
+        }
+        temp->prev = xnullptr;
+        temp->next = xnullptr;
+        if (queue->front == xnullptr || queue->rear == xnullptr) {
+            queue->front = temp;
+            queue->rear = temp;
+        } else {
+            temp->next = queue->front;
+            queue->front->prev = temp;
+            queue->front = temp;
+        }
+    }
+}
+
+// Reverse the queue
+void xqueue_reverse(xqueue* queue) {
+    xtest* current = queue->front;
+    while (current != xnullptr) {
+        xtest* temp = current->next;
+        current->next = current->prev;
+        current->prev = temp;
+        current = temp;
+    }
+
+    // Swap front and rear pointers
+    xtest* temp = queue->front;
+    queue->front = queue->rear;
+    queue->rear = temp;
+}
+
 // Erase the queue
 void xqueue_erase(xqueue* queue) {
     while (!xqueue_is_empty(queue)) {
@@ -539,6 +592,8 @@ static void xparser_parse_args(int argc, xstring argv[]) {
     xcli.color     = xfalse;
     xcli.only_test = xfalse;
     xcli.only_mark = xfalse;
+    xcli.shuffle   = xfalse;
+    xcli.reverse   = xfalse;
     xcli.ci        = xfalse;
 
     for (int32_t i = 1; i < argc; i++) {
@@ -553,6 +608,10 @@ static void xparser_parse_args(int argc, xstring argv[]) {
             xcli.debug = xtrue;
         } else if (xparser_has_option(argc, argv, "--color")) {
             xcli.color = xtrue;
+        } else if (xparser_has_option(argc, argv, "--shuffle")) {
+            xcli.shuffle = xtrue;
+        } else if (xparser_has_option(argc, argv, "--reverse")) {
+            xcli.reverse = xtrue;
         } else if (xparser_has_option(argc, argv, "--human")) {
             xcli.color = xtrue;
             xcli.verbose = xtrue;
@@ -599,6 +658,7 @@ static void xparser_parse_args(int argc, xstring argv[]) {
         if (xcli.ci) {
             xcli.verbose = xfalse;
             xcli.cutback = xtrue;
+            xcli.shuffle = xtrue;
             xcli.color = xfalse;
             xcli.debug = xfalse;
         }
@@ -627,7 +687,16 @@ xengine xtest_create(int argc, xstring *argv) {
 
 // Finalizes the execution of a Trilobite XUnit runner and displays test results.
 int xtest_erase(xengine *runner) {
+    if (xcli.shuffle) {
+        xqueue_shuffle(runner->queue);
+    }
+
+    if (xcli.reverse) {
+        xqueue_reverse(runner->queue);
+    }
+
     xtest_run_queue(runner);
+
     if (xcli.dry_run) {
         xconsole_out("blue", "Simulating test results...\n");
     } else {
