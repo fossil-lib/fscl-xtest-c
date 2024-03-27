@@ -509,47 +509,95 @@ xtest* xqueue_dequeue(xqueue* queue) {
     return temp;
 }
 
+// Helper function to get the node at a specific index
+xtest* xqueue_get_node_at(xqueue* queue, int index) {
+    xtest* current = queue->front;
+    for (int i = 0; i < index && current != xnullptr; i++) {
+        current = current->next;
+    }
+    return current;
+}
+
+// Helper function to get the size of the queue
+int xqueue_size(xqueue* queue) {
+    int count = 0;
+    xtest* current = queue->front;
+    while (current != xnullptr) {
+        count++;
+        current = current->next;
+    }
+    return count;
+}
+
+// Swap two nodes in the queue
+void xqueue_swap(xqueue* queue, xtest* node1, xtest* node2) {
+    // Check if nodes are the same or either node is NULL
+    if (node1 == node2 || node1 == xnullptr || node2 == xnullptr) {
+        return;
+    }
+
+    // Swap the prev pointers
+    xtest* temp_prev = node1->prev;
+    node1->prev = node2->prev;
+    node2->prev = temp_prev;
+
+    // Swap the next pointers
+    xtest* temp_next = node1->next;
+    node1->next = node2->next;
+    node2->next = temp_next;
+
+    // Update adjacent node pointers
+    if (node1->prev != xnullptr) {
+        node1->prev->next = node1;
+    } else {
+        queue->front = node1;
+    }
+    if (node1->next != xnullptr) {
+        node1->next->prev = node1;
+    } else {
+        queue->rear = node1;
+    }
+    if (node2->prev != xnullptr) {
+        node2->prev->next = node2;
+    } else {
+        queue->front = node2;
+    }
+    if (node2->next != xnullptr) {
+        node2->next->prev = node2;
+    } else {
+        queue->rear = node2;
+    }
+}
+
 // Shuffle the queue
 void xqueue_shuffle(xqueue* queue) {
-    srand(time(NULL));  // Seed the random number generator
+    srand(time(xnullptr));  // Seed the random number generator
 
-    for (xtest* current = queue->front; current != xnullptr; current = current->next) {
-        int j = rand() % (queue->rear - queue->front + 1);
+    int n = xqueue_size(queue);
 
-        // Swap elements at i and j
-        xtest* temp = current;
-        current = queue->front;
-        for (int i = 0; i < j && current != xnullptr; i++) {
-            current = current->next;
-        }
-        temp->next->prev = temp->prev;
-        temp->prev->next = temp->next;
-        if (j == 0) {
-            queue->front = temp->next;
-        } else if (j == queue->rear - queue->front) {
-            queue->rear = temp->prev;
-        }
-        temp->prev = xnullptr;
-        temp->next = xnullptr;
-        if (queue->front == xnullptr || queue->rear == xnullptr) {
-            queue->front = temp;
-            queue->rear = temp;
-        } else {
-            temp->next = queue->front;
-            queue->front->prev = temp;
-            queue->front = temp;
-        }
+    for (int i = 0; i < n; i++) {
+        // Pick a random index between i and n-1
+        int j = i + rand() % (n - i);
+
+        // Find the i-th and j-th nodes
+        xtest* node_i = xqueue_get_node_at(queue, i);
+        xtest* node_j = xqueue_get_node_at(queue, j);
+
+        // Swap the nodes
+        xqueue_swap(queue, node_i, node_j);
     }
 }
 
 // Reverse the queue
 void xqueue_reverse(xqueue* queue) {
-    xtest* current = queue->front;
-    while (current != xnullptr) {
-        xtest* temp = current->next;
-        current->next = current->prev;
-        current->prev = temp;
-        current = temp;
+    int size = xqueue_size(queue);
+    int mid = size / 2;
+
+    for (int i = 0; i < mid; i++) {
+        xtest* node_i = xqueue_get_node_at(queue, i);
+        xtest* node_j = xqueue_get_node_at(queue, size - 1 - i);
+
+        xqueue_swap(queue, node_i, node_j);
     }
 
     // Swap front and rear pointers
@@ -687,14 +735,6 @@ xengine xtest_create(int argc, xstring *argv) {
 
 // Finalizes the execution of a Trilobite XUnit runner and displays test results.
 int xtest_erase(xengine *runner) {
-    if (xcli.shuffle) {
-        xqueue_shuffle(runner->queue);
-    }
-
-    if (xcli.reverse) {
-        xqueue_reverse(runner->queue);
-    }
-
     xtest_run_queue(runner);
 
     if (xcli.dry_run) {
@@ -797,6 +837,13 @@ void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture) 
 
 // Run all test cases in the queue
 void xtest_run_queue(xengine* engine) {
+    if (xcli.shuffle) {
+        xqueue_shuffle(engine->queue);
+    }
+
+    if (xcli.reverse) {
+        xqueue_reverse(engine->queue);
+    }
     while (!xqueue_is_empty(engine->queue)) {
         xtest* current_test = xqueue_dequeue(engine->queue);
         if (current_test != xnullptr) {
