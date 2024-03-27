@@ -508,10 +508,11 @@ xtest* xqueue_dequeue(xqueue* queue) {
 // Erase the queue
 void xqueue_erase(xqueue* queue) {
     while (!xqueue_is_empty(queue)) {
-        xtest* temp = xqueue_dequeue(queue);
-        free(temp);  // Free memory allocated for each test case
+        xtest* current_test = xqueue_dequeue(queue);
+        if (current_test != xnullptr) {
+            free(current_test); // Free memory allocated for dequeued test case
+        }
     }
-    free(queue);  // Free memory allocated for the queue itself
 }
 
 // ==============================================================================
@@ -713,7 +714,7 @@ void xtest_run_as_test(xengine* engine, xtest* test_case) {
     test_case->config.ignored   = xfalse;
     test_case->fixture.setup    = xnullptr;
     test_case->fixture.teardown = xnullptr;
-    // xtest_run_test(engine, test_case, xnullptr);
+
     xqueue_enqueue(engine->queue, test_case);
 } // end of func
 
@@ -721,16 +722,16 @@ void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture) 
     test_case->config.ignored   = xfalse;
     test_case->fixture.setup    = fixture->setup;
     test_case->fixture.teardown = fixture->teardown;
-    // xtest_run_test(engine, test_case, fixture);
+
     xqueue_enqueue(engine->queue, test_case);
 } // end of func
 
+// Run all test cases in the queue
 void xtest_run_queue(xengine* engine) {
     while (!xqueue_is_empty(engine->queue)) {
         xtest* current_test = xqueue_dequeue(engine->queue);
         if (current_test != xnullptr) {
             xtest_run_test(engine, current_test, xnullptr);
-            free(current_test); // Free memory allocated for dequeued test case
         }
     }
 }
