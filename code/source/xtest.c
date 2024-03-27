@@ -41,6 +41,9 @@ static uint8_t XERRORS_TEST_CASE = xfalse;
 static uint8_t MAX_REPEATS = 100;
 static uint8_t MIN_REPEATS = 1;
 
+// Running tests in a queue
+void xtest_run_queue(xengine* engine);
+
 //
 // local types
 //
@@ -460,6 +463,61 @@ static void output_usage_format(void) {
 // Xtest internal argument parser logic
 // ==============================================================================
 
+// Initialize queue
+xqueue* xqueue_create() {
+    xqueue* queue = (xqueue*)malloc(sizeof(xqueue));
+    if (!queue) {
+        return xnullptr;
+    }
+    queue->front = xnullptr;
+    queue->rear = xnullptr;
+    return queue;
+}
+
+// Check if queue is empty
+xbool xqueue_is_empty(xqueue* queue) {
+    return queue->front == xnullptr;
+}
+
+// xqueue_enqueue an xtest node
+void xqueue_enqueue(xqueue* queue, xtest* test) {
+    test->next = xnullptr;
+    if (xqueue_is_empty(queue)) {
+        queue->front = test;
+        queue->rear = test;
+    } else {
+        queue->rear->next = test;
+        queue->rear = test;
+    }
+}
+
+// xqueue_dequeue an xtest node
+xtest* xqueue_dequeue(xqueue* queue) {
+    if (xqueue_is_empty(queue)) {
+        return xnullptr;
+    }
+    xtest* temp = queue->front;
+    queue->front = queue->front->next;
+    if (queue->front == xnullptr) {
+        queue->rear = xnullptr;
+    }
+    temp->next = xnullptr;
+    return temp;
+}
+
+// Erase the queue
+void xqueue_erase(xqueue* queue) {
+    while (!xqueue_is_empty(queue)) {
+        xtest* temp = xqueue_dequeue(queue);
+        free(temp);  // Free memory allocated for each test case
+    }
+    free(queue);  // Free memory allocated for the queue itself
+}
+
+// ==============================================================================
+// Xtest internal argument parser logic
+// ==============================================================================
+
 // Function to check if a specific option is present
 static xbool xparser_has_option(int argc, xstring argv[], const xstring option) {
     for (int32_t i = 1; i < argc; i++) {
@@ -557,6 +615,7 @@ xengine xtest_create(int argc, xstring *argv) {
 
     runner.stats = (xstats){0, 0, 0, 0, 0, 0, 0, 0};
     runner.timer = (xtime){0, 0, 0};
+    runner.queue = xqueue_create();
 
     if (xcli.dry_run) { // Check if it's a dry run
         xconsole_out("blue", "Simulating config step...\n");
@@ -567,11 +626,13 @@ xengine xtest_create(int argc, xstring *argv) {
 
 // Finalizes the execution of a Trilobite XUnit runner and displays test results.
 int xtest_erase(xengine *runner) {
+    xtest_run_queue(runner);
     if (xcli.dry_run) {
         xconsole_out("blue", "Simulating test results...\n");
     } else {
         output_summary_format(runner);
     }
+    xqueue_erase(runner->queue); // Erase the queue
     return runner->stats.failed_count;
 } // end of func
 
@@ -649,14 +710,30 @@ static void xtest_run_test(xengine* engine, xtest* test_case, xfixture* fixture)
 // ==============================================================================
 
 void xtest_run_as_test(xengine* engine, xtest* test_case) {
-    test_case->config.ignored = xfalse;
-    xtest_run_test(engine, test_case, xnullptr);
+    test_case->config.ignored   = xfalse;
+    test_case->fixture.setup    = xnullptr;
+    test_case->fixture.teardown = xnullptr;
+    // xtest_run_test(engine, test_case, xnullptr);
+    xqueue_enqueue(engine->queue, test_case);
 } // end of func
 
 void xtest_run_as_fixture(xengine* engine, xtest* test_case, xfixture* fixture) {
-    test_case->config.ignored = xfalse;
-    xtest_run_test(engine, test_case, fixture);
+    test_case->config.ignored   = xfalse;
+    test_case->fixture.setup    = fixture->setup;
+    test_case->fixture.teardown = fixture->teardown;
+    // xtest_run_test(engine, test_case, fixture);
+    xqueue_enqueue(engine->queue, test_case);
 } // end of func
+
+void xtest_run_queue(xengine* engine) {
+    while (!xqueue_is_empty(engine->queue)) {
+        xtest* current_test = xqueue_dequeue(engine->queue);
+        if (current_test != xnullptr) {
+            xtest_run_test(engine, current_test, xnullptr);
+            free(current_test); // Free memory allocated for dequeued test case
+        }
+    }
+}
 
 // ==============================================================================
 // Xmark functions for benchmarks
